@@ -289,3 +289,7 @@ Grundval sparas i propertyDefaults i befintlig normal-/demoisolerad state. Nya m
 Ludwigs skärmbildsförtydligande: ersätt ”Vad ger partnersamarbetena?” med
 **Partnerresultat** på interna översikten. Avgränsad textkandidat på
 `codex/partnerresultat-heading`; detaljer och verifiering i WORKLOG.
+
+Klart: PR #40 integrerad och publicerad som version 30 den 11 oktober 2026.
+Rubriken är nu **Partnerresultat**. Käll-SHA, deployment och faktiskt körda
+kontroller finns i WORKLOG. Ingen övrig runtime-ändring ingick.
