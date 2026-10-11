@@ -4,7 +4,7 @@
   if (!P) return;
   const e = P.e;
   const partnerId = () => P.role === 'partner' ? P.partner : P.selectedPartnerId || 'syd';
-  const allowed = () => P.role === 'internal' || (P.role === 'partner' && P.getPartner(P.partner) && P.getPartner(P.partner).type !== 'property');
+  const allowed = () => ['sales', 'field'].includes(partner()?.type) && (P.role === 'internal' || (P.role === 'partner' && partnerId() === P.partner));
   const partner = () => P.getPartner(partnerId());
   const D = () => P.partnerSalesData?.forPartner(partnerId()) || (partnerId() === 'syd' ? P.saveraData : null);
   const storageKey = () => `${P.demoMode ? 'partnerlabb.demo' : 'partnerlabb'}.partnerSalesReports.v1.${P.role==='partner'?'own.':''}${partnerId()}`;

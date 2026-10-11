@@ -19,7 +19,13 @@ function fixture() {
   const P = {
     partnerRegistry: registry,
     partners,
-    state: { records: [{ id: 'old-record', company: 'Fiktiv kund', partner: 'syd' }], offers: [{ id: 'old-offer' }], partnerProfiles: {} },
+    state: {
+      records: [{ id: 'old-record', company: 'Fiktiv kund', partner: 'syd' }],
+      offers: [{ id: 'old-offer' }],
+      moveins: [{ id: 'old-movein', partner: 'estate1', serviceRequested: true }],
+      consumerSales: [{ id: 'old-consumer', partner: 'vast', segment: 'consumer' }],
+      partnerProfiles: {}
+    },
     role: 'internal',
     getPartner: id => registry.find(partner => partner.id === id),
     save: () => true,
@@ -50,6 +56,68 @@ test('new B2B, B2C and mixed partners persist segment arrays without manufacturi
   assert.equal(JSON.stringify(P.state.records), originalRecords);
   assert.equal(JSON.stringify(P.state.offers), originalOffers);
   assert.equal(P.state.commercial, undefined);
+});
+
+test('property and employee channels persist their own type with no sales segment or manufactured results', () => {
+  const P = fixture();
+  const existingData = JSON.stringify({ records: P.state.records, offers: P.state.offers, moveins: P.state.moveins, consumerSales: P.state.consumerSales });
+  for (const [partnerType, name, audience] of [['property', 'Nytt fastighetsbolag', 'movein'], ['employee', 'Arbetsgivare med personalavtal', 'employee']]) {
+    const result = P.partnerSetup.saveProfile({ name, partnerType, salesAudiences: ['business', 'consumer'] });
+    assert.equal(result.ok, true);
+    assert.equal(P.getPartner(result.id).type, partnerType);
+    assert.equal(P.getPartner(result.id).audience, audience);
+    assert.deepEqual(plain(P.getPartner(result.id).salesAudiences), []);
+    assert.equal(P.partners[result.id], name);
+    assert.equal(P.partnerSetup.canEdit(result.id), true);
+  }
+  assert.equal(JSON.stringify({ records: P.state.records, offers: P.state.offers, moveins: P.state.moveins, consumerSales: P.state.consumerSales }), existingData);
+  assert.equal(P.state.commercial, undefined);
+});
+
+test('explicit sales creation retains all three segment choices and omitted partner type remains compatible', () => {
+  const P = fixture();
+  for (const [name, salesAudiences] of [['Explicit B2B', ['business']], ['Explicit B2C', ['consumer']], ['Explicit both', ['business', 'consumer']]]) {
+    const result = P.partnerSetup.saveProfile({ name, partnerType: 'sales', salesAudiences });
+    assert.equal(result.ok, true);
+    assert.equal(P.getPartner(result.id).type, 'sales');
+    assert.deepEqual(plain(P.getPartner(result.id).salesAudiences), salesAudiences);
+  }
+  const legacyCall = P.partnerSetup.saveProfile({ name: 'Legacy caller', salesAudiences: ['business'] });
+  assert.equal(P.getPartner(legacyCall.id).type, 'sales');
+});
+
+test('all channel types and renamed seed property reload without changing stored customer or service data', () => {
+  const P = fixture();
+  const property = P.partnerSetup.saveProfile({ name: 'Ny fastighet', partnerType: 'property' });
+  const employee = P.partnerSetup.saveProfile({ name: 'Ny arbetsgivare', partnerType: 'employee' });
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Exempelfastigheter Nytt AB' }, 'estate1').ok, true);
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Ny fastighet ändrad' }, property.id).ok, true);
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Ny arbetsgivare ändrad' }, employee.id).ok, true);
+  const data = JSON.stringify({ records: P.state.records, moveins: P.state.moveins, consumerSales: P.state.consumerSales });
+  const reloaded = fixture();
+  reloaded.state.partnerProfiles = H.hydrate(plain(P.state.partnerProfiles), reloaded.partnerRegistry, reloaded.partners);
+  assert.equal(reloaded.getPartner('estate1').name, 'Exempelfastigheter Nytt AB');
+  assert.equal(reloaded.getPartner('estate1').type, 'property');
+  assert.equal(reloaded.getPartner(property.id).name, 'Ny fastighet ändrad');
+  assert.equal(reloaded.getPartner(employee.id).name, 'Ny arbetsgivare ändrad');
+  assert.equal(reloaded.getPartner(employee.id).audience, 'employee');
+  assert.equal(JSON.stringify({ records: reloaded.state.records, moveins: reloaded.state.moveins, consumerSales: reloaded.state.consumerSales }), data);
+});
+
+test('editing never reclassifies existing sales, field, property or employee history', () => {
+  const P = fixture();
+  const employee = P.partnerSetup.saveProfile({ name: 'Arbetsgivare', partnerType: 'employee' });
+  const before = plain(P.state);
+  for (const [id, partnerType] of [['syd', 'property'], ['vast', 'employee'], ['estate1', 'sales'], [employee.id, 'property']]) {
+    const result = P.partnerSetup.saveProfile({ name: 'Försök ändra kanal', partnerType, salesAudiences: ['business'] }, id);
+    assert.equal(result.ok, false);
+    assert.equal(result.field, 'partnerType');
+  }
+  assert.deepEqual(plain(P.state), before);
+  assert.equal(P.getPartner('syd').type, 'sales');
+  assert.equal(P.getPartner('vast').type, 'field');
+  assert.equal(P.getPartner('estate1').type, 'property');
+  assert.equal(P.getPartner(employee.id).type, 'employee');
 });
 
 test('renaming a seeded partner and freeing its former name survives profile insertion order on reload', () => {
@@ -102,6 +170,27 @@ test('storage failure rolls back both new and edited profiles and keeps registry
   assert.equal(P.state.partnerProfiles, previousProfiles);
 });
 
+test('property and employee storage failures preserve existing profiles, containers and source history', () => {
+  const P = fixture();
+  const employee = P.partnerSetup.saveProfile({ name: 'Sparad arbetsgivare', partnerType: 'employee' });
+  const beforeState = JSON.stringify(P.state);
+  const beforeRegistry = JSON.stringify(P.partnerRegistry);
+  const previousProfiles = P.state.partnerProfiles;
+  P.save = () => false;
+  for (const [payload, id] of [
+    [{ name: 'Osparat fastighetsbolag', partnerType: 'property' }, undefined],
+    [{ name: 'Osparat personalavtal', partnerType: 'employee' }, undefined],
+    [{ name: 'Osparad fastighet' }, 'estate1'],
+    [{ name: 'Osparad arbetsgivare' }, employee.id]
+  ]) assert.equal(P.partnerSetup.saveProfile(payload, id).ok, false);
+  assert.equal(P.state.partnerProfiles, previousProfiles);
+  assert.equal(JSON.stringify(P.state), beforeState);
+  assert.equal(JSON.stringify(P.partnerRegistry), beforeRegistry);
+  delete P.state.partnerProfiles;
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Missing profile property', partnerType: 'property' }).ok, false);
+  assert.equal(own(P.state, 'partnerProfiles'), false);
+});
+
 test('reset removes local partner configuration and restores seeded partners in the same shared containers', () => {
   const P = fixture();
   const registry = P.partnerRegistry;
@@ -128,15 +217,65 @@ test('malformed saved profiles cannot convert property partners or add unsupport
   assert.equal(own(P.partners, 'constructor'), false);
 });
 
-test('property partner editing, invalid names, missing segment and partner-view mutations are rejected', () => {
+test('saved channel profiles reject seeded type conversion and normalize non-sales audiences', () => {
   const P = fixture();
-  assert.equal(P.partnerSetup.saveProfile({ name: 'Bostäder', salesAudiences: ['business'] }, 'estate1').ok, false);
+  const input = {
+    syd: { name: 'Omklassificerad Savera', type: 'employee', salesAudiences: [] },
+    vast: { name: 'Omklassificerad Face2face', type: 'property', salesAudiences: [] },
+    estate1: { name: 'Fastighetens nya namn', type: 'property', salesAudiences: ['consumer'], audience: 'consumer' },
+    'new-property': { name: 'Fastighetsexempel', type: 'property', salesAudiences: ['business'] },
+    'new-employee': { name: 'Arbetsgivarexempel', type: 'employee', salesAudiences: ['business', 'consumer'] },
+    'new-wrong': { name: 'Okänd kanal', type: 'affiliate', salesAudiences: ['business'] }
+  };
+  const profiles = H.hydrate(input, P.partnerRegistry, P.partners);
+  assert.deepEqual(Object.keys(profiles).sort(), ['estate1', 'new-employee', 'new-property']);
+  assert.equal(P.getPartner('syd').name, 'Savera');
+  assert.equal(P.getPartner('vast').name, 'Face2face');
+  assert.equal(P.getPartner('estate1').name, 'Fastighetens nya namn');
+  assert.equal(P.getPartner('estate1').audience, 'movein');
+  assert.equal(P.getPartner('new-employee').audience, 'employee');
+  assert.deepEqual(plain(P.getPartner('new-employee').salesAudiences), []);
+  assert.deepEqual(plain(P.getPartner('new-property').salesAudiences), []);
+});
+
+test('duplicate names across channel types are rejected and conflicting stored profiles do not depend on order', () => {
+  const P = fixture();
+  const added = P.partnerSetup.saveProfile({ name: 'Gemensamt namn', partnerType: 'property' });
+  assert.equal(P.partnerSetup.saveProfile({ name: ' gemensamt NAMN ', partnerType: 'employee' }).ok, false);
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Gemensamt namn', partnerType: 'sales', salesAudiences: ['consumer'] }).ok, false);
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Exempelfastigheter Nytt AB' }, 'estate1').ok, true);
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Exempelfastigheter AB' }, added.id).ok, true);
+  const reloaded = fixture();
+  reloaded.state.partnerProfiles = H.hydrate(plain(P.state.partnerProfiles), reloaded.partnerRegistry, reloaded.partners);
+  assert.equal(reloaded.getPartner('estate1').name, 'Exempelfastigheter Nytt AB');
+  assert.equal(reloaded.getPartner(added.id).name, 'Exempelfastigheter AB');
+});
+
+test('property renaming is allowed while invalid names, missing sales segment and partner-view mutations are rejected', () => {
+  const P = fixture();
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Bostäder' }, 'estate1').ok, true);
+  assert.equal(P.getPartner('estate1').name, 'Bostäder');
+  assert.equal(P.getPartner('estate1').type, 'property');
+  assert.deepEqual(plain(P.getPartner('estate1').salesAudiences), []);
   for (const name of ['', '   ', 'x'.repeat(91)]) assert.equal(P.partnerSetup.saveProfile({ name, salesAudiences: ['business'] }).ok, false);
   assert.equal(P.partnerSetup.saveProfile({ name: 'Giltigt namn', salesAudiences: [] }).ok, false);
   P.role = 'partner';
   assert.equal(P.partnerSetup.saveProfile({ name: 'Otillåten demovy', salesAudiences: ['business'] }).ok, false);
   assert.equal(P.partnerSetup.saveProfile({ name: 'Savera', salesAudiences: ['consumer'] }, 'syd').ok, false);
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Bostäder ändrade' }, 'estate1').ok, false);
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Personalavtal', partnerType: 'employee' }).ok, false);
   assert.equal(P.partnerRegistry.length, 3);
+});
+
+test('unknown partner ids and unsupported explicit channel choices do not mutate the registry', () => {
+  const P = fixture();
+  const before = JSON.stringify(P.state);
+  for (const partnerType of ['affiliate', 'field', '', [], {}]) {
+    assert.equal(P.partnerSetup.saveProfile({ name: 'Nytt samarbete', partnerType, salesAudiences: ['business'] }).ok, false);
+  }
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Okänd partner', partnerType: 'property' }, 'does-not-exist').ok, false);
+  assert.equal(P.partnerSetup.canEdit('does-not-exist'), false);
+  assert.equal(JSON.stringify(P.state), before);
 });
 
 function own(object, key) { return Object.prototype.hasOwnProperty.call(object, key); }

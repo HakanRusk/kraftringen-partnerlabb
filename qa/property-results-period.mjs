@@ -22,7 +22,7 @@ function load(demoMode = false, partner = 'estate1') {
     demoMode, role: 'partner', partner, selectedPartnerId: null,
     partnerResultsData: {months: Array.from({length:10}, (_, index) => `2026-${String(index + 1).padStart(2, '0')}`)},
     partnerKickback: {}, e: value => String(value ?? ''), icon: () => '',
-    getPartner: () => ({name: 'Exempelfastigheter AB'}), render: () => {},
+    getPartner: (id = partner) => ['estate1','estate2'].includes(id) ? {id, name: id === 'estate1' ? 'Exempelfastigheter AB' : 'Exempelbo Förvaltning', type: 'property'} : undefined, render: () => {},
     register: (name, route) => { routes[name] = route; }
   };
   const document = {

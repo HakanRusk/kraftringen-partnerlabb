@@ -148,8 +148,10 @@ async def setup_checks(test):
     # Enable both sales audiences for an existing ledger; configuration does not
     # rewrite its historical B2B agreements into consumer sales.
     work_before = await page.evaluate('Portal.workbench.tasks({partnerIds:["syd"],channels:["business"]}).map(task=>task.id)')
+    old_records = await page.evaluate('JSON.stringify(Portal.state.records)')
     await open_partner(test, 'syd')
-    await page.locator('[data-sr-configure]').first.click()
+    await page.locator('[data-go="partner-detail"]').first.click()
+    await page.locator('[data-partner-edit="syd"]').first.click()
     await page.locator('input[name="salesAudience"][value="both"]').check()
     await page.get_by_role('button', name='Spara inställningar', exact=True).click()
     test.good('befintlig partner kan ändras till båda kundsegmenten', await page.evaluate('Portal.getPartner("syd").salesAudiences') == ['business', 'consumer'] and await page.locator('[data-sr-segment="all"]').get_attribute('aria-pressed') == 'true')
@@ -167,11 +169,9 @@ async def setup_checks(test):
     await page.locator('[data-sr-segment="all"]').click()
     test.good('blandad partner erbjuder båda segmenten utan dubblerade avtalsnamn', set(await options(page, '#sr-product')) == set(B2B + B2C) and len(await options(page, '#sr-product')) == len(set(B2B + B2C)))
     work_after = await page.evaluate('Portal.workbench.tasks({partnerIds:["syd"],channels:["business"]}).map(task=>task.id)')
-    test.good('blandad kundsegmentering behåller befintliga företagsuppgifter i arbetslistan', bool(work_before) and work_before == work_after)
+    test.good('blandad kundsegmentering bevarar äldre underlag utan att återöppna pensionerad säljarbetslista', work_before == work_after == [] and await page.evaluate('JSON.stringify(Portal.state.records)') == old_records)
     await test.route('customers')
-    await page.locator('[data-new-customer]').first.click()
-    test.good('intern företagsdialog kan fortsatt kopplas till en partner med båda segmenten', 'syd' in await options(page, '#customer-form select[name="partner"]'))
-    await page.locator('#cancel-customer').click()
+    test.good('äldre intern kunddialog omdirigeras till partneruppföljningen', await page.evaluate('Portal.page') == 'partners' and await page.locator('[data-new-customer]').count() == 0)
 
     for audience in ['business', 'consumer', 'both']:
         await test.partner(ids[audience])
@@ -198,11 +198,10 @@ async def setup_checks(test):
     await test.route('partners')
     literal_row = page.locator(f'.commercial-partner-name[data-commercial-partner="{html_partner}"]')
     test.good('HTML-liknande namn består ordagrant i partnerlistan utan HTML-element', await literal_row.locator('strong').inner_text() == html_name and await literal_row.locator('b').count() == 0)
-    await test.route('customers')
-    await page.locator('[data-new-customer]').first.click()
-    literal_option = page.locator(f'#customer-form select[name="partner"] option[value="{html_partner}"]')
-    test.good('HTML-liknande partnernamn kan väljas som text i företagsdialogen', await literal_option.inner_text() == html_name and await page.locator('#customer-form b').count() == 0)
-    await page.locator('#cancel-customer').click()
+    await test.partner(html_partner)
+    literal_option = page.locator(f'#partner option[value="{html_partner}"]')
+    test.good('HTML-liknande partnernamn kan väljas som vanlig text i partnerarbetsytan', await literal_option.inner_text() == html_name and await page.locator('#partner b').count() == 0)
+    await page.evaluate('Portal.returnInternal()')
     await test.route('partners')
     await page.get_by_role('button', name='Ny partner', exact=True).click()
     for width in [390, 320]:
