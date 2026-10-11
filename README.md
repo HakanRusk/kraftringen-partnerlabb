@@ -1,5 +1,20 @@
 # Kraftringen Partnerportal – frontendprototyp
 
+## Portalens flödesgranskning – publicerad version 29 (11 oktober 2026)
+
+Utbildningens returlänkar bevarar perspektiv, partner och produktsegment.
+Lämnade förmedlingsformulär avbryts före sparning, och nya partners visas
+med eget saknat resultatunderlag. Tangentbordsfokus efter återställning
+och sista Visa fler är rättat; fastighetspartnerns periodval är läsbart
+även vid 320 px. Version 28:s parallella rättningar bevaras.
+
+273 nya riktade kontroller, 919 breda och 160 sammanhängande klick-/layout-
+kontroller passerar lokalt; gemensam integration är verifierad. På den
+faktiskt publicerade versionen passerar 919 breda kontroller utan script-
+eller HTTP-fel. PR #38 är integrerad och native succeeded bekräftar
+version 29 den 11 oktober 2026 kl. 10:40:20 UTC. Full kvittens i WORKLOG.
+Verifieringen använder Chromium och fiktiva data.
+
 ## Tredje felgranskningen – publicerad version 28 (11 oktober 2026)
 
 Snabba bilageåtgärder använder nu filens stabila identifierare. En äldre
