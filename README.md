@@ -1,5 +1,19 @@
 # Kraftringen Partnerportal – frontendprototyp
 
+## Tredje felgranskningen – testad kandidat (11 oktober 2026)
+
+Snabba bilageåtgärder använder nu filens stabila identifierare. En äldre
+ljudredigerings- eller raderingsdialog kan inte skriva över nyare ändringar
+från en annan flik. Giltiga partnerprofiler behåller äldre metadata;
+oläsbart samarbetsunderlag ersätts inte när ett fokusval sparas. Båda
+kursversionerna visar facit bara för uttryckligt kontrollerade svar, och
+kalenderdatum behåller samma dag i olika tidszoner.
+
+135 nya riktade och 916 breda browserkontroller passerar på kandidaten.
+Fullständigt innehåll, filmer och tidigare felrättningar bevaras. Integration
+och faktisk publicering kvitteras efter utförandet i WORKLOG.
+
+
 ## Bekräftad inriktning: resultat och utbildning (2026-10-11)
 
 Källa: Ludwigs direkta förtydligande i uppgiften. Säljpartnernas affärer och nästa aktiviteter hanteras utanför Partnerlabb. Kraftringen följer resultat, Kunder & avtal, Insikter och villkorade scenarier under Partners. Säljpartners använder utbildning och stöd. Detta ersätter äldre mål om aktiv kundregistrering, pipeline, offertarbete och återkopplingsflöden för Savera/Face2face i portalen. Äldre lokala underlag och utkast bevaras; de blir inte resultathistorik. Fastighetsbolagens registrering, fullmaktsbilagor, förmedling och handläggning behåller operativa nästa steg. Ingen ny verksamhetsregel eller integration införs.

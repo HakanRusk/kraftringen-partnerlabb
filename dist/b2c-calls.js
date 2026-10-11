@@ -75,19 +75,26 @@
     request.onsuccess = () => done(request.result?.scope === value.scope && request.result?.partner === value.partner ? request.result : undefined);
   });
   const saveRecord = (record, guard, cancelers) => transaction('readwrite', (store, done) => { store.add(record); done(record); }, guard, cancelers);
-  const updateRecord = (id, value, fields, guard, cancelers) => transaction('readwrite', (store, done) => {
+  const recordConflict = Symbol('record-conflict');
+  const conflictMessage = 'Samtalsexemplet har ändrats i en annan flik. Stäng dialogen och öppna det igen för att arbeta med senaste versionen.';
+  const matchesSnapshot = (row, expected) => ['updatedAt', 'title', 'category', 'note'].every(key => row[key] === expected[key]);
+  const updateRecord = (id, value, fields, guard, cancelers, expected) => transaction('readwrite', (store, done) => {
     const request = store.get(id);
     request.onsuccess = () => {
       const row = request.result;
       if (!row || row.scope !== value.scope || row.partner !== value.partner) { done(undefined); return; }
+      if (!matchesSnapshot(row, expected)) { done(recordConflict); return; }
       const updated = { ...row, ...fields, updatedAt: new Date().toISOString() };
       store.put(updated); done(updated);
     };
   }, guard, cancelers);
-  const deleteRecord = (id, value, guard, cancelers) => transaction('readwrite', (store, done) => {
+  const deleteRecord = (id, value, guard, cancelers, expected) => transaction('readwrite', (store, done) => {
     const request = store.get(id);
     request.onsuccess = () => {
-      if (request.result?.scope === value.scope && request.result?.partner === value.partner) { store.delete(id); done(true); }
+      if (request.result?.scope === value.scope && request.result?.partner === value.partner) {
+        if (!matchesSnapshot(request.result, expected)) { done(recordConflict); return; }
+        store.delete(id); done(true);
+      }
       else done(false);
     };
   }, guard, cancelers);
@@ -252,8 +259,9 @@
       const metadata = { title: form.elements.title.value.trim(), category: form.elements.category.value, note: form.elements.note.value.trim() };
       try {
         const now = new Date().toISOString();
-        const saved = row ? await updateRecord(row.id, value, metadata, () => sessionAlive(session), session.cancelers) : await saveRecord({ id: crypto.randomUUID(), ...value, ...metadata, ...candidate, createdAt: now, updatedAt: now }, () => sessionAlive(session), session.cancelers);
+        const saved = row ? await updateRecord(row.id, value, metadata, () => sessionAlive(session), session.cancelers, row) : await saveRecord({ id: crypto.randomUUID(), ...value, ...metadata, ...candidate, createdAt: now, updatedAt: now }, () => sessionAlive(session), session.cancelers);
         if (!sessionAlive(session)) return;
+        if (saved === recordConflict) { showError(session, conflictMessage); return; }
         if (!saved) { showError(session, 'Samtalet finns inte längre. Stäng dialogen och uppdatera listan.'); return; }
         await finishMutation(session, row ? 'Samtalsexemplet är uppdaterat i den här webbläsaren.' : 'Samtalsexemplet är sparat i den här webbläsaren.');
       } catch (error) { showError(session, storageMessage(error)); }
@@ -293,8 +301,9 @@
       if (!sessionAlive(session) || button.disabled) return;
       button.disabled = true; hideError(session);
       try {
-        const deleted = await deleteRecord(id, value, () => sessionAlive(session), session.cancelers);
+        const deleted = await deleteRecord(id, value, () => sessionAlive(session), session.cancelers, row);
         if (!sessionAlive(session)) return;
+        if (deleted === recordConflict) { showError(session, conflictMessage); return; }
         await finishMutation(session, deleted ? 'Samtalsexemplet är borttaget.' : 'Samtalet var redan borttaget. Listan är uppdaterad.');
       } catch (error) { showError(session, storageMessage(error)); }
       finally { if (sessionAlive(session)) button.disabled = false; }
