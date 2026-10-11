@@ -176,7 +176,7 @@
   }
   function quizAnswer(courseId, question) {
     const saved = quizAnswers(courseId)[question.id];
-    return saved && Number.isInteger(saved.selectedIndex) && saved.selectedIndex >= 0 && saved.selectedIndex < question.options.length ? saved : null;
+    return saved && Number.isInteger(saved.selectedIndex) && saved.selectedIndex >= 0 && saved.selectedIndex < question.options.length ? { ...saved, checked: saved.checked === true } : null;
   }
   function quizFeedback(question, answer) {
     if (!answer?.checked) return '';

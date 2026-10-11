@@ -184,18 +184,23 @@
         if (feedback?.isConnected && element) element.textContent = exists ? 'Sparad i denna webbläsare' : 'Fil saknas · bifoga igen';
       });
     });
-    document.querySelectorAll('[data-attachment-download]').forEach(button => button.onclick = async () => {
+    document.querySelectorAll('[data-attachment-download]').forEach(button => {
+      const fileId = row.authorityFiles[Number(button.dataset.attachmentDownload)]?.id;
+      button.onclick = async () => {
       if (findVisible(row.id) !== row) return;
-      const meta = row.authorityFiles[Number(button.dataset.attachmentDownload)];
-      if (!meta) return;
+      const meta = row.authorityFiles.find(file => file.id === fileId);
+      if (!meta) { message('Bilagan är redan bortkopplad från ärendet. Öppna ärendet igen för att se aktuella filer.', true); return; }
       button.disabled = true;
       try { await P.moveinAttachments.download(meta); message('Exempelfilen är hämtad från denna webbläsare.'); }
       catch (failure) { message(failure.message || 'Bilagan kunde inte hämtas.', true); }
       finally { if (button.isConnected) button.disabled = false; }
+      };
     });
-    document.querySelectorAll('[data-attachment-remove]').forEach(button => button.onclick = async () => {
+    document.querySelectorAll('[data-attachment-remove]').forEach(button => {
+      const fileId = row.authorityFiles[Number(button.dataset.attachmentRemove)]?.id;
+      button.onclick = async () => {
       if (!mayAttach(row) || findVisible(row.id) !== row) return;
-      const index = Number(button.dataset.attachmentRemove), meta = row.authorityFiles[index];
+      const index = row.authorityFiles.findIndex(file => file.id === fileId), meta = row.authorityFiles[index];
       if (!meta || !confirm('Ta bort fullmaktsbilagan från detta testärende?')) return;
       const previous = structuredClone(row);
       row.authorityFiles.splice(index, 1); row.updatedAt = now(); row.events.unshift(event('Fastighetsbolaget tog bort fullmaktsbilagan ' + meta.name + ' i test.', 'shared', 'Fastighetsbolaget · demo'));
@@ -215,6 +220,7 @@
         }
       }
       finally { if (button.isConnected) button.disabled = false; }
+      };
     });
     const picker = qs('#movein-attachment-files');
     if (picker) picker.onchange = async () => {

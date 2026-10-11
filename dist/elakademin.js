@@ -190,7 +190,7 @@
   }
   function getAnswer(key) {
     const answer = state.answers[key];
-    return answer && typeof answer === 'object' && !Array.isArray(answer) ? answer : {};
+    return answer && typeof answer === 'object' && !Array.isArray(answer) ? { ...answer, checked: answer.checked === true } : {};
   }
   function questionResult(question, answer) {
     if (question.type === 'short') return 'manual';

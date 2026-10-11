@@ -1696,3 +1696,62 @@ https://kraftringen-partnerlabb.rosen123.chatgpt.site/?workspace=estate1#propert
 Denna efterhandskvittens ändrar endast README, BACKLOG, WORKLOG och
 GITHUB-STATUS. dist/ och hostingmanifestet är identiska med publicerad
 revision; ingen ny deployment följer av kvittens-PR:en.
+
+
+### FELGRANSKNING-03 · Tredje rundan på publicerad version 27
+
+Direktuppdrag: Ludwig ”Kör en runda till”. Färsk GitHub-main är
+`6115dfa41edc5fb01b65742d23dbe84c0b7c20f8`, inklusive v27:s kvittens-PR #35.
+Sites-källan `5794d27122ff0b6be7c99527d2864ceddc9b6987` har identiska
+runtimefiler med denna bas. Egen gren: `codex/audit-round3-20261011`.
+Senaste AGENTS, pilotunderlag, arbetsrutin och öppna PR:er kontrollerade.
+Samarbetssidan behåller inflyttningens nya prioritering och alla sex idéer.
+
+Sex nya felklasser har browserreproducerats och rättats:
+
+1. Under fördröjd radering av A flyttades arrayindex för B/C. Fortfarande
+   synliga B-knappar kunde hämta eller radera C. Händelser binds nu till
+   bilagans stabila ID; en bortkopplad fil får korrekt felmeddelande.
+2. En gammal ljuddialog kunde skriva över eller radera en annan fliks
+   nyare metadata i IndexedDB. Redigering/radering jämför nu den öppnade
+   versionens tidsstämpel och alla tre redigerbara fält i samma native
+   skrivtransaktion. Konflikt behåller nyare data och användarens dialog.
+3. Normalisering och namnredigering tappade extra fält i giltiga sparade
+   partnerprofiler; ett supportbesök kunde permanenta förlusten. Fälten
+   bevaras, men endast validerad identitet/typ/segment styr visningen.
+4. Fokusval på Ert samarbete ersatte sparad root/partnerpost av annan typ
+   eller oläsbart fokusfält. Mutation avvisas nu med tydligt besked och
+   bevarar exakt tidigare payload; giltig initiering och andra fält består.
+5. `checked: 'false'` öppnade facit och räknades som kontrollerat i båda
+   kursversionerna. Bara boolean true gäller; svar, anteckningar,
+   bokmärken och klarmarkering bevaras.
+6. Datum utan klockslag, exempelvis 2026-10-12, visades som 11 oktober i
+   västliga tidszoner. Kalenderdagar formateras nu utan förskjutning;
+   tidsstämplar för aktiviteter följer fortfarande läsarens lokala tid.
+   Omöjliga kalenderdatum behandlas som saknade.
+
+Ny verifiering på fryst runtime: datum/lagring 22/22, navigation/samarbete
+19/19, bilagor/Excelgränser/avbrott 32/32, profiler 22/22, utbildning/ljud
+40/40; totalt **135/135**, inga scriptfel. De fem nya qa/round3-sviterna
+använder isolerade fiktiva browserdata och syntetiskt ljud. Tvåflikstestet
+använder riktiga native transaktioner och identiska tidsstämplar; lagrade
+ljudbytes jämförs med SHA-256. Förebevis finns i /workspace/bug-audit3.
+Excelgranskningen omfattar 1900/1904, numeriska/formaterade datum,
+skottår, 2000/2100-gränser och partnerbyte; ingen ytterligare datumbugg
+hittades där. Läsande Samarbete-granskning omfattade 12 perspektiv/layouts.
+
+Bred Chromiumkontroll passerar **916/916**: 288 vykombinationer vid
+320/390/1440 px och 29 interna länkdestinationer, inga script-/HTTP-fel.
+Relevanta befintliga regressioner passerar: samarbete 172, navigation 30,
+inflyttning 112, föregående bilagekontroller 25, utbildning 27, B2C-ljud 69,
+rapporter 47, flikkonflikter 28 samt partnertyper 115. Alla åtta Node-sviter,
+JS-syntax, Python-syntax och diffkontroll passerar. Nya utbildningstestets
+fixture korrigerades för kapitelvyns beforeunload-sparning och rätt
+formulärselektor; slutkörningen 40/40 är godkänd, utan ny runtimeändring.
+
+Endast sju runtime-JS-filer ändras. Kursdata/material/media, ekonomiska
+fixtures, hostingmanifest, datanycklar, normal-/demoisolering och Sites-
+custom-policy revision 4 bevaras. Inga nya backend-/affärsregler, riktiga
+kunduppgifter, åtkomst- eller schemaändringar. Andra webbläsarmotorer och
+verkliga kundutfall påstås inte verifierade. Integration och native
+publicering kvitteras först efter faktisk framgång och livekontroll.
