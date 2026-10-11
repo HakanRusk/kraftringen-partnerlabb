@@ -1857,3 +1857,25 @@ Chromium och fiktiv lokal data är verifieringsgränsen; inga påståenden om
 andra browsermotorer eller verklig produktion. Efterhandskvittensen ändrar
 endast README, BACKLOG, WORKLOG och GITHUB-STATUS. dist/ och hosting är
 byteidentiska med publicerad v28, så ingen extra deployment behövs.
+
+### PORTAL-FLODE-01 · Gemensam integration verifierad
+
+PR #36 och dess kvittens-PR #37 har integrerats med bevarad historik.
+Endast WORKLOG-tilläggen i första mergen krävde konfliktlösning; båda
+granskningarnas avsnitt bevaras. Gemensam runtime verifierades på ce74f88.
+Kvittensmergen b3d1b928 ändrar endast dokumentation; dist/ och hosting är
+byteidentiska med den testade integrationen.
+
+Efter integrationen passerar bred kontroll 919/919 och klick/fokus/layout
+160/160; inga script- eller HTTP-fel. Navigation/lagring/profiler/datum
+161/161, inflyttningsguard/bilage-ID/Excel/service 136/136 och utbildnings-
+retur/svarnormalisering/ljud/fullkurs 355/355 passerar. Alla åtta Node-
+sviter och JavaScript-syntax är gröna. Oberoende kodgranskning bekräftar
+att båda rundornas rättningar består, utan blockerande fynd. Artefakter
+finns i /workspace/portal-audit3/*/integration och static-integration.json.
+
+Färsk Sites-källöppning verifierar exakt v28-källa ccd1988 och samma
+custom-policy revision 4. Nästa överföring sker fast-forward från verifierad
+GitHub-main. Faktisk PR, käll-SHA, sparad version, lyckad deployment och
+hosted slutkontroll dokumenteras efter utförandet. Detta uppdrag ändrar
+inte agentprompt/schema, åtkomst, kunddata eller affärs-/ersättningsregler.
