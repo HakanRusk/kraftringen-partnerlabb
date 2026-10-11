@@ -1640,3 +1640,24 @@ ny deployment behövs. All verifiering använder Chromium och isolerade
 fiktiva browserdata. Andra webbläsarmotorer, verkliga kundutfall och
 produktionsbehörighet påstås inte verifierade. Detaljer i föregående
 avsnitt och artefakter /workspace/bug-audit2.
+
+### FASTIGHET-FORSLAG-02 · Integration med andra felgranskningen
+
+Under slutkontrollen anlände PR #32 och dess kvittens-PR #33. Båda togs in
+med bibehållen historik från main
+`ed5af0988104f6c74220ceac93679eeb89070cd9`. Endast parallella tillägg i
+WORKLOG krävde konfliktlösning; båda avsnitten bevarades. Samarbetsförslagets
+appdelta är fortsatt enbart property-partnership.js/css. Version 26:s
+flikkonflikt-, navigations-, bilage- och utbildningsrättningar bevaras.
+
+Den integrerade inflyttningsservicen passerade åter 67/67 kontroller.
+Samarbetstestet stoppade först när dess assertion läste returfokus före
+det köade native close-eventet efter Escape. En uttrycklig väntan på samma
+returfokus som layouttestet använder rättar QA-synkroniseringen; produktens
+dialogbeteende eller kontrollens krav ändras inte. Den fullständiga
+integrationskörningen passerade därefter 172/172 samarbetskontroller med
+javascript_errors: []; inflyttningen 67/67. Ingen produktändring behövdes
+för integrationen. Loggar finns separat i
+/tmp/partnerlabb-service-priority-integration-partnership.log och
+/tmp/partnerlabb-service-priority-integration-intake.log. Faktisk
+GitHub-PR och native publicering kvitteras efter utförandet.

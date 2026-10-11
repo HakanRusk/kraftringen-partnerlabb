@@ -234,6 +234,8 @@ async def priority_checks(test):
     await page.locator('[data-pp-detail="capacity"]').click()
     await page.locator('#portal-dialog [data-pp-focus="capacity"]').click()
     await page.keyboard.press('Escape')
+    # Native dialog close restores focus in its queued close event.
+    await page.wait_for_function('document.activeElement?.dataset.ppDetail==="capacity"')
     test.good('fokusändring i dialogen behåller öppna fler idéer och återför fokus', await more.evaluate('(node)=>node.open') and await focus(page, new) == [] and await page.locator('[data-pp-detail="capacity"]').evaluate('(node)=>node===document.activeElement'))
     await choose(page, 'handover')
     await page.locator('[data-pp-remove="handover"]').click()
