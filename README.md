@@ -60,6 +60,9 @@ kundärenden i drift; frontendens data är fortfarande lokala och fiktiva.
 
 ## Förslag: ett bredare fastighetssamarbete
 
+Publicerat som **version 24** via PR #28. Förslaget är granskat på dator
+och mobil; faktisk källrevision och publiceringskvittens finns i WORKLOG.
+
 Ludwigs senaste uppdrag är att visualisera fastighetsbolaget både som
 partner för inflyttningar och som möjlig företagskund för **fastighetselen**.
 Öppna **Partners → vald fastighetspartner → Se samarbetsförslaget**, eller välj
