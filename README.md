@@ -1,6 +1,6 @@
 # Kraftringen Partnerportal – frontendprototyp
 
-## Tredje felgranskningen – testad kandidat (11 oktober 2026)
+## Tredje felgranskningen – publicerad version 28 (11 oktober 2026)
 
 Snabba bilageåtgärder använder nu filens stabila identifierare. En äldre
 ljudredigerings- eller raderingsdialog kan inte skriva över nyare ändringar
@@ -9,9 +9,10 @@ oläsbart samarbetsunderlag ersätts inte när ett fokusval sparas. Båda
 kursversionerna visar facit bara för uttryckligt kontrollerade svar, och
 kalenderdatum behåller samma dag i olika tidszoner.
 
-135 nya riktade och 916 breda browserkontroller passerar på kandidaten.
-Fullständigt innehåll, filmer och tidigare felrättningar bevaras. Integration
-och faktisk publicering kvitteras efter utförandet i WORKLOG.
+135 nya riktade, 916 breda och 102 medie-/material-/åtkomstkontroller passerar
+på den faktiskt publicerade versionen. PR #36 är integrerad och version 28
+har native succeeded-kvittens 10:32:21 UTC. Fullständigt innehåll, filmer
+och tidigare felrättningar bevaras. Full kvittens finns i WORKLOG.
 
 
 ## Bekräftad inriktning: resultat och utbildning (2026-10-11)

@@ -1817,3 +1817,43 @@ custom-policy revision 4 bevaras. Inga nya backend-/affärsregler, riktiga
 kunduppgifter, åtkomst- eller schemaändringar. Andra webbläsarmotorer och
 verkliga kundutfall påstås inte verifierade. Integration och native
 publicering kvitteras först efter faktisk framgång och livekontroll.
+
+### FELGRANSKNING-03 · Integrerad och verifierad publicering v28
+
+PR #36 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/36
+är integrerad från kandidat `d8cdd866f1b3251a9fee8a895d5e4b0312aaaaf0`.
+Exakt GitHub-main och publicerad Sites-källa:
+`ccd1988f4db4268baf72aa9b45c2a6c012a5a6e4`. Kandidat och merge har samma
+testade träd `eb4f17c7a33220619f5d26a73a00dc0bd432c25f`; dist-träd
+`930429588ad2095e485478ef5bdfc19ae3be56bc`.
+Sites-källan överfördes fast-forward från v27 med bevarad historik.
+Arkivet från samma pushade revision innehåller bara hostingmanifest och dist.
+
+Native version **28**:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_9a16b8e205b081919014a832bc092750`.
+Deployment `appgdep_6acb65a3ab4c8191bc37cbb1b4899ed9` bekräftade
+**succeeded** 2026-10-11 **10:32:21.514183 UTC** på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Färsk metadata bekräftar version 28 och exakt oförändrad custom-policy,
+revision 4. Ingen Site-, schema-, agent- eller åtkomständring.
+
+Verifierat på den faktiskt publicerade versionen, i nya browserkontexter:
+
+- Alla fem nya riktade sviter: 22 datum, 19 navigation/samarbete,
+  32 bilagor/Excel/avbrott, 22 profiler och 40 utbildning/ljud. **135/135**.
+  Även tvåflikars ljudkonflikter med samma tidsstämpel och verkliga
+  native transaktioner passerar på portalens publicerade origin.
+- Bred granskning **916/916**: 288 vykombinationer i 320/390/1440 px,
+  29 interna länkdestinationer, inga script- eller HTTP-fel.
+- Medier/material/åtkomst **102/102**: alla 18 kapitel och intro har
+  faktisk metadata och svensk textning; representativ uppspelning/sökning,
+  fyra oförändrade materialhämtningar och skyddad anonym åtkomst passerar.
+
+Alla livekontroller har errors[]. Artefakter: /workspace/bug-audit3/hosted-*,
+surface/hosted och media. Browseråtkomst använder en minneshållen bearer
+som bara skickas till portalens origin; externa medier får ingen sådan
+header. Inga credentials läggs i källkod, argv eller rapporter.
+Chromium och fiktiv lokal data är verifieringsgränsen; inga påståenden om
+andra browsermotorer eller verklig produktion. Efterhandskvittensen ändrar
+endast README, BACKLOG, WORKLOG och GITHUB-STATUS. dist/ och hosting är
+byteidentiska med publicerad v28, så ingen extra deployment behövs.
