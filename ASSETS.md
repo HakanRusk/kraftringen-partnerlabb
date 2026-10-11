@@ -1,5 +1,13 @@
 # Bildkällor
 
+## Appikon
+
+`dist/assets/app-icon-180.png`, `app-icon-192.png` och `app-icon-512.png`
+bygger på portalens befintliga SVG-favicon: två cirklar i petrol/vitt på
+marinblå bakgrund. Det är samma prototypillustration, inte en ny officiell
+Kraftringen-logotyp. Återskapa med `python tools/build-app-icons.py` (Pillow).
+Bakgrunden är ogenomskinlig och motivet ryms inom maskable-ikonens säkra yta.
+
 ## Excel-import
 
 `dist/vendor/exceljs-4.4.0.min.js` är ExcelJS 4.4.0, hämtad den 10 oktober

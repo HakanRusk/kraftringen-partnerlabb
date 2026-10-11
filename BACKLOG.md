@@ -1,5 +1,16 @@
 # Prioriterad utvecklingskö
 
+## APP-01 · Partnerlabb på hemskärmen (11 oktober 2026)
+
+Direktuppdrag: ”Gör så att man kan göra denna till en app”. Kandidat på
+`codex/partnerlabb-install-app`: gemensamt webbappmanifest, appikoner och
+menyvalet Lägg till som app. iPhone-guide och valfri native installation
+för webbläsare som erbjuder den. Säljpartnerns fyra stora val består.
+Ingen offlinecache eller dataflytt; privat åtkomst och alla dataflöden består.
+Syntetiskt installationstest och befintliga resultat-/självservicesviter
+passerar. Fysisk telefoninstallation och browserlayout återstår.
+Integration och publicering kvitteras efter faktiskt utförande i WORKLOG.
+
 ## Tredje felgranskningen – 11 oktober 2026
 
 Ludwigs senaste ”Kör en runda till” omfattar sex nya reproducerade

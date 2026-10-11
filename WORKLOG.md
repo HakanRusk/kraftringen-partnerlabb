@@ -1985,3 +1985,38 @@ Version 31: `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_fc89f8cb470c81919c
 Deployment `appgdep_6acba52acb688191b82cebbe02881196` bekräftar succeeded
 2026-10-11 15:03:22 UTC på https://kraftringen-partnerlabb.rosen123.chatgpt.site.
 Denna efterhandskvittens ändrar endast dokumentation; dist/ är oförändrad.
+
+## 2026-10-11 · APP-01 · Partnerlabb som installerbar webbapp
+
+Ludwigs direktuppdrag: ”Gör så att man kan göra denna till en app”. Egen
+Codex-gren `codex/partnerlabb-install-app`, bas
+`c98c60044caf9cc21fab08d888b4fc47dfe7e835`. Inga öppna PR:er vid start.
+Sites version 31 och källa `c56f80a0e81ffdf3b7c0cea64d31f4a89e3f1466`
+är återlästa; GitHub innehåller dess oförändrade runtime och kvittens.
+
+Manifest med stabil identitet, portalrot som start/scope, standalone-visning,
+192/512-ikoner och iPhone-ikon 180 px. Alla tre HTML-ingångar refererar
+samma manifest med credentials för befintlig privat åtkomst. Appikonen
+återanvänder portalens befintliga cirkelmotiv. Installation nås i sidomenyn;
+de fyra stora säljpartnervalen och deras destinationer ändras inte.
+iPhone/iPad får Safari-steg; Android/dator får relevanta browsersteg samt
+native installation när beforeinstallprompt faktiskt finns. Ingen automatisk
+prompt, falsk klarmarkering efter accepterad dialog eller lagringsändring.
+Appvyn döljer installationsvalet. Sena svar kan inte skriva i en ny dialog.
+
+Ingen service worker, offlinecache, App Store-publicering, backend eller
+ny autentisering. Internet och befintlig Sites-åtkomst behövs. Guiden anger
+att lokal data kan skilja mellan app och webbläsare; ingen överföring utlovas.
+
+Verifierat: `node --check dist/install-app.js`, `node qa/install-app.mjs`,
+`node qa/results-only.mjs`, `node qa/partner-self-service.mjs` och
+`git diff --check`. PNG-mått, manifestlänkar, plattformsinstruktioner,
+accepterad/avbruten/misslyckad installation, dubbelklick, appvyläge och sent
+svar ingår i det nya syntetiska testet. Ikonen är visuellt kontrollerad.
+Miljön saknar control-browser; ingen browser eller fysisk iPhone-installation
+påstås verifierad. Ingen ny granskning av orelaterade flöden påstås.
+
+Teknisk grund kontrollerad 11 oktober 2026:
+https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable
+och https://support.apple.com/sv-se/guide/iphone/iphea86e5236/ios.
+Faktisk PR, merge och lyckad publicering kvitteras efter utförandet.
