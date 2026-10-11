@@ -67,6 +67,12 @@
   const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
   const plain = value => value !== null && typeof value === 'object' && !Array.isArray(value) && [Object.prototype, null].includes(Object.getPrototypeOf(value));
   let detailReturnTarget = null;
+  const moreOpen = new Map();
+  const moreKey = id => `${P.demoMode ? 'demo' : 'normal'}:${id}`;
+  function rememberMore() {
+    const section = document.querySelector('.property-partnership-page [data-pp-more]');
+    if (section?.dataset.ppMoreKey) moreOpen.set(section.dataset.ppMoreKey, section.open);
+  }
   const detailDialog = document.querySelector('#portal-dialog');
   detailDialog?.addEventListener('close', () => {
     // A queued close event can arrive after the next detail has already opened.
@@ -109,6 +115,7 @@
     return `<button type="button" class="btn ${selected ? 'pp-focus-selected' : dialog ? 'btn-primary' : 'btn-secondary'}" data-pp-focus="${item.id}" aria-pressed="${selected}">${icon(selected ? 'check' : 'plus')} ${selected ? 'Valt som fokus' : 'Välj som fokus'}</button>`;
   }
   function changeFocus(id, ideaId, selected, button) {
+    rememberMore();
     if (!setFocus(id, ideaId, selected)) return;
     const inDialog = !!button?.closest('#portal-dialog');
     if (inDialog) {
@@ -119,61 +126,82 @@
       replacement?.focus();
     }
     P.render();
-    if (!inDialog) document.querySelector(`[data-pp-focus="${ideaId}"]`)?.focus();
+    if (!inDialog) {
+      const removal = button?.hasAttribute('data-pp-remove');
+      const candidate = removal
+        ? document.querySelector('.pp-focus-summary [data-pp-remove]') || document.querySelector('#pp-focus-title')
+        : document.querySelector(`.property-partnership-page [data-pp-focus="${ideaId}"]`);
+      (candidate?.getClientRects().length ? candidate : document.querySelector('#pp-focus-title'))?.focus();
+    }
     P.toast(selected ? 'Fokus sparat i den här arbetsytan. Ingen beställning har skickats.' : 'Förslaget är borttaget från ert fokus.');
   }
   function showDetail(id, ideaId, opener) {
     const item = ideas.find(value => value.id === ideaId);
     if (!item || current()?.id !== id) return;
-    detailReturnTarget = { partnerId: id, selector: `${opener?.closest('.pp-property-electricity') ? '.pp-property-electricity' : '.pp-idea-grid'} [data-pp-detail="${ideaId}"]` };
+    detailReturnTarget = { partnerId: id, selector: `.property-partnership-page [data-pp-detail="${ideaId}"]` };
     P.openDialog(item.title, `<div class="pp-detail-dialog"><div class="pp-detail-intro"><span class="pp-icon">${icon(item.icon)}</span><div><span class="pp-eyebrow">FÖRSLAG TILL SAMARBETE</span><p>${e(item.benefit)}</p></div></div><div class="pp-detail-section"><h3>Behovet vi vill hjälpa till med</h3><p>${e(item.situation)}</p></div><div class="pp-detail-section"><h3>Så skulle vi kunna hjälpa er</h3><p>${e(item.proposal)}</p></div><div class="pp-detail-section pp-detail-first"><h3>Ett första underlag</h3><p>${e(item.first)}</p></div><div class="pp-detail-actions">${focusButton(item, getFocus(id).includes(ideaId), true)}<span>Ett fokus för diskussion, ingen beställning.</span></div></div>`, () => {
       const button = document.querySelector('#portal-dialog [data-pp-focus]');
       button?.addEventListener('click', () => changeFocus(id, ideaId, !getFocus(id).includes(ideaId), button));
     });
   }
   function focusSummary(focus) {
-    return `<section class="pp-focus-summary" aria-labelledby="pp-focus-title"><div class="pp-focus-heading"><span class="pp-icon">${icon('target')}</span><div><h2 id="pp-focus-title">Det här vill vi utforska tillsammans</h2><p>${focus.length ? 'Era val ger ett konkret fokus för nästa samtal.' : 'Välj ett förslag nedan som är relevant för er.'}</p></div>${focus.length ? `<span class="pp-focus-count">${focus.length} valda</span>` : ''}</div>${focus.length ? `<div class="pp-focus-chips">${ideas.filter(item => focus.includes(item.id)).map(item => `<span class="pp-focus-chip"><span>${e(item.title)}</span><button type="button" data-pp-remove="${item.id}" aria-label="Ta bort ${e(item.title)} från ert fokus">${icon('close')}</button></span>`).join('')}</div><p class="pp-local-note">Valen sparas lokalt i den här arbetsytan. De är underlag för diskussion och skickar ingen beställning.</p>` : ''}</section>`;
+    return `<section class="pp-focus-summary" aria-labelledby="pp-focus-title"><div class="pp-focus-heading"><span class="pp-icon">${icon('target')}</span><div><h2 id="pp-focus-title" tabindex="-1">Det här vill vi utforska tillsammans</h2><p>${focus.length ? 'Era val ger ett konkret fokus för nästa samtal.' : 'Markera ett förslag som är relevant för er.'}</p></div>${focus.length ? `<span class="pp-focus-count">${focus.length} valda</span>` : ''}</div>${focus.length ? `<div class="pp-focus-chips">${ideas.filter(item => focus.includes(item.id)).map(item => `<span class="pp-focus-chip"><span>${e(item.title)}</span><button type="button" data-pp-remove="${item.id}" aria-label="Ta bort ${e(item.title)} från ert fokus">${icon('close')}</button></span>`).join('')}</div><p class="pp-local-note">Valen sparas lokalt i den här arbetsytan. De är underlag för diskussion och skickar ingen beställning.</p>` : ''}</section>`;
   }
-  function foundations(partner) {
+  function ideaActions(item, focus) {
+    return `<div class="pp-card-actions"><button type="button" class="text-button" data-pp-detail="${item.id}" aria-label="Läs förslaget: ${e(item.title)}">Läs förslaget ${icon('arrow')}</button>${focusButton(item, focus.includes(item.id))}</div>`;
+  }
+  function primaryService() {
+    return `<section class="pp-primary-service" aria-labelledby="pp-primary-title"><div class="pp-hero"><div class="pp-hero-copy"><span class="pp-hero-kicker">INFLYTTNINGSSERVICE</span><h2 id="pp-primary-title">Ni ordnar inflyttningen.<br>Vi hjälper till med elen.</h2><p>Lämna inflyttningsunderlag och fullmakter på ett ställe. Följ sedan hur Kraftringen tar ärendet vidare.</p><div class="pp-intake-actions"><button type="button" class="btn pp-hero-cta" data-pp-intake="import">${icon('file')} Ladda upp Excel</button><button type="button" class="btn pp-hero-manual" data-pp-intake="manual">${icon('edit')} Registrera manuellt</button></div><span class="pp-hero-note">För flera inflyttningar eller ett enskilt underlag.</span></div><div class="pp-hero-art" aria-hidden="true"><span class="pp-art-orbit"></span><div class="pp-building pp-building-back"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pp-building pp-building-front"><div class="pp-building-roof"></div><i></i><i></i><i></i><i></i><i></i><i></i><span></span></div><span class="pp-art-node pp-art-tenant">${icon('home')} En bra start i nya hemmet</span><div class="pp-art-ground"></div></div></div><div class="pp-service-bottom"><ol class="pp-service-steps"><li><span class="pp-step-number">1</span><div><strong>Samla underlaget</strong><p>Importera Excel eller fyll i manuellt. Bifoga befintliga fullmakter per hyresgäst.</p></div></li><li><span class="pp-step-number">2</span><div><strong>Granska och förmedla</strong><p>Kontrollera uppgifterna och välj att förmedla ett komplett underlag till Kraftringen.</p></div></li><li><span class="pp-step-number">3</span><div><strong>Följ ärendet</strong><p>Se när Kraftringen tar över, om något saknas och när återkoppling finns.</p></div></li></ol><div class="pp-service-footer"><span>${icon('users')} Fastighetsbolaget sköter allt i portalen. Hyresgästen har inga aktiva steg här.</span><button type="button" class="text-button" data-pp-workspace="property-registrations">Följ era inflyttningsärenden ${icon('arrow')}</button></div></div></section>`;
+  }
+  function tenantSupport(focus) {
+    const item = ideas[0];
+    return `<section class="pp-tenant-support pp-partner-benefit" aria-labelledby="pp-support-title"><div class="pp-benefit-top"><span class="pp-icon">${icon(item.icon)}</span><span class="pp-label pp-label-proposal">FÖRSLAG ATT UTFORSKA</span></div><span class="pp-eyebrow">MER TID FÖR UTHYRNING</span><h2 id="pp-support-title">${e(item.title)}</h2><p>Gör det enkelt för uthyraren att visa hyresgästen rätt när en elfråga dyker upp.</p><div class="pp-support-example"><span>När hyresgästen frågar</span><strong>”Vem hjälper mig med mitt elavtal?”</strong><p>En kort vägledning kan tydliggöra vilka frågor Kraftringen hanterar och vilka som hör till fastighetsbolaget eller elnätsbolaget.</p></div><p class="pp-scope-note">Kontaktvägar, ansvar och omfattning behöver vi utforma tillsammans.</p>${ideaActions(item, focus)}</section>`;
+  }
+  function propertyElectricity(partner, focus) {
     const propertySettings = P.state.propertySettings;
     const settings = plain(propertySettings) && own(propertySettings, partner.id) && plain(propertySettings[partner.id]) ? propertySettings[partner.id] : null;
     const properties = settings && Array.isArray(settings.properties) ? settings.properties.filter(value => typeof value === 'string' && value.trim()).slice(0, 100) : [];
-    return `<section class="pp-foundations" aria-labelledby="pp-foundations-title"><div class="pp-section-heading"><div><span class="pp-eyebrow">TVÅ DELAR I SAMARBETET</span><h2 id="pp-foundations-title">Hyresgästernas el. Och fastighetens egen.</h2></div><p>Samlat på samma plats, med egna avtal och resultat.</p></div><div class="pp-foundation-grid"><article class="pp-foundation-card pp-movein"><div class="pp-foundation-top"><span class="pp-icon">${icon('users')}</span><span class="pp-label">INFÖR INFLYTTNING</span></div><h3>Inflyttningsservice</h3><p>Ni samlar underlag och fullmakter. Kraftringen hjälper till med elen och återkopplar till er.</p><div class="pp-movein-flow"><span>Er inflyttningslista</span>${icon('arrow')}<span>Kraftringens hantering</span></div><div class="pp-foundation-bottom"><span>Hyresgästernas elavtal och er kickback följs separat.</span><button type="button" class="btn btn-primary" data-pp-movein>Öppna inflyttningsservice ${icon('arrow')}</button></div></article><article class="pp-foundation-card pp-property-electricity"><div class="pp-foundation-top"><span class="pp-icon">${icon('building')}</span><span class="pp-label pp-label-proposal">AVTALSFÖRSLAG</span></div><h3>Fastighetsel i samma samarbete</h3><p>Inkludera ett elavtal för er egen fastighetsel: till exempel trapphus, hissar, ventilation och tvättstugor.</p><dl class="pp-contract-fields"><div><dt>Elavtal</dt><dd data-pp-contract-missing>—</dd></div><div><dt>Anläggningar</dt><dd data-pp-contract-missing>—</dd></div><div><dt>Avtalsperiod</dt><dd data-pp-contract-missing>—</dd></div></dl><div class="pp-foundation-bottom"><span>Underlag saknas för fastighetselavtalet. ${properties.length ? `${properties.length} fastigheter finns i arbetsytan; avtalsomfattningen behöver fastställas.` : 'Fastigheter och avtalsomfattning behöver fastställas.'}</span><button type="button" class="text-button" data-pp-detail="wasted-energy">Utforska möjligheterna med fastighetselen ${icon('arrow')}</button></div></article></div></section>`;
+    const item = ideas[1];
+    return `<section class="pp-property-electricity pp-partner-benefit" aria-labelledby="pp-electricity-title"><div class="pp-benefit-top"><span class="pp-icon">${icon('building')}</span><span class="pp-label pp-label-proposal">AVTALSFÖRSLAG</span></div><span class="pp-eyebrow">FASTIGHETSBOLAGETS EGEN EL</span><h2 id="pp-electricity-title">Bättre kontroll över fastighetselen.</h2><p>Samla också elavtalet för era trapphus, hissar, ventilation och andra gemensamma utrymmen i samarbetet.</p><dl class="pp-contract-fields"><div><dt>Elavtal</dt><dd data-pp-contract-missing>—</dd></div><div><dt>Anläggningar</dt><dd data-pp-contract-missing>—</dd></div><div><dt>Avtalsperiod</dt><dd data-pp-contract-missing>—</dd></div></dl><p class="pp-contract-note">Underlag saknas för fastighetselavtalet. ${properties.length ? `${properties.length} fastigheter finns i arbetsytan; avtalsomfattningen behöver fastställas.` : 'Fastigheter och avtalsomfattning behöver fastställas.'}</p><div class="pp-energy-next"><span>${icon('bolt')} ETT MÖJLIGT NÄSTA STEG</span><h3>${e(item.title)}</h3><p>Välj en fastighet och undersök förbrukningen med faktiskt underlag. Analys, åtgärder och eventuell besparing behöver utredas.</p>${ideaActions(item, focus)}</div><p class="pp-scope-note">Ert eget elavtal är en separat företagsaffär. Det ingår inte i hyresgästernas avtal eller kickback.</p></section>`;
+  }
+  function extraIdeas(partner, focus) {
+    return `<details class="pp-more-ideas" data-pp-more data-pp-partner="${e(partner.id)}" data-pp-more-key="${e(moreKey(partner.id))}"${moreOpen.get(moreKey(partner.id)) ? ' open' : ''}><summary><span><strong>Fler möjligheter när ni behöver dem</strong><span>Fyra idéer inför uthyrning, överlämning och investeringar.</span></span><span class="pp-more-arrow">${icon('arrow')}</span></summary><div class="pp-more-content"><p class="pp-more-intro">Förslag att utforska när ett konkret behov uppstår. Varje idé behöver rätt underlag och en gemensam bedömning.</p><div class="pp-idea-grid">${ideas.slice(2).map((item, index) => `<article class="pp-idea-card"><div class="pp-idea-top"><span class="pp-icon">${icon(item.icon)}</span><span class="pp-idea-number">0${index + 3}</span></div><span class="pp-eyebrow">${item.category}</span><h3>${e(item.title)}</h3><p>${e(item.description)}</p><div class="pp-benefit">${icon('check')}<span>${e(item.benefit)}</span></div>${ideaActions(item, focus)}</article>`).join('')}</div></div></details>`;
   }
   function render() {
+    rememberMore();
     const partner = current();
     if (!partner) return '<div class="empty">Välj ett fastighetsbolag för att se samarbetsförslaget.</div>';
     const focus = getFocus(partner.id);
     return `<div class="property-partnership-page">
       ${P.role === 'internal' ? '<button class="text-button pp-back" data-go="partners">← Alla partners</button>' : ''}
-      <div class="page-head pp-page-head"><div><span class="pp-eyebrow">${e(partner.name)}</span><h1>Ert samarbete</h1><p>En enklare vardag för er. En bättre start för hyresgästen.</p></div><span class="pp-proposal-badge">Förslag till samarbete</span></div>
-      <section class="pp-hero"><div class="pp-hero-copy"><span class="pp-hero-kicker">MER VÄRDE I ERT PARTNERSKAP</span><h2>Mindre administration.<br>Mer nytta av elen.</h2><p>Från en smidigare inflyttning till bättre kontroll över fastighetselen. Här är ett förslag på vad vi kan utveckla tillsammans med er.</p><button type="button" class="btn pp-hero-cta" data-pp-explore>Hitta ert första fokus ${icon('arrow')}</button></div><div class="pp-hero-art" aria-hidden="true"><span class="pp-art-orbit"></span><div class="pp-building pp-building-back"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pp-building pp-building-front"><div class="pp-building-roof"></div><i></i><i></i><i></i><i></i><i></i><i></i><span></span></div><span class="pp-art-node pp-art-tenant">${icon('users')} Enklare inflyttning</span><span class="pp-art-node pp-art-energy">${icon('bolt')} Smartare fastighetsel</span><div class="pp-art-ground"></div></div></section>
-      ${foundations(partner)}
+      <div class="page-head pp-page-head"><div><span class="pp-eyebrow">${e(partner.name)}</span><h1>Ert samarbete</h1><p>Enkel inflyttning. Tydligt resultat. Bättre kontroll.</p></div><span class="pp-proposal-badge">Förslag till samarbete</span></div>
+      ${primaryService()}
+      <div class="pp-results">${P.propertyResults?.renderSummary?.(partner.id) || ''}</div>
+      <div class="pp-partner-benefits">${tenantSupport(focus)}${propertyElectricity(partner, focus)}</div>
       ${focusSummary(focus)}
-      <section class="pp-ideas" id="pp-ideas" aria-labelledby="pp-ideas-title"><div class="pp-section-heading"><div><span class="pp-eyebrow">UTGÅ FRÅN ER VARDAG</span><h2 id="pp-ideas-title" tabindex="-1">Vad skulle hjälpa er mest?</h2></div><p>Sex möjligheter att utforska. Börja där behovet är störst.</p></div><div class="pp-idea-grid">${ideas.map((item, index) => `<article class="pp-idea-card${item.recommended ? ' pp-recommended' : ''}"><div class="pp-idea-top"><span class="pp-icon">${icon(item.icon)}</span>${item.recommended ? '<span class="pp-recommended-tag">Bra första fokus</span>' : `<span class="pp-idea-number">0${index + 1}</span>`}</div><span class="pp-eyebrow">${item.category}</span><h3>${e(item.title)}</h3><p>${e(item.description)}</p><div class="pp-benefit">${icon('check')}<span>${e(item.benefit)}</span></div><div class="pp-card-actions"><button type="button" class="text-button" data-pp-detail="${item.id}" aria-label="Läs förslaget: ${e(item.title)}">Läs förslaget ${icon('arrow')}</button>${focusButton(item, focus.includes(item.id))}</div></article>`).join('')}</div></section>
-      <section class="pp-start"><span class="pp-icon">${icon('target')}</span><div><h2>Börja med två konkreta behov.</h2><p>Vårt förslag är att först undersöka hur vi kan avlasta era hyresgästfrågor och hitta onödig elanvändning. Omfattning, ansvar och villkor bestämmer vi tillsammans.</p></div></section>
+      ${extraIdeas(partner, focus)}
     </div>`;
+  }
+  function openWorkspace(id, page) {
+    if (current()?.id !== id) return;
+    if (P.role === 'internal') P.previewPartner(id);
+    if (P.role === 'partner' && P.partner === id) P.go(page);
   }
   function bind() {
     const partner = current();
     if (!partner) return;
-    document.querySelectorAll('[data-pp-detail]').forEach(button => button.addEventListener('click', () => showDetail(partner.id, button.dataset.ppDetail, button)));
+    document.querySelectorAll('.property-partnership-page [data-pp-detail]').forEach(button => button.addEventListener('click', () => showDetail(partner.id, button.dataset.ppDetail, button)));
     document.querySelectorAll('.property-partnership-page [data-pp-focus]').forEach(button => button.addEventListener('click', () => changeFocus(partner.id, button.dataset.ppFocus, !getFocus(partner.id).includes(button.dataset.ppFocus), button)));
-    document.querySelectorAll('[data-pp-remove]').forEach(button => button.addEventListener('click', () => changeFocus(partner.id, button.dataset.ppRemove, false, button)));
-    document.querySelector('[data-pp-explore]')?.addEventListener('click', () => {
-      document.querySelector('#pp-ideas-title')?.focus({ preventScroll: true });
-      document.querySelector('#pp-ideas')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
-    });
-    document.querySelector('[data-pp-movein]')?.addEventListener('click', () => {
-      if (current()?.id !== partner.id) return;
-      if (P.role === 'internal') P.previewPartner(partner.id);
-      else P.go('overview');
-    });
+    document.querySelectorAll('.property-partnership-page [data-pp-remove]').forEach(button => button.addEventListener('click', () => changeFocus(partner.id, button.dataset.ppRemove, false, button)));
+    document.querySelectorAll('.property-partnership-page [data-pp-intake]').forEach(button => button.addEventListener('click', () => openWorkspace(partner.id, button.dataset.ppIntake === 'import' ? 'property-import' : 'property-manual')));
+    document.querySelectorAll('.property-partnership-page [data-pp-workspace]').forEach(button => button.addEventListener('click', () => openWorkspace(partner.id, 'property-registrations')));
+    const more = document.querySelector('.property-partnership-page [data-pp-more]');
+    more?.addEventListener('toggle', () => { if (more.isConnected) moreOpen.set(moreKey(partner.id), more.open); });
   }
   function renderTeaser(id = current()?.id) {
     const partner = current();
     if (!partner || partner.id !== id) return '';
-    return `<section class="pp-teaser"><span class="pp-icon">${icon('building')}</span><div><span class="pp-eyebrow">ERT SAMARBETE · FÖRSLAG</span><h2>Mer än en enklare inflyttning.</h2><p>Utforska fastighetsel, färre hyresgästfrågor och nya möjligheter för era fastigheter.</p></div><button type="button" class="btn btn-secondary" data-go="property-partnership">Se samarbetsförslaget ${icon('arrow')}</button></section>`;
+    return `<section class="pp-teaser"><span class="pp-icon">${icon('building')}</span><div><span class="pp-eyebrow">ERT SAMARBETE · FÖRSLAG</span><h2>Enklare inflyttning. Mer tid för era hyresgäster.</h2><p>Se hur inflyttningsservice, ert resultat och egen fastighetsel kan samlas i samarbetet.</p></div><button type="button" class="btn btn-secondary" data-go="property-partnership">Se samarbetsförslaget ${icon('arrow')}</button></section>`;
   }
   P.propertyPartnership = { render, bind, renderTeaser, getFocus, setFocus };
   P.register('property-partnership', { render, bind });

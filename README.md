@@ -60,8 +60,10 @@ kundärenden i drift; frontendens data är fortfarande lokala och fiktiva.
 
 ## Förslag: ett bredare fastighetssamarbete
 
-Publicerat som **version 24** via PR #28. Förslaget är granskat på dator
-och mobil; faktisk källrevision och publiceringskvittens finns i WORKLOG.
+Grundförslaget publicerades som **version 24** via PR #28 och bevaras i
+version 25. Den senaste omarbetningen prioriterar inflyttningen i kunddemon
+på Ludwigs uppdrag; kandidatens verifiering och publicering kvitteras separat
+i WORKLOG.
 
 Ludwigs senaste uppdrag är att visualisera fastighetsbolaget både som
 partner för inflyttningar och som möjlig företagskund för **fastighetselen**.
@@ -77,7 +79,14 @@ kostnad och omfattning saknar ännu källa och visas som **—** och
 ett elavtal omfattar. Ett hyresgästärende eller grundval tecknar inget eget
 fastighetselavtal.
 
-Sidan visar också sex idéer för fortsatt dialog:
+Det nya upplägget börjar med en konkret inflyttning: Excel eller manuell
+registrering, fullmaktsbilaga och överlämning till Kraftringen. Befintliga
+ärenden visar status, vad som saknas och vem som behöver agera. Därefter
+visas egna kunder/kickback, följt av föreslagen hjälp med uthyrarnas elfrågor
+och den separata fastighetselen. Detta är vår valda presentationsordning,
+inte uppmätt tidsbesparing eller verifierad prioritering hos en faktisk kund.
+
+Alla sex idéer för fortsatt dialog finns kvar:
 
 - Avlasta uthyrarna från hyresgästernas elfrågor.
 - Göra elkostnaden begriplig redan i bostadsannonsen med underbyggda intervall.
@@ -86,17 +95,20 @@ Sidan visar också sex idéer för fortsatt dialog:
 - Samla elöversikten inför köp eller försäljning av fastighet.
 - Bedöma laddning, solceller, batterier och styrning av elanvändningen.
 
-Första diskussionen föreslås fokusera på hyresgästfrågor och onödig
-förbrukning. Fokusval sparas endast som lokalt diskussionsunderlag för
-vald partner i samma webbläsare, skilt mellan labb och kunddemo. De skickar
-inget meddelande och beställer ingen tjänst. Idéerna är förslag att pröva,
-inte färdiga tjänster eller utlovade besparingar.
+Elfrågor får en tydlig plats efter inflyttningsflödet. Möjlig analys av onödig
+förbrukning hör till fastighetselen och kräver faktiskt förbrukningsunderlag.
+De övriga fyra idéerna ligger i en stängd, öppningsbar fördjupning för nästa
+kundsamtal. Alla detaljvyer och tidigare fokusval bevaras. Fokusval sparas
+endast som lokalt diskussionsunderlag för vald partner i samma webbläsare,
+skilt mellan labb och kunddemo. De skickar inget meddelande och beställer
+ingen tjänst. Idéerna är förslag att pröva, utan fastställd supportprocess,
+SLA, tjänstevillkor eller utlovade besparingar.
 
 Inflyttningens Excel/manuella registrering och fullmaktsbilagor bevaras.
 Hyresgästen får inga nya portalsteg. Personalavtal är fortsatt en egen
 partnertyp vars erbjudande och anmälningsflöde behöver verksamhetsunderlag.
-Verifiering och eventuell publicering av denna kandidat kvitteras separat
-i WORKLOG.md; tidigare version 23 av Elakademin ska bevaras.
+Version 25:s felrättningar och version 23:s fullständiga Elakademin bevaras.
+Agentens prompt, schema och aktivering ändras inte av detta presentationsuppdrag.
 
 ## Visa kunddemot
 
