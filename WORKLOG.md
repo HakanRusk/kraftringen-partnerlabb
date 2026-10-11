@@ -965,3 +965,69 @@ webbläsarleveransen kvarstår. Arthur-/avatarfilmer återstår som tidigare.
 
 Denna efterhandskvittens ändrar enbart dokumentation; dist/ och hosting-
 manifest är identiska med publicerad version 21 och behöver inte publiceras igen.
+
+
+## 2026-10-11 · PARTNER-06 · Fastighetsbolag och personalavtal som partneralternativ
+
+Ludwigs direkta senaste instruktion är att Fastighetsbolag eller ett företag
+med Personalavtal också ska kunna väljas när en partner skapas. Ny kandidat
+på codex/partner-types från GitHub-main
+`aafa6244836a8ad86978af6d788c1db7c35eaa3e` behåller allt under Partners och
+skiljer samarbetstyp från säljpartnerns B2B/B2C/båda. Befintlig utbildnings-
+förhandsvisning i version 21, Academy/B2C-samtal och partnernas egna resultat
+ska bevaras.
+
+Ny fastighetspartner ska få det befintliga Excel-/manuella flödet med egna
+ärenden, bilagor och Avtalsval (Kvartspris initialt, Opti och Rörligt
+månadspris som alternativ). Personalavtal avser ett företag som kanal till
+anställda, skilt från företagets egen B2B-el. Kandidaten avgränsas till
+klassificering och egen översikt; erbjudande, produkt-/ersättningsvillkor
+och eventuell anmälningsprocess kräver fortsatt verksamhetsunderlag.
+Nya profiler får inget påhittat kundutfall eller kickback. Namn får ändras
+för alla typer, medan befintlig typ och historik behålls.
+
+AGENTS, README, pilotfakta/mission, MISSION, BACKLOG och agentprompt har
+uppdaterats för detta mandat och dess gränser. Dokumentationsgranskningen
+ändrar inga affärsregler. Kandidatens testresultat, GitHub-integration och
+native Sites-publicering kvitteras efter att de utförts.
+
+
+## 2026-10-11 · PARTNER-06 · Verifierad kandidat
+
+Tre partnerupplägg i samma skapandedialog: Säljpartner (B2B/B2C/båda),
+Fastighetsbolag och Personalavtal för företag. Alla ligger under Partners.
+Nya fastighetsbolag använder befintligt manuellt/Excel-flöde med egna
+fullmaktsbilagor och Kvartspris som initialt grundval. Personalavtal har
+egen intern/partneröversikt, inte ett uppfunnet anmälningsflöde eller
+produktutbud. Ny profil har inget kommersiellt utfall. Befintlig typ och
+historik bevaras, namn får ändras på samtliga typer.
+
+Verifierat på denna kandidat, lokal Chromium på 127.0.0.1:8000:
+- node qa/partner-registry.mjs: 16 godkända kontroller.
+- node qa/savera-data.mjs: 23 godkända kontroller.
+- node qa/property-results-period.mjs: godkänd period-/partner-/demoisolering.
+- python qa/partner-types.py: 106 godkända kontroller i komplett körning.
+  Efter riktad typografikorrigering och nio nya kontrollpunkter: layoutdelen
+  46 godkända; nya kontroller omfattar typfilter, minst 12 px knapptext och
+  faktisk mobilregistrering efter rullning av dialogen.
+- python qa/partner-segments.py: 105 godkända kontroller i komplett körning;
+  äldre QA-förväntningar uppdaterade till bekräftad resultat-/utbildningsvy.
+- PARTNERLABB_QA_URL=http://127.0.0.1:8000 node qa/b2c-calls.cjs: 69
+  godkända kontroller. Det inledande försöket använde testets standardport
+  4183 utan server; rätt previewadress gav ren terminalkvittens.
+- 26 app-JavaScript-filer passerar syntaxkontroll; 48 statiska script-/
+  stilreferenser finns; git diff --check passerar.
+
+Browserkontroller verifierar riktiga syntetiska PDF/XLSX-bytes, sparning,
+omladdning, uttrycklig överlämning, ny intern partnerfiltrering, utebliven
+automatisk kund-/avtals-/kickbackgenerering och normal-/demoisolering.
+Personalavtalens egna direktlänkar, namn, meny och saknade resultat är
+verifierade. Separat granskning verifierar gamla direktlänksalias och att
+fastighetsresultatens ärendelänk öppnar rätt bolag, utan sidfel.
+
+Skärmbilder granskade för 1440/390/320 px. Befintlig version 21:s
+utbildningsförhandsvisning, partnernas egna rapporter och B2C-samtalsbibliotek
+är bevarade. Verkliga villkor, delad drift och integrationer tillkommer inte.
+GitHub-integration, Sites-publicering och native agentprompt kvitteras
+efter genomförandet; den befintliga timuppgiften är tillfälligt pausad under
+samordnad leverans och ska återaktiveras efteråt.

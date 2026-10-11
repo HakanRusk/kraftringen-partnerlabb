@@ -4,7 +4,7 @@
 
 Källa: Ludwigs direkta förtydligande i uppgiften. Säljpartnernas affärer och nästa aktiviteter hanteras utanför Partnerlabb. Kraftringen följer resultat, Kunder & avtal, Insikter och villkorade scenarier under Partners. Säljpartners använder utbildning och stöd. Detta ersätter äldre mål om aktiv kundregistrering, pipeline, offertarbete och återkopplingsflöden för Savera/Face2face i portalen. Äldre lokala underlag och utkast bevaras; de blir inte resultathistorik. Fastighetsbolagens registrering, fullmaktsbilagor, förmedling och handläggning behåller operativa nästa steg. Ingen ny verksamhetsregel eller integration införs.
 
-En klickbar partnerportal med **Kraftringens interna resultatöversikt som huvudvy** och separata arbetsytor för aktiva säljpartners och fastighetsbolag. Designen följer referensbildernas marinblå och petrolfärgade uttryck.
+En klickbar partnerportal med **Kraftringens interna resultatöversikt som huvudvy** och separata arbetsytor för säljpartners, fastighetsbolag och företag med personalavtal. Designen följer referensbildernas marinblå och petrolfärgade uttryck.
 
 Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter, enligt användarens bekräftelse. Face2face använder Beest; prototypen prioriterar nu intern resultatuppföljning och har ingen integration med Beest. Saveras eventuella användning av partnerarbetsytan kan utvecklas senare. Befintliga arbetsflöden bevaras som lokala testvyer. Fastighetspartners erbjuder inflyttningsservice vid hyresavtal och sköter allt aktivt arbete i portalen: Excel-import eller manuell registrering, fullmaktsbilagor och förmedling till Kraftringen. Hyresgästen har inga aktiva portalsteg. Kraftringen hanterar elhandel, nödvändig elnätshantering och återkoppling. Partnerns egen elförbrukning är en separat affär. Fiber och andra produktområden ingår inte.
 
@@ -90,10 +90,24 @@ säljar- och regionurval styr nyckeltalen och Insikter.
 
 ### Skapa och ändra partner
 
-Skapa partnern från **Partners** och välj kundsegment: **Företag (B2B)**,
-**Konsument (B2C)** eller **båda**. Kundsegmentet kan senare ändras på
-partnern. Fastighetspartnerns inflyttningsservice är ett separat arbetssätt;
-bostadsärenden ska inte konverteras till försäljningsavtal.
+Välj **Partners → Skapa partner** och därefter samarbetstyp:
+
+- **Säljpartner:** välj **Företag (B2B)**, **Konsument (B2C)** eller **båda**.
+  Kundsegmentet kan senare ändras med befintlig kundhistorik bevarad.
+- **Fastighetsbolag:** den nya partnern får den befintliga
+  inflyttningsservicen med Excel/manuell registrering, fullmaktsbilagor,
+  förmedling och egna kunder/kickback. Kvartspris är initialt grundval under
+  Avtalsval; Opti och Rörligt månadspris är alternativ. Ett grundval är ett
+  önskemål, ingen avtalsteckning.
+- **Personalavtal:** ett företag blir partnerkanal för ett erbjudande till
+  sina anställda och får en egen översikt. Företagets egen elförbrukning är
+  en separat B2B-affär. Erbjudande, produkter/villkor, anmälningsprocess och
+  eventuell aktivitet för arbetsgivaren eller de anställda behöver
+  verksamhetsunderlag. Denna etapp skapar inget sådant flöde.
+
+Alla tre ligger under **Partners**. Namnet kan ändras för samtliga typer;
+en redan skapad partners typ behålls så att sparade underlag inte byter
+verksamhetsspår. Säljpartnerns produktkatalog styrs av kundsegmentet:
 
 - **Företag:** Rörligt pris, Kvartspris, Poolportfölj Trygg,
   Poolportfölj Offensiv, Individuell portfölj och Kraftringen Stabil.
@@ -105,11 +119,14 @@ bostadsärenden ska inte konverteras till försäljningsavtal.
   Rapportkatalogen omfattar också tidigare avtalssegment, så historiska
   avtal fortfarande går att hitta när konfigurationen ändras.
 
-Partnerprofiler sparas lokalt i `state.partnerProfiles`, skilt mellan vanlig
-labbyta och kunddemo. En ny partner har inget resultatunderlag förrän ett
+Partnerprofiler med typen `sales`, `field`, `property` eller `employee`
+sparas lokalt i `state.partnerProfiles`, skilt mellan vanlig labbyta och
+kunddemo. En ny partner har inget resultatunderlag förrän ett
 sådant finns: visa **Underlag saknas** i stället för påhittade nollresultat,
-kunder, avtal, prognoser eller kickback. Profilen skapar inget verkligt
-partneravtal, ingen inloggning och ingen serverstyrd behörighet.
+kunder, avtal, prognoser eller kickback. En ny fastighetspartner börjar med
+egna tomma ärenden; en ny personalavtalspartner saknar kommersiellt underlag
+och lånar inga demoresultat. Profilen skapar inget verkligt partneravtal,
+ingen inloggning och ingen serverstyrd behörighet.
 
 Savera är den bekräftade företagspartnern och Face2face den bekräftade
 konsumentpartnern. Face2face arbetar fortsatt i Beest; detta är intern
@@ -253,7 +270,7 @@ Säljpartnerns Academy och stöd är aktiva. Äldre offertstudio, dokumentdemost
 
 ## Lokal data och demosteg
 
-Använd enbart påhittade kund- och hyresgästuppgifter. Sparad testdata ligger i `localStorage` för aktuell webbplats och webbläsare under `partnerlabb.portal.v2`. `commercial.management` sparar intern partneruppföljning och partnerresans markeringar, `moveins` sparar serviceunderlag och äldre intresseanmälningar och `propertySettings` sparar fastighetsbolagets presentation. `partnerProfiles` kompletterar grundregistret med lokalt skapade eller ändrade partnerprofiler och kundsegment. Dessa kompletterar tidigare kunddata; ändrad partnerkonfiguration skriver inte om tidigare kund- eller avtalssegment. Gamla `journey`-markeringar bevaras i datan men visas inte i den nya interna partnerresan.
+Använd enbart påhittade kund- och hyresgästuppgifter. Sparad testdata ligger i `localStorage` för aktuell webbplats och webbläsare under `partnerlabb.portal.v2`. `commercial.management` sparar intern partneruppföljning och partnerresans markeringar, `moveins` sparar serviceunderlag och äldre intresseanmälningar och `propertySettings` sparar fastighetsbolagets presentation. `partnerProfiles` kompletterar grundregistret med lokalt skapade eller ändrade partnerprofiler, typ (`sales`, `field`, `property`, `employee`) och säljkundsegment. Dessa kompletterar tidigare kunddata; ändrad partnerkonfiguration skriver inte om tidigare kund- eller avtalssegment. Gamla `journey`-markeringar bevaras i datan men visas inte i den nya interna partnerresan.
 
 Manuella partnerutkast och Excelgranskningen är inte registrerade
 serviceärenden. Utkast för lägena `manual` och `import` använder flikens
@@ -352,7 +369,7 @@ hyresgästsida sätts inte i drift.
 - `dist/movein-attachments.js` och `.css`: lokal bilagelagring och dokumentkoppling.
 - `dist/vendor/exceljs-4.4.0.min.js`: lokalt paketerad ExcelJS för .xlsx-läsning och mall; MIT-licens följer med.
 - `dist/movein-service.js`: gemensam ärendedata, förmedling, kompletteringar och Kraftringens interna handläggningsvy.
-- `dist/partner-setup.js` och `.css`: lokala partnerprofiler samt skapande och ändring av kundsegment.
+- `dist/partner-setup.js` och `.css`: lokala partnerprofiler, val av säljpartner/fastighetsbolag/personalavtal vid skapande samt ändring av namn och säljkundsegment.
 - `dist/savera-data.js`: generiskt fiktivt kund-/avtalsregister för säljpartners, perioder, segment, bestånd, kundtid och scenario vid fortsatt tempo.
 - `dist/savera-reports.js` och `.css`: gemensamma interna vyer `partner-sales` och `partner-insights` under Partners. Partner-ID bevaras som `?partner=<id>`; äldre Savera-/Insikter-länkar är kompatibilitetsingångar.
 - `dist/property-results.js` och `.css`: fastighetspartnerns egna kunder, serviceutfall och manuella kickbackposter.
@@ -527,9 +544,9 @@ WORKLOG; ett äldre testantal är inget bevis för den nya implementationen.
 
 Nya säljpartners och partners med ändrad eller blandad segmentkonfiguration
 får en egen grundvy med utbildning, support och sina produktkataloger.
-De visar inte Saveras eller Face2faces redigerbara demo-underlag. De två
-befintliga arbetsflödesdemona används fortsatt för Savera med enbart B2B
-och Face2face med enbart B2C; intern rapportering fungerar generiskt.
+De visar inte Saveras eller Face2faces redigerbara demo-underlag. Savera och Face2face använder samma generiska uppföljning i interna och
+egna partnervyer. Äldre lokala säljutkast bevaras men har inga aktiva
+pipeline- eller registreringsingångar, enligt PARTNER-05.
 
 `coveredAudiences` och `availableForSegment(segment)` skiljer observerade
 segment från ny konfiguration. Ett nyvalt segment utan kundhistorik visar

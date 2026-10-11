@@ -3,7 +3,7 @@
   const P = window.Portal;
   if (!P) return;
   const {e, icon} = P;
-  const propertyIds = ['estate1', 'estate2'];
+  const fixturePropertyIds = new Set(['estate1', 'estate2']);
   const monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober'];
   const monthShort = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt'];
   const selections = new Map();
@@ -12,7 +12,8 @@
   const money = value => `${count(value)} kr`;
   const months = () => P.partnerResultsData?.months || [];
   const partnerName = id => P.getPartner?.(id)?.name || 'Fastighetspartner';
-  const allowed = id => propertyIds.includes(id) && (P.role === 'internal' || P.role === 'partner' && id === P.partner);
+  const allowed = id => P.getPartner?.(id)?.type === 'property' && (P.role === 'internal' || P.role === 'partner' && id === P.partner);
+  const hasBasis = id => P.getPartner?.(id)?.type === 'property' && fixturePropertyIds.has(id) && !!P.partnerResultsData && !!P.partnerKickback;
   function selectedPartner() {
     if (P.role === 'internal' && allowed(P.selectedPartnerId)) return P.selectedPartnerId;
     return allowed(P.partner) ? P.partner : null;
@@ -46,9 +47,14 @@
   function outcomeFor(id, periodMonths) {
     // Fixed reporting examples stay independent of new local service records.
     // There is no commission formula or customer creation in this view.
+    if (!hasBasis(id)) return {
+      available: false,
+      result: {agreements: null, helped: null, registrations: null},
+      kickback: {rows: [], missing: periodMonths.map(month => ({partner:id, month})), settled: null, paid: null, remaining: null, review: null}
+    };
     const result = P.partnerResultsData.summary({partnerIds:[id], months:periodMonths});
     const kickback = P.partnerKickback.totalsFor([id], periodMonths);
-    return {result, kickback};
+    return {available: true, result, kickback};
   }
   function availabilityNote(kickback) {
     if (!kickback.missing.length) return '';
@@ -83,7 +89,7 @@
     return `<section class="card property-results-trend"><div class="property-results-section-head"><div><span class="property-results-eyebrow">NYA ELHANDELSAVTAL</span><h2>Kunder genom samarbetet</h2></div><span class="property-results-unit">Antal · exempel</span></div><div class="property-results-chart" style="--property-result-months:${rows.length}" aria-label="Nya exempelavtal per månad">${rows.map(row => { const index = months().indexOf(row.month); return `<div class="property-results-chart-month"><strong>${count(row.agreements)}</strong><div class="property-results-chart-track" aria-hidden="true"><i style="height:${row.agreements / maximum * 100}%"></i></div><span>${monthShort[index]}${row.month === '2026-10' ? '<small>1–7 okt</small>' : ''}</span><span class="sr-only">${monthNames[index]} 2026: ${count(row.agreements)} nya exempelavtal.</span></div>`; }).join('')}</div></section>`;
   }
   function serviceCard(result, period) {
-    return `<section class="card property-results-service"><span class="property-results-service-icon">${icon('home')}</span><span class="property-results-eyebrow">INFLYTTNINGSHJÄLPEN</span><h2>En enklare start för era inflyttare.</h2><div class="property-results-service-count"><strong data-property-result="helped">${count(result.helped)}</strong><span>hjälpta inflyttningar<br><small>${e(period.range)}</small></span></div><p>${count(result.registrations)} serviceanmälningar i periodens exempelunderlag. Inflyttningshjälp och nya elhandelsavtal följs var för sig.</p><button type="button" class="text-button" data-go="property-registrations">Öppna era inflyttningsärenden ${icon('arrow')}</button></section>`;
+    return `<section class="card property-results-service"><span class="property-results-service-icon">${icon('home')}</span><span class="property-results-eyebrow">INFLYTTNINGSHJÄLPEN</span><h2>En enklare start för era inflyttare.</h2><div class="property-results-service-count"><strong data-property-result="helped">${count(result.helped)}</strong><span>hjälpta inflyttningar<br><small>${e(period.range)}</small></span></div><p>${count(result.registrations)} serviceanmälningar i periodens exempelunderlag. Inflyttningshjälp och nya elhandelsavtal följs var för sig.</p><button type="button" class="text-button" data-property-results-workspace="${e(P.role==='internal'?selectedPartner():P.partner)}">Öppna era inflyttningsärenden ${icon('arrow')}</button></section>`;
   }
   function monthTable(id, period, kickback) {
     const rows = period.current.slice().reverse().map(month => {
@@ -98,9 +104,14 @@
   function definitions() {
     return `<details class="property-results-definitions"><summary>Så läser ni uppföljningen ${icon('arrow')}</summary><div><p><strong>Nya kunder.</strong> De manuella exemplen räknar ett nytt elhandelsavtal som en ny kund. Verklig uppföljning behöver särskilja kund och avtal. Detta är periodens nya avtal, inte antal aktiva kunder hos Kraftringen.</p><p><strong>Inflyttningshjälp.</strong> Hjälpta inflyttningar och serviceanmälningar är ett separat exempelunderlag. Ett serviceärende behöver inte leda till ett elhandelsavtal. Registreringar och bilagor som ni testar i labbet ändrar inte dessa resultat.</p><p><strong>Kickback.</strong> Avstämd kickback inkluderar redan utbetalt. Kvar avstämt är avstämt minus utbetalt; belopp under avstämning hålls separat. Underlagsperioden är månaden som posten hör till. Utbetalt avser betalningar på dessa poster till 7 oktober 2026, oavsett betalningsmånad.</p><p><strong>Underlaget.</strong> Alla utfall och belopp är fiktiva, manuella exempel till 7 oktober 2026. Ingen kickback räknas fram från kunder, avtal eller serviceärenden. Faktiska ersättningsregler och datakällor behöver lämnas av Kraftringen.</p></div></details>`;
   }
+  function renderWithoutBasis(id) {
+    const ownRows = P.moveinService?.rows(id) || [];
+    return `<div class="property-results-page" data-property-results-availability="missing"><div class="page-head"><div><span class="eyebrow">FASTIGHETSPARTNER / ${e(partnerName(id))}</span><h1>Kunder & kickback</h1><p>Följ kunderna ni har gett oss och ert kickbackunderlag.</p></div><span class="property-results-demo-label">Underlag saknas</span></div><section class="property-results-primary" aria-label="Kunder och kickback"><article class="property-results-customer-card"><div class="property-results-card-top"><span class="property-results-eyebrow">KUNDER GENOM ER</span><span class="property-results-icon">${icon('users')}</span></div><span class="property-results-metric-label">Nya elhandelskunder</span><strong data-property-result="customers">—</strong><p>Resultatunderlag saknas för ert samarbete.</p><small>Ett registrerat inflyttningsärende skapar inte ett elhandelsavtal.</small></article><article class="property-results-kickback-card"><div class="property-results-card-top"><span class="property-results-eyebrow">ERT KICKBACKUNDERLAG</span><span class="property-results-icon">${icon('money')}</span></div><span class="property-results-metric-label">Avstämd kickback</span><strong data-property-result="settled">—</strong><p>Kickbackunderlag saknas för ert samarbete.</p><small>Ersättningsregler och avstämda poster behöver registreras separat.</small></article></section><section class="card property-results-service"><span class="property-results-service-icon">${icon('home')}</span><span class="property-results-eyebrow">INFLYTTNINGSHJÄLPEN</span><h2>Era ärenden följs separat.</h2><div class="property-results-service-count"><strong data-property-result="helped">—</strong><span>hjälpta inflyttningar<br><small>Resultatunderlag saknas</small></span></div><p><span data-property-result="local-cases">${count(ownRows.length)}</span> registrerade testärenden i er arbetsyta. Antalet ärenden är ett arbetsmått; det visar inte hur många kunder eller slutförda inflyttningar samarbetet har gett.</p><button type="button" class="text-button" data-property-results-workspace="${e(P.role==='internal'?selectedPartner():P.partner)}">Öppna era inflyttningsärenden ${icon('arrow')}</button></section><p class="property-results-missing">${icon('file')}<span>Den här partnern har inget inlagt resultat- eller kickbackunderlag ännu. Testregistreringar ändrar inte affärsutfallet.</span></p></div>`;
+  }
   function render() {
     const id = selectedPartner();
     if (!id) return '<div class="empty">Kunder och kickback visas i fastighetspartnerns egen arbetsyta.</div>';
+    if (!hasBasis(id)) return renderWithoutBasis(id);
     if (!P.partnerResultsData || !P.partnerKickback) return '<div class="empty">Resultatunderlaget är inte tillgängligt.</div>';
     const period = periodFor(id);
     const {result, kickback} = outcomeFor(id, period.current);
@@ -109,6 +120,11 @@
   function bind() {
     const id = selectedPartner();
     if (!id) return;
+    document.querySelectorAll('[data-property-results-workspace]').forEach(button => button.addEventListener('click', () => {
+      if (selectedPartner() !== id) return;
+      if (P.role === 'internal') P.previewPartner(id);
+      P.go('property-registrations');
+    }));
     document.querySelectorAll('[data-property-results-mode]').forEach(button => button.addEventListener('click', () => {
       if (selectedPartner() !== id || !['year','month'].includes(button.dataset.propertyResultsMode)) return;
       selection(id).mode = button.dataset.propertyResultsMode;
@@ -126,10 +142,11 @@
     });
   }
   function renderSummary(id = P.partner) {
-    if (!allowed(id) || !P.partnerResultsData || !P.partnerKickback) return '';
+    if (!allowed(id)) return '';
+    if (!hasBasis(id)) return `<section class="property-results-summary" data-property-results-availability="missing" aria-label="Samarbetets resultat"><div><span class="property-results-eyebrow">ERT SAMARBETE</span><h2>Kunderna ni har gett oss.</h2><p>Resultatunderlag saknas ännu</p></div><div class="property-results-summary-value"><strong>—</strong><span>nya elhandelskunder</span></div><div class="property-results-summary-value"><strong>—</strong><span>avstämd kickback</span></div><button type="button" class="btn btn-secondary" data-go="property-results">Kunder & kickback ${icon('arrow')}</button><small class="property-results-summary-note">Registrering av inflyttningsunderlag skapar inte ett elavtal eller kickback.</small></section>`;
     const {result, kickback} = outcomeFor(id, months());
     return `<section class="property-results-summary" aria-label="Samarbetets resultat hittills"><div><span class="property-results-eyebrow">ERT SAMARBETE / 2026 HITTILLS</span><h2>Kunderna ni har gett oss.</h2><p>1 januari–7 oktober · manuella exempel</p></div><div class="property-results-summary-value"><strong>${count(result.agreements)}</strong><span>nya kunder · exempel</span></div><div class="property-results-summary-value"><strong>${kickback.rows.length ? money(kickback.settled) : '—'}</strong><span>${kickback.rows.length ? 'avstämd kickback' : 'underlag saknas'}</span></div><button type="button" class="btn btn-secondary" data-go="property-results">Kunder & kickback ${icon('arrow')}</button><small class="property-results-summary-note">I exemplet motsvarar ett nytt avtal en ny kund. ${kickback.missing.length ? 'Kickbackunderlag saknas för delar av perioden. ' : ''}Era testregistreringar ändrar inte resultatunderlaget.</small></section>`;
   }
-  P.propertyResults = {renderSummary, periodFor, outcomeFor};
+  P.propertyResults = {renderSummary, periodFor, outcomeFor, hasBasis};
   P.register('property-results', {render, bind});
 })();

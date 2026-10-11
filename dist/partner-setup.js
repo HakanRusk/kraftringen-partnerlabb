@@ -8,6 +8,10 @@
   const nameKey = value => cleanName(value).normalize('NFKC').toLocaleLowerCase('sv-SE');
   const cleanAudiences = value => Array.isArray(value) ? allowedAudiences.filter(item => value.includes(item)) : [];
   const isSales = partner => partner && ['sales', 'field'].includes(partner.type);
+  const partnerTypes = ['sales', 'property', 'employee'];
+  const supportedType = type => ['sales', 'field', 'property', 'employee'].includes(type);
+  const profileType = partner => isSales(partner) ? 'sales' : partner?.type;
+  const typeLabels = { sales: 'Säljpartner', property: 'Fastighetsbolag', employee: 'Personalavtal' };
   const audienceChoice = audiences => audiences.length === 2 ? 'both' : audiences[0] || 'business';
   const choiceAudiences = choice => choice === 'both' ? [...allowedAudiences] : allowedAudiences.includes(choice) ? [choice] : [];
 
@@ -25,11 +29,14 @@
       if (!/^[a-z][a-z0-9_-]{1,80}$/.test(id) || ['constructor', 'prototype', '__proto__'].includes(id)) continue;
       if (!value || typeof value !== 'object' || Array.isArray(value)) continue;
       const existing = base.get(id);
-      if (existing && !isSales(existing)) continue;
+      if (existing && !supportedType(existing.type)) continue;
       const name = cleanName(value.name);
-      const salesAudiences = cleanAudiences(value.salesAudiences);
       const type = existing?.type || value.type;
-      if (!name || name.length > 90 || !salesAudiences.length || !['sales', 'field'].includes(type)) continue;
+      // A saved profile can rename an existing channel, never change its type.
+      // This protects the meaning of already saved customer and service history.
+      if (existing && value.type && value.type !== existing.type) continue;
+      const salesAudiences = ['sales', 'field'].includes(type) ? cleanAudiences(value.salesAudiences) : [];
+      if (!name || name.length > 90 || !supportedType(type) || (['sales', 'field'].includes(type) && !salesAudiences.length)) continue;
       profiles[id] = { id, name, type, salesAudiences };
     }
     // Resolve names from the complete saved set. Object insertion order must not
@@ -57,7 +64,22 @@
 
   function configuredPartner(base, profile) {
     const salesAudiences = profile ? [...profile.salesAudiences] : [...(base.salesAudiences || [])];
-    if (!isSales(profile || base)) return { ...base };
+    const partner = { ...base, ...(profile || {}) };
+    if (partner.type === 'property') return {
+      ...partner,
+      audience: 'movein',
+      salesAudiences: [],
+      typeLabel: 'Inflyttningspartner',
+      description: base.description || 'Fastighetspartner som förmedlar inflyttningsunderlag till Kraftringen. Registrera manuellt eller ladda upp en Excel-fil och bifoga befintliga fullmakter.'
+    };
+    if (partner.type === 'employee') return {
+      ...partner,
+      audience: 'employee',
+      salesAudiences: [],
+      typeLabel: 'Personalavtal',
+      description: base.description || 'Företag som vill erbjuda personalavtal till sina anställda. Företagets egen elförbrukning är en separat affär.'
+    };
+    if (!isSales(partner)) return partner;
     const audience = salesAudiences.length === 2 ? 'mixed' : salesAudiences[0];
     const typeLabel = audience === 'mixed' ? 'Företags- & konsumentförsäljning' : audience === 'consumer' ? 'Konsumentförsäljning' : 'Företagsförsäljning';
     const segmentText = audience === 'mixed' ? 'företagskunder och konsumenter' : audience === 'consumer' ? 'konsumenter' : 'företagskunder';
@@ -98,13 +120,16 @@
     function validateProfile(payload, id) {
       if (P.role !== 'internal') return { ok: false, error: 'Partnerinställningar ändras i Kraftringens interna vy.' };
       const existing = id ? getPartner(id) : null;
-      if (id && !isSales(existing)) return { ok: false, error: 'Öppna en säljpartner för att ändra kundsegment.' };
+      if (id && (!existing || !supportedType(existing.type))) return { ok: false, error: 'Öppna en partner för att ändra inställningarna.' };
+      const selectedType = payload?.partnerType ?? (existing ? profileType(existing) : 'sales');
+      if (!partnerTypes.includes(selectedType)) return { ok: false, field: 'partnerType', error: 'Välj hur partnern ska samarbeta med Kraftringen.' };
+      if (existing && selectedType !== profileType(existing)) return { ok: false, field: 'partnerType', error: 'Partnertypen kan inte ändras. Skapa en separat partnerprofil för ett annat samarbete; sparad historik behålls.' };
       const name = cleanName(payload?.name);
       if (!name || name.length > 90) return { ok: false, field: 'name', error: 'Ange ett partnernamn med högst 90 tecken.' };
       if (P.partnerRegistry.some(partner => partner.id !== id && nameKey(partner.name) === nameKey(name))) return { ok: false, field: 'name', error: 'Det finns redan en partner med det namnet.' };
-      const salesAudiences = cleanAudiences(payload?.salesAudiences);
-      if (!salesAudiences.length) return { ok: false, field: 'salesAudience', error: 'Välj vilka kunder partnern säljer till.' };
-      return { ok: true, profile: { name, type: existing?.type || 'sales', salesAudiences } };
+      const salesAudiences = selectedType === 'sales' ? cleanAudiences(payload?.salesAudiences) : [];
+      if (selectedType === 'sales' && !salesAudiences.length) return { ok: false, field: 'salesAudience', error: 'Välj vilka kunder partnern säljer till.' };
+      return { ok: true, profile: { name, type: existing?.type || selectedType, salesAudiences } };
     }
 
     function saveProfile(payload, id) {
@@ -128,15 +153,24 @@
     function open(id) {
       if (P.role !== 'internal') return;
       const existing = id ? getPartner(id) : null;
-      if (id && !isSales(existing)) return;
+      if (id && (!existing || !supportedType(existing.type))) return;
+      const selectedType = existing ? profileType(existing) : 'sales';
       const selected = audienceChoice(cleanAudiences(existing?.salesAudiences?.length ? existing.salesAudiences : [existing?.audience]));
-      P.openDialog(existing ? 'Partnerinställningar' : 'Ny säljpartner', `
+      P.openDialog(existing ? 'Partnerinställningar' : 'Ny partner', `
         <form id="partner-setup-form" class="partner-setup-form">
-          <p class="partner-setup-intro">${existing ? 'Välj vilka kunder partnern säljer till.' : 'Lägg till en partner och välj vilka kunder den säljer till.'}</p>
+          <p class="partner-setup-intro">${existing ? 'Uppdatera partnerns uppgifter.' : 'Välj samarbete. Partnern får en arbetsyta anpassad till sitt uppdrag.'}</p>
+          ${existing ? `<div class="partner-setup-locked-type"><span class="partner-setup-type-badge">${e(typeLabels[selectedType])}</span><p>Partnertypen är låst för att bevara sparad historik. Ett annat samarbete får en separat partnerprofil.</p></div>` : `<fieldset class="partner-setup-types">
+            <legend>Typ av partner</legend>
+            ${[
+              ['sales', 'Säljpartner', 'Säljer till företag, konsumenter eller båda.', 'chart'],
+              ['property', 'Fastighetsbolag', 'Inflyttningsservice för hyresgäster.', 'home'],
+              ['employee', 'Personalavtal', 'Företag som vill erbjuda elavtal till sina anställda.', 'users']
+            ].map(([value, title, text, icon]) => `<label class="partner-setup-choice partner-setup-type-choice"><input type="radio" name="partnerType" value="${value}" ${selectedType === value ? 'checked' : ''} required><span class="partner-setup-choice-icon">${P.icon(icon)}</span><span><strong>${title}</strong><small>${text}</small></span><span class="partner-setup-choice-check" aria-hidden="true">${P.icon('check')}</span></label>`).join('')}
+          </fieldset>`}
           <label class="field" for="partner-setup-name">Partnernamn <span aria-hidden="true">*</span>
             <input id="partner-setup-name" name="name" required maxlength="90" autocomplete="organization" value="${e(existing?.name || '')}" placeholder="Exempelpartner AB">
           </label>
-          <fieldset class="partner-setup-segments">
+          <fieldset class="partner-setup-segments" id="partner-setup-sales" ${selectedType !== 'sales' ? 'hidden disabled' : ''}>
             <legend>Kundsegment</legend>
             ${[
               ['business', 'Företag (B2B)', 'Företagsavtal och portföljprodukter.', 'briefcase'],
@@ -144,7 +178,7 @@
               ['both', 'Båda', 'Samma partner kan sälja till både företag och konsumenter.', 'users']
             ].map(([value, title, text, icon]) => `<label class="partner-setup-choice"><input type="radio" name="salesAudience" value="${value}" ${selected === value ? 'checked' : ''} required><span class="partner-setup-choice-icon">${P.icon(icon)}</span><span><strong>${title}</strong><small>${text}</small></span><span class="partner-setup-choice-check" aria-hidden="true">${P.icon('check')}</span></label>`).join('')}
           </fieldset>
-          <p class="partner-setup-note">${existing ? 'Sparade kunduppgifter och avtal behålls. Kundsegmentet styr vilka avtalsalternativ som kan väljas.' : 'Uppföljning och Insikter samlas under partnern. Försäljningsresultat visas när det finns underlag.'}</p>
+          <p class="partner-setup-note" id="partner-setup-note"></p>
           <p class="partner-setup-error" id="partner-setup-error" role="alert" hidden></p>
           <div class="modal-actions"><button class="btn btn-secondary" id="partner-setup-cancel" type="button">Avbryt</button><button class="btn btn-primary" type="submit">${existing ? 'Spara inställningar' : 'Skapa partner'} ${P.icon('arrow')}</button></div>
           <p class="partner-setup-local">Sparas i denna webbläsare · testmiljö</p>
@@ -152,14 +186,30 @@
         const form = document.querySelector('#partner-setup-form');
         const nameInput = form.elements.namedItem('name');
         const error = document.querySelector('#partner-setup-error');
+        const salesFields = document.querySelector('#partner-setup-sales');
+        const note = document.querySelector('#partner-setup-note');
+        const currentType = () => existing ? selectedType : form.elements.namedItem('partnerType').value;
+        const updateType = () => {
+          const type = currentType();
+          salesFields.hidden = type !== 'sales';
+          salesFields.disabled = type !== 'sales';
+          const notes = {
+            sales: existing ? 'Sparade kunduppgifter och avtal behålls. Kundsegmentet styr vilka avtalsalternativ som kan väljas.' : 'Kunder & avtal och Insikter samlas under partnern. Resultat visas när det finns underlag.',
+            property: 'Fastighetsbolaget registrerar inflyttningar manuellt eller via Excel och bifogar fullmakter. Hyresgästen gör inget aktivt i portalen.',
+            employee: 'Samarbetet gäller elavtal för företagets anställda. Erbjudande och arbetssätt bestäms separat; inga priser eller förmåner skapas här.'
+          };
+          note.textContent = notes[type];
+        };
+        updateType();
         nameInput.focus();
         document.querySelector('#partner-setup-cancel').onclick = P.closeDialog;
         form.addEventListener('input', () => { nameInput.setCustomValidity(''); error.hidden = true; });
+        form.addEventListener('change', updateType);
         form.addEventListener('submit', event => {
           event.preventDefault();
           if (!form.reportValidity()) return;
           const choice = new FormData(form).get('salesAudience');
-          const result = saveProfile({ name: nameInput.value, salesAudiences: choiceAudiences(choice) }, id);
+          const result = saveProfile({ name: nameInput.value, partnerType: currentType(), salesAudiences: choiceAudiences(choice) }, id);
           if (!result.ok) {
             error.textContent = result.error;
             error.hidden = false;
@@ -168,13 +218,14 @@
           }
           P.selectedPartnerId = result.id;
           P.closeDialog();
-          P.go('partner-sales');
-          P.toast(result.created ? 'Partnern är skapad. Lägg till försäljningsunderlag när det finns.' : 'Partnerinställningarna är sparade.');
+          const type = profileType(getPartner(result.id));
+          P.go(type === 'property' ? 'partner-detail' : type === 'employee' ? 'employee-channel' : 'partner-sales');
+          P.toast(result.created ? 'Partnern är skapad.' : 'Partnerinställningarna är sparade.');
         });
       });
     }
 
-    P.partnerSetup = { open, saveProfile, validateProfile, canEdit: id => isSales(getPartner(id)), audienceLabel: audiences => labels[audienceChoice(cleanAudiences(audiences))] };
+    P.partnerSetup = { open, saveProfile, validateProfile, canEdit: id => supportedType(getPartner(id)?.type), audienceLabel: audiences => labels[audienceChoice(cleanAudiences(audiences))] };
     return P.partnerSetup;
   }
 

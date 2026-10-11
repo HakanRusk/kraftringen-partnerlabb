@@ -8,12 +8,20 @@
     estate2: { welcome: 'En enklare start i ditt nya hem.', intro: 'Fastighetsbolaget samlar inflyttningsunderlag och fullmakter. Kraftringen hjälper till med elen och återkopplar till fastighetsbolaget.', address: 'Testallén 8', postcode: '252 22', city: 'Helsingborg', properties: ['Testallén 8 · Helsingborg', 'Exempeltorget 2 · Landskrona'] }
   };
   let query = '', filter = 'all';
-  const partner = () => P.getPartner?.(P.partner) || { id: P.partner, name: P.partners[P.partner] || 'Exempelfastigheter AB', type: 'property' };
+  const partner = () => P.getPartner?.(P.partner) || { id: P.partner, name: P.partners[P.partner] || 'Fastighetspartner', type: 'property' };
   const date = value => value && !Number.isNaN(new Date(value + (value.length === 10 ? 'T12:00:00' : '')).getTime()) ? new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(value + (value.length === 10 ? 'T12:00:00' : ''))) : 'Ej angivet';
   const note = text => `<p class="property-note">${icon('shield')}<span>${e(text)}</span></p>`;
   function init() {
     if (!P.state.propertySettings || typeof P.state.propertySettings !== 'object') P.state.propertySettings = {};
-    for (const [id, data] of Object.entries(demos)) if (!P.state.propertySettings[id]) P.state.propertySettings[id] = { ...data };
+    for (const item of P.partnerRegistry.filter(item => item.type === 'property')) {
+      if (P.state.propertySettings[item.id]) continue;
+      const data = demos[item.id];
+      P.state.propertySettings[item.id] = data ? { ...data, properties: [...data.properties] } : {
+        welcome: 'En enklare inflyttning.',
+        intro: 'Ni registrerar inflyttningsunderlag och bifogar fullmakter. Kraftringen tar över elfrågorna och återkopplar till er.',
+        address: '', postcode: '', city: '', properties: []
+      };
+    }
     if (!Array.isArray(P.state.moveins)) P.state.moveins = [];
     P.state.propertyDemoSeeded = true;
   }

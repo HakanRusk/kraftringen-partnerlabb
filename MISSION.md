@@ -1,5 +1,23 @@
 # Partnerlabbs uppdrag
 
+## Senaste partneralternativ – 11 oktober 2026
+
+Ludwig vill också kunna skapa **Fastighetsbolag** och **Personalavtal** under
+**Partners**. Välj samarbetstyp först; **Säljpartner** väljer fortsatt B2B,
+B2C eller båda. En ny fastighetspartner använder det befintliga Excel-/
+manuella inflyttningsflödet, där fastighetsbolaget sköter allt aktivt arbete,
+med egna underlag och Avtalsval (Kvartspris som grundval, Opti och Rörligt
+månadspris som alternativ). Personalavtal är ett företag som partnerkanal
+till anställda, skilt från företagets egen elförbrukning. Denna etapp ger
+typ och egen översikt; erbjudande, villkor och anmälningsprocess saknas.
+
+Namn kan ändras för alla typer och säljkundsegment kan ändras med historiken
+bevarad. Typen på en befintlig partner behålls för att skydda sparade ärenden.
+En ny profil skapar inga kunder, avtal, resultat eller ersättning. Visa
+saknat kommersiellt underlag, bevara normal-/demoisolering och låna aldrig
+andra partners exempeldata. Verifiera alla tre skapandevägarna och att
+omladdning, lagringsfel och äldre profiler inte tappar data.
+
 ## Bekräftad inriktning: resultat och utbildning (2026-10-11)
 
 Källa: Ludwigs direkta förtydligande i uppgiften. Säljpartnernas affärer och nästa aktiviteter hanteras utanför Partnerlabb. Kraftringen följer resultat, Kunder & avtal, Insikter och villkorade scenarier under Partners. Säljpartners använder utbildning och stöd. Detta ersätter äldre mål om aktiv kundregistrering, pipeline, offertarbete och återkopplingsflöden för Savera/Face2face i portalen. Äldre lokala underlag och utkast bevaras; de blir inte resultathistorik. Fastighetsbolagens registrering, fullmaktsbilagor, förmedling och handläggning behåller operativa nästa steg. Ingen ny verksamhetsregel eller integration införs.
