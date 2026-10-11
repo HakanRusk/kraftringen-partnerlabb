@@ -123,9 +123,13 @@
     $$('[data-track]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.track === state.track)));
     const courseQuery = new URLSearchParams(location.search);
     const portalUrl = new URL('./', location.href);
-    portalUrl.searchParams.set('workspace', courseQuery.get('workspace') || (state.track === 'consumer' ? 'vast' : 'syd'));
+    const returnToFacts = courseQuery.get('returnView') === 'product-facts';
+    const returnInternal = returnToFacts && courseQuery.get('returnRole') === 'internal';
+    if (!returnInternal) portalUrl.searchParams.set('workspace', courseQuery.get('workspace') || (state.track === 'consumer' ? 'vast' : 'syd'));
+    else if (courseQuery.get('returnPartner')) portalUrl.searchParams.set('partner', courseQuery.get('returnPartner'));
+    if (returnToFacts && ['business', 'consumer'].includes(courseQuery.get('returnSegment'))) portalUrl.searchParams.set('factSegment', courseQuery.get('returnSegment'));
     if (courseQuery.get('demo') === 'inflyttning') portalUrl.searchParams.set('demo', 'inflyttning');
-    portalUrl.hash = 'academy';
+    portalUrl.hash = returnToFacts ? 'product-facts' : 'academy';
     $('#portal-link').href = portalUrl.href;
     $('#hero-version').textContent = `Produktunderlag ${data.meta?.source_date || '2026-10-10'} · ${data.meta?.version || 'ny utbildningsversion'}`;
   }

@@ -69,6 +69,15 @@ prissättning eller integration följer av att kunden väljer ett fokus.
 
 ## Direktuppdrag: felgranskning av hela portalen (2026-10-11)
 
+**PORTAL-FLODE-01 · Samlad flödesgranskning, verifierad kandidat:** sex
+riktade rättningar i utbildningsretur, övergiven förmedlingsdialog,
+nya partners i rapportväljaren, tangentbordsfokus och mobilens periodval.
+273 nya riktade kontroller, 919 breda och 160 sammanhängande klick-/layout-
+kontroller är gröna. PR #36:s parallella rättningar och v28 bevaras.
+Gemensam integration verifieras före publicering; faktisk version och
+livekontroll kvitteras i WORKLOG efter utförandet. Fiktiva Chromiumdata;
+ingen verifiering av verkliga kundutfall eller produktionsbehörighet.
+
 **Andra rundan publicerad v26 via PR #32:** källa
 `209a98fbb2144a253ee6495c1af25792dea32822`, native succeeded 10:01:35 UTC.
 157 nya riktade kontroller och 916 breda passerar lokalt. På publicerad

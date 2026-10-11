@@ -72,12 +72,17 @@
     if (!panel) return;
     event.preventDefault();
     if (control.hasAttribute('data-workbench-filter') || control.hasAttribute('data-workbench-more')) {
+      const previouslyVisible = element.querySelectorAll('.workbench-row').length;
       const setting = preferences.get(panelKey(panel.options));
       if (control.hasAttribute('data-workbench-filter')) { setting.filter = control.dataset.workbenchFilter; setting.shown = Math.min(12, Math.max(1, Number(panel.options.limit) || 4)); }
       else setting.shown += Math.min(12, Math.max(1, Number(panel.options.limit) || 4));
       const focusSelector = control.hasAttribute('data-workbench-filter') ? `[data-workbench-filter="${setting.filter}"]` : '[data-workbench-more]';
       const token = panel.token; element.outerHTML = render(panel.options);
-      document.querySelector(`[data-workbench-panel="${token}"] ${focusSelector}`)?.focus({ preventScroll: true });
+      const updated = document.querySelector(`[data-workbench-panel="${token}"]`);
+      // The final Show more button is removed once all rows are visible. Keep
+      // keyboard users at the first newly revealed case instead of the body.
+      const target = updated?.querySelector(focusSelector) || updated?.querySelectorAll('.workbench-open')[previouslyVisible];
+      target?.focus({ preventScroll: true });
       return;
     }
     const task = tasks(panel.options).find(row => row.id === control.dataset.workbenchOpen);

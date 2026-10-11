@@ -24,11 +24,18 @@
     const url = new URL('elakademin.html', location.href);
     url.searchParams.set('track', segment);
     if (P.role === 'partner') url.searchParams.set('workspace', P.partner);
+    else {
+      url.searchParams.set('returnRole', 'internal');
+      if (P.getPartner(P.selectedPartnerId)) url.searchParams.set('returnPartner', P.selectedPartnerId);
+    }
+    url.searchParams.set('returnView', 'product-facts');
+    url.searchParams.set('returnSegment', segment);
     if (P.demoMode) url.searchParams.set('demo', 'inflyttning');
     url.hash = 'lesson/' + id;
     return url.pathname.split('/').pop() + url.search + url.hash;
   }
-  let selected='consumer';
+  const returnSegment = new URLSearchParams(location.search).get('factSegment');
+  let selected=['business','consumer'].includes(returnSegment)?returnSegment:'consumer';
   function segments(){
     if(P.role==='internal')return ['business','consumer'];
     const p=P.getPartner();
