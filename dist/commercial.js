@@ -147,6 +147,10 @@
   }
   const selectedPartner = () => ids.includes(P.selectedPartnerId) ? P.selectedPartnerId : 'syd';
   function selectPartner(id, page) {
+    if (!P.getPartner?.(id)) return;
+    // Partner creation updates the live registry before any overview rerender.
+    // Refresh the local IDs so a new channel's own navigation works at once.
+    initManagement();
     if (!ids.includes(id)) return;
     P.selectedPartnerId = id;
     selectedJourneyStep = undefined;
@@ -232,7 +236,7 @@
     const rows = sortedPartners();
     return rows.map(id=>{
       const p=partner(id),m=management(id),v=valuesFor(id);
-      if(!hasFinancialData(id))return `<tr><td><button class="commercial-partner-name" data-commercial-partner="${e(id)}"><span class="commercial-avatar commercial-avatar-sales">${e(p.initials)}</span><span><strong>${e(p.name)}</strong><small>${e(p.typeLabel)}</small></span></button></td>${['Nettobidrag','Resultatbidrag','Partnerkostnad','Nya avtal','Årsvolym MWh'].map(label=>`<td data-label="${label}" class="commercial-number">—</td>`).join('')}<td data-label="Partnerresa"><span class="commercial-stage">Ny partner</span><small class="commercial-stage-note">Resultatunderlag saknas</small></td><td><button class="icon-button" data-commercial-partner="${e(id)}" aria-label="Öppna ${e(p.name)}">${icon('arrow')}</button></td></tr>`;
+      if(!hasFinancialData(id))return `<tr><td><button class="commercial-partner-name" data-commercial-partner="${e(id)}"><span class="commercial-avatar commercial-avatar-sales">${e(p.initials)}</span><span><strong>${e(p.name)}</strong><small>${e(p.typeLabel)}</small></span></button></td>${['Nettobidrag','Resultatbidrag','Partnerkostnad','Nya avtal','Årsvolym MWh'].map(label=>`<td data-label="${label}" class="commercial-number">—</td>`).join('')}<td data-label="Partnerresa"><span class="commercial-stage">${e(journeySteps[m.stage]||journeySteps[0])}</span><small class="commercial-stage-note">Exempelplacering · resultatunderlag saknas</small></td><td><button class="icon-button" data-commercial-partner="${e(id)}" aria-label="Öppna ${e(p.name)}">${icon('arrow')}</button></td></tr>`;
       return `<tr><td><button class="commercial-partner-name" data-commercial-partner="${id}"><span class="commercial-avatar commercial-avatar-${partner(id).type}">${e(p.initials||partner(id).initials)}</span><span><strong>${e(p.name)}</strong><small>${e(p.typeLabel)}</small></span></button></td><td data-label="Nettobidrag" class="commercial-number commercial-net ${v.net<0?'commercial-negative':''}">${moneyText(v.net)}</td><td data-label="Resultatbidrag" class="commercial-number">${moneyText(v.contribution)}</td><td data-label="Partnerkostnad" class="commercial-number">${moneyText(v.cost)}</td><td data-label="Nya avtal" class="commercial-number">${num(v.agreements)}</td><td data-label="Årsvolym MWh" class="commercial-number">${num(v.volume)}</td><td data-label="Partnerresa"><span class="commercial-stage">${e(journeySteps[m.stage]||journeySteps[0])}</span><small class="commercial-stage-note">Exempelplacering</small></td><td><button class="icon-button" data-commercial-partner="${id}" aria-label="Öppna ${e(p.name)}">${icon('arrow')}</button></td></tr>`;
     }).join('')||'<tr><td colspan="8"><p class="empty">Inga partners matchar. Ändra sökning eller partnertyp.</p></td></tr>';
   }

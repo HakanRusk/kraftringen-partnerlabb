@@ -21,7 +21,7 @@
     const parsed = new Date(value + 'T12:00:00Z');
     return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
   };
-  const duplicateKey = row => ['partner', 'address', 'apartment', 'moveDate', 'email'].map(field => text(row[field]).replace(/\s+/g, ' ').toLocaleLowerCase('sv-SE')).join('|');
+  const duplicateKey = row => JSON.stringify(['partner', 'address', 'apartment', 'moveDate', 'email'].map(field => text(row[field]).replace(/\s+/g, ' ').toLocaleLowerCase('sv-SE')));
   function authorityReady(row) {
     if (!partnerIntake(row)) return row?.authorityDemo === true;
     return Array.isArray(row.authorityFiles) && row.authorityFiles.length > 0 && row.authorityFiles.length <= 3 && row.authorityFiles.every(meta => meta.partner === row.partner && P.moveinAttachments?.validMeta(meta));
@@ -154,6 +154,23 @@
     return visible.length ? `<div class="movein-service-timeline">${visible.map(item => `<article class="${item.visibility === 'internal' ? 'movein-service-private' : ''}"><span>${icon(item.visibility === 'internal' ? 'shield' : 'mail')}</span><div><small>${e(date(item.at))} · ${e(item.actor)}${item.visibility === 'internal' ? ' · Intern anteckning' : ' · Delad återkoppling'}</small><p>${e(item.text)}</p></div></article>`).join('')}</div>` : '<p class="muted">Ingen återkoppling ännu.</p>';
   }
   const mayAttach = row => P.role === 'partner' && row.partner === P.partner && row.serviceRequested === true && ['draft', 'needs_info'].includes(row.handoverStatus);
+  function refreshCase(row) {
+    const dialog = qs('#portal-dialog');
+    const isCurrent = dialog?.open && dialog.querySelector('.movein-service-detail')?.dataset.caseId === row.id;
+    const form = isCurrent ? qs('#movein-service-forward-form') : null;
+    const fields = ['partnerReply', 'address', 'apartment', 'moveDate', 'postcode', 'city'];
+    const draft = form ? Object.fromEntries(fields.filter(name => form.elements.namedItem(name)).map(name => [name, form.elements.namedItem(name).value])) : null;
+    const focused = form?.contains(document.activeElement) ? document.activeElement.name : '';
+    P.render();
+    if (!isCurrent || findVisible(row.id) !== row) return;
+    open(row.id);
+    const nextForm = qs('#movein-service-forward-form');
+    if (draft && nextForm) for (const [name, value] of Object.entries(draft)) {
+      const input = nextForm.elements.namedItem(name);
+      if (input) input.value = value;
+    }
+    if (focused) nextForm?.elements.namedItem(focused)?.focus();
+  }
   function attachmentPanel(row) {
     const files = row.authorityFiles || [], editable = mayAttach(row);
     return `<section class="movein-attachment-panel"><h3>Fullmakter</h3><p>${files.length ? 'Bifogade exempel på fullmakter. Kraftringen kan öppna underlaget vid handläggning.' : partnerIntake(row) ? 'Bifoga fullmakten innan underlaget förmedlas. Du kan spara ärendet och lägga till filen senare.' : row.authorityDemo ? 'Det här äldre exempelärendet har en bevarad testmarkering, ingen bifogad fullmaktsfil.' : 'Ingen fullmaktsfil finns bifogad.'}</p><div class="movein-attachment-list">${files.map((meta, index) => `<div class="movein-attachment-item"><span><strong>${e(meta.name)}</strong><small>${e(Math.ceil(meta.size / 1024))} kB · <span data-attachment-status="${index}">Kontrollerar lokal fil…</span></small></span><div class="movein-attachment-actions"><button class="btn btn-secondary btn-small" type="button" data-attachment-download="${index}">${icon('download')} Hämta</button>${editable ? `<button class="btn btn-secondary btn-small" type="button" data-attachment-remove="${index}">Ta bort</button>` : ''}</div></div>`).join('')}</div>${editable ? `<label class="field">Bifoga fullmakt${files.length >= 3 ? '<span class="form-hint">Tre bilagor är redan bifogade. Ta bort en för att ersätta den.</span>' : `<input id="movein-attachment-files" type="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg" multiple><span class="form-hint">PDF, PNG eller JPEG · högst 5 MB per fil · max tre bilagor per ärende.</span>`}</label>` : ''}<p class="movein-attachment-feedback" id="movein-attachment-feedback" role="status" aria-live="polite"></p><p>Filerna stannar i den här webbläsaren. En bilaga innebär ingen juridisk verifiering av fullmakt eller ett tecknat avtal.</p></section>`;
@@ -183,9 +200,20 @@
       const previous = structuredClone(row);
       row.authorityFiles.splice(index, 1); row.updatedAt = now(); row.events.unshift(event('Fastighetsbolaget tog bort fullmaktsbilagan ' + meta.name + ' i test.', 'shared', 'Fastighetsbolaget · demo'));
       if (!P.save()) { restoreRow(row, previous); message('Bilagan är kvar. Ändringen kunde inte sparas.', true); return; }
+      const revision = JSON.stringify(row);
       button.disabled = true;
-      try { await P.moveinAttachments.removeUnreferenced(meta); if (findVisible(row.id) === row && mayAttach(row)) { P.render(); open(row.id); } }
-      catch (failure) { restoreRow(row, previous); P.save(); message(failure.message || 'Bilagan kunde inte tas bort.', true); }
+      try { await P.moveinAttachments.removeUnreferenced(meta); if (findVisible(row.id) === row && mayAttach(row)) refreshCase(row); }
+      catch (failure) {
+        if (findVisible(row.id) === row && JSON.stringify(row) === revision) {
+          restoreRow(row, previous);
+          const restored = P.save();
+          refreshCase(row);
+          P.toast(restored ? 'Bilagan kunde inte tas bort. Den tidigare kopplingen är återställd.' : 'Bilagan kunde inte tas bort. Kopplingen finns kvar i denna flik men kunde inte sparas.');
+        } else {
+          if (findVisible(row.id) === row) refreshCase(row);
+          P.toast('Den bortkopplade lokala filen kunde inte rensas. Nyare ändringar i ärendet behålls.');
+        }
+      }
       finally { if (button.isConnected) button.disabled = false; }
     });
     const picker = qs('#movein-attachment-files');
@@ -202,7 +230,7 @@
         const previous = structuredClone(row);
         row.authorityFiles.push(...uploaded); row.updatedAt = now(); row.events.unshift(event(uploaded.length + ' fullmaktsbilaga/bilagor bifogade av fastighetsbolaget. Innehåll och behörighet är inte juridiskt verifierade.', 'shared', 'Fastighetsbolaget · demo'));
         if (!P.save()) { restoreRow(row, previous); await Promise.all(uploaded.map(meta => P.moveinAttachments.remove(meta).catch(() => false))); message('Bilagorna kunde inte kopplas till ärendet. Välj filerna igen.', true); return; }
-        P.render(); open(row.id); P.toast('Fullmaktsbilagan är sparad i den här webbläsaren.');
+        refreshCase(row); P.toast('Fullmaktsbilagan är sparad i den här webbläsaren.');
       } catch (failure) { message(failure.message || 'Bilagan kunde inte sparas.', true); }
       finally { if (picker.isConnected) { picker.disabled = false; picker.value = ''; } }
     };
@@ -210,7 +238,7 @@
   function detail(row) {
     const internal = P.role === 'internal';
     const controls = internal ? internalForm(row) : partnerForm(row);
-    return `<div class="movein-service-detail"><div class="movein-service-detail-head"><div><span class="eyebrow">INFLYTTNINGSSERVICE · EXEMPEL</span><h2>${e(row.name)}</h2><p>${e(P.partners[row.partner])}</p></div>${badge(row)}</div><dl class="movein-service-meta"><div><dt>Bostad</dt><dd>${e(row.address)}${row.apartment ? ', lgh ' + e(row.apartment) : ''}<br>${e(row.postcode)} ${e(row.city)}</dd></div><div><dt>Inflyttning</dt><dd>${e(date(row.moveDate))}</dd></div><div><dt>Kontakt · exempel</dt><dd>${e(row.email)}${row.phone ? '<br>' + e(row.phone) : ''}</dd></div><div><dt>Registrerat</dt><dd>${e(date(row.createdAt))}${partnerIntake(row) ? '<br>' + (row.intakeSource === 'excel' ? 'Excelimport' : 'Manuellt av fastighetsbolaget') : ''}</dd></div></dl><div class="movein-service-prerequisites"><span>${icon(row.serviceRequested ? 'check' : 'clock')}<strong>Serviceuppdrag</strong>${row.serviceRequested ? (partnerIntake(row) ? 'Registrerat av fastighetsbolaget' : 'Bevarat testval') : 'Inget uppdrag registrerat'}</span><span>${icon(authorityReady(row) ? 'check' : 'file')}<strong>Fullmakt</strong>${partnerIntake(row) ? (row.authorityFiles.length ? 'Bilaga finns · inte juridiskt verifierad' : 'Bilaga saknas') : (row.authorityDemo ? 'Äldre testmarkering · ingen giltig fullmakt' : 'Ingen fullmaktsmarkering')}</span></div>${!row.serviceRequested ? note('Äldre intresseregistrering. Ett serviceuppdrag eller en fullmakt har inte lagts till i efterhand.') : ''}<section class="card"><h3>Önskat elavtal</h3><p>${e(row.desiredProduct || 'Inget avtalsval registrerat')}</p><small>Förslag i underlaget. Inte tecknat avtal eller verifierad fullmakt.</small></section>${attachmentPanel(row)}<section class="movein-service-processing"><h3>Kraftringens handläggning</h3><div class="movein-service-process-grid"><article>${icon('bolt')}<strong>Elhandel</strong><span>${e(processingLabels[row.processing.trade])}</span></article><article>${icon('home')}<strong>Elnät</strong><span>${e(processingLabels[row.processing.network])}</span></article><article>${icon('user')}<strong>Elhandelsavtal · separat status</strong><span>${e(offerLabels[row.processing.offerChoice])}</span></article></div><p class="movein-service-small">Fastighetsbolaget sköter registrering och fullmaktsunderlag. Hyresgästen behöver inte använda portalen. Elhandel och nödvändig elnätshantering följs separat; ett färdigt serviceärende skapar inget avtal i demot.</p></section>${row.next ? `<div class="movein-service-next"><small>NÄSTA STEG${row.nextDate ? ' · ' + e(date(row.nextDate)) : ''}</small><strong>${e(row.next)}</strong></div>` : ''}${controls}<section class="movein-service-feedback"><h3>Återkoppling & aktivitet</h3>${timeline(row)}</section>${note('Alla ändringar sparas lokalt. Bilagor och testmarkeringar innebär inget giltigt avtal eller kommersiellt utfall.')}</div>`;
+    return `<div class="movein-service-detail" data-case-id="${e(row.id)}"><div class="movein-service-detail-head"><div><span class="eyebrow">INFLYTTNINGSSERVICE · EXEMPEL</span><h2>${e(row.name)}</h2><p>${e(P.partners[row.partner])}</p></div>${badge(row)}</div><dl class="movein-service-meta"><div><dt>Bostad</dt><dd>${e(row.address)}${row.apartment ? ', lgh ' + e(row.apartment) : ''}<br>${e(row.postcode)} ${e(row.city)}</dd></div><div><dt>Inflyttning</dt><dd>${e(date(row.moveDate))}</dd></div><div><dt>Kontakt · exempel</dt><dd>${e(row.email)}${row.phone ? '<br>' + e(row.phone) : ''}</dd></div><div><dt>Registrerat</dt><dd>${e(date(row.createdAt))}${partnerIntake(row) ? '<br>' + (row.intakeSource === 'excel' ? 'Excelimport' : 'Manuellt av fastighetsbolaget') : ''}</dd></div></dl><div class="movein-service-prerequisites"><span>${icon(row.serviceRequested ? 'check' : 'clock')}<strong>Serviceuppdrag</strong>${row.serviceRequested ? (partnerIntake(row) ? 'Registrerat av fastighetsbolaget' : 'Bevarat testval') : 'Inget uppdrag registrerat'}</span><span>${icon(authorityReady(row) ? 'check' : 'file')}<strong>Fullmakt</strong>${partnerIntake(row) ? (row.authorityFiles.length ? 'Bilaga finns · inte juridiskt verifierad' : 'Bilaga saknas') : (row.authorityDemo ? 'Äldre testmarkering · ingen giltig fullmakt' : 'Ingen fullmaktsmarkering')}</span></div>${!row.serviceRequested ? note('Äldre intresseregistrering. Ett serviceuppdrag eller en fullmakt har inte lagts till i efterhand.') : ''}<section class="card"><h3>Önskat elavtal</h3><p>${e(row.desiredProduct || 'Inget avtalsval registrerat')}</p><small>Förslag i underlaget. Inte tecknat avtal eller verifierad fullmakt.</small></section>${attachmentPanel(row)}<section class="movein-service-processing"><h3>Kraftringens handläggning</h3><div class="movein-service-process-grid"><article>${icon('bolt')}<strong>Elhandel</strong><span>${e(processingLabels[row.processing.trade])}</span></article><article>${icon('home')}<strong>Elnät</strong><span>${e(processingLabels[row.processing.network])}</span></article><article>${icon('user')}<strong>Elhandelsavtal · separat status</strong><span>${e(offerLabels[row.processing.offerChoice])}</span></article></div><p class="movein-service-small">Fastighetsbolaget sköter registrering och fullmaktsunderlag. Hyresgästen behöver inte använda portalen. Elhandel och nödvändig elnätshantering följs separat; ett färdigt serviceärende skapar inget avtal i demot.</p></section>${row.next ? `<div class="movein-service-next"><small>NÄSTA STEG${row.nextDate ? ' · ' + e(date(row.nextDate)) : ''}</small><strong>${e(row.next)}</strong></div>` : ''}${controls}<section class="movein-service-feedback"><h3>Återkoppling & aktivitet</h3>${timeline(row)}</section>${note('Alla ändringar sparas lokalt. Bilagor och testmarkeringar innebär inget giltigt avtal eller kommersiellt utfall.')}</div>`;
   }
   function internalForm(row) {
     if (row.handoverStatus === 'draft') return `<div class="movein-service-awaiting"><strong>Underlaget ligger hos fastighetsbolaget</strong><p>Partnern registrerar underlaget och bifogar fullmakten innan ärendet förmedlas. Kraftringens handläggning börjar efter överlämningen.</p></div>`;
