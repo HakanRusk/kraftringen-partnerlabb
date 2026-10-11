@@ -10,16 +10,39 @@ Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face ti
 
 Denna etapp omfattar frontend med exempeldata. Flöden, pipelinesteg, fyra demoutbildningar och partnerresan är förslag att testa. Elakademin är en färdig innehållskurs, tillagd i båda säljpartnernas arbetsytor på användarens uppdrag. Backend och integrationer ingår inte nu; ingen byggplattform är vald.
 
-## Ny utbildning: innehållsförhandsvisning
+## Elakademin – fullständig partnerutbildning
 
-Öppna [utbildning-preview.html](https://kraftringen-partnerlabb.rosen123.chatgpt.site/utbildning-preview.html)
-med portalens befintliga åtkomst. Den fristående vyn visar gemensam grund,
-Savera-/Face2face-spår, alla tio produkter från säljarunderlaget 10 oktober
-2026 samt Direkt/Stabil med viktning, fem frågor med facit och nio manusutkast.
-Det gemensamma Stabil-priset omfattar endast den säkrade månadsutjämnade
-delen. Räkneexemplen är syntetiska och kundens offert styr villkoren.
-Arthur-/avatarvideor och den omgjorda presentationen/självstudierna återstår.
-Befintliga Academy-kurser och B2C-samtalsbibliotek bevaras.
+Öppna [Elakademin](https://kraftringen-partnerlabb.rosen123.chatgpt.site/elakademin.html)
+med portalens befintliga åtkomst, eller välj Utbildning i säljpartnerns arbetsyta.
+18 utförliga kapitel börjar utan förkunskaper och leder vidare till alla tio
+produkter, produktval och kunddialog. Företagsspåret har 15 kapitel och
+privatkundsspåret 12; de gemensamma kapitlen återanvänds mellan spåren.
+Partnerns konfigurerade kundsegment styr ingången.
+
+Materialet omfattar ungefär 26 500 ord, 38 lösta räkneexempel, 18 kundfall,
+72 kapitelövningar med förklarat facit, 20 slutfrågor per spår och en ordlista
+med 65 begrepp. Räkneverktyg visar förbrukningsvägt komponentpris och
+prognosbaserad säkring i relation till faktiskt uttag. PDF-handbok och
+redigerbar PowerPoint med utförliga talaranteckningar kan laddas ner:
+139 sidor respektive 463 bilder. Alla 18 kapitel har färdiga Arthur-filmer,
+sammanlagt 95 minuter, med animerad guide och förklarande diagram;
+filmernas berättartext finns även i kapitlet. Produktfakta följer användarens
+säljarunderlag från 10 oktober 2026 och bekräftelsen att Stabil utjämnar
+endast den säkrade delen. Aktuell offert och avtal styr kundens egna villkor.
+
+Bokmärken, egna anteckningar, testsvar och klarmarkering sparas endast i
+användarens webbläsare. Självtesten är lärandestöd; ingen formell certifiering,
+central resultatrapportering eller delad kundlagring införs. Syntetiska
+räkneexempel är inga offerter. De fem äldre Academy-kurserna och biblioteket
+för lyckade B2C-samtal bevaras. Tidigare förhandsvisning länkar till hela kursen.
+Faktisk medie-, export-, test- och publiceringskvittens finns i WORKLOG.md.
+
+Kursdata och de godkända berättarmanusen finns i `dist/elakademin-data.json`.
+Dokument kan återskapas med `python tools/build-elakademin-documents.py`
+(Pillow, ReportLab, python-pptx, pypdf och DejaVu Sans behövs). Reproducerbar
+kurskontroll: `PARTNERLABB_QA_URL=http://127.0.0.1:4186 node qa/elakademin-course.cjs`
+med lokalt startad server, Playwright och Chromium. Resultat och bilder
+skrivs i en separat temporär katalog. Video-/källfakta dokumenteras i ASSETS.md.
 
 ## Aktiv pilotagent
 

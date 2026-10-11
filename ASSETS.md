@@ -43,3 +43,57 @@ Fotografernas namn och bildsidornas adresser har inte verifierats; källänkarna
 | `dist/assets/elakademin-kundguide.pdf` | Elakademins färdiga kundguide på 12 sidor, kopierad från samma utbildningsportal. Innehåller företagsinriktade undervisningsexempel, ordlista, checklista och publika källor. |
 
 Kursens text och originalfrågor kommer från den färdiga Elakademin (`/workspace/training/course.json`); de slutliga filmerna och filmmanusen från dess `video-manifest.json`. Publika produktkällor finns i kursdialogen. Interna Gamma-original, interna presentationsbilder och administrativa videoprojekt har inte lagts till i partnerportalens publika filer. Omslaget är utbildningsmaterial som byggts för denna utbildning och antas inte vara en separat godkänd Kraftringen-varumärkestillgång.
+
+## Elakademin v2 – fullständig partnerutbildning
+
+Användarens produktunderlag ”Produktspecifikationer för säljare”, daterat
+10 oktober 2026, är huvudkälla för alla tio produkter. Det sparas redan som
+`dist/utbildning-preview/produktspecifikationer.pdf`. De bifogade originalen
+”Elhandel från grunden B2B v1” används för grunder och källhänvisningar.
+Originalsjälvstudierna finns i
+`dist/elakademin-material/Kraftringen-Grundunderlag-v1.pdf` (91 sidor).
+Ludwigs direkta precisering styr att Stabils gemensamma pris gäller endast
+den säkrade månadsutjämnade delen. Källsidnummer anges i kapiteldata.
+
+Ny självstudiehandbok och redigerbar PowerPoint i
+`dist/elakademin-material/` skapades för denna kurs från samma kanoniska
+`dist/elakademin-data.json`. De innehåller utbildningsexempel, inte verkliga
+kundpriser. Generatorscript finns i `tools/build-elakademin-documents.py`.
+Redigerbara diagram visar viktning, prognos/faktiskt uttag, Optis hela
+månadsjämförelse och Vintersäkrats standardkalender. De är författade från
+produktkällan och verifierade beräkningar, inte genererade prisuppgifter.
+
+Ny berättarröst är exakt Higgsfield-preset Arthur,
+`30fc8796-ceb6-4a66-b3a7-4a145ef7f346`, via ElevenLabs Text-to-Speech V2.
+Figuren bygger på användarens uttryckligen inskickade referensbild med
+3D-figur i mörkblå keps och arbetskläder. Godkänd restaurering bevarar
+karaktären; en underkänd variant med påhittat skägg används inte. Figuren
+är kursens tecknade guide och föreställer ingen verifierad medarbetare.
+
+Kapitelfilmernas fullständiga berättarmanus finns i varje kapitel och i
+PowerPointens talaranteckningar. Native Higgsedit-projekt ritar 270
+innehållsanpassade grafiktillstånd över 18 lektioner. Faktiskt mätta svenska
+ordtider synkar förklaringar, diagram och de kanoniska WebVTT-filerna i
+`dist/elakademin-material/textning/`. Textningen har kontrollerats ord för
+ord mot alla 8 693 godkända manusord och har giltiga cue-tider. Den mätta
+kapitelfilmspeltiden är 95 min 10,715 s, plus 16,939 s introduktion.
+Alla 18 filmer, originalinläsningar, postrar och ett gemensamt paket med
+19 redigerbara projekt är native-bekräftade och oberoende granskade.
+Paketet har 325 filer och 229 682 163 bytes, SHA256
+`6a93ccaf8a8754e3adc5976654bbc1b3f641b01d6c3ad00d662fb0e690593ba3`.
+Samtliga relativa runtime-assets, fonter och 19 originalinläsningar finns
+och matchar verifierade SHA. Inga credentials eller presignerade receipts
+ingår. Publika ursprungsreferenser i metadata behövs inte för lokal rendering.
+Fryst mediemanifest har SHA256
+`62e06483a929d2ab4445fd82d05d51002c24b7066bbbf69606b26b0c8ed1e152`.
+Bild-/talproduktion och publiceringskvittens finns i WORKLOG; bara
+bekräftade permanenta HTTPS-media-URL:er publiceras i kursdata.
+
+Filmformat är H.264/AAC, 1280 × 720, 24 fps. Native animerad grafik och
+illustrerad guide följer berättarrösten; figuren har ingen läppsynk.
+Redigerbara projektarkiv anges per färdig film i dess mediaobjekt.
+Higgsfields media-CDN serverar filmer och postrar; inga presignerade
+uppladdningsadresser eller credentials läggs i Git. Slutliga video-URL:er
+är leveransresurser, inte en garanti för separat kundbehörighet på CDN.
+Portalens befintliga Sites-åtkomst bevaras. Inga riktiga kundsamtal eller
+kunduppgifter producerades eller publicerades i denna kurs.
