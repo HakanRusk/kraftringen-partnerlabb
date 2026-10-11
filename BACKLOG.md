@@ -34,6 +34,13 @@ prissättning eller integration följer av att kunden väljer ett fokus.
 
 ## Direktuppdrag: felgranskning av hela portalen (2026-10-11)
 
+**Andra rundan publicerad v26 via PR #32:** källa
+`209a98fbb2144a253ee6495c1af25792dea32822`, native succeeded 10:01:35 UTC.
+157 nya riktade kontroller och 916 breda passerar lokalt. På publicerad
+version passerar 916 breda, 130 riktade och 102 medie-/åtkomstkontroller.
+Samma portal/custom-policy och tidigare utbildning/underlag bevarade.
+Full kvittens i WORKLOG; detta påstår inte att okända fel saknas.
+
 **Andra rundan, kandidat från edb6fa5:** Ludwigs ”Kör en runda till” har
 reproducerat och rättat fler fel i flikkonflikter, avbrutna ljudtransaktioner,
 sluttestets spår/URL, demo-historik, Excel/dubbletter, komplettering/bilagor,
