@@ -113,10 +113,10 @@
   }
   function initManagement() {
     ids.splice(0,ids.length,...P.partnerRegistry.map(item=>item.id));
-    if (!P.state.commercial || typeof P.state.commercial !== 'object') P.state.commercial = {};
-    if (!P.state.commercial.management || typeof P.state.commercial.management !== 'object') P.state.commercial.management = {};
+    if (!P.state.commercial || typeof P.state.commercial !== 'object' || Array.isArray(P.state.commercial)) P.state.commercial = {...(P.state.commercial || {})};
+    if (!P.state.commercial.management || typeof P.state.commercial.management !== 'object' || Array.isArray(P.state.commercial.management)) P.state.commercial.management = {...(P.state.commercial.management || {})};
     ids.forEach((id,index) => {
-      if (!P.state.commercial.management[id] || typeof P.state.commercial.management[id] !== 'object') {
+      if (!P.state.commercial.management[id] || typeof P.state.commercial.management[id] !== 'object' || Array.isArray(P.state.commercial.management[id])) {
         P.state.commercial.management[id] = {
           stage:[6,4,3,1][index]??0, owner:['Demoansvarig A','Demoansvarig B','Demoansvarig A','Ej tilldelad'][index]||'Ej tilldelad',
           next:['Stämma av företagsförsäljning, årsvolym och kommersiellt bidrag','Följa upp försäljningsutfall via Beest, churn och bortfall','Testa överlämning och återkoppling för en fiktiv inflyttare','Planera hur partnern erbjuder inflyttningsservicen'][index]||'Beskriv samarbetet och nästa steg',
@@ -124,9 +124,27 @@
           note:'Exempelanteckning. Partnerns placering och uppgifter är ett testförslag.', checks:[], events:[]
         };
       }
+      const saved = P.state.commercial.management[id];
+      // Older local drafts may predate the journey fields. Repair only the
+      // known shape while retaining saved notes and unrelated extensions.
+      if (!Number.isInteger(saved.stage) || saved.stage < 0 || saved.stage >= journeySteps.length) saved.stage = 0;
+      if (!Array.isArray(saved.checks)) saved.checks = [];
+      if (!Array.isArray(saved.events)) saved.events = [];
     });
   }
   const management = id => { initManagement(); return P.state.commercial.management[id]; };
+  function saveManagement(id, patch, eventText) {
+    const previous = management(id);
+    const next = {...previous, ...patch};
+    if (eventText) next.events = [{at:new Date().toISOString(), actor:'Kraftringen · intern demovy', text:eventText, visibility:'internal'}, ...previous.events];
+    P.state.commercial.management[id] = next;
+    if (P.save() === false) {
+      P.state.commercial.management[id] = previous;
+      P.toast('Webbläsaren kunde inte spara partneruppföljningen. Tidigare uppgifter har behållits. Försök igen.');
+      return false;
+    }
+    return true;
+  }
   const selectedPartner = () => ids.includes(P.selectedPartnerId) ? P.selectedPartnerId : 'syd';
   function selectPartner(id, page) {
     if (!ids.includes(id)) return;
@@ -250,15 +268,15 @@
   function activityFor(id) {
     // The older vast records are retained for compatibility, but are B2B examples.
     // They must never describe Face2face's confirmed consumer sales role.
-    const customerEvents = id==='vast' ? (P.consumer?.activityFor?.(id)||[]) : (P.state.records||[]).filter(r=>r.partner===id).flatMap(r=>(r.events||[]).map(ev=>({...ev,company:r.company})));
-    const adminEvents = (management(id).events||[]).map(ev=>({...ev,company:'Intern partneruppföljning'}));
-    const moving = fallback[id]?.type==='property' ? (P.moveinService?.activityFor?.(id) || (P.state.moveins||[]).filter(a=>a.partner===id||a.partnerId===id).map(a=>({at:a.created||a.createdAt||'2026-10-07',company:a.name||'Inflyttningsärende · exempel',text:'Ett äldre lokalt testintresse finns sparat som utkast. Överlämning, serviceval och fullmakt är inte bekräftade.',actor:'Inflyttningsdemo'}))) : [];
+    const customerEvents = id==='vast' ? (P.consumer?.activityFor?.(id)||[]) : (Array.isArray(P.state.records) ? P.state.records : []).filter(r=>r&&r.partner===id).flatMap(r=>(Array.isArray(r.events) ? r.events : []).filter(ev=>ev&&typeof ev==='object').map(ev=>({...ev,company:r.company})));
+    const adminEvents = management(id).events.filter(ev=>ev&&typeof ev==='object').map(ev=>({...ev,company:'Intern partneruppföljning'}));
+    const moving = fallback[id]?.type==='property' ? (P.moveinService?.activityFor?.(id) || (Array.isArray(P.state.moveins) ? P.state.moveins : []).filter(a=>a&&(a.partner===id||a.partnerId===id)).map(a=>({at:a.created||a.createdAt||'2026-10-07',company:a.name||'Inflyttningsärende · exempel',text:'Ett äldre lokalt testintresse finns sparat som utkast. Överlämning, serviceval och fullmakt är inte bekräftade.',actor:'Inflyttningsdemo'}))) : [];
     return [...customerEvents,...adminEvents,...moving].sort((a,b)=>String(b.at).localeCompare(String(a.at))).slice(0,6);
   }
   const operationMetric = (label,value,noteText) => `<div class="commercial-operation-metric"><strong>${value}</strong><span>${e(label)}</span><small>${e(noteText)}</small></div>`;
   function renderBusinessFocus() {
-    const records=(P.state.records||[]).filter(r=>r.partner==='syd');
-    const offers=(P.state.offers||[]).filter(o=>o.partner==='syd');
+    const records=(Array.isArray(P.state.records) ? P.state.records : []).filter(r=>r&&r.partner==='syd');
+    const offers=(Array.isArray(P.state.offers) ? P.state.offers : []).filter(o=>o&&o.partner==='syd');
     const details=P.state.businessDetails||{};
     const known=records.filter(r=>r.stage!=='active'&&r.status!=='avslutad').map(r=>({record:r,details:details[r.id]})).filter(item=>item.details);
     const yearly=known.reduce((total,item)=>total+(Number(item.details.annualVolume)||0),0);
@@ -274,7 +292,7 @@
   }
   function renderPropertyFocus(id) {
     P.moveinService?.init?.();
-    const rows=P.moveinService?.rows?.(id)||(P.state.moveins||[]).filter(row=>row.partner===id||row.partnerId===id);
+    const rows=P.moveinService?.rows?.(id)||(Array.isArray(P.state.moveins) ? P.state.moveins : []).filter(row=>row&&(row.partner===id||row.partnerId===id));
     const status=row=>row.handoverStatus||'draft';
     const handed=rows.filter(row=>status(row)!=='draft');
     const count=key=>rows.filter(row=>status(row)===key).length;
@@ -320,9 +338,9 @@
       form.onsubmit=event=>{
         event.preventDefault();
         if(!P.validText(form.elements.owner)||!P.validText(form.elements.next))return;
-        Object.assign(m,{owner:form.elements.owner.value.trim(),stage:Number(form.elements.stage.value),next:form.elements.next.value.trim(),date:form.elements.date.value,note:form.elements.note.value.trim()});
-        m.events.unshift({at:new Date().toISOString(),actor:'Kraftringen · intern demovy',text:`Intern uppföljning sparad. Nästa steg: ${m.next}`,visibility:'internal'});
-        P.save();P.closeDialog();P.render();P.toast('Partnerns interna testutkast är sparat i denna webbläsare.');
+        const patch = {owner:form.elements.owner.value.trim(),stage:Number(form.elements.stage.value),next:form.elements.next.value.trim(),date:form.elements.date.value,note:form.elements.note.value.trim()};
+        if (!saveManagement(id, patch, `Intern uppföljning sparad. Nästa steg: ${patch.next}`)) return;
+        P.closeDialog();P.render();P.toast('Partnerns interna testutkast är sparat i denna webbläsare.');
       };
     });
   }
@@ -331,7 +349,13 @@
   }
   function exportExamples() {
     const p=currentPeriod();
-    const escapeCsv=value=>`"${String(value).replace(/"/g,'""')}"`;
+    const escapeCsv=value=>{
+      const text = String(value);
+      // Quoting alone does not keep Excel from executing a partner name as a
+      // formula. Keep numeric result cells numeric; export names as text.
+      const safe = typeof value === 'string' && /^[\s]*[=+@-]/.test(text) ? `'${text}` : text;
+      return `"${safe.replace(/"/g,'""')}"`;
+    };
     const lines=[['DEMO – manuella exempel, ekonomiskt mått ej beslutat'],['Period',p.label],['Jämförelse',p.comparison],['Partner','Nettobidrag kr – exempel','Resultatbidrag kr – exempel','Partnerkostnad kr – exempel','Nya avtal – exempel','Årsvolym MWh – exempel']];
     sortedPartners().forEach(id=>{const v=valuesFor(id);lines.push(hasFinancialData(id)?[partner(id).name,v.net,v.contribution,v.cost,v.agreements,v.volume]:[partner(id).name,'Underlag saknas','','','','']);});
     P.download(`partnerutfall-exempel-${p.id}.csv`,'\uFEFF'+lines.map(row=>row.map(escapeCsv).join(';')).join('\n'),'text/csv;charset=utf-8');
@@ -381,20 +405,23 @@
   }
   function bindJourney() {
     bindControls();
-    document.querySelector('#commercial-journey-partner').onchange=event=>selectPartner(event.target.value,'journey');
-    document.querySelectorAll('[data-commercial-step]').forEach(button=>{button.onclick=()=>{selectedJourneyStep=Number(button.dataset.commercialStep);P.render();};});
+    document.querySelector('#commercial-journey-partner').onchange=event=>{selectPartner(event.target.value,'journey');document.querySelector('#commercial-journey-partner')?.focus();};
+    document.querySelectorAll('[data-commercial-step]').forEach(button=>{button.onclick=()=>{selectedJourneyStep=Number(button.dataset.commercialStep);P.render();document.querySelector(`[data-commercial-step="${selectedJourneyStep}"]`)?.focus();};});
     document.querySelectorAll('[data-commercial-check]').forEach(input=>{input.onchange=()=>{
       const m=management(selectedPartner());
-      if(!Array.isArray(m.checks))m.checks=[];
-      m.checks=m.checks.filter(key=>key!==input.dataset.commercialCheck);
-      if(input.checked)m.checks.push(input.dataset.commercialCheck);
-      P.save();P.toast('Det interna demomomentet är sparat för denna partner.');
+      const checks = m.checks.filter(key=>key!==input.dataset.commercialCheck);
+      if(input.checked)checks.push(input.dataset.commercialCheck);
+      if (!saveManagement(selectedPartner(), {checks})) {
+        input.checked = m.checks.includes(input.dataset.commercialCheck);
+        return;
+      }
+      P.toast('Det interna demomomentet är sparat för denna partner.');
     };});
     document.querySelector('#commercial-place-stage')?.addEventListener('click',event=>{
-      const id=selectedPartner(),m=management(id);
-      m.stage=Number(event.currentTarget.dataset.stage);
-      m.events.unshift({at:new Date().toISOString(),actor:'Kraftringen · intern demovy',text:`Exempelplacering ändrad till ${journeySteps[m.stage]}.`,visibility:'internal'});
-      P.save();P.render();P.toast('Partnerns exempelplacering är sparad lokalt.');
+      const id=selectedPartner(),stage=Number(event.currentTarget.dataset.stage);
+      if (!Number.isInteger(stage) || stage < 0 || stage >= journeySteps.length) return;
+      if (!saveManagement(id, {stage}, `Exempelplacering ändrad till ${journeySteps[stage]}.`)) return;
+      P.render();document.querySelector(`[data-commercial-step="${stage}"]`)?.focus();P.toast('Partnerns exempelplacering är sparad lokalt.');
     });
   }
   const internalOnly = render => () => P.role==='internal'?render():`<div class="empty">Denna vy tillhör Kraftringens interna demovy.</div>`;

@@ -16,13 +16,24 @@
   const esc = value => P.e(value);
   const icon = name => `<span class="studio-icon" aria-hidden="true">${P.icon(name)}</span>`;
   const moneyMissing = '<span class="studio-missing">Underlag saknas</span>';
-  const formatDate = value => value ? new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(value)) : 'Inte angivet';
+  const isCalendarDate = value => /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value)) && new Date(value + 'T00:00:00Z').toISOString().slice(0, 10) === value;
+  const formatDate = value => value && Number.isFinite(new Date(value).getTime()) && (!/^\d{4}-\d{2}-\d{2}$/.test(value) || isCalendarDate(value)) ? new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(value)) : 'Inte angivet';
+  const isObject = value => !!value && typeof value === 'object' && !Array.isArray(value);
+  function restoreObject(target, previous) {
+    Object.keys(target).forEach(key => delete target[key]);
+    Object.assign(target, previous);
+  }
+  function saveOrRollback(rollback) {
+    try { if (P.save()) return true; } catch {}
+    rollback();
+    P.toast('Webbläsaren kunde inte spara. Ingen ändring genomfördes. Försök igen.');
+    return false;
+  }
   function freshDraft() {
     return { id: '', interest: '', need: '', volume: '', start: '', customerId: '', partner: P.partner || 'syd', note: '', documentSteps: {} };
   }
   function offers() {
-    if (!Array.isArray(P.state.offers)) P.state.offers = [];
-    return P.state.offers.filter(item => P.role === 'internal' || item.partner === P.partner);
+    return (Array.isArray(P.state.offers) ? P.state.offers : []).filter(item => isObject(item) && (P.role === 'internal' || item.partner === P.partner));
   }
   function customer(draft) { return P.getRecords().find(record => record.id === draft.customerId); }
   function name(draft) { return customer(draft)?.company || draft.customerName || 'Kund saknas'; }
@@ -34,6 +45,14 @@
       record.events ||= [];
       record.events.unshift({ at: new Date().toISOString(), actor: P.role === 'internal' ? 'Internt team' : P.partners[record.partner], text, visibility: 'shared' });
     }
+  }
+  function canEdit(draft) {
+    const record = customer(draft);
+    if (!Array.isArray(P.state.offers) || (record && record.events != null && !Array.isArray(record.events)) || (draft.documentSteps != null && !isObject(draft.documentSteps))) {
+      P.toast('Det äldre underlaget har ett okänt format. Ingen data ändrades. Exportera underlaget innan det rättas.');
+      return false;
+    }
+    return true;
   }
   function syncDemoStage(draft) {
     const record = customer(draft);
@@ -55,7 +74,7 @@
     return `<aside class="card studio-options"><div class="studio-card-head"><span class="studio-eyebrow">1. INTRESSEOMRÅDE</span><h2>Elhandel</h2><p>Kundens behov styr samtalet.</p></div><div class="studio-option-list">${Object.entries(interests).map(([id, item]) => `<label class="studio-option ${activeDraft.interest === id ? 'is-selected' : ''}"><input type="radio" name="interest" value="${id}" ${activeDraft.interest === id ? 'checked' : ''} ${step === 1 ? 'required' : ''}><span class="studio-option-symbol">${icon(item.icon)}</span><span><strong>${item.title}</strong><small>${item.text}</small></span><span class="studio-radio-dot" aria-hidden="true"></span></label>`).join('')}</div><div class="studio-side-note">${icon('help')}<p>Områden för en behovsdialog. Produktval och villkor behöver eget underlag.</p></div></aside>`;
   }
   function mainStep() {
-    if (step === 1) return `<div class="studio-card-head"><span class="studio-eyebrow">VÄLJ UTGÅNGSPUNKT</span><h2>Vad vill kunden prata om?</h2><p>Välj ett område till vänster för att börja.</p></div><div class="studio-step-content"><div class="studio-feature-icon">${icon(activeDraft.interest ? interests[activeDraft.interest].icon : 'bolt')}</div><h3>${activeDraft.interest ? interests[activeDraft.interest].title : 'En bra affär börjar med rätt frågor.'}</h3><p class="studio-body-copy">${activeDraft.interest ? interests[activeDraft.interest].text : 'Samla ett tydligt behov och ett kundunderlag. Här kan partnern förbereda en fortsatt dialog med Kraftringen.'}</p><div class="studio-checklist"><p>${icon('check')} Beskriv behov och önskad start</p><p>${icon('check')} Koppla underlaget till en exempelkund</p><p>${icon('check')} Granska och spara ett offertutkast</p></div><p class="studio-small-note">Priser, villkor och eventuell ersättning fylls i först när ni har lämnat godkänt underlag.</p></div>`;
+    if (step === 1) return `<div class="studio-card-head"><span class="studio-eyebrow">VÄLJ UTGÅNGSPUNKT</span><h2>Vad vill kunden prata om?</h2><p>Välj ett område till vänster för att börja.</p></div><div class="studio-step-content"><div class="studio-feature-icon">${icon(interests[activeDraft.interest]?.icon || 'bolt')}</div><h3>${interests[activeDraft.interest]?.title || 'En bra affär börjar med rätt frågor.'}</h3><p class="studio-body-copy">${interests[activeDraft.interest]?.text || 'Samla ett tydligt behov och ett kundunderlag. Här kan partnern förbereda en fortsatt dialog med Kraftringen.'}</p><div class="studio-checklist"><p>${icon('check')} Beskriv behov och önskad start</p><p>${icon('check')} Koppla underlaget till en exempelkund</p><p>${icon('check')} Granska och spara ett offertutkast</p></div><p class="studio-small-note">Priser, villkor och eventuell ersättning fylls i först när ni har lämnat godkänt underlag.</p></div>`;
     if (step === 2) return `<div class="studio-card-head"><span class="studio-eyebrow">2. BESKRIV BEHOVET</span><h2>${interests[activeDraft.interest]?.title || 'Elhandel'}</h2><p>Gör kundens frågeställning lätt att följa upp.</p></div><div class="studio-step-content studio-fields"><div class="field"><label for="studio-need">Vad behöver kunden hjälp med? <span aria-hidden="true">*</span></label><textarea id="studio-need" name="need" required maxlength="1000" rows="5" placeholder="Exempel: styrelsen vill förstå vilka underlag som behövs inför nästa elavtal.">${esc(activeDraft.need)}</textarea></div><div class="studio-field-grid"><div class="field"><label for="studio-volume">Årsförbrukning · exempel, kWh</label><input id="studio-volume" name="volume" type="number" min="1" max="1000000000000" step="1" inputmode="numeric" value="${esc(activeDraft.volume)}" placeholder="Ej angivet"></div><div class="field"><label for="studio-start">Önskad start · exempel</label><input id="studio-start" name="start" type="date" value="${esc(activeDraft.start)}"></div></div><p class="studio-small-note">Volym och start är valfria uppgifter för dialogen. De innebär inget leveranslöfte.</p><div class="field"><label for="studio-note">Frågor att ta vidare · valfritt</label><textarea id="studio-note" name="note" maxlength="800" rows="3" placeholder="Exempel: vilka förbrukningsuppgifter behöver vi samla in?">${esc(activeDraft.note)}</textarea></div></div>`;
     if (step === 3) {
       const records = P.getRecords();
@@ -97,14 +116,14 @@
       else P.toast(message);
       return false;
     };
-    if (!interests[activeDraft.interest]) {
+    if (!Object.hasOwn(interests, activeDraft.interest)) {
       if (step === 1) { form.querySelector('input[name="interest"]')?.reportValidity(); }
       else P.toast('Välj först ett intresseområde.');
       return false;
     }
     if (target >= 2 && !activeDraft.need) return fieldError('studio-need', 'Beskriv behovet med text, inte enbart blanksteg.');
     if (target >= 2 && activeDraft.volume && (!/^\d+$/.test(activeDraft.volume) || Number(activeDraft.volume) < 1 || Number(activeDraft.volume) > 1000000000000)) return fieldError('studio-volume', 'Ange en positiv hel årsvolym i kWh, eller lämna fältet tomt.');
-    if (target >= 2 && activeDraft.start && (!/^\d{4}-\d{2}-\d{2}$/.test(activeDraft.start) || !Number.isFinite(Date.parse(activeDraft.start)))) return fieldError('studio-start', 'Ange ett giltigt datum, eller lämna fältet tomt.');
+    if (target >= 2 && activeDraft.start && !isCalendarDate(activeDraft.start)) return fieldError('studio-start', 'Ange ett giltigt datum, eller lämna fältet tomt.');
     if (target >= 3 && !customer(activeDraft)) return fieldError('studio-customer', 'Välj en exempelkund från listan.');
     if (target === 4 && review && !form.elements.namedItem('confirmed')?.checked) {
       form.elements.namedItem('confirmed')?.reportValidity();
@@ -141,18 +160,28 @@
   }
   function saveOffer() {
     if (!validateStep(4)) return;
+    if (!canEdit(activeDraft)) return;
+    const previousOffers = P.state.offers.slice();
+    const previousDraft = structuredClone(activeDraft);
+    const selected = customer(activeDraft);
+    const previousRecord = selected && structuredClone(selected);
     const now = new Date().toISOString();
     if (!activeDraft.id) { activeDraft.id = `utkast-${crypto.randomUUID().slice(0, 8)}`; activeDraft.createdAt = now; }
     activeDraft.updatedAt = now;
-    const previous = P.state.offers.find(item => item.id === activeDraft.id);
+    const previous = offers().find(item => item.id === activeDraft.id);
     if (previous) { activeDraft.documentSteps = previous.documentSteps || {}; activeDraft.simulatedSentAt = previous.simulatedSentAt || ''; }
     const copy = JSON.parse(JSON.stringify(activeDraft));
-    const index = P.state.offers.findIndex(item => item.id === copy.id);
+    const index = P.state.offers.findIndex(item => isObject(item) && item.id === copy.id);
     if (index < 0) P.state.offers.unshift(copy); else P.state.offers[index] = copy;
-    const selected = customer(activeDraft);
     if (selected && (selected.stage === 'lead' || !selected.stage)) selected.stage = 'offer';
+    if (selected && !Array.isArray(selected.events)) selected.events = [];
     sharedEvent(activeDraft, 'Offertutkast sparat som lokalt behovsunderlag i prototypen. Priser och villkor saknas.');
-    P.save(); P.render(); P.toast('Offertutkastet sparat i denna webbläsare.');
+    if (!saveOrRollback(() => {
+      P.state.offers.splice(0, P.state.offers.length, ...previousOffers);
+      activeDraft = previousDraft;
+      if (selected) restoreObject(selected, previousRecord);
+    })) return;
+    P.render(); P.toast('Offertutkastet sparat i denna webbläsare.');
     document.getElementById('studio-saved-title')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
   function confirmSend(id) {
@@ -161,10 +190,15 @@
     P.openDialog('Simulera ett utskick', `<div class="studio-dialog-note">${icon('mail')}<p>Testa att markera <strong>${esc(name(item))}</strong> som skickat i prototypen. Inget meddelande skickas och inget erbjudande lämnas.</p></div><div class="modal-actions"><button type="button" class="btn btn-secondary" id="studio-cancel-send">Avbryt</button><button type="button" class="btn btn-primary" id="studio-confirm-send">Markera demosteg</button></div>`, () => {
       document.getElementById('studio-cancel-send').addEventListener('click', P.closeDialog);
       document.getElementById('studio-confirm-send').addEventListener('click', () => {
+        if (!canEdit(item)) return;
+        const previous = structuredClone(item), previousDraft = structuredClone(activeDraft);
+        const record = customer(item), previousRecord = record && structuredClone(record);
         item.simulatedSentAt = new Date().toISOString(); item.updatedAt = item.simulatedSentAt;
         if (activeDraft.id === item.id) activeDraft.simulatedSentAt = item.simulatedSentAt;
+        if (record && !Array.isArray(record.events)) record.events = [];
         sharedEvent(item, 'Utskick av offertutkast simulerat i prototypen. Inget skickades och ingen kommersiell offert lämnades.');
-        P.save(); P.closeDialog(); P.render(); P.toast('Markerat som skickat i demot. Inget har skickats.');
+        if (!saveOrRollback(() => { restoreObject(item, previous); activeDraft = previousDraft; if (record) restoreObject(record, previousRecord); })) return;
+        P.closeDialog(); P.render(); P.toast('Markerat som skickat i demot. Inget har skickats.');
       });
     });
   }
@@ -221,14 +255,17 @@
     document.querySelectorAll('[data-document-step]').forEach(button => button.addEventListener('click', () => {
       const item = offers().find(offer => offer.id === button.dataset.documentId);
       if (!item) return;
-      item.documentSteps ||= {};
       const key = button.dataset.documentStep;
-      if (!documentNames[key]) return;
+      if (!Object.hasOwn(documentNames, key) || !canEdit(item)) return;
+      const previous = structuredClone(item), record = customer(item), previousRecord = record && structuredClone(record);
+      item.documentSteps ||= {};
       item.documentSteps[key] = !item.documentSteps[key];
       item.updatedAt = new Date().toISOString();
       syncDemoStage(item);
+      if (record && !Array.isArray(record.events)) record.events = [];
       sharedEvent(item, `${documentNames[key]}: demosteg ${item.documentSteps[key] ? 'genomfört' : 'återställt'} i prototypen. Inget juridiskt dokument skapades eller signerades.`);
-      P.save(); P.render(); P.toast(item.documentSteps[key] ? 'Demosteg genomfört lokalt. Inget dokument skapades eller signerades.' : 'Demosteget återställt.');
+      if (!saveOrRollback(() => { restoreObject(item, previous); if (record) restoreObject(record, previousRecord); })) return;
+      P.render(); P.toast(item.documentSteps[key] ? 'Demosteg genomfört lokalt. Inget dokument skapades eller signerades.' : 'Demosteget återställt.');
     }));
     bindShared();
   }
@@ -244,7 +281,7 @@
     const detail = P.state.businessDetails?.[recordId] || {};
     activeDraft = {
       ...freshDraft(), partner: record.partner, customerId: record.id,
-      interest: (detail.topics || []).find(topic => interests[topic]) || 'contract',
+      interest: (Array.isArray(detail.topics) ? detail.topics : []).find(topic => Object.hasOwn(interests, topic)) || 'contract',
       need: detail.questions || record.need || '', volume: detail.annualVolume || '',
       start: detail.start || '', note: detail.facilities ? `Antal anläggningar i exempelunderlag: ${detail.facilities}.` : ''
     };

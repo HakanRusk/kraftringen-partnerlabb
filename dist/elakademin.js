@@ -23,6 +23,7 @@
   const isComplete = id => state.completed.includes(id);
   const isBookmarked = id => state.bookmarks.includes(id);
   const completedCount = lessons => lessons.filter(lesson => isComplete(lesson.id)).length;
+  const pauseMedia = within => $$('video,audio', within).forEach(media => media.pause());
   const progressPercent = lessons => lessons.length ? Math.round(completedCount(lessons) / lessons.length * 100) : 0;
   const lessonHref = lesson => `#lesson/${encodeURIComponent(lesson.id)}`;
   const safeMediaUrl = url => {
@@ -120,8 +121,12 @@
     const productCount = new Set(lessons.map(lesson => lesson.product_id).filter(Boolean)).size;
     $('#course-meta').innerHTML = `<div><strong>${lessons.length}</strong><span>grundliga kapitel i ditt spår</span></div><div><strong>${number(totalMinutes, 0)}</strong><span>min läsning och övningar, uppskattat</span></div><div><strong>${questionCount}</strong><span>kapitelfrågor med förklarat facit</span></div><div><strong>${productCount}</strong><span>produkter att förstå och jämföra</span></div>`;
     $$('[data-track]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.track === state.track)));
-    if (state.track === 'consumer') $('#portal-link').href = '/?workspace=vast#academy';
-    else if (state.track === 'business') $('#portal-link').href = '/?workspace=syd#academy';
+    const courseQuery = new URLSearchParams(location.search);
+    const portalUrl = new URL('./', location.href);
+    portalUrl.searchParams.set('workspace', courseQuery.get('workspace') || (state.track === 'consumer' ? 'vast' : 'syd'));
+    if (courseQuery.get('demo') === 'inflyttning') portalUrl.searchParams.set('demo', 'inflyttning');
+    portalUrl.hash = 'academy';
+    $('#portal-link').href = portalUrl.href;
     $('#hero-version').textContent = `Produktunderlag ${data.meta?.source_date || '2026-10-10'} · ${data.meta?.version || 'ny utbildningsversion'}`;
   }
   function introVideoHtml() {
@@ -146,6 +151,7 @@
     if (player.error) revealError();
   }
   function renderOverview() {
+    pauseMedia($('#overview-content'));
     const lessons = relevantLessons();
     const next = lessons.find(lesson => !isComplete(lesson.id)) || lessons[0];
     const remembered = lessons.find(lesson => lesson.id === state.lastLesson);
@@ -309,6 +315,7 @@
     const caseNotes = typeof state.caseNotes[lesson.id] === 'string' ? state.caseNotes[lesson.id] : '';
     const done = isComplete(lesson.id);
     const bookmarked = isBookmarked(lesson.id);
+    pauseMedia($('#lesson-content'));
     $('#lesson-content').innerHTML = `<div class="lesson-topline"><span>Kapitel ${index + 1} av ${lessons.length} i ditt spår</span><button id="bookmark-lesson" class="button ${bookmarked ? 'is-bookmarked' : ''}" aria-pressed="${bookmarked}">${bookmarked ? '◇ Bokmärkt' : '◇ Bokmärk kapitlet'}</button></div>
       <header class="lesson-header"><p class="eyebrow">${escape(lesson.kicker || trackLabels[lesson.track])}</p><h2 id="lesson-title" tabindex="-1">${escape(lesson.title)}</h2><p class="lesson-intro">${escape(lesson.introduction)}</p><div class="lesson-meta">${trackChip(lesson)}<span>${number(lesson.minutes || 0, 0)} min läsning och övning, uppskattat</span><span>${list(lesson.examples).length} genomräknade exempel · ${list(lesson.quiz).length} frågor</span></div></header>
       <nav class="lesson-jump" aria-label="Innehåll i kapitlet"><a href="#objectives" data-jump="objectives">Mål</a><a href="#teaching" data-jump="teaching">Förklaring</a><a href="#examples" data-jump="examples">Exempel</a><a href="#customer-case" data-jump="customer-case">Kundfall</a><a href="#chapter-quiz" data-jump="chapter-quiz">Självtest</a><a href="#chapter-notes" data-jump="chapter-notes">Anteckningar</a></nav>
@@ -330,6 +337,8 @@
       event.preventDefault();
       const target = $(`#${link.dataset.jump}`);
       target?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      const heading = target?.querySelector('h3') || target;
+      if (heading) { heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); }
     }));
     $('#bookmark-lesson').addEventListener('click', () => {
       const marked = isBookmarked(lesson.id);
@@ -366,10 +375,12 @@
       state.caseNotes[lesson.id] = $('#case-answer').value;
       $('#case-save-status').textContent = save() ? 'Ditt övningssvar är sparat i denna webbläsare.' : 'Ditt övningssvar kunde inte sparas och gäller bara under detta besök.';
     });
-    $$('video,audio', $('#lesson-content')).forEach(media => media.addEventListener('error', () => {
-      const error = $('.media-error', media.parentElement);
-      if (error) error.hidden = false;
-    }));
+    $$('video,audio', $('#lesson-content')).forEach(media => {
+      const revealError = () => { const error = $('.media-error', media.parentElement); if (error) error.hidden = false; };
+      media.addEventListener('error', revealError);
+      $$('source', media).forEach(source => source.addEventListener('error', revealError));
+      if (media.error || media.networkState === 3) revealError();
+    });
     renderSidebar();
   }
   function renderAssessment() {
@@ -427,7 +438,7 @@
   function showView(view, focus = false) {
     if (view !== 'lesson') flushActiveNotes();
     currentView = view;
-    $$('.view-panel').forEach(panel => { panel.hidden = panel.id !== `view-${view}`; });
+    $$('.view-panel').forEach(panel => { panel.hidden = panel.id !== `view-${view}`; if (panel.hidden) pauseMedia(panel); });
     $$('[data-view-link]').forEach(link => {
       if (link.dataset.viewLink === view) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
@@ -471,6 +482,13 @@
     } else showView(['overview', 'glossary', 'tools'].includes(target) ? target : 'overview', focus);
   }
   function bindGlobal() {
+    $('.skip-link').addEventListener('click', event => {
+      event.preventDefault();
+      const panel = $(`#view-${currentView}`);
+      const target = panel?.querySelector('h2') || $('#content');
+      target.setAttribute('tabindex', '-1');
+      target.focus();
+    });
     $$('[data-track]').forEach(button => button.addEventListener('click', () => {
       flushActiveNotes();
       state.track = validTrack(button.dataset.track);

@@ -6,7 +6,7 @@
   const panels = new Map(), preferences = new Map();
   let sequence = 0;
   const text = value => typeof value === 'string' ? value.trim() : '';
-  const sharedFeedback = (row, kind) => (row.events || []).filter(event => event && event.visibility === 'shared' && (!kind || event.kind === kind) && text(event.text)).slice().sort((a, b) => String(b.at || '').localeCompare(String(a.at || '')))[0]?.text?.trim().slice(0, 160) || '';
+  const sharedFeedback = (row, kind) => (Array.isArray(row.events) ? row.events : []).filter(event => event && event.visibility === 'shared' && (!kind || event.kind === kind) && text(event.text)).slice().sort((a, b) => String(b.at || '').localeCompare(String(a.at || '')))[0]?.text?.trim().slice(0, 160) || '';
   const partnerName = id => P.getPartner?.(id)?.name || P.partners?.[id] || 'Partner';
   const localToday = () => { const now = new Date(); return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`; };
   function plannedDate(value) {
@@ -28,7 +28,7 @@
       const date = plannedDate(task.date);
       output.push({ ...task, date, dateState: !date ? 'none' : date < today ? 'passed' : date === today ? 'today' : 'planned', ours: task.side === (internal ? 'internal' : 'partner') });
     }
-    if (includes(options, 'movein')) for (const row of P.state.moveins || []) {
+    if (includes(options, 'movein')) for (const row of Array.isArray(P.state.moveins) ? P.state.moveins : []) {
       if (!row || !inScope(row.partner, options) || P.getPartner?.(row.partner)?.type !== 'property') continue;
       const status = row.handoverStatus || 'draft';
       if (!['draft', 'needs_info', 'submitted', 'handling'].includes(status)) continue;

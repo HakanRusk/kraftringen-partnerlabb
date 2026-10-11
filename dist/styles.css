@@ -651,3 +651,11 @@ dialog::backdrop { background: #071b308a; backdrop-filter: blur(3px); }
   .sidebar.open { visibility: visible; }
 }
 .nav-button { transition: none; }
+
+/* Saved partner names can use all 90 characters without containing a space. */
+#view { min-width: 0; overflow-wrap: anywhere; }
+#view .page-head > div,
+#view .dashboard-head > div,
+#view .panel-heading > div,
+#view .ac-header > div { min-width: 0; max-width: 100%; }
+#view .employee-actions { flex-shrink: 0; }

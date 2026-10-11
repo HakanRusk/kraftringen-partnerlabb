@@ -32,6 +32,21 @@ fastighetselen. Kundens eget elavtal och anläggningsomfattning kräver egna
 källor. Inget automatiskt serviceflöde, besparingslöfte, nytt produktutbud,
 prissättning eller integration följer av att kunden väljer ett fokus.
 
+## Direktuppdrag: felgranskning av hela portalen (2026-10-11)
+
+Ludwig: ”Leta nu fel på hela sidan och fixa alla buggar”. Utgångspunkt är
+verifierad GitHub-main `c9dd58781326fd0b037097b8dc39c06c7e1ba7ff` och
+publicerad version 24. Kodgranskning, bred browsergenomgång och isolerade
+före/efter-reproduktioner omfattar alla aktiva partner-/internvyer,
+utbildning, ljudbibliotek, resultat, inflyttning och bevarade äldre moduler.
+
+Rättningar täcker historik, fokus/mobilmeny, partneravgränsning, sparfel,
+bevarande av äldre data, rapportexport, Excel-datum, delade bilagor,
+sökfilter, kursreturlänkar, mediafel och långa texter. Avtalsfakta synkas
+med befintliga underlag och hela produktlektioner. Inga nya affärsregler,
+backend, verkliga kunduppgifter eller schema-/åtkomständringar ingår.
+Slutlig samlad verifiering och faktisk publicering kvitteras i WORKLOG.
+
 ## Direktuppdrag: fullständig utbildning (2026-10-11)
 
 **UTBILDNING-FULL-02 · Publicerad v23 via PR #26:** Ludwigs direkta ”skapa det” och krav på noggrannare,

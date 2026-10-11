@@ -12,6 +12,7 @@
   const now = () => new Date().toISOString();
   const event = (text, visibility = 'shared', actor = P.role === 'internal' ? 'Kraftringen · intern demo' : (P.partners[P.partner] || 'Fastighetspartner') + ' · demo') => ({ at: now(), actor, text, visibility });
   const text = value => typeof value === 'string' ? value.trim() : '';
+  const caseRow = row => !!row && typeof row === 'object' && !Array.isArray(row) && typeof row.id === 'string' && typeof row.partner === 'string';
   const date = value => P.date(value);
   const restoreRow = (row, previous) => { for (const key of Object.keys(row)) if (!Object.hasOwn(previous, key)) delete row[key]; Object.assign(row, previous); };
   const partnerIntake = row => ['manual', 'excel'].includes(row?.intakeSource);
@@ -27,7 +28,7 @@
   }
 
   function normalize(row) {
-    if (!row || typeof row !== 'object') return;
+    if (!caseRow(row)) return;
     if (typeof row.serviceRequested !== 'boolean') row.serviceRequested = false;
     if (typeof row.authorityDemo !== 'boolean') row.authorityDemo = false;
     if (!Array.isArray(row.authorityFiles)) row.authorityFiles = [];
@@ -47,13 +48,13 @@
         { id: 'service-demo-002', partner: 'estate1', name: 'Noor Demo', email: 'noor@inflyttare.example', address: 'Demovägen 12', apartment: '1201', postcode: '211 22', city: 'Malmö', moveDate: '2026-11-15', handoverStatus: 'handling', processing: { trade: 'handling', network: 'pending', offerChoice: 'chosen' }, next: 'Följ upp elnätsdelen och återkoppla om nästa steg', createdAt: '2026-10-06T10:00:00Z', events: [{ at: '2026-10-07T09:00:00Z', actor: 'Kraftringen · intern demo', text: 'Exempel på återkoppling: elhandelsdelen handläggs, elnätsdelen återstår. Erbjudandevalet är fiktivt; inget avtal är tecknat.', visibility: 'shared' }, { at: '2026-10-06T10:00:00Z', actor: 'Exempelfastigheter AB · demo', text: 'Fiktivt serviceunderlag förmedlat i test.', visibility: 'shared' }] },
         { id: 'service-demo-003', partner: 'estate2', name: 'Mika Exempel', email: 'mika@inflyttare.example', address: 'Testallén 8', apartment: '1301', postcode: '252 22', city: 'Helsingborg', moveDate: '2026-11-01', handoverStatus: 'needs_info', processing: { trade: 'pending', network: 'pending', offerChoice: 'undecided' }, next: 'Stäm av lägenhetsuppgiften med hyresgästen', createdAt: '2026-10-05T14:00:00Z', events: [{ at: '2026-10-07T07:50:00Z', actor: 'Kraftringen · intern demo', text: 'Exempel på komplettering: kontrollera lägenhetsuppgiften med hyresgästen. Ingen kontakt har tagits i verkligheten.', visibility: 'shared' }] }
       ];
-      for (const row of examples) if (!P.state.moveins.some(existing => existing.id === row.id)) P.state.moveins.push({ ...row, phone: '', serviceRequested: true, authorityDemo: true, updatedAt: row.createdAt, owner: 'Demoansvarig A', nextDate: '', demoServiceCase: true });
+      for (const row of examples) if (!P.state.moveins.some(existing => caseRow(existing) && existing.id === row.id)) P.state.moveins.push({ ...row, phone: '', serviceRequested: true, authorityDemo: true, updatedAt: row.createdAt, owner: 'Demoansvarig A', nextDate: '', demoServiceCase: true });
       P.state.moveinServiceSeeded = true;
     }
   }
   function rows(partnerId) {
     init();
-    return P.state.moveins.filter(row => row && P.getPartner(row.partner)?.type === 'property' && (!partnerId || row.partner === partnerId) && (P.role === 'internal' || row.partner === P.partner)).slice().sort((a, b) => String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || '')));
+    return P.state.moveins.filter(row => caseRow(row) && P.getPartner(row.partner)?.type === 'property' && (!partnerId || row.partner === partnerId) && (P.role === 'internal' || row.partner === P.partner)).slice().sort((a, b) => String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || '')));
   }
   function statusLabel(row) {
     if (partnerIntake(row) && (row.handoverStatus || 'draft') === 'draft') return authorityReady(row) ? (canForward(row) ? 'Klart att förmedla' : 'Underlag behöver kompletteras') : 'Fullmakt saknas';
@@ -70,7 +71,7 @@
     if (batchId.length > 100 || filename.length > 180 || /[\u0000-\u001f\u007f]/.test(batchId + filename)) { result.errors.push({ index: -1, message: 'Importens namn eller identifierare är för långt eller ogiltigt.' }); return result; }
     init();
     const previous = P.state.moveins;
-    const existing = new Map(previous.filter(Boolean).map(row => [duplicateKey(row), row]));
+    const existing = new Map(previous.filter(caseRow).map(row => [duplicateKey(row), row]));
     const limits = { name: 120, email: 254, address: 180, apartment: 40, postcode: 12, city: 80, moveDate: 10, phone: 40 };
     const required = ['name', 'email', 'address', 'postcode', 'city', 'moveDate'];
     inputRows.forEach((input, index) => {
@@ -135,12 +136,12 @@
     if (!row || P.role === 'internal') return forward(id, options);
     const candidate = row.handoverStatus === 'needs_info' ? { ...row, ...options.changes } : row;
     if (!canForward(candidate)) return forward(id, options);
-    const revision = row.updatedAt;
+    const revision = JSON.stringify(row);
     if (partnerIntake(row)) {
       const checks = await Promise.all(row.authorityFiles.map(meta => P.moveinAttachments.exists(meta)));
       if (checks.some(exists => !exists)) { P.toast('En fullmaktsfil saknas i den här webbläsaren. Bifoga den igen innan du förmedlar underlaget.'); return false; }
     }
-    if (findVisible(id) !== row || row.updatedAt !== revision) { P.toast('Ärendet har ändrats. Öppna det igen innan du förmedlar.'); return false; }
+    if (findVisible(id) !== row || JSON.stringify(row) !== revision) { P.toast('Ärendet har ändrats. Öppna det igen innan du förmedlar.'); return false; }
     return forward(id, options);
   }
   function activityFor(partnerId) {
@@ -183,7 +184,7 @@
       row.authorityFiles.splice(index, 1); row.updatedAt = now(); row.events.unshift(event('Fastighetsbolaget tog bort fullmaktsbilagan ' + meta.name + ' i test.', 'shared', 'Fastighetsbolaget · demo'));
       if (!P.save()) { restoreRow(row, previous); message('Bilagan är kvar. Ändringen kunde inte sparas.', true); return; }
       button.disabled = true;
-      try { await P.moveinAttachments.remove(meta); if (findVisible(row.id) === row && mayAttach(row)) { P.render(); open(row.id); } }
+      try { await P.moveinAttachments.removeUnreferenced(meta); if (findVisible(row.id) === row && mayAttach(row)) { P.render(); open(row.id); } }
       catch (failure) { restoreRow(row, previous); P.save(); message(failure.message || 'Bilagan kunde inte tas bort.', true); }
       finally { if (button.isConnected) button.disabled = false; }
     });
@@ -214,7 +215,7 @@
   function internalForm(row) {
     if (row.handoverStatus === 'draft') return `<div class="movein-service-awaiting"><strong>Underlaget ligger hos fastighetsbolaget</strong><p>Partnern registrerar underlaget och bifogar fullmakten innan ärendet förmedlas. Kraftringens handläggning börjar efter överlämningen.</p></div>`;
     const options = (labels, selected) => Object.entries(labels).map(([value, label]) => `<option value="${value}" ${selected === value ? 'selected' : ''}>${e(label)}</option>`).join('');
-    return `<form id="movein-service-internal-form"><h3 class="movein-service-form-head">Handlägg & återkoppla</h3><div class="form-grid"><label class="field">Ärendestatus · testförslag<select name="handoverStatus">${options(handoverLabels, row.handoverStatus).replace('<option value="draft"', '<option disabled value="draft"')}</select></label><label class="field">Intern ansvarig · exempel<select name="owner">${['Ej tilldelad', 'Demoansvarig A', 'Demoansvarig B'].map(value => `<option ${row.owner === value ? 'selected' : ''}>${e(value)}</option>`).join('')}</select></label><label class="field">Elhandel · demostatus<select name="trade">${options(processingLabels, row.processing.trade)}</select></label><label class="field">Elnät · demostatus<select name="network">${options(processingLabels, row.processing.network)}</select></label><label class="field">Elhandelsavtal · separat demostatus<select name="offerChoice">${options(offerLabels, row.processing.offerChoice)}</select><span class="form-hint">Fiktiv status. Faktiskt avtal följs separat; ingen aktivitet från hyresgästen behövs i portalen.</span></label><label class="field">Datum för nästa steg<input name="nextDate" type="date" value="${e(row.nextDate)}"></label></div><label class="field">Nästa steg<input name="next" maxlength="200" value="${e(row.next)}" placeholder="Stäm av underlaget och återkoppla"></label><label class="field">Återkoppling som partnern får se<textarea name="feedback" rows="3" maxlength="800" placeholder="Beskriv vad som är omhändertaget eller vad som behöver kompletteras."></textarea></label><label class="field">Intern anteckning<textarea name="privateNote" rows="2" maxlength="800" placeholder="Visas bara i den interna demovyn."></textarea></label><div class="modal-actions"><button class="btn btn-secondary" type="button" id="movein-service-download">${icon('download')} Testsammanfattning</button><button class="btn btn-primary" type="submit">Spara handläggning</button></div></form>`;
+    return `<form id="movein-service-internal-form"><h3 class="movein-service-form-head">Handlägg & återkoppla</h3><div class="form-grid"><label class="field">Ärendestatus · testförslag<select name="handoverStatus">${options(handoverLabels, row.handoverStatus).replace('<option value="draft"', '<option disabled value="draft"')}</select></label><label class="field">Intern ansvarig · exempel<select name="owner">${['Ej tilldelad', 'Demoansvarig A', 'Demoansvarig B'].map(value => `<option ${row.owner === value ? 'selected' : ''}>${e(value)}</option>`).join('')}</select></label><label class="field">Elhandel · demostatus<select name="trade">${options(processingLabels, row.processing.trade)}</select></label><label class="field">Elnät · demostatus<select name="network">${options(processingLabels, row.processing.network)}</select></label><label class="field">Elhandelsavtal · separat demostatus<select name="offerChoice">${options(offerLabels, row.processing.offerChoice)}</select><span class="form-hint">Fiktiv status. Faktiskt avtal följs separat; ingen aktivitet från hyresgästen behövs i portalen.</span></label><label class="field">Datum för nästa steg<input name="nextDate" type="date" min="2000-01-01" max="2100-12-31" value="${e(row.nextDate)}"></label></div><label class="field">Nästa steg<input name="next" maxlength="200" value="${e(row.next)}" placeholder="Stäm av underlaget och återkoppla"></label><label class="field">Återkoppling som partnern får se<textarea name="feedback" rows="3" maxlength="800" placeholder="Beskriv vad som är omhändertaget eller vad som behöver kompletteras."></textarea></label><label class="field">Intern anteckning<textarea name="privateNote" rows="2" maxlength="800" placeholder="Visas bara i den interna demovyn."></textarea></label><p id="movein-service-save-feedback" role="alert" hidden></p><div class="modal-actions"><button class="btn btn-secondary" type="button" id="movein-service-download">${icon('download')} Testsammanfattning</button><button class="btn btn-primary" type="submit">Spara handläggning</button></div></form>`;
   }
   function partnerForm(row) {
     if (!['draft', 'needs_info'].includes(row.handoverStatus)) return `<div class="movein-service-awaiting"><strong>Kraftringen tar över ärendet</strong><p>Följ återkopplingen här. Elhandel, elnätskontakter och bekräftelser hanteras av Kraftringen.</p></div>`;
@@ -237,8 +238,9 @@
       const internalFormElement = qs('#movein-service-internal-form');
       if (internalFormElement) internalFormElement.onsubmit = submitEvent => {
         submitEvent.preventDefault();
-        if (P.role !== 'internal') return;
+        if (P.role !== 'internal' || findVisible(row.id) !== row) return;
         const form = submitEvent.currentTarget;
+        if (!form.reportValidity()) return;
         const data = new FormData(form);
         const status = data.get('handoverStatus'), trade = data.get('trade'), network = data.get('network'), offerChoice = data.get('offerChoice');
         if (!Object.hasOwn(handoverLabels, status) || status === 'draft' || !Object.hasOwn(processingLabels, trade) || !Object.hasOwn(processingLabels, network) || !Object.hasOwn(offerLabels, offerChoice)) return;
@@ -246,11 +248,20 @@
         const changed = row.handoverStatus !== status || row.processing.trade !== trade || row.processing.network !== network || row.processing.offerChoice !== offerChoice;
         const feedback = text(data.get('feedback')), privateNote = text(data.get('privateNote'));
         if (status === 'needs_info' && row.handoverStatus !== 'needs_info' && !feedback) { form.elements.feedback.setCustomValidity('Beskriv vilken komplettering partnern behöver göra.'); form.elements.feedback.oninput = () => form.elements.feedback.setCustomValidity(''); form.elements.feedback.reportValidity(); return; }
+        const previous = structuredClone(row);
         row.handoverStatus = status; row.processing = { ...row.processing, trade, network, offerChoice }; row.owner = data.get('owner'); row.next = text(data.get('next')); row.nextDate = data.get('nextDate'); row.updatedAt = now();
         if (changed) row.events.unshift(event('Testhandläggning: ' + statusLabel(row) + '. Elhandel: ' + processingLabels[trade] + '. Elnät: ' + processingLabels[network] + '. Erbjudande: ' + offerLabels[offerChoice] + '. Inget verkligt avtal eller utskick.'));
         if (feedback) row.events.unshift(event(feedback));
         if (privateNote) row.events.unshift(event(privateNote, 'internal'));
-        const saved = P.save(); P.closeDialog(); P.render(); P.toast(saved ? 'Handläggning och återkoppling är sparade i denna webbläsare.' : 'Ändringen finns i denna flik; webbläsaren kunde inte spara.');
+        if (!P.save()) {
+          restoreRow(row, previous);
+          const failure = form.querySelector('#movein-service-save-feedback');
+          failure.textContent = 'Handläggningen kunde inte sparas. Tidigare ärendestatus och historik behålls. Dina inmatade uppgifter finns kvar här så att du kan prova igen.';
+          failure.hidden = false;
+          P.toast('Handläggningen kunde inte sparas. Tidigare ärendedata behålls.');
+          return;
+        }
+        P.closeDialog(); P.render(); P.toast('Handläggning och återkoppling är sparade i denna webbläsare.');
       };
       const forwardForm = qs('#movein-service-forward-form');
       if (forwardForm) forwardForm.onsubmit = async submitEvent => {

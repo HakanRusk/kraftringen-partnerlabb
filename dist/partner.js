@@ -13,8 +13,8 @@
   let selectedStep = 3;
   const uid = prefix => `${prefix}-${crypto.randomUUID().slice(0, 8)}`;
   const partnerName = id => P.partners[id] || 'Exempelpartner';
-  const visible = items => items.filter(item => P.role === 'internal' || item.partner === P.partner);
-  const dateLabel = value => new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(value));
+  const visible = items => (Array.isArray(items) ? items : []).filter(item => item && typeof item === 'object' && !Array.isArray(item) && (P.role === 'internal' || item.partner === P.partner));
+  const dateLabel = value => { const date = new Date(value); return typeof value === 'string' && value && Number.isFinite(date.getTime()) ? new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' }).format(date) : 'Datum saknas'; };
   const nonempty = (input, value) => {
     input.setCustomValidity(value.trim() ? '' : 'Skriv text, inte enbart blanksteg.');
     input.addEventListener('input', () => input.setCustomValidity(''), { once: true });
@@ -25,7 +25,7 @@
     if (!P.state.journey || typeof P.state.journey !== 'object') P.state.journey = {};
     if (!Array.isArray(P.state.support)) P.state.support = [];
     if (!P.state.partnerModulesSeeded) {
-      const records = P.state.records || [];
+      const records = (Array.isArray(P.state.records) ? P.state.records : []).filter(record => record && typeof record === 'object' && !Array.isArray(record));
       if (!P.state.sites.length) {
         ['syd', 'vast'].forEach(partner => records.filter(r => r.partner === partner).slice(0, partner === 'syd' ? 2 : 1).forEach((r, index) => {
           P.state.sites.push({ id: uid('sida'), partner, recordId: r.id, customer: r.company, title: `Välkommen, ${r.company}`, subtitle: r.kind === 'BRF' ? 'En samlad plats för er dialog om elhandel. Här kan styrelsen förbereda nästa samtal med sin partner.' : 'En samlad plats för er dialog om elhandel. Här kan ni förbereda nästa samtal med er partner.', hero: index ? 'wind' : 'office', cta: 'Boka ett samtal', created: '2026-10-07T09:00:00Z' });
@@ -64,9 +64,11 @@
         const r = records.find(item => item.id === form.elements.customer.value);
         if (!r) { P.toast('Kunden finns inte längre i denna demovy.'); return; }
         const values = { recordId: r.id, customer: r.company, partner: r.partner, title: form.elements.title.value.trim(), subtitle: form.elements.subtitle.value.trim(), hero: form.elements.hero.value, cta: form.elements.cta.value };
+        const previous = site ? { ...site } : null;
         if (site) Object.assign(site, values);
         else P.state.sites.unshift({ id: uid('sida'), created: new Date().toISOString(), ...values });
-        P.save(); P.closeDialog(); P.render(); P.toast('Kundsidans demoutkast är sparat i denna webbläsare.');
+        if (!P.save()) { if (site) Object.assign(site, previous); else P.state.sites.shift(); P.toast('Kunde inte spara kundsidan. Din inmatning finns kvar; försök igen.'); return; }
+        P.closeDialog(); P.render(); P.toast('Kundsidans demoutkast är sparat i denna webbläsare.');
       };
     });
   }
@@ -149,13 +151,13 @@
   }
   P.register('journey', { render: renderJourney, bind: () => {
     document.querySelectorAll('[data-journey-step]').forEach(button => { button.onclick = () => { selectedStep = Number(button.dataset.journeyStep); P.render(); }; });
-    document.querySelectorAll('[data-journey-activity]').forEach(input => { input.onchange = () => { const completed = journeyProgress(); const index = completed.indexOf(input.dataset.journeyActivity); if (input.checked && index < 0) completed.push(input.dataset.journeyActivity); if (!input.checked && index >= 0) completed.splice(index,1); P.save(); P.render(); P.toast('Demomomentet är sparat i denna webbläsare.'); }; });
+    document.querySelectorAll('[data-journey-activity]').forEach(input => { input.onchange = () => { const completed = journeyProgress(); const index = completed.indexOf(input.dataset.journeyActivity); if (input.checked && index < 0) completed.push(input.dataset.journeyActivity); if (!input.checked && index >= 0) completed.splice(index,1); if (!P.save()) { if (input.checked && index < 0) completed.pop(); else if (!input.checked && index >= 0) completed.splice(index,0,input.dataset.journeyActivity); input.checked = !input.checked; P.toast('Kunde inte spara demomomentet. Tidigare markering behålls.'); return; } P.render(); P.toast('Demomomentet är sparat i denna webbläsare.'); }; });
     document.querySelector('#partner-prev-step')?.addEventListener('click', () => { selectedStep--; P.render(); });
     document.querySelector('#partner-next-step')?.addEventListener('click', () => { selectedStep++; P.render(); });
   } });
 
   const faqs = [
-    ['Vad kan jag testa i portalen?', 'Registrera fiktiva kunder och affärer, planera aktiviteter, skapa offertutkast och kundsidor, prova Academy och ladda ned demomaterial.'],
+    ['Vad kan jag testa i portalen?', 'Följ fiktiva resultat, kunder och avtal, läs Avtalsfakta och gå utbildningen. Fastighetspartners kan testa Excel eller manuell inflyttningsregistrering med fullmaktsbilagor. Säljpartnerns aktiva säljarbete sker utanför portalen.'],
     ['Ser andra mina ändringar?', 'Ändringarna sparas i den här webbläsaren. Två datorer delar ännu inte data. Växling mellan demovyer visar hur olika användarperspektiv kan fungera.'],
     ['Kan jag skicka en offert eller fullmakt?', 'Du kan testa och förhandsgranska lokala utkast. Inga dokument skickas för signering och inga avtal ingås i prototypen.'],
     ['Är priser och provision beslutade?', 'Nej. Kommersiella regler, produktvillkor och partnerns befogenheter behöver bygga på underlag som ni lämnar.'],
@@ -174,8 +176,10 @@
       event.preventDefault();
       if (!nonempty(form.elements.title, form.elements.title.value) || !nonempty(form.elements.message, form.elements.message.value)) return;
       const customer = P.getRecords().find(r => r.id === form.elements.customer.value);
-      P.state.support.unshift({ id: uid('fraga'), partner: customer?.partner || P.partner, customer: customer?.company || '', type: form.elements.type.value, title: form.elements.title.value.trim(), message: form.elements.message.value.trim(), created: new Date().toISOString() });
-      P.save(); P.render(); P.toast('Testförfrågan är sparad lokalt. Inget har skickats.');
+      const request = { id: uid('fraga'), partner: customer?.partner || P.partner, customer: customer?.company || '', type: form.elements.type.value, title: form.elements.title.value.trim(), message: form.elements.message.value.trim(), created: new Date().toISOString() };
+      P.state.support.unshift(request);
+      if (!P.save()) { P.state.support.splice(P.state.support.indexOf(request), 1); P.toast('Kunde inte spara testförfrågan. Din inmatning finns kvar; försök igen.'); return; }
+      P.render(); P.toast('Testförfrågan är sparad lokalt. Inget har skickats.');
     };
   } });
 })();

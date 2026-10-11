@@ -1314,3 +1314,91 @@ kvittens av inställningarna, inte belägg för oavbruten exekvering.
 
 Denna efterhandskvittens ändrar enbart rotdokumentation. Applikationen
 och hostingmanifestet är oförändrade mot publicerad version 24.
+
+
+## 2026-10-11 · Felgranskning av hela portalen
+
+Ludwigs direkta uppdrag: ”Leta nu fel på hela sidan och fixa alla buggar”.
+Färsk kanonisk GitHub-main `c9dd58781326fd0b037097b8dc39c06c7e1ba7ff`
+och publicerad Sites version 24 verifierades före arbetet, utan öppna PR:er.
+Separat worktree/gren `codex/whole-site-bugfix-20261011` bevarar hela
+Elakademin och samarbetsförslaget. Sex oberoende delgranskningar och
+samordnarens granskning använder fiktiva, isolerade browserkontexter.
+
+### Bekräftade före/efter-rättningar
+
+- Menybyten skrev tidigare över historikposten; bakåt/framåt fungerar nu
+  mellan vyer, roller och partners. Skipplänkar behåller aktuell portalvy
+  eller lektion. Fokus följer navigation och kapitelhopp. Mobilmenyn
+  stängs med Escape, har tangentbordsfokus och återställs vid desktopbyte.
+  Ärvt objektnamn som `constructor` får inte bli en router.
+- Misslyckad lagring visade tidigare falsk framgång och lämnade data ändrade
+  i minnet. Support, partnerresans tre interna sparflöden, handläggning
+  och de bevarade äldre kund-/offert-/konsumentmodulerna återställer berörda
+  poster och händelser. Formulär och inmatning finns kvar för nytt försök.
+  Academy beskriver uttryckligen när framsteg endast gäller under besöket.
+- En skadad kundrad kunde ersätta övrig giltig v2-data med demots seed och
+  senare skriva över den. Sparat underlag och okända fält bevaras nu även
+  när en enskild rad eller kundlistans format är skadat. Läsare filtrerar
+  felaktiga rader; mutationer av okänt format avvisas. Äldre supportdatum,
+  management, ärenderader och ljudmetadata kraschar inte giltiga vyer.
+- JSON-export avgränsar konsument- och affärsunderlag till rätt partner;
+  defekta äldre behållare blockerar inte övrig export. Senaste aktiviteter
+  sorteras efter datum. CSV behandlar formelliknande partnernamn som text
+  och behåller numeriska utfall som tal. Flera rapportkontroller behåller
+  tangentbordsfokus efter omritning.
+- Excel med 1904-datumsystem kunde registrera ett datum 1 462 dagar fel.
+  Arbetsbokens verkliga datumsystem används för numeriska datum; redan
+  formaterade datum får ingen dubbel förskjutning. 1900/1904 kontrolleras
+  med faktisk import och registrering.
+- Misslyckad städning av ett registrerat utkast kunde lämna en bilagereferens
+  som sedan raderade bytes från ett sparat ärende. Bortkoppling bevarar
+  filer med kvarvarande ärendereferens; sista uttryckliga bortkopplingen
+  rensar filen. Städningsfel rapporteras. Sök/statusfilter hålls per
+  fastighetspartner och en tom sökträff beskrivs som ett filtrerat urval.
+- Kurslänkar behåller ursprunglig partner och isolerad demoyta, även efter
+  spårbyte. Nya B2C-partners får sitt konfigurerade kursinnehåll. Filmfel
+  på source-element visar läsbart alternativ, och dold/ersatt kursmedia
+  pausas. Strömmad WebM utan inledande längdmetadata mäts med avgränsad
+  probe och kan laddas upp. Gamla synliga demoövningar hänvisar nu till
+  säljarbete utanför portalen; kurs-/fråge-ID och framsteg bevaras.
+- Avtalsfakta innehöll äldre antaganden om saknat Stabil-/Kvartsprisunderlag
+  och fel vinterkalender. Korten följer befintliga säljarunderlaget,
+  Stabil-bekräftelsen och hela produktlektioner med källavsnitt. Officiella
+  webbkällor och aktuella villkor hålls åtskilda från utbildningsunderlaget.
+- Giltiga 90-teckens partnernamn utan mellanslag sprängde desktop/mobilvy,
+  och långa samtalsrubriker överflödade ljuddialogen. Text och flex/grid
+  bryts nu inom sidan/dialogen utan att skriva om det sparade namnet.
+
+### Verifiering på den samlade kandidaten
+
+Alla åtta befintliga qa/*.mjs och syntax för samtliga dist/*.js passerar.
+Nya regressioner: navigation 41, fastighet 36, rapporter 89, support/fakta
+24, bevarade moduler 20 och utbildning/ljud 41 kontroller; samtliga godkända
+utan scriptfel. En första samlad utbildningskörning upptäckte överflödet
+i ljuddialogen vid 320 px; det rättades och omkörning passerar 41/41.
+
+Befintliga breda browserkontroller: partnertyper 115, partnersegment 105,
+Insikter/resultat 105, fastighetssamarbete 111 och inflyttning 112. Fullkurs
+168 och B2C-bibliotek 69 passerar. Efter sista ljud-CSS passerar B2C åter
+69/69. Faktisk lokal uppspelning/metadata/textning/materialhämtning passerar
+101 kontroller för samtliga 18 filmer och fem uppspelade stickprov plus
+intro. Inga JS-/resursfel. Sites worker-errorlogg returnerar 0 felhändelser.
+
+Alla PDF/PPTX, källspecifikation, kapiteldata, framstegsnycklar och godkända
+media-URL:er är byteoförändrade. Ekonomiska fixtures, hostingmanifest,
+Site-identitet, custom-publik revision 4 och befintliga scheman bevaras.
+Ingen backend, nya affärsregler, verkliga kunduppgifter eller externa
+utskick ingår. Chromium-verifieringen ersätter inte kontroll i andra
+webbläsarmotorer eller faktisk produktionsbehörighet. Bred slutlig
+ytgranskning, GitHub-integration och native publicering kvitteras nedan
+först efter utförandet.
+
+Slutlig oberoende ytgranskning efter samtliga rättningar: nya
+qa/bug-surface.py passerar **916/916** kontroller med **288** aktiva
+vykombinationer i 320/390/1440 px och **29** lokala destinationsURL:er
+med HTTP 200. Inga JavaScriptfel, misslyckade HTTP-svar, duplicerade ID
+eller synliga olabelerade formulärkontroller. Långa partnernamn testas
+för sälj-, fastighets- och personalpartners. Även 11 unika officiella
+produkt-/villkorslänkar svarar 200. Slutlig textdiff/syntax passerar.
+Detta är lokal syntetisk browserverifiering; native publicering följer.
