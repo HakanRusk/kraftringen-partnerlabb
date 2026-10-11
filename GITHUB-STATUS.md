@@ -221,3 +221,23 @@ Samma Site, custom-delning revision 4, full utbildning, scheman och
 ekonomiska exempelunderlag bevaras. Full kvittens/gränser i WORKLOG.
 Denna efterhandskvittens ändrar bara dokumentation; dist/ och hosting
 är identiska med publicerad v28 och kräver ingen ny publicering.
+
+## 2026-10-11 · Hela portalens flödesgranskning publicerad som version 29
+
+PR #38 är integrerad. Exakt GitHub-main och publicerad Sites-källa:
+`35dff3b40a14333a7f57390050d3b44fdd4fd7b3`. Testat kandidat-/mergeträd
+är identiskt; Sites-källan överfördes fast-forward från v28.
+Native version 29:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_1b751a071bc881919b6ca46f7435dcf8`.
+Deployment `appgdep_6acb67846c488191919840088943471c` succeeded
+2026-10-11 10:40:20 UTC på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+
+Sex fel rättade: utbildningsretur, lämnat förmedlingsformulär, nya partners
+i rapportväljaren, två fokusreturer och mobilt periodval. V28:s rättningar
+bevaras. 273 nya riktade, 919 breda och 160 klick-/layoutkontroller är gröna
+lokalt; även den gemensamma integrationen är verifierad. På den faktiskt
+publicerade versionen passerar 919 breda kontroller utan script-/HTTP-fel.
+Samma custom-policy revision 4, full utbildning, sparade data och schema
+består. Full kvittens/gränser i WORKLOG. Dokumentationskvittensen ändrar
+inte dist/ eller hosting och kräver ingen ny publicering.

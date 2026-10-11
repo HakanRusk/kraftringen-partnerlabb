@@ -1879,3 +1879,39 @@ custom-policy revision 4. Nästa överföring sker fast-forward från verifierad
 GitHub-main. Faktisk PR, käll-SHA, sparad version, lyckad deployment och
 hosted slutkontroll dokumenteras efter utförandet. Detta uppdrag ändrar
 inte agentprompt/schema, åtkomst, kunddata eller affärs-/ersättningsregler.
+
+### PORTAL-FLODE-01 · Publicerad version 29 och hosted slutkontroll
+
+PR #38 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/38
+integrerades från verifierad kandidat
+`15db562e14cabb894c220acc1f88afcce6340f77`. Exakt GitHub-main och
+publicerad Sites-källa: `35dff3b40a14333a7f57390050d3b44fdd4fd7b3`.
+Kandidat och merge har identiskt träd
+`6ad9fcfd7dafcc2d2238902c37cbd458e190d189`, dist-träd
+`6b733c830b219ed0ad469925bd2fcfd1c72251ad`.
+
+Sites-källan överfördes fast-forward från v28:s ccd1988 utan force eller
+separata ändringar. Arkivet byggdes från samma pushade, rena revision och
+innehåller endast dist/ och hostingmanifestet.
+
+Native version **29**:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_1b751a071bc881919b6ca46f7435dcf8`.
+Deployment `appgdep_6acb67846c488191919840088943471c` bekräftade
+**succeeded** 2026-10-11 **10:40:20.127029 UTC** på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Färsk metadata efter publiceringen visar version 29 och custom-policy
+revision 4. Samma portal, åtkomst, tunnelbindningar och automationer består.
+
+Slutkontroll på den faktiskt publicerade versionen passerar **919/919**:
+288 vykombinationer vid 320/390/1440 px och 32 interna länkdestinationer.
+Inga JavaScript- eller HTTP-fel. Artefakt:
+/workspace/portal-audit3/hosted-final/bug-surface-report.json.
+Åtkomstbearer hölls i minne och skickades via dolt stdin endast till
+portalens origin; inga credentials lagras i källkod, argv eller rapporter.
+
+Denna kvittens ändrar endast README, BACKLOG, WORKLOG och GITHUB-STATUS.
+dist/ och hosting är byteidentiska med publicerad v29; ingen ny deployment
+krävs för dokumentationen. All kontroll använder fiktiv browserdata i
+Chromium. Andra browsermotorer, verklig kundnytta och produktionsbehörighet
+påstås inte verifierade. Inga öppna, reproducerade fel återstår inom denna
+gransknings omfattning; detta garanterar inte att okända fel saknas.
