@@ -10,7 +10,7 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## Direktuppdrag: utbildningsförhandsvisning (2026-10-11)
 
-**UTBILDNING-PREVIEW-01:** läsbar förhandsvisning efter Ludwigs ”Länka så får
+**UTBILDNING-PREVIEW-01, publicerad i version 21 via PR #22:** läsbar förhandsvisning efter Ludwigs ”Länka så får
 jag se”. Kandidaten innehåller tio produkter, två partneranpassade spår och
 Direkt/Stabil med manusutkast, viktning och fem facitövningar. Publicerings-
 och testkvittens finns i WORKLOG.md. Den fristående sidan ersätter inga
