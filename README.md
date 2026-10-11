@@ -10,6 +10,17 @@ Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face ti
 
 Denna etapp omfattar frontend med exempeldata. Flöden, pipelinesteg, fyra demoutbildningar och partnerresan är förslag att testa. Elakademin är en färdig innehållskurs, tillagd i båda säljpartnernas arbetsytor på användarens uppdrag. Backend och integrationer ingår inte nu; ingen byggplattform är vald.
 
+## Ny utbildning: innehållsförhandsvisning
+
+Öppna [utbildning-preview.html](https://kraftringen-partnerlabb.rosen123.chatgpt.site/utbildning-preview.html)
+med portalens befintliga åtkomst. Den fristående vyn visar gemensam grund,
+Savera-/Face2face-spår, alla tio produkter från säljarunderlaget 10 oktober
+2026 samt Direkt/Stabil med viktning, fem frågor med facit och nio manusutkast.
+Det gemensamma Stabil-priset omfattar endast den säkrade månadsutjämnade
+delen. Räkneexemplen är syntetiska och kundens offert styr villkoren.
+Arthur-/avatarvideor och den omgjorda presentationen/självstudierna återstår.
+Befintliga Academy-kurser och B2C-samtalsbibliotek bevaras.
+
 ## Aktiv pilotagent
 
 [PILOT-MISSION.md](PILOT-MISSION.md) styr nästa etapp: förbered en enkel pilot

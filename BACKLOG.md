@@ -8,6 +8,15 @@ Källor: användarens aktiverade masterprompt, aktuell kod och isolerade
 reproduktioner 8 oktober 2026. Detta är ingen undersökning av verkligt
 användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
+## Direktuppdrag: utbildningsförhandsvisning (2026-10-11)
+
+**UTBILDNING-PREVIEW-01:** läsbar förhandsvisning efter Ludwigs ”Länka så får
+jag se”. Kandidaten innehåller tio produkter, två partneranpassade spår och
+Direkt/Stabil med manusutkast, viktning och fem facitövningar. Publicerings-
+och testkvittens finns i WORKLOG.md. Den fristående sidan ersätter inga
+befintliga kurser. Nästa innehållsetapp är omgjorda kapitel, Arthur-/avatar-
+filmer, presentation och självstudier. Inga nya filmer påstås vara klara.
+
 ## Aktiv pilotkö – 10 oktober 2026
 
 Aktuellt direktuppdrag i utbildningschatten: **B2C-SAMTAL-01**, möjlighet att

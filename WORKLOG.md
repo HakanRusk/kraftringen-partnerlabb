@@ -915,3 +915,30 @@ PR #20 integrerad; GitHub/Sites publicerad källrevision `66d8046558728fd21dd6be
 Säljpartnerns meny: Mina resultat, Insikter, Avtalsfakta, Utbildning och support. Endast egna rapportdata i partnervy; inga interna kostnader/nettobidrag. Fastighetsbolag: Avtalsval med Kvartspris som grundval, Opti och Rörligt månadspris som alternativ. Nya utkast får en ändringsbar kopia av grundvalet; äldre underlag bevaras. Excelval gäller hela urvalet nya rader. Ingen automatisk avtalsteckning.
 
 Faktakort har officiella källänkar och relevanta befintliga Elakademin-filmer, inte kompletta produktspecifika filmer. Saknade exakta produktblad för Stabil/B2B Kvartspris och specifikation av Individuell portfölj är nästa innehållsbehov, inte ett skäl att fabricera villkor. Detta är en efterhandskvittens, dist/ oförändrad.
+
+## 2026-10-11 · UTBILDNING-PREVIEW-01 · Läsbar ny utbildning
+
+Ludwigs direkta ”Länka så får jag se” efter genomgång av det 31-sidiga
+säljarunderlaget auktoriserar denna avgränsade innehållsförhandsvisning.
+Egen Codex-gren från a901c7f9705783606d0dbad0ad6c121e72de137d; ingen
+Daniel-ändring eller ny verksamhetsregel ingår.
+
+Fristående utbildning-preview.html innehåller fyra grundkapitel, Savera-
+och Face2face-spår, tio produkter med källsidnummer, Direkt/Stabil-jämförelse,
+viktad komponentpriskalkyl, fem facitövningar och nio Arthur-manusutkast.
+Stabil avser endast säkrat, månadsutjämnat SYS/EPAD-pris. Osäkrad volym,
+dygnsprofil och andra kostnader hålls separata. PDF-källan är användarens
+säljarunderlag från 10 oktober 2026. Exemplen är syntetiska, inga kunddata.
+De nya Arthur-/avatarvideorna, presentationen och självstudierna återstår.
+
+Verifiering: 48/48 Playwright/Chromium-kontroller passerar i portabel miljö:
+produktkort, sökning/spårfilter, tangentbordstabbar, fem facit, nio manus,
+80/75/-10 öres viktning, nollvolym/overflow, PDF och kvarvarande portal.
+Alla tre flikar utan horisontellt överflöde vid 320/390/1440 px. Desktop-
+och mobilbilder har granskats. Inga webbläsar-/scriptfel. Samtliga åtta
+befintliga qa/*.mjs, JS-syntax och diffkontroll passerar. Oberoende
+innehållsgranskning bekräftar exakt matchning mot katalog och lektionsutkast.
+
+Befintliga portalmoduler, fem Academy-kurser, B2C-samtal, sparade data och
+hostingmanifest ändras inte. Publicering ska bevara custom-publik revision 4.
+GitHub PR/integration och exakt Sites-version kvitteras efter utförandet.
