@@ -158,10 +158,18 @@ async def main():
 
         local = sorted(set(link['href'].split('#')[0] for view in views for link in view['links'] if link['href'].startswith(BASE) and link['href'].split('#')[0] != BASE))
         for url in local:
-            headers = {'OAI-Sites-Authorization': 'Bearer ' + AUTH_TOKEN} if AUTH_TOKEN and own_origin(url) else {}
-            response = await context.request.get(url, headers=headers, max_redirects=0)
-            links.append({'url': url, 'status': response.status})
-            good('lokal länkdestination svarar: ' + url, response.ok)
+            # Use the actual browser's network and trust configuration, also on
+            # hosted Sites. The scoped context route supplies auth in memory.
+            response = await page.evaluate("""async url => {
+                // Sites canonicalizes .html URLs with an own-origin redirect.
+                // Each redirected request passes through scoped_headers too.
+                const result = await fetch(url, {credentials:'same-origin', redirect:'follow'});
+                const status = result.status, ok = result.ok;
+                if (result.body) await result.body.cancel();
+                return {status, ok, url:result.url, redirected:result.redirected};
+            }""", url)
+            links.append({'url': url, 'status': response['status'], 'redirected': response['redirected']})
+            good('lokal länkdestination svarar på portalens egen origin: ' + url, response['ok'] and own_origin(response['url']))
 
         # Keyboard navigation used to destroy focus; Escape left the menu open.
         await page.set_viewport_size({'width': 1440, 'height': 900})

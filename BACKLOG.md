@@ -34,6 +34,21 @@ prissättning eller integration följer av att kunden väljer ett fokus.
 
 ## Direktuppdrag: felgranskning av hela portalen (2026-10-11)
 
+**Publicerad v25 via PR #30:** GitHub/Sites-källrevision
+`e9e261ca4d76ee25f717ca8087019a9399e3da4e` publicerades med native
+succeeded-kvittens 2026-10-11 09:26:11 UTC på befintlig Partnerlabb-URL.
+251 riktade och 916 breda lokala browserkontroller passerar; 102
+oberoende medie-/åtkomstkontroller på den publicerade sidan passerar.
+Bred verifiering på publicerad v25 passerar också **916/916**:
+288 vykombinationer och alla 29 interna länkdestinationer, inga script-
+eller HTTP-fel.
+Kraftringens interna vy och samtliga partnerupplägg, hela Elakademin,
+ljudbibliotek samt tidigare lokala underlag bevaras. Custom-åtkomst
+revision 4, Site-identitet, scheman och ekonomiska exempelunderlag är
+oförändrade. Rättningarna är verifierade mot reproducerade fel;
+uppdraget innebär inget påstående att inga okända fel kan återstå.
+Full publiceringskvittens och verifieringsgränser finns i WORKLOG.
+
 Ludwig: ”Leta nu fel på hela sidan och fixa alla buggar”. Utgångspunkt är
 verifierad GitHub-main `c9dd58781326fd0b037097b8dc39c06c7e1ba7ff` och
 publicerad version 24. Kodgranskning, bred browsergenomgång och isolerade
