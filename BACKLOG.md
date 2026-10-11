@@ -54,6 +54,12 @@ prissättning eller integration följer av att kunden väljer ett fokus.
 
 ## Direktuppdrag: felgranskning av hela portalen (2026-10-11)
 
+**Andra rundan, kandidat från edb6fa5:** Ludwigs ”Kör en runda till” har
+reproducerat och rättat fler fel i flikkonflikter, avbrutna ljudtransaktioner,
+sluttestets spår/URL, demo-historik, Excel/dubbletter, komplettering/bilagor,
+nya partnerresor och äldre underlag. 157 riktade och 916 breda kontroller
+passerar. Integration/publicering kvitteras efter utförande i WORKLOG.
+
 **Publicerad v25 via PR #30:** GitHub/Sites-källrevision
 `e9e261ca4d76ee25f717ca8087019a9399e3da4e` publicerades med native
 succeeded-kvittens 2026-10-11 09:26:11 UTC på befintlig Partnerlabb-URL.
