@@ -201,3 +201,23 @@ Visuellt granskat på dator/mobil och tangentbord verifierat. Full kurs,
 tidigare underlag, delning och Daniels godkännandekrav består.
 Full kvittens i WORKLOG. Dokumentationskvittensen ändrar inte dist/ eller
 manifest och kräver ingen ny publicering.
+
+## 2026-10-11 · Tredje felgranskningen publicerad som version 28
+
+PR #36 är integrerad. GitHub-main och exakt publicerad Sites-källa är
+`ccd1988f4db4268baf72aa9b45c2a6c012a5a6e4`. Fast-forward från v27, med
+testat identiskt merge-/kandidatträd. Native version 28:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_9a16b8e205b081919014a832bc092750`.
+Deployment `appgdep_6acb65a3ab4c8191bc37cbb1b4899ed9` succeeded
+2026-10-11 10:32:21 UTC på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+
+Sex reproducerade felklasser rättade: bilageval under pågående radering,
+konflikter mellan ljuddialoger i flera flikar, förlust av profilmetadata,
+överskrivning av oläsbart samarbetsunderlag, felaktiga quizflaggor och
+kalenderdagar i olika tidszoner. På publicerad version passerar 135 nya
+riktade, 916 breda och 102 medie-/material-/åtkomstkontroller utan fel.
+Samma Site, custom-delning revision 4, full utbildning, scheman och
+ekonomiska exempelunderlag bevaras. Full kvittens/gränser i WORKLOG.
+Denna efterhandskvittens ändrar bara dokumentation; dist/ och hosting
+är identiska med publicerad v28 och kräver ingen ny publicering.

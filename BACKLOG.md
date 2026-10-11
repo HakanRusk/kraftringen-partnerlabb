@@ -7,8 +7,10 @@ felklasser: snabba bilageval, samtidiga ljudändringar, äldre profilmetadata,
 oläsbart samarbetsunderlag, felaktiga quizflaggor och kalenderdatum i olika
 tidszoner. Rättningarna passerar 135 nya riktade och 916 breda kontroller.
 Kandidaten bygger på main `6115dfa41edc5fb01b65742d23dbe84c0b7c20f8`
-och bevarar v27:s inflyttning först. Integration/publicering återstår att
-kvittera efter faktiskt utförande; inga nya verksamhetsregler införs.
+och bevarar v27:s inflyttning först. PR #36 är integrerad och publicerad
+som version 28 med native succeeded 10:32:21 UTC. På publicerad version
+passerar alla 135 nya riktade, 916 breda och 102 medie-/åtkomstkontroller.
+Full kvittens i WORKLOG; inga nya verksamhetsregler införs.
 
 
 ## Bekräftad inriktning: resultat och utbildning (2026-10-11)
