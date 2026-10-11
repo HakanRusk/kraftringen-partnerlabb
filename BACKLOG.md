@@ -8,14 +8,24 @@ Källor: användarens aktiverade masterprompt, aktuell kod och isolerade
 reproduktioner 8 oktober 2026. Detta är ingen undersökning av verkligt
 användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
-## Direktuppdrag: utbildningsförhandsvisning (2026-10-11)
+## Direktuppdrag: fullständig utbildning (2026-10-11)
 
-**UTBILDNING-PREVIEW-01, publicerad i version 21 via PR #22:** läsbar förhandsvisning efter Ludwigs ”Länka så får
-jag se”. Kandidaten innehåller tio produkter, två partneranpassade spår och
-Direkt/Stabil med manusutkast, viktning och fem facitövningar. Publicerings-
-och testkvittens finns i WORKLOG.md. Den fristående sidan ersätter inga
-befintliga kurser. Nästa innehållsetapp är omgjorda kapitel, Arthur-/avatar-
-filmer, presentation och självstudier. Inga nya filmer påstås vara klara.
+**UTBILDNING-FULL-02:** Ludwigs direkta ”skapa det” och krav på noggrannare,
+matigare utbildning utökar version 21:s förhandsvisning till en hel kurs.
+18 kapitel omfattar gemensam grund, alla tio produkter och två tillämpande
+kundfall. 38 lösta exempel, 72 kapitelövningar, 40 slutfrågor och 65 begrepp
+är färdiga och granskade mot underlagen. Full kursvy klarar 168
+browserkontroller. PDF på 139 sidor och redigerbar PowerPoint på 463 bilder
+har exporterats med fulla talaranteckningar. Arthur-inläsningarna för alla
+18 kapitel och introduktionen är färdiga, native-bekräftade och oberoende
+AV-granskade. Samlad filmspeltid är 95 minuter. Alla 19 redigerbara projekt
+och svenska textningen är verifierade. Kursens 101 kontroller för faktisk
+filmuppspelning och materialhämtning passerar. Full leveranskandidat
+integreras med senaste PARTNER-06-main; lyckad publicering kvitteras i WORKLOG.
+
+**UTBILDNING-PREVIEW-01** är publicerad i version 21 via PR #22.
+Den tidigare sidan bevaras och får en tydlig ingång till hela utbildningen.
+Äldre Academy-kurser, B2C-samtalsbibliotek och sparade data ska bevaras.
 
 ## Aktiv pilotkö – 10 oktober 2026
 

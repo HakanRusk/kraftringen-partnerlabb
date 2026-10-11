@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#102d3a">
+  <meta name="description" content="Kraftringens Elakademi: en grundlig självstudieutbildning om elmarknaden, produktval och kunddialog för företag och privatkunder.">
+  <title>Elakademin · Kraftringen</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23136f70'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Arial' font-size='42' font-weight='700' fill='white'%3EK%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./elakademin.css">
+  <script src="./elakademin.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Hoppa till innehåll</a>
+  <header class="site-header"><div class="shell header-inner">
+    <a class="brand" href="elakademin.html#overview"><span class="brand-symbol" aria-hidden="true">K</span><span>Kraftringen<small>Elakademin</small></span></a>
+    <a class="portal-link" id="portal-link" href="/?workspace=syd#academy">← Partnerportalen</a>
+  </div></header>
+  <main id="content">
+    <section class="hero" aria-labelledby="course-title"><div class="shell hero-inner">
+      <div class="hero-copy"><p class="eyebrow">Kunskap som håller i kunddialogen</p>
+        <h1 id="course-title">Förstå elen.<br>Förklara affären.</h1>
+        <p class="hero-intro">En grundlig utbildning från den första kilowattimmen till ett genomtänkt produktval. Läs, räkna, öva och bygg en förklaring som kunden förstår.</p>
+        <p class="hero-version" id="hero-version">Kraftringens partnerutbildning</p>
+      </div>
+      <div class="hero-journey" aria-label="Utbildningens fyra steg"><p class="eyebrow">Din väg från grunden</p><ol><li><span>01</span><div><strong>Förstå</strong><small>Elmarknad, pris och förbrukning</small></div></li><li><span>02</span><div><strong>Jämför</strong><small>Produkter, risk och kundbehov</small></div></li><li><span>03</span><div><strong>Förklara</strong><small>Kundfall, invändningar och dialog</small></div></li><li><span>04</span><div><strong>Pröva</strong><small>Räkneövningar och självtest med facit</small></div></li></ol></div>
+    </div></section>
+    <div class="shell">
+      <div class="course-meta" id="course-meta" aria-label="Utbildningen i siffror"></div>
+      <section class="track-bar" aria-labelledby="track-label"><div><h2 id="track-label">Välj ditt utbildningsspår</h2><p>Grunderna delas. Fördjupningen följer kundens segment.</p></div><div class="track-buttons" role="group" aria-label="Utbildningsspår"><button data-track="all" aria-pressed="true">Alla kapitel</button><button data-track="business" aria-pressed="false">Företag <small>Savera · B2B</small></button><button data-track="consumer" aria-pressed="false">Privatkund <small>Face2face · B2C</small></button></div></section>
+      <nav class="view-nav" aria-label="Utbildningens delar"><a data-view-link="overview" href="#overview">Kursöversikt</a><a data-view-link="lesson" href="#lesson">Läs kapitlen</a><a data-view-link="assessment" href="#assessment">Sluttest</a><a data-view-link="glossary" href="#glossary">Ordlista</a><a data-view-link="tools" href="#tools">Räkneverktyg</a></nav>
+      <p id="load-status" class="loading-status" role="status">Hämtar utbildningen…</p>
+      <div id="course-app" hidden>
+        <section id="view-overview" class="view-panel" aria-labelledby="overview-title"><div id="overview-content"></div></section>
+        <section id="view-lesson" class="view-panel reading-layout" aria-label="Kapitel och utbildningsinnehåll" hidden>
+          <aside class="chapter-sidebar"><details id="chapter-disclosure" open><summary>Kapitel i ditt spår <span id="sidebar-count"></span></summary><div class="chapter-controls"><label for="lesson-search">Sök bland kapitlen<input id="lesson-search" type="search" placeholder="Produkt, begrepp eller kapitel"></label><label for="lesson-filter">Visa<select id="lesson-filter"><option value="all">Alla kapitel i spåret</option><option value="unfinished">Inte klarmarkerade</option><option value="bookmarked">Mina bokmärken</option></select></label></div><p id="lesson-search-count" class="small" role="status"></p><nav id="chapter-list" aria-label="Välj kapitel"></nav></details><div class="sidebar-progress"><span id="sidebar-progress-label"></span><progress id="sidebar-progress" max="100" value="0"></progress><p>Din egen klarmarkering, sparad i denna webbläsare.</p></div></aside>
+          <div id="lesson-content" class="lesson-content"></div>
+        </section>
+        <section id="view-assessment" class="view-panel" aria-labelledby="assessment-title" hidden><div id="assessment-content"></div></section>
+        <section id="view-glossary" class="view-panel" aria-labelledby="glossary-title" hidden><div class="section-heading"><div><p class="eyebrow">Begreppen, på vanlig svenska</p><h2 id="glossary-title" tabindex="-1">Ordlista</h2></div><p>Repetera ett ord när du behöver det. Använd förklaringen som stöd för ditt eget kundspråk.</p></div><label class="wide-search" for="glossary-search">Sök begrepp<input id="glossary-search" type="search" placeholder="Exempelvis EPAD, månadsprofil eller MWh"></label><p id="glossary-count" class="small" role="status"></p><div id="glossary-list" class="glossary-grid"></div></section>
+        <section id="view-tools" class="view-panel" aria-labelledby="tools-title" hidden>
+          <div class="section-heading"><div><p class="eyebrow">Pröva sambanden själv</p><h2 id="tools-title" tabindex="-1">Två räkneverktyg</h2></div><p>Ändra förutsättningarna och förklara sedan varför utfallet ändrades. Exemplen är pedagogiska och är inga offerter.</p></div>
+          <section class="tool-card" aria-labelledby="weighted-title"><div class="tool-intro"><span class="number-label">01</span><h3 id="weighted-title">Förbrukningsvägt komponentpris</h3><p>Varje periods pris får betydelse i proportion till periodens volym. Volymerna nedan avser redan den säkrade del som ska månadsutjämnas, exempelvis SYS och EPAD i Stabil. Ingen ytterligare säkringsgrad ska multipliceras in.</p></div><div class="tool-grid"><form id="weighted-form"><div class="two-columns"><fieldset><legend>Vinterperiod</legend><label for="winter-volume">Säkrad volym, kWh<input id="winter-volume" type="number" min="0" step="any" value="600000" required></label><label for="winter-price">Komponentpris, öre/kWh<input id="winter-price" type="number" step="any" value="100" required></label></fieldset><fieldset><legend>Sommarperiod</legend><label for="summer-volume">Säkrad volym, kWh<input id="summer-volume" type="number" min="0" step="any" value="400000" required></label><label for="summer-price">Komponentpris, öre/kWh<input id="summer-price" type="number" step="any" value="50" required></label></fieldset></div><button type="submit" class="button primary">Beräkna det viktade priset</button></form><div class="tool-result" id="weighted-result" role="status" aria-live="polite"></div></div><p class="scope-note">Beräkningen visar bara den valda komponenten. Osäkrad el, dygnsprofil, andra avtalade kostnader, elnät, energiskatt och moms ingår inte. Ett utjämnat pris per kWh ger varken lägre total kostnad genom utjämningen i sig eller lika stora fakturor.</p></section>
+          <section class="tool-card" aria-labelledby="hedge-title"><div class="tool-intro"><span class="number-label">02</span><h3 id="hedge-title">Prognos, säkrad volym och faktiskt utfall</h3><p>En säkringsgrad på prognosunderlaget är inte samma sak som säkrad andel av faktisk förbrukning. Här använder vi Direkt/Stabils beskrivna standard på 80 procent som ett ändringsbart räkneantagande; den är inte en generell regel för alla produkter.</p></div><div class="tool-grid"><form id="hedge-form"><div class="three-columns"><label for="forecast-volume">Prognosvolym, MWh<input id="forecast-volume" type="number" min="0" step="any" value="100" required></label><label for="hedge-percentage">Säkring av prognos, %<input id="hedge-percentage" type="number" min="0" max="100" step="any" value="80" required></label><label for="actual-volume">Faktisk förbrukning, MWh<input id="actual-volume" type="number" min="0" step="any" value="125" required></label></div><button type="submit" class="button primary">Beräkna relationen till utfallet</button></form><div class="tool-result" id="hedge-result" role="status" aria-live="polite"></div></div><p class="scope-note">Över 100 procent visar att den säkrade volymen är större än utfallet. Beräkningen beskriver volymförhållandet, inte en fakturafördelning eller kundens rätt till ersättning. Hur avvikelser avräknas styrs av kundens avtal.</p></section>
+        </section>
+      </div>
+      <footer class="site-footer"><div><strong>Kraftringen · Elakademin</strong><p>Utbildning för att förstå och förklara elhandel. Aktuell offert, prisbilaga och avtal styr kundens priser och villkor.</p></div><p id="storage-status" role="status">Framsteg och egna anteckningar sparas endast i denna webbläsare.</p><a href="#overview">Till kursöversikten ↑</a></footer>
+    </div>
+  </main>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript><p class="noscript">Slå på JavaScript för att läsa kapitlen och använda övningarna. Du kan också öppna självstudiematerialet från partnerportalen.</p></noscript>
+</body>
+</html>

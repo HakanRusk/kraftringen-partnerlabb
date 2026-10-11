@@ -1056,3 +1056,135 @@ is_enabled=true, exakt prompt och oförändrat timschema i Europe/Stockholm
 från 2026-10-08 23:00. Inga andra automationer har ändrats. Det verifierar
 konfigurationen, inte oavbruten processdrift eller framtida leverans.
 Denna efterhandskvittens ändrar ingen dist-fil och skapar ingen ny deployment.
+
+## 2026-10-11 · UTBILDNING-FULL-02 · Komplett utbildningskandidat
+
+Ludwigs direkta uppdrag ”skapa det” och ”mycket noggrannare och matigare”
+auktoriserar denna fullständiga kurs och de tidigare beställda Arthur-/avatar-
+filmerna. Egen Codex-gren codex/elakademin-full-20261011 från
+`aafa6244836a8ad86978af6d788c1db7c35eaa3e`; ingen Daniel-revision ingår.
+GitHub-main och öppna PR:er kontrollerade; inga främmande pågående ändringar
+identifierades. Befintlig Sites-källa är en förfader till GitHub-main.
+
+Kursen i dist/elakademin-data.json omfattar 18 kapitel, ungefär 26 500 ord,
+38 lösta räkneexempel, 18 fiktiva kundfall, 72 kapitelövningar, 20 avslutande
+frågor per spår och en ordlista med 65 begrepp. Gemensam grund och tre
+gemensamma prisprodukter återanvänds mellan företagsspårets 15 och
+privatkundsspårets 12 kapitel. Alla tio produkter från användarens
+31-sidiga säljarunderlag, 10 oktober 2026, ingår. Originalpresentationens
+91 bilder och originalsjälvstudiernas 91 sidor används för grundbegrepp.
+Källsidnummer anges per kapitel; aktuell offert och avtal styr kundvillkor.
+
+Kritiska skillnader genomgår särskilda kundfall, beräkningar och facit:
+SYS/EPAD skiljs från profil och osäkrad volym; Stabils gemensamma pris gäller
+endast den säkrade månadsutjämnade delen. Förväntad och faktisk volym skiljs;
+80/125 ger 64 procent och 80/60 ungefär 133 procent. Opti jämför två hela
+månadsutfall på samma volym och omfattning. Vintersäkrats standardvinter har
+alla elhandelsdelar fasta inklusive dygnsprofil. Poolernas strategifördelning
+är inte en utförd position. Individuell horisont är inte avtalslängd.
+Alla priser och kundfall är syntetiska; inga nya skattesatser, kundvillkor,
+volymtoleranser eller resultatgarantier hittas på.
+
+Oberoende innehållsgranskning jämförde produktunderlaget, tio tillämpande
+lektioner och 50 manussegment samt 82 omräknade numeriska led. Separat
+slutgranskning läste alla 65 begrepp och 40 slutfrågor med alternativ,
+facit och bedömningsstöd; tio numeriska svar och solelexemplet 310 MWh
+kontrollerades separat. Två små preciseringar i ordlista och slutprov är
+rättade i såväl kursdata som dokumentexporter.
+
+Självstudiehandboken har 139 sidor, 21 PDF-bokmärken och klickbar innehålls-
+förteckning. PowerPointen har 463 redigerbara bilder och full undervisning
+samt alla 90 berättarsegment i talaranteckningarna. Fyra pedagogiska diagram
+är redigerbara former. Faktisk PDF-/PPT-text innehåller alla 198 undervisnings-
+stycken, 38 exempel med mellanled, 18 fall, 112 frågor, 65 begrepp och
+34 källreferenser. Alla 463 bilder renderades med LibreOffice och scannades
+för textöverlapp och text utanför bilden: noll av vardera. Långa bilder,
+figurer, titel och innehållsförteckning har även granskats visuellt.
+Microsoft Office har inte provats. Alla fyra materialhämtningar är exakt
+jämförda med lokal fil. PDF SHA256:
+`bd6517b2256c6d6324f853e3d52f6ac262128eb2df86734906342bac38754653`.
+PPTX SHA256:
+`9c4bb2152a2c9299e23457600f0b5d9396d3eef23e372586acfc3ffb2c41ec15`.
+
+Komplett kursvy klarar 168 Playwright/Chromium-kontroller på samtliga
+18 kapitel och 40 slutfrågor: spår, alla facit, ordlista, viktning,
+negativa priser, noll/overflow, över-/undersäkring, anteckningar,
+bokmärken, testsvar, klarmarkering, omladdning och ärligt lagringsfel.
+Alla fem vyer saknar horisontellt överflöde vid 320/390/1440 px.
+Inga browser-/scriptfel. Separata UI-kontroller verifierar tangentbord,
+portalens kursingångar och tidigare kurser. Samtliga åtta befintliga
+qa/*.mjs, JS-syntax och diffkontroll passerar. Ingen orelaterad lokal
+lagring skrivs över. Metaversionen avgränsar den nya kursens framsteg.
+
+Arthur är exakt Higgsfield-preset `30fc8796-ceb6-4a66-b3a7-4a145ef7f346`,
+genererad via ElevenLabs Text-to-Speech V2. Den ursprungliga inskickade
+figuren hittades och används som referens för den godkända restaurerade
+3D-figuren. En första bild med felaktigt skägg och en sämre talprobe
+underkändes och används inte. Alla 18 fulla kapitelinläsningar är färdiga;
+270 native grafiktillstånd är författade för innehållet. Faktiska svenska
+ordtider styr förklaringar och textning. Första hela filmmastern och tre
+faktiska intro-/Direkt-bilder är renderade och granskade. Samlad film-
+leverans, slutlig AV-kontroll och publicering kvitteras efter utförandet;
+ingen pågående render räknas som publicerad film.
+
+Befintliga fem Academy-kurser, B2C-samtalsbibliotek, portalmoduler och äldre
+lagring bevaras. Den nya ingången följer partnerns konfigurerade kundsegment.
+Anteckningar, självtest och uppladdade samtal är fortsatt lokal lagring;
+ingen formell certifiering, central resultatrapportering eller verklig
+kundintegration införs. Äldre förhandsvisning får länk till hela kursen.
+Hostingmanifest och custom-publik revision 4 ändras inte. Integration och
+exakt Sites-publicering följer RUNBOOK efter slutlig media-kontroll.
+
+### FULL-02 · Slutlig media och samlad integrationskontroll
+
+Alla 18 kapitelfilmer och introduktionen är färdiga, native-bekräftade och
+oberoende granskade. Sammanlagd kapitelspeltid är 5 710,715 sekunder
+(95 min 10,715 s); introduktionen 16,939 s. H.264/AAC, 1280 × 720 och
+nominalt 24 fps. Alla 8 693 kanoniska berättarord finns i giltig svensk
+WebVTT; alla 18 fullständiga ASR-transkript är granskade för materiella
+utelämningar och felaktiga kritiska tal. Direkt genomlyssning görs inte.
+
+Full fontkontroll av fyra inkluderade Montserrat-varianter omfattar 270
+scener och 2 321 textfält. Ej stödda pil-/relationssymboler ersattes med
+tydliga ord; åtta filmer exporterades om. Oberoende slutgranskning läste
+31 faktiskt avkodade bildrutor, inklusive alla 12 rättade scener och deras
+17 textfält, utan kvarstående fel eller materiell klippning. En separat
+granskare inspekterade även slutbilder för samtliga 18 filmer. Figuren är
+en animerad illustrerad guide utan läppsynk.
+
+Varaktighet avviker högst 1 ms från manifest, ljud/video-slut högst 28 ms
+och hela AAC-spårets längd från original-MP3 högst 18,286 ms. Första
+30 sekunderna av varje faktiskt MP4/AAC-spår och hela introduktionen
+matchar rätt godkända Arthur-original, minsta korrelation 0,999730094 och
+ingen förskjutning. Detta är ljudidentitet och tekniska/visuella stickprov,
+inte fullständig genomlyssning av varje slutfilm.
+
+Ett gemensamt native-bekräftat källpaket innehåller 19 portabla projekt,
+325 filer och 229 682 163 bytes. CRC, alla relativa media/fontreferenser,
+asset-hashar och 19 kanoniska originalinläsningar passerar oberoende kontroll;
+noll saknade filer, hashfel, credentials eller presignerade receipts.
+Arkiv SHA256 `6a93ccaf8a8754e3adc5976654bbc1b3f641b01d6c3ad00d662fb0e690593ba3`.
+Fryst mediemanifest SHA256
+`62e06483a929d2ab4445fd82d05d51002c24b7066bbbf69606b26b0c8ed1e152`.
+Slutliga mediafält är exakt lika den oberoende granskade kandidaten;
+endast manifestets QA/statusmetadata ändrades vid frysning.
+
+Parallell PARTNER-06 levererades via PR #24 och dokumenterades i PR #25
+under arbetet. Full kurs är därför förenad med verifierad färsk main
+`a77255ab32ce27a5b7a6c61f9fb5a0ef6413cca1`. Dess samtliga ändringar och
+nyare instruktioner bevaras. WORKLOGs samtidiga tillägg förenades genom
+att bevara hela senaste main-loggen och därefter hela kursposten.
+Git-objekt återlästes och SHA-verifierades mot GitHub/Sites; inga force-
+uppdateringar eller Daniels ändringar ingår i denna integrationsåtgärd.
+
+På den samlade kandidaten passerar åter 168 fullkurskontroller, 101
+kontroller av faktisk uppspelning/textning/materialhämtning, alla åtta
+qa/*.mjs, syntax för samtliga dist/*.js och diffkontroll för textfiler.
+PDF/PPTX verifieras bytevis med SHA; deras formatwhitespace ändras inte.
+Nya partnertyper
+kontrolleras separat med qa/partner-types.py: 115 browserkontroller,
+inga scriptfel. Alla 18 filmer har faktiska metadata, poster och textning;
+fem representativa filmer och introduktionen spelas och söks på riktigt.
+Alla fyra PDF/PPTX-källhämtningar är bytekontrollerade. Mobil-layout,
+båda säljspåren, tidigare kurser och B2C-bibliotek är bevarade. Lyckad
+GitHub-integration och exakt Sites-publicering kvitteras efter utförandet.
