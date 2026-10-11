@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#102d3a">
+  <meta name="description" content="Förhandsvisning av Kraftringens nya partnerutbildning: kursstruktur, tio produkter och en praktisk lektion om Direkt och Stabil.">
+  <title>Elakademin · Kraftringens partnerutbildning</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23136f70'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Arial' font-size='42' font-weight='700' fill='white'%3EK%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./utbildning-preview.css">
+  <script src="./utbildning-preview.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#content">Hoppa till innehåll</a>
+  <header class="site-header"><div class="shell header-inner">
+    <a class="brand" href="/?workspace=vast#academy"><span class="brand-mark" aria-hidden="true">K</span><span>Kraftringen<span class="brand-sub">Elakademin</span></span></a>
+    <a class="back-link" href="/?workspace=vast#academy">← Till partnerportalen</a>
+  </div></header>
+  <main id="content">
+    <section class="hero"><div class="shell hero-inner">
+      <div class="hero-copy"><p class="eyebrow">Elakademin · Partnerutbildning</p>
+        <h1>Din elaffär, begriplig<br>från grunden.</h1>
+        <p class="hero-intro">Från den första kilowattimmen till ett genomtänkt produktval. En gemensam grund och egna spår för Savera och Face2face.</p>
+        <span class="preview-badge"><span aria-hidden="true"></span>Förhandsvisning · kursstruktur och produktinnehåll</span>
+      </div>
+      <div class="hero-visual" aria-hidden="true"><div class="visual-top">SAMMA GRUND. TYDLIGARE VAL.</div><div class="visual-grid"><div class="price-block">SYS<span>Systempris</span></div><div class="plus">+</div><div class="price-block">EPAD<span>Elområdesskillnad</span></div></div><div class="visual-line"></div><div class="visual-bottom"><span>Direkt</span><span>Stabil</span></div><div class="visual-caption">Prissäkring och månadsprofil,<br>förklarat steg för steg.</div></div>
+    </div></section>
+    <div class="shell">
+      <div class="facts-strip"><span><strong>10</strong> produkter att förstå</span><span><strong>2</strong> partneranpassade spår</span><span><strong>1</strong> praktisk fördjupning att prova</span></div>
+      <div class="tabs" role="tablist" aria-label="Utbildningens delar">
+        <button id="tab-overview" role="tab" aria-controls="overview" aria-selected="true" tabindex="0">Översikt</button>
+        <button id="tab-library" role="tab" aria-controls="library" aria-selected="false" tabindex="-1">Produktbibliotek</button>
+        <button id="tab-lesson" role="tab" aria-controls="lesson" aria-selected="false" tabindex="-1">Direkt &amp; Stabil</button>
+      </div>
+      <p id="load-status" role="status">Hämtar utbildningsinnehållet…</p>
+      <section id="overview" role="tabpanel" aria-labelledby="tab-overview">
+        <div class="section-heading"><div><p class="eyebrow">Börja här</p><h2>En grund som alla delar</h2></div><p>Förstå elen, räkna på kostnaden och förklara vad kunden faktiskt väljer.</p></div>
+        <div id="foundation" class="foundation-grid"></div>
+        <div class="section-heading"><div><p class="eyebrow">Din väg genom utbildningen</p><h2>Välj partnerns spår</h2></div></div>
+        <div class="track-picker" role="group" aria-label="Välj utbildningsspår"><button class="active" data-track="savera" aria-pressed="true">Savera <span>B2B · Företagskunder</span></button><button data-track="face2face" aria-pressed="false">Face2face <span>B2C · Privatkunder</span></button></div>
+        <div id="track-content" class="track-card"></div>
+        <div class="production-note"><span class="note-icon" aria-hidden="true">i</span><div><h3>Så blir nästa version</h3><p>Arthur hos Higgsfield och den inskickade figuren är valda för kapitelvideorna. Här kan du läsa produktinnehållet och prova övningar. De nya videorna, presentationen och självstudiematerialet återstår att producera; berättarmanusen är utkast.</p></div></div>
+      </section>
+      <section id="library" role="tabpanel" aria-labelledby="tab-library" hidden>
+        <div class="section-heading"><div><p class="eyebrow">Från modell till kundförklaring</p><h2>Produktbibliotek</h2></div><p>Öppna en produkt för prisets byggstenar, risker, kundfrågor och räkneexempel.</p></div>
+        <div class="library-toolbar"><label class="search-label" for="product-search">Sök i produkterna<input id="product-search" type="search" placeholder="Exempelvis Opti, dygnsprofil eller säkring"></label><label for="product-track">Utbildningsspår<select id="product-track"><option value="all">Alla produkter</option><option value="savera">Savera · B2B</option><option value="face2face">Face2face · B2C</option><option value="shared">Gemensamma produktlektioner</option></select></label></div>
+        <p id="product-count" class="small" aria-live="polite"></p><div id="products" class="product-list"></div>
+      </section>
+      <section id="lesson" role="tabpanel" aria-labelledby="tab-lesson" hidden>
+        <div class="section-heading"><div><p class="eyebrow">Praktisk fördjupning · B2B</p><h2>Direkt och Stabil</h2></div><p>Samma grundläggande säkring. Olika hantering av månadsprofilen.</p></div>
+        <div class="key-takeaway"><span class="eyebrow">Det viktigaste att kunna förklara</span><p id="customer-explanation"></p></div>
+        <h3>Vad skiljer produkterna åt?</h3><div id="comparison" class="comparison"></div>
+        <div class="lesson-heading"><p class="eyebrow">Räkna själv</p><h3>Varför blir snittet 80 öre?</h3><p>Ändra volymer och prisnivåer och se hur det förbrukningsvägda priset påverkas.</p></div>
+        <div class="calculator"><form id="weighted-form"><div class="calculator-inputs"><fieldset><legend>Vinterperiod</legend><label for="winter-volume">Säkrad volym, kWh<input id="winter-volume" type="number" min="0" step="any" value="600000" required></label><label for="winter-price">Komponentpris, öre/kWh<input id="winter-price" type="number" step="any" value="100" required></label></fieldset><fieldset><legend>Sommarperiod</legend><label for="summer-volume">Säkrad volym, kWh<input id="summer-volume" type="number" min="0" step="any" value="400000" required></label><label for="summer-price">Komponentpris, öre/kWh<input id="summer-price" type="number" step="any" value="50" required></label></fieldset></div><button class="primary" type="submit">Beräkna snittpriset</button></form><div class="calculator-output" aria-live="polite" aria-atomic="true"><span>Förbrukningsvägt komponentpris</span><strong id="weighted-price">80 <small>öre/kWh</small></strong><p id="weighted-cost"></p><p id="weighted-insight"></p></div><p class="calculator-scope" id="calculator-scope"></p></div>
+        <div class="lesson-heading"><p class="eyebrow">Kontrollera din förståelse</p><h3>Fem övningar med facit</h3><p>Svara först och jämför sedan med förklaringen. Beräknings- och kundfallsfrågorna har stöd för egen bedömning.</p></div><div id="quiz" class="quiz-list"></div>
+        <div class="lesson-heading"><p class="eyebrow">Arthur · Manusutkast</p><h3>Så ska lektionen berättas</h3><p>Nio avsnitt för en sammanhängande förklaring. Öppna ett avsnitt för berättartexten och vad bilden ska visa.</p></div><div id="narration" class="narration-list"></div>
+      </section>
+      <footer><div><strong>Kraftringen · Elakademin</strong><p>Produktinnehåll från säljarunderlaget den 10 oktober 2026. Kundens aktuella offert och avtal anger priser och villkor.</p></div><a href="utbildning-preview/produktspecifikationer.pdf" target="_blank" rel="noopener">Läs produktunderlaget (PDF) ↗</a></footer>
+    </div>
+  </main>
+</body>
+</html>
