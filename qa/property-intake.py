@@ -313,15 +313,17 @@ async def service_checks(test):
     current = await test.state()
     test.good('inflyttningskedjan skapar inga säljposter, avtal eller kickback', all(len(current[key]) == count for key, count in counters.items()) and await test.finance() == base_finance)
     await page.set_viewport_size({'width': 1440, 'height': 1000})
-    await test.view('syd', 'business-brief')
-    await page.locator('[data-business-offer]').first.click()
-    test.good('Saveras befintliga offertstudio har fyra steg', await page.locator('.studio-step').count() == 4)
-    await test.view('vast', 'consumer-sales')
-    await page.locator('[data-consumer-new]').first.click()
-    await page.locator('#consumer-fill-example').click()
-    await page.locator('#consumer-record-form [name=demo]').check()
-    await page.locator('#consumer-record-form button[type=submit]').click()
-    test.good('Face2faces befintliga registrering fungerar fortsatt utan ekonomi', len((await test.state())['consumerSales']) == counters['consumerSales'] + 1 and await test.finance() == base_finance)
+    sales_before = await page.evaluate('JSON.stringify({records:Portal.state.records,offers:Portal.state.offers,consumerSales:Portal.state.consumerSales,businessDetails:Portal.state.businessDetails})')
+    # Sales work now happens outside Partnerlabb. Regression follows each
+    # partner's current own results and insights, preserving legacy drafts.
+    for partner, name, legacy_route in [('syd', 'Savera', 'business-brief'), ('vast', 'Face2face', 'consumer-sales')]:
+        await test.view(partner, 'partner-sales')
+        test.good(f'{name} kan fortsatt följa sina egna kunder och avtal efter inflyttningskedjan', await page.locator('h1').inner_text() == name and await page.locator('[data-sr-record]').count() > 0 and await page.evaluate('Portal.selectedPartnerId') == partner)
+        await page.locator('.sr-partner-tabs [data-go="partner-insights"]').click()
+        test.good(f'{name} kan fortsatt nå egna Insikter och kundtid', await page.locator('h1').inner_text() == name and await page.locator('.savera-insights .sr-tenure').count() == 1 and await page.evaluate('Portal.selectedPartnerId') == partner)
+        await page.evaluate('(route)=>Portal.go(route)', legacy_route)
+        test.good(f'{name} återinför inte äldre aktiv säljregistrering', await page.evaluate('Portal.page') == 'overview' and await page.locator('[data-business-offer],[data-consumer-new],#consumer-record-form').count() == 0)
+    test.good('säljpartnernas resultat och Insikter bevarar alla äldre säljunderlag och ekonomiska exempel', await page.evaluate('JSON.stringify({records:Portal.state.records,offers:Portal.state.offers,consumerSales:Portal.state.consumerSales,businessDetails:Portal.state.businessDetails})') == sales_before and await test.finance() == base_finance)
 
     legacy = await test.state()
     legacy['moveins'] = [{'id': 'legacy-qa', 'partner': 'estate1', 'name': 'Äldre QA', 'email': 'legacy@hyresgast.example', 'address': 'Äldrevägen 2', 'moveDate': '2026-11-01', 'legacyField': 'KEEP'}]

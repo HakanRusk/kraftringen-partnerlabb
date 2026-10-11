@@ -8,6 +8,28 @@ Källor: användarens aktiverade masterprompt, aktuell kod och isolerade
 reproduktioner 8 oktober 2026. Detta är ingen undersökning av verkligt
 användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
+## Direktuppdrag: bredare fastighetssamarbete (2026-10-11)
+
+**FASTIGHET-FORSLAG-01 · Kandidat:** Ludwigs ”Bygg ett förslag” omfattar
+**Ert samarbete** för fastighetsbolag. Visualisera inflyttningskanalen och
+partnerns egen fastighetsel på samma sida med separata underlag. Visa sex
+rådgivningsidéer som möjligheter att pröva; börja dialogen med avlastning av
+hyresgästfrågor och onödig förbrukning. Lokala fokusval är endast
+diskussionsunderlag per partner, inte beställningar eller utskick.
+
+Godkänt när vald fastighetspartners interna profil och egen meny når samma
+partneravgränsade sida, saknade egna elavtal/volymer/kostnader förblir **—**,
+nya partners inte får lånad historik och fokusval klarar omladdning,
+lagringsfel och normal-/demoisolering. Befintlig Excel/manuell inflyttning,
+fullmaktsbilagor, resultat/kickback och version 23:s fulla Elakademin ska
+bevaras. Utförd verifiering och eventuell publicering kvitteras i WORKLOG.
+
+**Senare, efter underlag:** förankra vilka av idéerna som faktiskt behövs,
+hur Kraftringen kan leverera dem och vilka datakällor som finns för
+fastighetselen. Kundens eget elavtal och anläggningsomfattning kräver egna
+källor. Inget automatiskt serviceflöde, besparingslöfte, nytt produktutbud,
+prissättning eller integration följer av att kunden väljer ett fokus.
+
 ## Direktuppdrag: fullständig utbildning (2026-10-11)
 
 **UTBILDNING-FULL-02 · Publicerad v23 via PR #26:** Ludwigs direkta ”skapa det” och krav på noggrannare,
