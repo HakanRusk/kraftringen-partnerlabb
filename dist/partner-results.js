@@ -3,7 +3,7 @@
   const P = window.Portal;
   if (!P) return;
   const e = P.e;
-  const partnerIds = ['syd', 'vast', 'estate1', 'estate2'];
+  const partnerIds = () => P.partnerRegistry.map(partner => partner.id);
   const filters = {};
   let reportPartner = 'syd';
   const format = (value, decimals = 0) => new Intl.NumberFormat('sv-SE', { maximumFractionDigits: decimals }).format(value);
@@ -11,8 +11,9 @@
   const name = id => P.getPartner?.(id)?.name || P.partners?.[id] || 'Partner';
   const data = () => P.partnerResultsData;
   const stateFor = id => filters[id] || (filters[id] = { product: 'all', seller: 'all', region: 'all', metric: 'agreements' });
-  const idsFor = id => id === 'all' ? partnerIds : [id];
-  const isProperty = id => ['estate1', 'estate2'].includes(id);
+  const idsFor = id => id === 'all' ? partnerIds() : [id];
+  const isProperty = id => P.getPartner?.(id)?.type === 'property';
+  const hasBasis = id => Boolean(data()?.rows({partnerIds: [id]}).length || data()?.serviceRows({partnerIds: [id]}).length);
   const periodFor = period => period || P.commercial?.currentPeriod?.() || { label: 'September 2026', current: ['2026-09'], range: '1–30 september 2026' };
   const monthName = month => new Intl.DateTimeFormat('sv-SE', { month: 'short', timeZone: 'UTC' }).format(new Date(`${month}-01T12:00:00Z`));
   const monthLong = month => new Intl.DateTimeFormat('sv-SE', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${month}-01T12:00:00Z`));
@@ -90,6 +91,11 @@
   }
   function content(id, period) {
     if (!data()) return '<div class="empty">Resultatunderlaget förbereds.</div>';
+    if (id !== 'all' && !hasBasis(id)) {
+      const missing = metric('Stängda elavtal', '—', 'Underlag saknas', 'file') + metric('Avtalad årsvolym', '—', 'Underlag saknas', 'chart');
+      const services = isProperty(id) ? metric('Hjälpta nyinflyttare', '—', 'Underlag saknas', 'home', true) + metric('Registrerad service', '—', 'Underlag saknas', 'users') : '';
+      return `<div class="partner-result-heading"><div><span class="commercial-eyebrow">PARTNERUTFALL</span><h2>${e(name(id))} · resultatunderlag saknas</h2><p>${e(period.range || period.label)}</p></div></div><div class="partner-result-metrics${isProperty(id) ? '' : ' partner-result-metrics-two'}">${services}${missing}</div><p class="partner-result-empty" role="status">Underlag saknas för den här partnern. Registreringar och lokala ärenden skapar inga avtal eller resultat.</p><button class="text-button" data-go="partners">Till partnerregistret ${P.icon('arrow')}</button>`;
+    }
     const opts = optionsFor(id, period), rows = data().rows(opts), summary = data().summary(opts);
     const title = id === 'syd' ? 'Savera · avtal, volym och säljare' : id === 'vast' ? 'Face2face · försäljning och kundutfall' : isProperty(id) ? 'Inflyttningshjälp och nya elavtal' : 'Alla partners · avtal och volym';
     const source = id === 'vast' ? 'Beest · framtida datakälla' : id === 'syd' ? 'Partnerportal · möjlig framtida arbetsyta' : isProperty(id) ? 'Inflyttningsservice' : 'Tre partnerkanaler';
@@ -100,11 +106,13 @@
     else if (id === 'vast') secondary = tableHtml('Försäljning per område', 'Sorterat efter antal avtal · churn använder varje områdes egen kundbas', aggregate(rows, 'region'), 'Område', row => percent(data().cohort({ ...opts, region: row.label }).churnRate));
     else if (id === 'all') secondary = tableHtml('Utfallet per partner', 'Samma valda period och produktfilter', aggregate(rows, 'partner').map(row => ({ ...row, label: name(row.label) })), 'Partner');
     else secondary = tableHtml('Elavtal per område', 'Servicehjälp följs separat från avtalen', aggregate(rows, 'region'), 'Område');
-    return `<div class="partner-result-heading"><div><span class="commercial-eyebrow">PARTNERUTFALL</span><h2>${e(title)}</h2><p>${e(subtitle)}</p></div><span class="partner-result-source">${P.icon(id === 'vast' ? 'layers' : 'chart')}${e(source)}</span></div>${filtersHtml(id, period)}<div class="partner-result-selection" role="status" aria-live="polite">${e(period.range || period.label)} · ${e(stateFor(id).product === 'all' ? 'Alla elavtal' : stateFor(id).product)} · ${e(stateFor(id).region === 'all' ? 'Alla områden' : stateFor(id).region)}${id === 'syd' && stateFor(id).seller !== 'all' ? ` · ${e(stateFor(id).seller)}` : ''}</div>${rows.length ? '' : '<p class="partner-result-empty" role="status">Inget exempelunderlag matchar filtren. Justera ditt urval.</p>'}${metricsHtml(id, period, summary, opts, rows.length > 0)}${trendHtml(id, period, opts)}<div class="partner-result-breakdowns">${tableHtml('Fördelning på elavtal', 'Elhandel · manuellt fördelade exempelutfall', productRows, 'Elavtal')}${secondary}</div>${id === 'all' ? cohortHtml(period, opts) : ''}${definitionsHtml(id)}<p class="partner-result-footnote">Manuella exempeldata · till 7 oktober 2026. ${id === 'vast' ? 'Ingen anslutning till Beest. ' : ''}Inget ekonomiskt utfall skapas av lokala kund- eller serviceunderlag.</p>`;
+    const missingPartners = id === 'all' ? partnerIds().filter(partner => !hasBasis(partner)) : [];
+    const missingNote = missingPartners.length ? `<p class="partner-result-empty partner-result-missing-partners" role="status">Resultatunderlag saknas för: ${e(missingPartners.map(name).join(', '))}. Siffrorna omfattar partners med registrerade exempelunderlag.</p>` : '';
+    return `<div class="partner-result-heading"><div><span class="commercial-eyebrow">PARTNERUTFALL</span><h2>${e(title)}</h2><p>${e(subtitle)}</p></div><span class="partner-result-source">${P.icon(id === 'vast' ? 'layers' : 'chart')}${e(source)}</span></div>${missingNote}${filtersHtml(id, period)}<div class="partner-result-selection" role="status" aria-live="polite">${e(period.range || period.label)} · ${e(stateFor(id).product === 'all' ? 'Alla elavtal' : stateFor(id).product)} · ${e(stateFor(id).region === 'all' ? 'Alla områden' : stateFor(id).region)}${id === 'syd' && stateFor(id).seller !== 'all' ? ` · ${e(stateFor(id).seller)}` : ''}</div>${rows.length ? '' : '<p class="partner-result-empty" role="status">Inget exempelunderlag matchar filtren. Justera ditt urval.</p>'}${metricsHtml(id, period, summary, opts, rows.length > 0)}${trendHtml(id, period, opts)}<div class="partner-result-breakdowns">${tableHtml('Fördelning på elavtal', 'Elhandel · manuellt fördelade exempelutfall', productRows, 'Elavtal')}${secondary}</div>${id === 'all' ? cohortHtml(period, opts) : ''}${definitionsHtml(id)}<p class="partner-result-footnote">Manuella exempeldata · till 7 oktober 2026. ${id === 'vast' ? 'Ingen anslutning till Beest. ' : ''}Inget ekonomiskt utfall skapas av lokala kund- eller serviceunderlag.</p>`;
   }
   function renderPanel(id, period) {
     if (P.role !== 'internal') return '';
-    id = partnerIds.includes(id) || id === 'all' ? id : 'syd';
+    if (id !== 'all' && !P.getPartner?.(id)) return '';
     return `<section class="partner-results" data-result-panel="${e(id)}">${content(id, periodFor(period))}</section>`;
   }
   function bindPanel(root = document, id, period) {
@@ -131,11 +139,12 @@
   function renderReport() {
     if (P.role !== 'internal') return '<div class="empty">Partnerutfall visas i Kraftringens interna demovy.</div>';
     const period = periodFor();
-    return `<div class="commercial-page partner-results-report"><div class="page-head commercial-head"><div><span class="commercial-eyebrow">KRAFTRINGEN / PARTNERUTFALL</span><h1>Avtal, volym och kundutfall</h1><p class="muted">Följ varje kanals försäljning och kundresultat. Kommersiellt bidrag och kostnad finns i resultatöversikten.</p></div><button class="btn btn-secondary" data-go="overview">${P.icon('arrow')} Kommersiell översikt</button></div><div class="partner-results-report-controls">${P.commercial?.renderControls?.(false) || ''}<label class="partner-result-partner-select"><span>Partner</span><select id="partner-results-partner"><option value="all" ${reportPartner === 'all' ? 'selected' : ''}>Alla partners</option>${partnerIds.map(id => `<option value="${id}" ${reportPartner === id ? 'selected' : ''}>${e(name(id))}</option>`).join('')}</select></label></div>${renderPanel(reportPartner, period)}</div>`;
+    if (reportPartner !== 'all' && !P.getPartner?.(reportPartner)) reportPartner = 'all';
+    return `<div class="commercial-page partner-results-report"><div class="page-head commercial-head"><div><span class="commercial-eyebrow">KRAFTRINGEN / PARTNERUTFALL</span><h1>Avtal, volym och kundutfall</h1><p class="muted">Följ varje kanals försäljning och kundresultat. Kommersiellt bidrag och kostnad finns i resultatöversikten.</p></div><button class="btn btn-secondary" data-go="overview">${P.icon('arrow')} Kommersiell översikt</button></div><div class="partner-results-report-controls">${P.commercial?.renderControls?.(false) || ''}<label class="partner-result-partner-select"><span>Partner</span><select id="partner-results-partner"><option value="all" ${reportPartner === 'all' ? 'selected' : ''}>Alla partners</option>${partnerIds().map(id => `<option value="${e(id)}" ${reportPartner === id ? 'selected' : ''}>${e(name(id))}</option>`).join('')}</select></label></div>${renderPanel(reportPartner, period)}</div>`;
   }
   P.partnerResults = {
     renderPanel, bindPanel, renderReport,
-    selectPartner(id) { reportPartner = partnerIds.includes(id) ? id : 'all'; P.go('partner-results'); }
+    selectPartner(id) { if (P.role !== 'internal' || (id !== 'all' && !P.getPartner?.(id))) return; reportPartner = id; P.go('partner-results'); }
   };
   P.register('partner-results', {
     render: renderReport,
@@ -144,6 +153,7 @@
       P.commercial?.bindControls?.();
       bindPanel(document, reportPartner, periodFor());
       document.querySelector('#partner-results-partner')?.addEventListener('change', event => {
+        if (event.target.value !== 'all' && !P.getPartner?.(event.target.value)) return;
         reportPartner = event.target.value;
         P.render();
         document.querySelector('#partner-results-partner')?.focus();

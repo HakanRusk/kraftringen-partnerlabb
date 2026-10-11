@@ -1696,3 +1696,65 @@ https://kraftringen-partnerlabb.rosen123.chatgpt.site/?workspace=estate1#propert
 Denna efterhandskvittens ändrar endast README, BACKLOG, WORKLOG och
 GITHUB-STATUS. dist/ och hostingmanifestet är identiska med publicerad
 revision; ingen ny deployment följer av kvittens-PR:en.
+
+## 2026-10-11 · Direktuppdrag: hela portalens flöden efter version 27
+
+Ludwig har bett: ”Kör en koll på hela portalen och säkerställ flöde osv”.
+Granskningen utgår från GitHub-main
+`6115dfa41edc5fb01b65742d23dbe84c0b7c20f8`, publicerad version 27 med
+Sites-källa `5794d27122ff0b6be7c99527d2864ceddc9b6987`, samma projekt och
+custom-policy revision 4. Inga öppna PR:er hittades. Egen arbetsgren:
+`codex/portal-audit3-20261011`.
+
+Omfattning: alla aktiva interna/partnernavigationer, nya partnertyper,
+egna rapporter/Insikter/kickback, inflyttningens båda ingångar och fullmakter,
+handover/komplettering, samarbetsförslaget, hela utbildningen och ljud,
+mobil/tangentbord, lokala sparfel/avbrott och bevarade äldre data.
+Reproduktioner använder enbart fiktiva isolerade browserkontexter.
+
+Den faktiskt publicerade versionens breda baseline passerade 916/916
+kontroller över 288 vy-/perspektiv-/skärmkombinationer och 29 interna
+länkdestinationer utan JavaScript- eller HTTP-fel. Samma lokala baseline
+passerade. Alla åtta qa/*.mjs och dist-JavaScript-syntax passerade, liksom
+20 bevarade legacy-modulfall. Första legacy-körningen använde testets gamla
+standardport och avbröts; rätt preview-URL ger full grön körning.
+
+Sammanhängande klickvägar har därutöver reproducerat nya konkreta fel i
+retur från produktlektioner, sent avslutad ärendedialog och nya partners i
+rapportväljaren. Rättning och slutlig samlad verifiering pågår; faktisk
+integration/publicering kvitteras efter utfört arbete. Detta ändrar inga
+affärsvillkor, ekonomiska fixtures, backend, verkliga data, åtkomst eller
+agentkonfiguration.
+
+### PORTAL-FLODE-01 · Sex verifierade rättningar
+
+1. Avtalsfakta → produktlektion → tillbaka behåller rätt perspektiv,
+   partner och produktsegment, även efter omladdning och i demoytan.
+2. En fördröjd fullmaktskontroll avbryts före förmedling om användaren
+   lämnat formuläret. Den kan inte stänga eller ändra en annan dialog.
+3. Försäljningsutfalls partnerlista följer partnerregistret. Nya partners
+   visar sitt eget saknade underlag, inte alla partners eller Savera.
+4. Intern återställning placerar tangentbordsfokus i den nya innehållsvyn.
+5. Sista Visa fler placerar fokus på det första nyvisade ärendet.
+6. Fastighetspartnerns periodtyp och perioddatum får egna rader på smal
+   mobil. År och Månad är läsbara även vid 320 px.
+
+På fryst kandidat passerar 273 nya riktade kontroller: navigation 70,
+inflyttning 37, fastighetsresultat 39, rapporter 49 och utbildningsretur 78.
+Slutlig bred kontroll: 919/919 över 288 vykombinationer och 32 lokala
+länkdestinationer; inga script-/HTTP-fel. Sammanhängande klick-, fokus- och
+layoutvägar: 160/160 vid 1440/390/320 px, med 42 screenshots.
+
+Berörda befintliga regressioner passerar. Hela Elakademin 168/168,
+utbildning 41/41 och 27/27, ljudbibliotek 69/69. Alla 43 kontrollerade
+media/materialresurser är tillgängliga; tre faktiska videospelningar
+inklusive svensk textning passerar. QA:s fasta 100 ms för ljudstart
+ersattes med begränsad väntan på faktisk uppspelning; kravet är oförändrat
+och första felloggen bevarad. Alla åtta Node-sviter, JS/Python-syntax och
+diffkontroll är gröna. Artefakter: /workspace/portal-audit3.
+
+Under slutkontrollen anlände den oberoende Codex-granskningens PR #36,
+integrerad som ccd1988f4db4268baf72aa9b45c2a6c012a5a6e4 och publicerad
+som version 28. Dess bilage-ID-, ljudkonflikt-, sparad profil/fokus-,
+utbildnings- och datumrättningar ska bevaras. Gemensam integration och
+omkörning kvitteras efter utförd kontroll före vår publicering.

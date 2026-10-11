@@ -121,12 +121,12 @@
   .property-results-demo-label { font-size: 10px; padding: 8px 10px; }
   .property-results-page .page-head p { font-size: 12px; line-height: 1.8; }
   .property-results-filters { padding: 16px; gap: 13px; }
-  .property-results-period { flex: 1; }
-  .property-results-segments button { flex: 1; min-height: 41px; padding: 10px 15px; }
+  .property-results-period { flex: 0 0 100%; min-width: 0; }
+  .property-results-segments button { flex: 1; min-height: 44px; padding: 10px 15px; white-space: nowrap; }
   .property-results-filter { min-width: 87px; }
   .property-results-filter select { font-size: 16px; min-height: 47px; padding-left: 10px; }
   .property-results-month-filter { flex: 1; min-width: 140px; }
-  .property-results-range { margin-left: 0; text-align: left; min-width: 0; flex: 1; }
+  .property-results-range { margin-left: 0; text-align: left; min-width: 0; flex: 0 0 100%; }
   .property-results-range strong { font-size: 12px; }
   .property-results-range span { font-size: 10px; }
   .property-results-primary { grid-template-columns: 1fr; }

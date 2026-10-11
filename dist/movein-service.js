@@ -137,10 +137,12 @@
     const candidate = row.handoverStatus === 'needs_info' ? { ...row, ...options.changes } : row;
     if (!canForward(candidate)) return forward(id, options);
     const revision = JSON.stringify(row);
+    let checks;
     if (partnerIntake(row)) {
-      const checks = await Promise.all(row.authorityFiles.map(meta => P.moveinAttachments.exists(meta)));
-      if (checks.some(exists => !exists)) { P.toast('En fullmaktsfil saknas i den här webbläsaren. Bifoga den igen innan du förmedlar underlaget.'); return false; }
+      checks = await Promise.all(row.authorityFiles.map(meta => P.moveinAttachments.exists(meta)));
     }
+    if (typeof options.isCurrent === 'function' && !options.isCurrent()) { P.toast('Förmedlingen avbröts när du lämnade formuläret. Underlaget ligger kvar hos fastighetsbolaget.'); return false; }
+    if (checks?.some(exists => !exists)) { P.toast('En fullmaktsfil saknas i den här webbläsaren. Bifoga den igen innan du förmedlar underlaget.'); return false; }
     if (findVisible(id) !== row || JSON.stringify(row) !== revision) { P.toast('Ärendet har ändrats. Öppna det igen innan du förmedlar.'); return false; }
     return forward(id, options);
   }
@@ -307,11 +309,12 @@
           if (!canForward({ ...row, ...changes })) { P.toast('Kontrollera bostadsunderlaget innan du förmedlar det igen.'); return; }
         }
         const submitButton = form.querySelector('[type="submit"]');
+        const isCurrent = () => form.isConnected && qs('#portal-dialog')?.open && qs('#movein-service-forward-form') === form && P.role === 'partner' && P.partner === row.partner;
         submitButton.disabled = true;
-        if (await forwardChecked(row.id, { changes, reply })) {
+        if (await forwardChecked(row.id, { changes, reply, isCurrent }) && isCurrent()) {
           P.closeDialog(); P.render(); P.toast('Testunderlaget är förmedlat till Kraftringens demovy. Inget skickas externt.');
         }
-        if (submitButton.isConnected) submitButton.disabled = !authorityReady(row);
+        if (isCurrent()) submitButton.disabled = !authorityReady(row);
       };
     });
   }

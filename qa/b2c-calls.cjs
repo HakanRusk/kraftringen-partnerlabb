@@ -150,7 +150,10 @@ async function savedShot(page, name) { const path = `${OUT}/${name}.png`; await 
     check('Stored audio is playable with correct measured duration', Math.abs(duration - 1.5) < 0.04, duration);
     const player = await page.locator('#b2c-call-player').elementHandle();
     await player.evaluate(async audio => { audio.muted = true; await audio.play(); });
-    await page.waitForTimeout(100);
+    await page.waitForFunction(() => {
+      const audio = document.querySelector('#b2c-call-player');
+      return audio && !audio.paused && audio.currentTime > 0;
+    }, null, { timeout: 5000 });
     check('Audio playback advances', await player.evaluate(audio => !audio.paused && audio.currentTime > 0));
     await page.keyboard.press('Escape');
     await page.waitForTimeout(100);
