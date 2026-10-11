@@ -159,3 +159,22 @@ Sites normala omdirigering till kanonisk adress.
 Full kvittens, rättningar och verifieringsgränser finns i WORKLOG.
 Kvittens-PR:en uppdaterar dokumentation och testhjälparens nätverksanrop.
 Den ändrar inte dist/ eller manifest och kräver ingen ny publicering.
+
+## 2026-10-11 · Andra felgranskningen publicerad i version 26
+
+PR #32 integrerad. Exakt publicerad GitHub/Sites-källrevision:
+`209a98fbb2144a253ee6495c1af25792dea32822`.
+Native version `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_d8b896a9e8e08191858ff688702422e5`.
+Deployment `appgdep_6acb5e6ed9a88191b2d3e6faf8c54b2d` bekräftar succeeded
+2026-10-11 10:01:35 UTC på https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Samma Site-identitet och custom-policy revision 4 bevarade; inga schemaändringar.
+
+157 nya riktade kontroller passerar lokalt. Publicerad v26 passerar 916
+breda kontroller över 288 vykombinationer och 29 interna destinationer,
+130 riktade flik-/navigation-/rapport-/Excel-/bilagekontroller och 102
+medie-/åtkomstkontroller utan script-/resursfel. Flikkonflikter, avbrutna
+ljudändringar, testspår/URL, demo-historik, inflyttningsunderlag och äldre
+data har rättats. Full kurs och tidigare rapport-/serviceunderlag bevaras.
+Full kvittens och verifieringsgränser finns i WORKLOG. Kvittens-PR ändrar
+bara dokumentation och testets väntan på nytt dokument, inte dist/ eller
+manifest; ingen ny publicering krävs.

@@ -1540,3 +1540,48 @@ Chromium är den verifierade webbläsarmotorn. Granskningens artefakter finns
 utanför repot i /workspace/bug-audit2; reproducerbara nya tester i qa/round2-*.
 Faktisk integration/publicering och hosted-resultat kvitteras först efter
 utförandet nedan.
+
+### 2026-10-11 · Andra granskningen publicerad som version 26
+
+PR #32 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/32
+är integrerad. Verifierad GitHub-main och exakt publicerad Sites-källa:
+`209a98fbb2144a253ee6495c1af25792dea32822`. Kandidat `ebf63485bfa43744ba3e067e6a4feb97f36ebcf2`
+och mergeträdet är identiska: `b60d7a280c7f37f4b55fab942366d7e29b2df8e5`.
+Publicerat dist-träd: `d3aeb459ec662dd1fc5117e6a446f3d01e17de53`.
+GitHub-main överfördes fast-forward till samma Sites-projekt utan force.
+Arkivet från samma revision innehåller endast hostingmanifest och dist.
+
+Native version **26**:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_d8b896a9e8e08191858ff688702422e5`.
+Deployment `appgdep_6acb5e6ed9a88191b2d3e6faf8c54b2d` bekräftade **succeeded**
+2026-10-11 **10:01:35.710693 UTC** på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Färsk native metadata bekräftade version 26 och exakt oförändrad custom-
+policy, revision 4. Ingen schema-/åtkomständring eller separat Site.
+
+Verifierat på den faktiskt publicerade versionen:
+
+- Bred browsergranskning **916/916**, **288** vykombinationer i
+  320/390/1440 px, **29** interna länkdestinationer. Inga script-/HTTP-fel.
+- Nya riktade fall återkörda hosted: flikkonflikter **28/28**, navigation/
+  kunddemo **30/30**, rapporter/register/support **47/47**, Excel/bilagor
+  **25/25**; totalt **130/130**, inga scriptfel.
+- Medier/material/åtkomst **102/102**: alla 18 kapitel och intro,
+  svensk textning, faktisk representativ uppspelning/sökning, fyra
+  materialhämtningar och fortsatt skyddad anonym åtkomst. Inga resursfel.
+- Utbildningens nya testsvit **27/27**, med verkligt blockerade
+  ljudtransaktioner, är tidigare lokalt verifierad på samma publicerade scriptrevision.
+  Tillsammans med övriga riktade suites är kandidatens nya utfall 157/157.
+
+Första hosted-navigationskörningen stoppades efter 19 godkända kontroller
+av testets egen Portal-referens under ett helt dokumentbyte. QA-pollningen
+väntar nu på window.Portal innan den läser demoMode. Omkörningen slutförde
+alla 30/30 med errors[]. Ingen app- eller deploymentändring behövdes för
+att rätta testets väntan. Failure- och finalartefakter behålls separat.
+
+Efterhandskvittensen ändrar dokumentation och qa/round2-navigation.py.
+dist/ och hostingmanifest är identiska med publicerad version 26; ingen
+ny deployment behövs. All verifiering använder Chromium och isolerade
+fiktiva browserdata. Andra webbläsarmotorer, verkliga kundutfall och
+produktionsbehörighet påstås inte verifierade. Detaljer i föregående
+avsnitt och artefakter /workspace/bug-audit2.
