@@ -10,7 +10,7 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## Direktuppdrag: bredare fastighetssamarbete (2026-10-11)
 
-**FASTIGHET-FORSLAG-01 · Kandidat:** Ludwigs ”Bygg ett förslag” omfattar
+**FASTIGHET-FORSLAG-01 · Publicerad v24 via PR #28:** Ludwigs ”Bygg ett förslag” omfattar
 **Ert samarbete** för fastighetsbolag. Visualisera inflyttningskanalen och
 partnerns egen fastighetsel på samma sida med separata underlag. Visa sex
 rådgivningsidéer som möjligheter att pröva; börja dialogen med avlastning av
@@ -22,7 +22,9 @@ partneravgränsade sida, saknade egna elavtal/volymer/kostnader förblir **—**
 nya partners inte får lånad historik och fokusval klarar omladdning,
 lagringsfel och normal-/demoisolering. Befintlig Excel/manuell inflyttning,
 fullmaktsbilagor, resultat/kickback och version 23:s fulla Elakademin ska
-bevaras. Utförd verifiering och eventuell publicering kvitteras i WORKLOG.
+bevaras. 111 nya browserkontroller, 115 partnertypskontroller och 67
+servicekontroller passerade. Lyckad publicering och native agentuppdatering
+kvitteras i WORKLOG.
 
 **Senare, efter underlag:** förankra vilka av idéerna som faktiskt behövs,
 hur Kraftringen kan leverera dem och vilka datakällor som finns för

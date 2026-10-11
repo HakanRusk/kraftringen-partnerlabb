@@ -1280,3 +1280,37 @@ JS-syntax, Python compile, `git diff --check`, partner-registry (16),
 savera-data (23) och property-results-period passerade. Fulla Elakademin
 v23:s kursfiler/material, Academy och B2C-samtalsbibliotek är byteoförändrade
 mot GitHub-main. GitHub/Sites-integration återstår tills separat kvittens.
+
+### Publicerad version 24 och återaktiverad pilotagent
+
+PR #28 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/28
+integrerades från exakt granskad kandidat
+`24d4cf4a481d8a7e79bda84cbf319ba5b3f7b74e` till GitHub-main
+`a88628d7b3dc99a4316a30e7969542431ca31e16` 08:51:09 UTC.
+Samma revision fast-forwardades till befintlig Sites-källa, pushades utan
+force och verifierades på source-remoten. Arkivet
+`/workspace/library-files/partnerlabb-property-partnership-20261011.tar.gz`
+skapades från den rena revisionens hostingmanifest och dist.
+
+Native saved version **24**:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_8206e50a4ad8819180a3ada70eb3e5d9`,
+source.commit_sha `a88628d7b3dc99a4316a30e7969542431ca31e16`.
+Deployment `appgdep_6acb4e3f7edc8191805fde3bffc72e98` bekräftade **succeeded**
+2026-10-11 08:52:32 UTC på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Före publicering var åtkomst custom revision 4; ingen åtkomstmutation
+gjordes. Ingångar: Partners → fastighetsbolaget → Se samarbetsförslaget,
+eller fastighetspartnerns meny **Samarbetet**. Förslaget är ingen
+beställnings- eller avtalsintegration.
+
+Samordnaren pausade tillfälligt befintligt timuppdrag under arbete och
+publicering. `Automation_e03c6b2fc3448191a58c63c969a090c0` återaktiverades
+med exakt `PILOT-AGENT-PROMPT.txt` från integrerad källa. Native återläsning
+bekräftade promptlikhet, is_enabled=true och oförändrat schema:
+DTSTART;TZID=Europe/Stockholm:20261008T230000; RRULE:FREQ=HOURLY.
+Ingen ny automation skapades. Nästa pass ska läsa aktuell GitHub-main och
+behålla samarbetsförslagens avgränsning samt fulla Elakademin. Detta är
+kvittens av inställningarna, inte belägg för oavbruten exekvering.
+
+Denna efterhandskvittens ändrar enbart rotdokumentation. Applikationen
+och hostingmanifestet är oförändrade mot publicerad version 24.
