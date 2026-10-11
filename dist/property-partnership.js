@@ -98,6 +98,12 @@
   function setFocus(id, ideaId, selected) {
     if (current()?.id !== id || !ideaIds.has(ideaId) || typeof selected !== 'boolean') return false;
     const previous = P.state.propertyPartnership;
+    if ((own(P.state, 'propertyPartnership') && !plain(previous)) ||
+        (plain(previous) && own(previous, id) && !plain(previous[id])) ||
+        (plain(previous) && plain(previous[id]) && own(previous[id], 'focus') && !Array.isArray(previous[id].focus))) {
+      P.toast('Kunde inte spara ert fokus eftersom tidigare samarbetsunderlag inte kunde läsas. Dina sparade uppgifter har behållits.');
+      return false;
+    }
     const root = plain(previous) ? previous : {};
     const entry = own(root, id) && plain(root[id]) ? root[id] : {};
     const focus = getFocus(id).filter(value => value !== ideaId);

@@ -119,7 +119,14 @@
   P.download=(filename,content,type='text/plain;charset=utf-8')=>{const url=URL.createObjectURL(new Blob([content],{type}));const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);};
   P.openDialog=(title,html,mount)=>{$('#dialog-title').textContent=title;$('#dialog-body').innerHTML=html;if(!$('#portal-dialog').open)$('#portal-dialog').showModal();mount?.();};
   P.closeDialog=()=>$('#portal-dialog').close();
-  P.date=value=>['string','number'].includes(typeof value)&&value&&!Number.isNaN(new Date(value).getTime())?new Intl.DateTimeFormat('sv-SE',{day:'numeric',month:'short'}).format(new Date(value)):'Ej planerat';
+  P.date=value=>{
+    if(!['string','number'].includes(typeof value)||!value)return 'Ej planerat';
+    const date=new Date(value);
+    if(Number.isNaN(date.getTime()))return 'Ej planerat';
+    const calendarDate=typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value);
+    if(calendarDate&&date.toISOString().slice(0,10)!==value)return 'Ej planerat';
+    return new Intl.DateTimeFormat('sv-SE',{day:'numeric',month:'short',...(calendarDate?{timeZone:'UTC'}:{})}).format(date);
+  };
   P.event=(record,text,visibility='shared')=>record.events.unshift({at:new Date().toISOString(),actor:P.role==='internal'?'Internt team':partners[record.partner],text,visibility});
   P.validText=(input)=>{input.setCustomValidity(input.value.trim()?'':'Fyll i text, inte enbart blanksteg.');input.addEventListener('input',()=>input.setCustomValidity(''),{once:true});return input.reportValidity();};
   const isSalesPartner=partner=>['sales','field'].includes(partner?.type);

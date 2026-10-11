@@ -37,7 +37,9 @@
       if (existing && value.type && value.type !== existing.type) continue;
       const salesAudiences = ['sales', 'field'].includes(type) ? cleanAudiences(value.salesAudiences) : [];
       if (!name || name.length > 90 || !supportedType(type) || (['sales', 'field'].includes(type) && !salesAudiences.length)) continue;
-      profiles[id] = { id, name, type, salesAudiences };
+      // Preserve older profile metadata and extensions. Only validated identity
+      // and segment fields below configure the actual partner view.
+      profiles[id] = { ...value, id, name, type, salesAudiences };
     }
     // Resolve names from the complete saved set. Object insertion order must not
     // decide whether a renamed original partner frees its former name.
@@ -64,7 +66,8 @@
 
   function configuredPartner(base, profile) {
     const salesAudiences = profile ? [...profile.salesAudiences] : [...(base.salesAudiences || [])];
-    const partner = { ...base, ...(profile || {}) };
+    const settings = profile ? {id:profile.id,name:profile.name,type:profile.type,salesAudiences} : {};
+    const partner = { ...base, ...settings };
     if (partner.type === 'property') return {
       ...partner,
       audience: 'movein',
@@ -85,7 +88,7 @@
     const segmentText = audience === 'mixed' ? 'företagskunder och konsumenter' : audience === 'consumer' ? 'konsumenter' : 'företagskunder';
     return {
       ...base,
-      ...(profile || {}),
+      ...settings,
       audience,
       salesAudiences,
       typeLabel,
@@ -138,7 +141,8 @@
       const profileId = id || `partner-${crypto.randomUUID()}`;
       const previous = P.state.partnerProfiles;
       const hadProfiles = own(P.state, 'partnerProfiles');
-      P.state.partnerProfiles = { ...(previous || {}), [profileId]: { id: profileId, ...result.profile } };
+      const previousProfile = previous && own(previous, profileId) && previous[profileId] && typeof previous[profileId] === 'object' && !Array.isArray(previous[profileId]) ? previous[profileId] : {};
+      P.state.partnerProfiles = { ...(previous || {}), [profileId]: { ...previousProfile, id: profileId, ...result.profile } };
       let saved = false;
       try { saved = P.save() === true; } catch { saved = false; }
       if (!saved) {
