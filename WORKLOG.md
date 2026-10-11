@@ -1222,3 +1222,61 @@ resultatdatabas påstås.
 Denna efterhandskvittens ändrar enbart rot-dokumentation. dist/ och
 hostingmanifest är exakt oförändrade mot publicerad version 23 och
 behöver inte publiceras igen.
+
+## 2026-10-11 · FASTIGHET-FORSLAG-01 · Kandidat för bredare partnersamarbete
+
+Ludwig bad att också visualisera kundens egen fastighetsel i samarbetet
+och därefter ”Bygg ett förslag” efter sex idéer för ytterligare partnerhjälp.
+Uppdraget tas fram på `codex/property-partnership-proposal` från aktuell
+GitHub-main `22f174741dc5b493337d26365c2a8577fb1354c5`; fullständig Elakademin och senaste partnerupplägg
+bevaras. Detta är ett frontendförslag, inget underlag för redan tecknat
+fastighetselavtal eller leverans av nya tjänster.
+
+Planerad Ert samarbete-vy håller inflyttningskanal och egen fastighetsel
+samman i presentationen, med separata underlag. Egna avtal, omfattning,
+volym och kostnad saknar källa. De sex idéerna omfattar hyresgästfrågor,
+underbyggda kostnadsintervall till bostadsannonser, onödig förbrukning,
+elbehov före lokaluthyrning, elöversikt vid köp/försäljning och bedömning
+av laddning/solceller/batterier/styrning. De två första diskussionsfokusen
+föreslås vara hyresgästfrågor och onödig förbrukning.
+
+AGENTS, README, PILOT-FACTS, BACKLOG och den sparade agentpromptens fil
+avgränsar förslaget: lokala partneravgränsade fokusval är diskussionsunderlag,
+inte utskick, beställningar, ärenden, avtal eller ekonomi. Excel/manuell
+inflyttning, fullmaktsbilagor, Kvartspris som grundval, befintliga resultat
+och alla utbildningsdelar ska bevaras. Personalavtalens erbjudande och
+process är fortsatt öppna. Inget verksamhetsbehov, regelverk, pris eller
+besparingsutfall uppfinns.
+
+Denna post kvitterar dokumentationskandidaten. UI-implementation,
+verifiering, GitHub-integration, eventuell Sites-publicering och native
+agentpromptuppdatering kvitteras först efter respektive faktisk åtgärd.
+
+### Verifierad implementationskandidat
+
+`property-partnership.js/css` visar Ert samarbete för samma valda
+fastighetsbolag i intern profil och egen meny **Samarbetet**. Två spår
+visualiserar inflyttningsservice respektive föreslagen egen fastighetsel.
+Sex fördjupningar har behov, möjlig hjälp och första underlag. Fokusval
+sparas lokalt per partner, med återställning vid lagringsfel; inga ärenden,
+avtal eller ekonomiska resultat skapas. Saknade fastighetselavtal,
+anläggningar och avtalsperioder markeras. En diskret ingång finns även på
+den befintliga operativa översikten; Excel och manuell registrering består.
+
+Verifiering på kandidatens kod: `python qa/property-partnership.py`
+111 kontroller, `python qa/partner-types.py` 115 kontroller och
+`python qa/property-intake.py --suite service` 67 kontroller passerade,
+utan JavaScript-fel. Browserkontroller omfattar 1440/390/320 px, rätt
+partner/route, nya partners, fördjupningar, normal-/demoisolering,
+omladdning, lagringsfel, felaktig lagrad data och HTML-escaping. Befintliga
+Excel/PDF-/fullmaktsflöden och Savera/Face2faces egna resultat verifierades.
+En föråldrad service-regression för borttagna säljflöden ersattes med
+nuvarande egna rapporter/Insikter och bevarande av gamla säljunderlag.
+
+Ett köat native dialog-close kunde konsumera nästa öppnings återfokus.
+Det är rättat och ingår som deterministisk browserregression; oberoende
+snabb stäng/öppna/toggle/Escape-granskning passerade 12/12 cykler.
+JS-syntax, Python compile, `git diff --check`, partner-registry (16),
+savera-data (23) och property-results-period passerade. Fulla Elakademin
+v23:s kursfiler/material, Academy och B2C-samtalsbibliotek är byteoförändrade
+mot GitHub-main. GitHub/Sites-integration återstår tills separat kvittens.

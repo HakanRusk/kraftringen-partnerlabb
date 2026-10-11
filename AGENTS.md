@@ -1,5 +1,14 @@
 # Instruktioner för arbete i Kraftringen Partnerportal
 
+## Senaste direktuppdrag: bredare fastighetssamarbete – 11 oktober 2026
+
+- Ludwig vill även visualisera elavtalet för fastighetsbolagets **egen fastighetsel** i samarbetet. Samma fastighetspartner kan vara kanal till hyresgäster och företagskund för den egna elen. Visa båda delarna samlat, men håll hyresgästärenden, hyresgästernas avtal/kickback och partnerns egna B2B-avtal åtskilda. Instruktionen bekräftar behovet, inte att ett visst fastighetsbolag har tecknat avtal.
+- Ludwigs ”Bygg ett förslag” efterfrågar en konkret frontendvisualisering av ytterligare hjälp för fastighetsbolagen. **Ert samarbete** (`property-partnership`) ska nås från vald fastighetspartners interna profil och från fastighetspartnerns egen meny. Bevara befintlig inflyttningsservice och båda registreringsvägarna.
+- De sex rådgivningsidéerna är våra förslag: avlastning av hyresgästernas elfrågor; underbyggda kostnadsintervall till bostadsannonser; upptäcka onödig fastighetsförbrukning; undersöka elbehov före lokaluthyrning; elöversikt vid köp/försäljning av fastighet; bedöma laddning, solceller, batterier och styrning av elanvändningen. Börja dialogen med hyresgästfrågor och onödig förbrukning. Inget av detta är belagt som avtalad eller färdig Kraftringen-tjänst.
+- Lokala fokusval på samarbetssidan är endast diskussionsunderlag per fastighetspartner. Bevara normal-/demoisolering och återställ värdet vid sparfel. Val skapar inga supportärenden, utskick, servicebeställningar, elavtal, intäkter eller kickback.
+- Fastighetsbolagets egna elavtal, anläggningar som omfattas, volymer, priser, kostnader, avtalsperiod och eventuell besparing saknar källa. Visa **Underlag saknas** och **—**; låna inte säljpartnernas resultat eller dra slutsatser från fastighetsinställningar/hyresgästärenden. Ändra inte partnertyp eller historiska data för att visa två delar av samarbetet.
+- Bevara fullständiga Elakademin från version 23, dess filmer, material och sparade framsteg samt tidigare Academy-kurser och B2C-samtalsbibliotek. Test- och publiceringskvittens för det nya fastighetsförslaget dokumenteras först efter faktisk verifiering/publicering.
+
 ## Senaste partnertyper – 11 oktober 2026
 
 - Ludwigs senaste instruktion lägger till **Fastighetsbolag** och **Personalavtal** som val när en partner skapas, tillsammans med **Säljpartner**. Alla ligger under **Partners**. Säljpartners väljer fortsatt företag (B2B), konsument (B2C) eller båda; partnertyp och säljkundsegment är skilda val.

@@ -58,6 +58,43 @@ grenar och PR:er med högst två färdiga förslag i väntan på granskning.
 Samma befintliga timuppgift används. Detta sätter inte backend eller riktiga
 kundärenden i drift; frontendens data är fortfarande lokala och fiktiva.
 
+## Förslag: ett bredare fastighetssamarbete
+
+Ludwigs senaste uppdrag är att visualisera fastighetsbolaget både som
+partner för inflyttningar och som möjlig företagskund för **fastighetselen**.
+Öppna **Partners → vald fastighetspartner → Se samarbetsförslaget**, eller välj
+**Samarbetet** i fastighetspartnerns egen arbetsyta. Sidan heter **Ert samarbete**. Alla fastighetsbolag
+använder samma upplägg, inklusive nya lokala partnerprofiler.
+
+Inflyttningsservice, egna kunder och kickback behåller sina befintliga
+underlag. Fastighetselen får en separat del: den ska kunna samla partnerns
+egna elavtal och anläggningar när sådant underlag finns. Avtal, volym,
+kostnad och omfattning saknar ännu källa och visas som **—** och
+**Underlag saknas**. Fastighetsinställningar visar inte vilka anläggningar
+ett elavtal omfattar. Ett hyresgästärende eller grundval tecknar inget eget
+fastighetselavtal.
+
+Sidan visar också sex idéer för fortsatt dialog:
+
+- Avlasta uthyrarna från hyresgästernas elfrågor.
+- Göra elkostnaden begriplig redan i bostadsannonsen med underbyggda intervall.
+- Upptäcka onödig förbrukning i fastigheterna.
+- Undersöka elbehov och förutsättningar före lokaluthyrning.
+- Samla elöversikten inför köp eller försäljning av fastighet.
+- Bedöma laddning, solceller, batterier och styrning av elanvändningen.
+
+Första diskussionen föreslås fokusera på hyresgästfrågor och onödig
+förbrukning. Fokusval sparas endast som lokalt diskussionsunderlag för
+vald partner i samma webbläsare, skilt mellan labb och kunddemo. De skickar
+inget meddelande och beställer ingen tjänst. Idéerna är förslag att pröva,
+inte färdiga tjänster eller utlovade besparingar.
+
+Inflyttningens Excel/manuella registrering och fullmaktsbilagor bevaras.
+Hyresgästen får inga nya portalsteg. Personalavtal är fortsatt en egen
+partnertyp vars erbjudande och anmälningsflöde behöver verksamhetsunderlag.
+Verifiering och eventuell publicering av denna kandidat kvitteras separat
+i WORKLOG.md; tidigare version 23 av Elakademin ska bevaras.
+
 ## Visa kunddemot
 
 Öppna https://kraftringen-partnerlabb.rosen123.chatgpt.site/?demo=inflyttning#demo
