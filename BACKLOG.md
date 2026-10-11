@@ -10,7 +10,7 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## Direktuppdrag: bredare fastighetssamarbete (2026-10-11)
 
-**FASTIGHET-FORSLAG-02 · Kandidat: inflyttningen först.** Ludwig har sagt
+**FASTIGHET-FORSLAG-02 · Publicerad v27 via PR #34: inflyttningen först.** Ludwig har sagt
 ”Bygg det och publicera sedan” efter vår rekommendation om kundvärde.
 Omarbeta endast Ert samarbete så att Excel/manuell inflyttning,
 fullmaktsbilaga och tydlig överlämningsstatus kommer först. Visa därefter
@@ -26,8 +26,10 @@ Verifiera dator, mobil och tangentbord. Bevara version 25:s rättningar,
 version 23:s fulla Elakademin och användarnas lokala data. Kundnytta är
 ännu en relevansbedömning att pröva; inga riktiga supportärenden, SLA:er,
 elanalys, besparingslöften eller nya backendflöden införs. Agentprompt,
-schema och aktivering lämnas oförändrade. Verifiering/publicering återstår
-att kvittera för denna kandidat.
+schema och aktivering lämnas oförändrade. Integrerad källa
+`5794d27122ff0b6be7c99527d2864ceddc9b6987` publicerades som version 27
+2026-10-11 10:11:14 UTC. Samlad integration passerade 172 samarbets- och
+67 inflyttningskontroller utan JavaScript-fel; full kvittens i WORKLOG.
 
 **FASTIGHET-FORSLAG-01 · Publicerad v24 via PR #28:** Ludwigs ”Bygg ett förslag” omfattar
 **Ert samarbete** för fastighetsbolag. Visualisera inflyttningskanalen och

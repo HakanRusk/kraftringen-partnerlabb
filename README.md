@@ -60,10 +60,10 @@ kundärenden i drift; frontendens data är fortfarande lokala och fiktiva.
 
 ## Förslag: ett bredare fastighetssamarbete
 
-Grundförslaget publicerades som **version 24** via PR #28 och bevaras i
-version 25. Den senaste omarbetningen prioriterar inflyttningen i kunddemon
-på Ludwigs uppdrag; kandidatens verifiering och publicering kvitteras separat
-i WORKLOG.
+Grundförslaget publicerades som **version 24** via PR #28. Den senaste
+omarbetningen är publicerad som **version 27** via PR #34 och prioriterar
+inflyttningen i kunddemon på Ludwigs uppdrag. Version 26:s felrättningar
+bevaras; verifiering och faktisk publiceringskvittens finns i WORKLOG.
 
 Ludwigs senaste uppdrag är att visualisera fastighetsbolaget både som
 partner för inflyttningar och som möjlig företagskund för **fastighetselen**.
@@ -107,8 +107,12 @@ SLA, tjänstevillkor eller utlovade besparingar.
 Inflyttningens Excel/manuella registrering och fullmaktsbilagor bevaras.
 Hyresgästen får inga nya portalsteg. Personalavtal är fortsatt en egen
 partnertyp vars erbjudande och anmälningsflöde behöver verksamhetsunderlag.
-Version 25:s felrättningar och version 23:s fullständiga Elakademin bevaras.
+Version 26:s felrättningar och version 23:s fullständiga Elakademin bevaras.
 Agentens prompt, schema och aktivering ändras inte av detta presentationsuppdrag.
+
+Öppna förslaget direkt:
+https://kraftringen-partnerlabb.rosen123.chatgpt.site/?workspace=estate1#property-partnership
+Inflyttning, kunder/kickback och fokusval är fortfarande lokala exempel.
 
 ## Visa kunddemot
 
