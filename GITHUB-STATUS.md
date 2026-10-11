@@ -241,3 +241,20 @@ publicerade versionen passerar 919 breda kontroller utan script-/HTTP-fel.
 Samma custom-policy revision 4, full utbildning, sparade data och schema
 består. Full kvittens/gränser i WORKLOG. Dokumentationskvittensen ändrar
 inte dist/ eller hosting och kräver ingen ny publicering.
+
+## 2026-10-11 · Installerbar Partnerlabb publicerad som version 32
+
+PR #44 är integrerad. Exakt GitHub-main och publicerad Sites-källa:
+`7f8dce30ca1bfdd34cbac09ae83e5cc7cfc02353`. Native version
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_5bd355f4305c8191a7b61d524aadc8ed`
+och deployment `appgdep_6acbd4ea83c081918ffcff0057040889` bekräftar
+**succeeded** 2026-10-11 18:27:08 UTC på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+
+Partnerlabb har nu gemensamt webbappmanifest, appikoner och menyvalet
+**Lägg till som app** med iPhone/iPad-, Android- och datorsteg. Befintlig
+custom-policy revision 4 och samma Site-identitet bevarades. Ingen offline-
+cache, backend, dataflytt, App Store-publicering, åtkomst- eller schemaändring
+ingår. Syntetiska installations- och befintliga resultat-/självservice-
+kontroller passerar. Fysisk telefoninstallation och visuell browserkontroll
+återstår; full kvittens finns i WORKLOG.

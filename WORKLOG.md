@@ -2020,3 +2020,35 @@ Teknisk grund kontrollerad 11 oktober 2026:
 https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable
 och https://support.apple.com/sv-se/guide/iphone/iphea86e5236/ios.
 Faktisk PR, merge och lyckad publicering kvitteras efter utförandet.
+
+### APP-01 · Integrerad och publicerad som version 32
+
+Ludwigs direkta ”Publicera” gav mandat att integrera den redan verifierade
+APP-01-kandidaten. PR #44
+https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/44
+integrerades med oförändrad HEAD
+`b573273c26a6ceb90dfa28db46ae903093782683`. GitHub-main och exakt
+publicerad Sites-källrevision är
+`7f8dce30ca1bfdd34cbac09ae83e5cc7cfc02353`.
+
+Sites-källan överfördes fast-forward från version 31:s
+`c56f80a0e81ffdf3b7c0cea64d31f4a89e3f1466`; ingen separat Sites-ändring
+eller force-push gjordes. Arkivet byggdes från samma rena, pushade revision.
+
+Native version **32**:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_5bd355f4305c8191a7b61d524aadc8ed`.
+Deployment `appgdep_6acbd4ea83c081918ffcff0057040889` bekräftade
+**succeeded** 2026-10-11 **18:27:08.669432 UTC** på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+
+Färsk Sites-metadata före publiceringen bekräftade samma Site och custom-
+policy revision 4; publiceringen ändrade inte åtkomst, scheman eller
+automationer. På den integrerade revisionen passerade `node --check
+dist/install-app.js`, `node qa/install-app.mjs`, `node qa/results-only.mjs`,
+`node qa/partner-self-service.mjs` och `git diff --check`.
+
+Fysisk installation på iPhone/Android och visuell browserlayout är fortsatt
+en verifieringsbegränsning. Native succeeded kvitterar att versionen är live,
+inte att hemskärmsinstallationen har provats på en verklig telefon. Denna
+efterhandskvittens ändrar endast dokumentation; dist/ och hostingmanifest är
+identiska med publicerad version 32 och kräver ingen ny deployment.
