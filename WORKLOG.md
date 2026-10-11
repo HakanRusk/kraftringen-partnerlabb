@@ -942,3 +942,26 @@ innehållsgranskning bekräftar exakt matchning mot katalog och lektionsutkast.
 Befintliga portalmoduler, fem Academy-kurser, B2C-samtal, sparade data och
 hostingmanifest ändras inte. Publicering ska bevara custom-publik revision 4.
 GitHub PR/integration och exakt Sites-version kvitteras efter utförandet.
+
+## 2026-10-11 · UTBILDNING-PREVIEW-01 publicerad som version 21
+
+PR #22 integrerad som `4c30c0c3ecf15302361ef513b89a01fa356829fd`.
+GitHub-main och fast-forward-överförd Sites-källa är exakt samma revision;
+alla åtta uppladdade filer och integrerat dist/ matchar den testade kandidaten.
+Native save: version 21,
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_da6f1dcc2bd08191bc91d6cf182cc631`.
+Deployment `appgdep_6acb32c39460819186f7722812b8bb14` bekräftar succeeded
+2026-10-11 06:55:16 UTC. URL:
+https://kraftringen-partnerlabb.rosen123.chatgpt.site/utbildning-preview.html
+
+Färsk metadata bekräftar exakt bevarad custom-publik, policyrevision 4.
+Tolv kontroller på publicerad sida passerar: rätt HTML/data, tio produkter,
+B2C-filter, 80-öreskalkyl, fem övningar, nio manus, mobil utan överflöde,
+PDF med exakt källfilslängd, anonym åtkomst skyddad och inga browserfel.
+Ingen verklig kunddata eller inspelning skapades. En separat Node HTTP-
+kontroll kunde inte använda miljöns IPv6-rutt; samma PDF kontrollerades
+framgångsrikt genom webbläsaren. Inga begränsningar i den verifierade
+webbläsarleveransen kvarstår. Arthur-/avatarfilmer återstår som tidigare.
+
+Denna efterhandskvittens ändrar enbart dokumentation; dist/ och hosting-
+manifest är identiska med publicerad version 21 och behöver inte publiceras igen.
