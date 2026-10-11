@@ -293,3 +293,11 @@ Ludwigs skärmbildsförtydligande: ersätt ”Vad ger partnersamarbetena?” med
 Klart: PR #40 integrerad och publicerad som version 30 den 11 oktober 2026.
 Rubriken är nu **Partnerresultat**. Käll-SHA, deployment och faktiskt körda
 kontroller finns i WORKLOG. Ingen övrig runtime-ändring ingick.
+
+## 2026-10-11 · PARTNER-START-01 · Fyra stora ingångar
+
+Kandidat på `codex/partner-start-four`: endast partnernamn och fyra stora
+val på säljpartnerns startsida, enligt Ludwigs skärmbild. Intro och
+produktlistor tas bort från startsidan. Befintliga resultat, avtalsfakta,
+utbildning och support består. Kodkontroller gröna; visuell browserkontroll
+återstår. Inte integrerad/publicerad. Full checkpoint i WORKLOG.

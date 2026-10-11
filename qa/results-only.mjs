@@ -19,7 +19,9 @@ P.state.offers = [{ id: 'legacy-offer', partner: 'syd', draft: 'Bevara' }];
 const before = JSON.stringify([P.state.records, P.state.consumerSales, P.state.offers]);
 for (const id of ['syd', 'vast']) {
   P.previewPartner(id);
-  assert.match(node('#view').innerHTML, /Utbildning och stöd/);
+  const home = node('#view').innerHTML;
+  assert.deepEqual([...home.matchAll(/data-go="([^"]+)"/g)].map(match => match[1]), ['partner-sales', 'product-facts', 'academy', 'support']);
+  assert.doesNotMatch(home, /PARTNERARBETSYTA|En arbetsyta för|Företagsavtal|Konsumentavtal/);
   assert.doesNotMatch(node('#nav').innerHTML, /pipeline|consumer-sales|customers|offers/);
   for (const route of ['pipeline', 'customers', 'business-brief', 'offers', 'consumer-sales', 'consumer-followup']) {
     P.go(route);
