@@ -97,6 +97,7 @@
     document.querySelector('#kickback-partner')?.addEventListener('change', event => {
       selectedPartner=P.getPartner?.(event.target.value)?event.target.value:'all';
       P.render();
+      document.querySelector('#kickback-partner')?.focus();
     });
   }
   P.partnerKickback = {renderSummary, bindSummary, selectPartner, rowsFor, totalsFor, ledger, months, cutoff};

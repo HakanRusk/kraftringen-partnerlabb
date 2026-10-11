@@ -624,7 +624,7 @@ PR #20 integrerad; GitHub/Sites publicerad källrevision `66d8046558728fd21dd6be
 
 Säljpartnerns meny: Mina resultat, Insikter, Avtalsfakta, Utbildning och support. Endast egna rapportdata i partnervy; inga interna kostnader/nettobidrag. Fastighetsbolag: Avtalsval med Kvartspris som grundval, Opti och Rörligt månadspris som alternativ. Nya utkast får en ändringsbar kopia av grundvalet; äldre underlag bevaras. Excelval gäller hela urvalet nya rader. Ingen automatisk avtalsteckning.
 
-Faktakort har officiella källänkar och relevanta befintliga Elakademin-filmer, inte kompletta produktspecifika filmer. Saknade exakta produktblad för Stabil/B2B Kvartspris och specifikation av Individuell portfölj är nästa innehållsbehov, inte ett skäl att fabricera villkor. Detta är en efterhandskvittens, dist/ oförändrad.
+Faktakorten använder nu också säljarens produktspecifikation från 10 oktober 2026 och användarens bekräftelse om Stabil. Varje produkt länkar till sitt källavsnitt och den fulla produktlektionen i Elakademin; vald partner och demoyta följer med. Vintersäkrat följer underlagets standard oktober–mars och Kvartspris april–september. Stabils gemensamma pris gäller endast den säkrade, månadsutjämnade delen. Officiella webbkällor och aktuella offert-/avtalsvillkor visas separat; utbildningsunderlaget fastställer inga nya erbjudanden.
 
 
 ## 2026-10-11 · Tre partnerupplägg publicerade i version 22
@@ -639,3 +639,33 @@ PR #24 integrerad, publicerad källrevision `9b935a533229881e2ca0bef83d3c84f5fc9
 och succeeded-kvittens finns i WORKLOG.md. Befintligt timuppdrag är
 återaktiverat med uppdaterad, native återläst prompt.
 Browserregression för de nya typerna: `python qa/partner-types.py`.
+
+
+## Felgranskning av hela portalen · 11 oktober 2026
+
+Navigationen använder webbläsarens historik och återställer rätt partner.
+Hoppa till innehåll behåller aktuell vy. Mobilmenyn stöder Escape, fokus
+och tangentbordsnavigering; långa partnernamn bryter rader.
+
+Sparfel i support, intern partneruppföljning, handläggning och bevarade
+äldre säljmoduler återställer berörda data och behåller inmatning för nytt
+försök. Skadade enskilda äldre poster får inte ersätta annan sparad data
+med demots grundexempel. Utbildningen meddelar när framsteg bara gäller
+under besöket. Exporten avgränsas till aktuell partner; textfält i CSV
+skyddas mot kalkylbladsformeltolkning.
+
+Excel-importen läser både arbetsböcker med 1900- och 1904-datumsystem.
+Borttagning av en utkastbilaga får inte radera bytes som ett registrerat
+ärende fortfarande refererar till. Ärendelistor håller sökning och
+statusfilter per partner. Kurslänkar behåller partner och demoyta, media
+pausas när vyn lämnas och misslyckad filmladdning visar läsbart alternativ.
+Giltiga strömmade WebM-ljudfiler får sin längd kontrollerad före uppladdning.
+
+Reproducerbara regressioner finns i `qa/bug-navigation.py`,
+`qa/bug-property.py`, `qa/bug-reports.py`, `qa/bug-support-facts.py`,
+`qa/bug-learning.cjs`, `qa/bug-preserved.cjs` och `qa/bug-surface.py`.
+De körs med installerad Playwright/Chromium mot den statiska servern;
+ange `PARTNERLABB_QA_URL` och en rapportmapp utanför repot genom
+`PARTNERLABB_QA_OUTPUT` eller `PARTNERLABB_QA_SHOTS`. Fiktiva fixtures
+och isolerade browserkontexter används. Faktiska test- och
+publiceringsresultat kvitteras i WORKLOG. Inget paketbygge krävs.

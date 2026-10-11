@@ -107,6 +107,12 @@
     verified.delete(meta.id);
     return true;
   }
+  async function removeUnreferenced(meta) {
+    // A recovered draft or another case can share this local file. Unlinking
+    // one reference must never delete the bytes needed by a registered case.
+    const referenced = Array.isArray(P.state.moveins) && P.state.moveins.some(row => row && typeof row === 'object' && Array.isArray(row.authorityFiles) && row.authorityFiles.some(file => file && file.id === meta?.id && file.scope === meta?.scope));
+    return referenced ? false : remove(meta);
+  }
   async function download(meta) {
     const stored = await read(meta);
     const url = URL.createObjectURL(stored.blob);
@@ -131,5 +137,5 @@
     activeDownloads.clear();
     return true;
   }
-  P.moveinAttachments = { scope, storeFiles, remove, download, exists, clearScope, hasVerified: meta => validMeta(meta) && verified.get(meta.id) === fingerprint(meta), validMeta };
+  P.moveinAttachments = { scope, storeFiles, remove, removeUnreferenced, download, exists, clearScope, hasVerified: meta => validMeta(meta) && verified.get(meta.id) === fingerprint(meta), validMeta };
 })();

@@ -11,10 +11,14 @@
   };
   const qs = selector => document.querySelector(selector);
   const uid = () => 'consumer-' + crypto.randomUUID().slice(0, 8);
+  const isObject = value => !!value && typeof value === 'object' && !Array.isArray(value);
+  function restoreObject(target, previous) {
+    Object.keys(target).forEach(key => delete target[key]); Object.assign(target, previous);
+  }
   let search = '', statusFilter = 'all', teamFilter = 'all', followupFilter = 'action';
   const newEvent = (text, actor = P.role === 'internal' ? 'Kraftringen · intern demo' : 'Face2face · demo') => ({at: new Date().toISOString(), actor, text, visibility: 'shared'});
   function init() {
-    if (Array.isArray(P.state.consumerSales)) return;
+    if (P.state.consumerSales !== undefined) return;
     const seed = [
       ['F2F-EX-001', 'Lo Exempel', 'lo@privatkund.example', 'Exempelgatan 4', 'Lund', '2026-11-01', 'Alex Exempel', 'Exempelteam Syd', 'Exempelkanal A', 'complement', 'Stäm av önskad leveransstart', '2026-10-09', 'Kontrollera datumet med kunden. Underlaget anger två olika önskemål.', '2026-10-06T09:15:00Z'],
       ['F2F-EX-002', 'Robin Exempel', 'robin@privatkund.example', 'Testvägen 12', 'Malmö', '2026-11-15', 'Kim Exempel', 'Exempelteam Syd', 'Exempelkanal B', 'waiting', 'Följ återkopplingen från Kraftringen', '2026-10-12', 'Underlaget är registrerat i test. Återkoppling väntar.', '2026-10-06T11:30:00Z'],
@@ -34,12 +38,12 @@
   }
   function rows() {
     init();
-    return P.state.consumerSales.filter(row => row && row.partner === 'vast');
+    return (Array.isArray(P.state.consumerSales) ? P.state.consumerSales : []).filter(row => isObject(row) && row.partner === 'vast');
   }
   function activityFor(id) {
-    if (id === 'vast') return rows().flatMap(row => activityFor(row.id).map(event => ({...event, id: row.id, name: row.name, company: row.name, reference: row.reference}))).sort((a, b) => b.at.localeCompare(a.at));
+    if (id === 'vast') return rows().flatMap(row => activityFor(row.id).map(event => ({...event, id: row.id, name: row.name, company: row.name, reference: row.reference}))).sort((a, b) => String(b.at || '').localeCompare(String(a.at || '')));
     const row = rows().find(item => item.id === id);
-    return (row?.events || []).filter(event => P.role === 'internal' || event.visibility !== 'internal');
+    return (Array.isArray(row?.events) ? row.events : []).filter(event => isObject(event) && (P.role === 'internal' || event.visibility !== 'internal'));
   }
   function badge(status) { return `<span class="consumer-status consumer-status-${e(status)}">${e(statuses[status] || 'Status ej angiven')}</span>`; }
   function heading(eyebrow, title, intro, actions = '') {
@@ -75,7 +79,7 @@
   }
   function renderOverview() {
     init();
-    const data = rows(), feedback = data.flatMap(row => activityFor(row.id).filter(event => event.kind === 'feedback').map(event => ({...event, row}))).sort((a, b) => b.at.localeCompare(a.at)).slice(0, 3);
+    const data = rows(), feedback = data.flatMap(row => activityFor(row.id).filter(event => event.kind === 'feedback').map(event => ({...event, row}))).sort((a, b) => String(b.at || '').localeCompare(String(a.at || ''))).slice(0, 3);
     return `<div class="consumer-workspace">${heading('FACE2FACE × KRAFTRINGEN', 'Konsumentförsäljning', 'Face2face säljer i Beest. Denna arbetsyta bevarar portalens lokala konsumentdemo.', newButton)}
       ${demoNote('Nuvarande säljverktyg: Beest. Kraftringens nya affärsutfall följs i den interna vyn. Ingen Beest-data hämtas i prototypen.')}
       ${P.workbench?.render({limit:3}) || ''}
@@ -101,7 +105,23 @@
     init();
     return `<div class="consumer-workspace">${heading('FACE2FACE / ÅTERKOPPLING', 'Uppföljning & kompletteringar', 'Samla nästa steg och följ återkopplingen per privatkund.')}<div class="consumer-followup-intro"><span>${icon('mail')}</span><div><h2>${rows().filter(row => row.status === 'complement').length} underlag behöver komplettering</h2><p>Öppna ett underlag, dokumentera aktiviteten och planera nästa steg.</p></div><button class="btn btn-secondary" data-go="consumer-sales">Alla försäljningsunderlag ${icon('arrow')}</button></div><div class="consumer-filter-tabs">${[['action', 'Att göra'], ['waiting', 'Inväntar återkoppling'], ['active', 'Aktiva · demo'], ['all', 'Alla pågående']].map(([key, label]) => `<button class="btn btn-secondary${followupFilter === key ? ' consumer-tab-active' : ''}" data-consumer-followup-filter="${key}" aria-pressed="${followupFilter === key}">${label}</button>`).join('')}</div><section class="card"><div class="panel-heading"><h2>${followupFilter === 'action' ? 'Partnerns nästa steg' : 'Underlag att följa'}</h2><span class="pill">${followupRows().length} exempel</span></div>${table(followupRows())}</section>${demoNote('Återkopplingen är lokal testdata. Kraftringens interna demovy kan lägga till återkoppling och ändra teststatus; inga meddelanden skickas.')}</div>`;
   }
-  function saveMessage(text) { const saved = P.save(); P.toast(saved ? text + ' Sparat i denna webbläsare.' : text + ' Finns i denna flik.'); }
+  function saveMessage(text, rollback) {
+    let saved = false;
+    try { saved = P.save(); } catch {}
+    if (!saved) {
+      rollback(); P.toast('Webbläsaren kunde inte spara. Ingen ändring genomfördes. Formuläret finns kvar så att du kan försöka igen.');
+      return false;
+    }
+    P.toast(text + ' Sparat i denna webbläsare.');
+    return true;
+  }
+  function canEdit(row) {
+    if (!Array.isArray(P.state.consumerSales) || (row && row.events != null && !Array.isArray(row.events))) {
+      P.toast('Det äldre konsumentunderlaget har ett okänt format. Ingen data ändrades. Exportera underlaget innan det rättas.');
+      return false;
+    }
+    return true;
+  }
   function formFields(row = {}) {
     return `<div class="form-grid"><label class="field">Privatkundens namn · fiktivt *<input name="name" required maxlength="90" autocomplete="off" value="${e(row.name)}" placeholder="Lo Exempel"></label><label class="field">E-post · exempel *<input name="email" required type="email" maxlength="130" autocomplete="off" value="${e(row.email)}" placeholder="lo@privatkund.example"><span class="form-hint">Använd en adress som slutar med .example.</span></label><label class="field">Bostadsadress · exempel *<input name="address" required maxlength="120" autocomplete="off" value="${e(row.address)}" placeholder="Exempelgatan 4"></label><label class="field">Ort *<input name="city" required maxlength="70" autocomplete="off" value="${e(row.city)}" placeholder="Lund"></label><label class="field">Önskad leveransstart · exempel<input name="startDate" type="date" value="${e(row.startDate)}"></label><label class="field">Säljare · fiktiv *<input name="seller" required maxlength="90" value="${e(row.seller)}" placeholder="Alex Exempel"></label><label class="field">Team · exempel *<input name="team" required maxlength="80" value="${e(row.team)}" placeholder="Exempelteam Syd"></label><label class="field">Plats eller kanal · exempel *<input name="channel" required maxlength="120" value="${e(row.channel)}" placeholder="Exempelkanal A"><span class="form-hint">Den verkliga försäljningskanalen är inte fastställd här.</span></label></div><label class="field">Kundfråga eller kompletterande underlag<textarea name="question" maxlength="800" rows="3" placeholder="Samla det som behöver följas upp.">${e(row.question)}</textarea></label><div class="form-grid"><label class="field">Nästa steg *<input name="next" required maxlength="180" value="${e(row.next)}" placeholder="Granska underlaget och följ återkopplingen"></label><label class="field">Datum för nästa steg<input name="nextDate" type="date" value="${e(row.nextDate)}"></label></div>`;
   }
@@ -121,16 +141,24 @@
         for (const field of ['name', 'email', 'address', 'city', 'seller', 'team', 'channel', 'next']) if (!P.validText(form.elements.namedItem(field))) return;
         if (!/^[^\s@]+@[^\s@]+\.example$/i.test(form.elements.email.value.trim())) { form.elements.email.setCustomValidity('Använd en påhittad e-postadress som slutar med .example.'); form.elements.email.reportValidity(); return; }
         if (!form.reportValidity()) return;
+        if (!canEdit(row)) return;
+        const previous = row && structuredClone(row);
+        const previousRows = P.state.consumerSales.slice();
         const values = Object.fromEntries(['name', 'email', 'address', 'city', 'startDate', 'seller', 'team', 'channel', 'question', 'next', 'nextDate'].map(key => [key, form.elements.namedItem(key).value.trim()]));
         const now = new Date().toISOString();
         if (editing) {
+          if (!Array.isArray(row.events)) row.events = [];
           Object.assign(row, values, {updatedAt: now}); row.events.unshift({...newEvent('Kontakt- och försäljningsunderlaget uppdaterat i test.'), kind: 'activity'});
         } else {
           const id = uid();
           P.state.consumerSales.unshift({id, partner: 'vast', reference: 'F2F-TEST-' + id.slice(-8).toUpperCase(), ...values, status: 'underlag', createdAt: now, updatedAt: now, events: [{...newEvent('Försäljningsunderlag registrerat i test. Inget avtal har tecknats.'), kind: 'activity'}]});
-          search = ''; statusFilter = 'all'; teamFilter = 'all';
         }
-        saveMessage(editing ? 'Underlaget är uppdaterat.' : 'Försäljningsunderlaget är registrerat.'); P.closeDialog(); P.go('consumer-sales');
+        if (!saveMessage(editing ? 'Underlaget är uppdaterat.' : 'Försäljningsunderlaget är registrerat.', () => {
+          P.state.consumerSales.splice(0, P.state.consumerSales.length, ...previousRows);
+          if (editing) restoreObject(row, previous);
+        })) return;
+        if (!editing) { search = ''; statusFilter = 'all'; teamFilter = 'all'; }
+        P.closeDialog(); P.go('consumer-sales');
       };
     });
   }
@@ -143,12 +171,16 @@
       qs('#consumer-activity-form').onsubmit = event => {
         event.preventDefault(); const form = event.currentTarget;
         if (!P.validText(form.elements.activity) || !P.validText(form.elements.next) || !form.reportValidity()) return;
+        if (!canEdit(row)) return;
+        const previous = structuredClone(row);
         const previousStatus = row.status;
         row.next = form.elements.next.value.trim(); row.nextDate = form.elements.nextDate.value; row.updatedAt = new Date().toISOString();
         if (internal && statuses[form.elements.status.value]) row.status = form.elements.status.value;
         const text = form.elements.activity.value.trim() + (internal && previousStatus !== row.status ? '\nTeststatus: ' + statuses[row.status] + '.' : '');
+        if (!Array.isArray(row.events)) row.events = [];
         row.events.unshift({...newEvent(text), kind: internal ? 'feedback' : 'activity'});
-        saveMessage(internal ? 'Teståterkopplingen är sparad.' : 'Aktiviteten är dokumenterad.'); P.render(); openRecord(id);
+        if (!saveMessage(internal ? 'Teståterkopplingen är sparad.' : 'Aktiviteten är dokumenterad.', () => restoreObject(row, previous))) return;
+        P.render(); openRecord(id);
       };
     });
   }

@@ -18,9 +18,11 @@
   ];
   const documentOptions = { undiscussed: 'Inte diskuterat', followup: 'Att följa upp', example: 'Exempelunderlag finns' };
   let selectedId = '';
+  const isObject = value => !!value && typeof value === 'object' && !Array.isArray(value);
 
   function init() {
-    if (!P.state.businessDetails || typeof P.state.businessDetails !== 'object' || Array.isArray(P.state.businessDetails)) P.state.businessDetails = {};
+    if (P.state.businessDetails === undefined) P.state.businessDetails = {};
+    if (!isObject(P.state.businessDetails)) return;
     if (!P.state.businessDemoSeeded) {
       const samples = {
         'demo-001': { annualVolume: '185000', facilities: '2', start: '2027-01-01', contractEnd: '2026-12-31', topics: ['contract', 'hedge'], documents: { invoice: 'example', consumption: 'followup', mandate: 'undiscussed' } },
@@ -28,7 +30,7 @@
         'demo-003': { annualVolume: '95000', facilities: '1', start: '', contractEnd: '', topics: ['contract'], documents: { invoice: 'undiscussed', consumption: 'undiscussed', mandate: 'undiscussed' } }
       };
       Object.entries(samples).forEach(([id, sample]) => {
-        if (P.state.records.some(record => record.id === id && record.partner === 'syd') && !P.state.businessDetails[id]) P.state.businessDetails[id] = sample;
+        if ((Array.isArray(P.state.records) ? P.state.records : []).some(record => isObject(record) && record.id === id && record.partner === 'syd') && !Object.hasOwn(P.state.businessDetails, id)) P.state.businessDetails[id] = sample;
       });
       P.state.businessDemoSeeded = true;
     }
@@ -38,12 +40,13 @@
   const records = () => P.getRecords().filter(record => record.partner === 'syd' && ['Företag', 'BRF'].includes(record.kind));
   const openRecords = () => records().filter(record => record.status !== 'avslutad' && record.stage !== 'active');
   function details(record) {
-    const stored = P.state.businessDetails[record.id] || {};
+    const raw = isObject(P.state.businessDetails) ? P.state.businessDetails[record.id] : null;
+    const stored = isObject(raw) ? raw : {};
     return {
       annualVolume: '', facilities: '', start: '', contractEnd: '', questions: record.need || '',
       next: record.next || '', nextDate: record.date || '', topics: [], documents: {}, ...stored,
       next: record.next ?? stored.next ?? '', nextDate: record.date ?? stored.nextDate ?? '',
-      topics: Array.isArray(stored.topics) ? stored.topics : [], documents: stored.documents && typeof stored.documents === 'object' ? stored.documents : {}
+      topics: Array.isArray(stored.topics) ? stored.topics : [], documents: isObject(stored.documents) ? stored.documents : {}
     };
   }
   function head(title, subtitle, action = '') {
@@ -60,7 +63,7 @@
     init();
     const all = records();
     const open = openRecords();
-    const drafts = (P.state.offers || []).filter(offer => offer.partner === 'syd');
+    const drafts = (Array.isArray(P.state.offers) ? P.state.offers : []).filter(offer => isObject(offer) && offer.partner === 'syd');
     const volume = open.reduce((sum, record) => sum + (Number(details(record).annualVolume) || 0), 0);
     const withVolume = open.filter(record => Number(details(record).annualVolume) > 0).length;
     return `${head('Savera · företagsaffärer', 'Kunddialoger, affärsunderlag och planerade nästa steg.', `<button class="btn btn-primary" data-new-customer>${icon('plus')} Ny företagsdialog</button>`)}
@@ -130,13 +133,26 @@
       if (!form.reportValidity()) return;
       const record = records().find(item => item.id === selectedId);
       if (!record) { P.toast('Kunddialogen finns inte längre i denna demovy.'); return; }
+      if (!isObject(P.state.businessDetails) || (Object.hasOwn(P.state.businessDetails, record.id) && !isObject(P.state.businessDetails[record.id])) || (record.events != null && !Array.isArray(record.events))) {
+        P.toast('Det äldre affärsunderlaget har ett okänt format. Ingen data ändrades. Exportera underlaget innan det rättas.');
+        return;
+      }
+      const previousRecord = structuredClone(record);
+      const hadDetails = Object.hasOwn(P.state.businessDetails, record.id);
+      const previousDetails = P.state.businessDetails[record.id];
       const data = formValues(form);
       P.state.businessDetails[record.id] = { ...P.state.businessDetails[record.id], ...data, updatedAt: new Date().toISOString() };
       record.next = data.next; record.date = data.nextDate;
+      if (!Array.isArray(record.events)) record.events = [];
       P.event?.(record, 'Affärsunderlag uppdaterat i testmiljön.' + (data.next ? ` Nästa steg: ${data.next}.` : ''));
-      const saved = P.save();
-      $('#business-save-status').textContent = saved ? 'Sparat i denna webbläsare.' : 'Ändrat i denna flik. Kunde inte sparas i webbläsaren.';
-      P.toast(saved ? 'Affärsunderlaget och kundens nästa steg är sparade.' : 'Underlaget ändrat i denna flik; webbläsaren kunde inte spara.');
+      let saved = false;
+      try { saved = P.save(); } catch {}
+      if (!saved) {
+        Object.keys(record).forEach(key => delete record[key]); Object.assign(record, previousRecord);
+        if (hadDetails) P.state.businessDetails[record.id] = previousDetails; else delete P.state.businessDetails[record.id];
+      }
+      $('#business-save-status').textContent = saved ? 'Sparat i denna webbläsare.' : 'Kunde inte sparas. Dina formulärändringar finns kvar så att du kan försöka igen.';
+      P.toast(saved ? 'Affärsunderlaget och kundens nästa steg är sparade.' : 'Webbläsaren kunde inte spara. Kunddialogen och historiken har behållits. Försök igen.');
     };
   } });
 })();

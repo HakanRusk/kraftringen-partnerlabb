@@ -64,7 +64,7 @@
     request.onsuccess = () => {
       const cursor = request.result;
       if (cursor) { const { audio, ...metadata } = cursor.value; result.push(metadata); cursor.continue(); }
-      else done(result.sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
+      else done(result.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || ''))));
     };
   });
   const getRecord = (id, value) => transaction('readonly', (store, done) => {
@@ -186,11 +186,20 @@
         const probe = document.createElement('audio');
         let settled = false;
         const cancel = () => finish(new DOMException('Ljudkontrollen avbröts.', 'AbortError'));
-        const finish = (error, duration) => { if (settled) return; settled = true; clearTimeout(timeout); session.cancelers.delete(cancel); probe.onloadedmetadata = null; probe.onerror = null; probe.pause(); probe.removeAttribute('src'); probe.load(); error ? reject(error) : resolve(duration); };
+        const finish = (error, duration) => { if (settled) return; settled = true; clearTimeout(timeout); session.cancelers.delete(cancel); probe.onloadedmetadata = null; probe.ondurationchange = null; probe.ontimeupdate = null; probe.onerror = null; probe.pause(); probe.removeAttribute('src'); probe.load(); error ? reject(error) : resolve(duration); };
         const timeout = setTimeout(() => finish(new Error('Ljudfilen kunde inte läsas. Prova en annan inspelning, gärna MP3 eller WAV.')), 10000);
         session.cancelers.add(cancel);
         probe.preload = 'metadata';
-        probe.onloadedmetadata = () => Number.isFinite(probe.duration) && probe.duration > 0 ? finish(undefined, probe.duration) : finish(new Error('Ljudfilens längd kunde inte läsas. Exportera inspelningen som MP3 eller WAV och prova igen.'));
+        const readDuration = () => { if (Number.isFinite(probe.duration) && probe.duration > 0) finish(undefined, probe.duration); };
+        probe.ondurationchange = readDuration;
+        probe.ontimeupdate = readDuration;
+        probe.onloadedmetadata = () => {
+          if (Number.isFinite(probe.duration) && probe.duration > 0) { readDuration(); return; }
+          // Streamed WebM files often omit duration. Seeking discovers the end
+          // without playing the recording; the existing timeout/cancel still applies.
+          if (probe.duration === Infinity) { try { probe.currentTime = 1e10; return; } catch {} }
+          finish(new Error('Ljudfilens längd kunde inte läsas. Exportera inspelningen som MP3 eller WAV och prova igen.'));
+        };
         probe.onerror = () => finish(new Error('Ljudformatet kan inte spelas i denna webbläsare. Prova en MP3- eller WAV-fil.'));
         probe.src = url; probe.load();
       });

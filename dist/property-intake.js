@@ -71,7 +71,7 @@
     return errors;
   }
   function inspectRows(draft) {
-    const existing = new Set((P.state.moveins || []).filter(row => row.partner === draft.partner).map(identity));
+    const existing = new Set((P.state.moveins || []).filter(row => row && typeof row === 'object' && !Array.isArray(row) && row.partner === draft.partner).map(identity));
     const seen = new Set();
     return draft.rows.map(row => {
       const id = identity({ ...row.fields, partner: draft.partner });
@@ -116,7 +116,7 @@
   }
   function renderSuccess() {
     const incomplete = receipt.created.filter(row => !row.authorityFiles?.length).length;
-    return `<div class="pi-shell pi-success-shell"><section class="card pi-success"><span class="pi-success-icon">${icon('check')}</span><span class="eyebrow">UNDERLAG SPARAT</span><h1>${receipt.created.length === 1 ? 'Inflyttningen är registrerad.' : `${receipt.created.length} inflyttningar är registrerade.`}</h1><p>${receipt.saved ? 'Underlagen finns nu bland era inflyttningsärenden.' : 'Underlagen finns i denna flik. Webbläsaren kunde inte spara dem inför omladdning.'}</p><div class="pi-success-next"><strong>${incomplete ? `${incomplete} ${incomplete === 1 ? 'underlag saknar' : 'underlag saknar'} fullmakt` : 'Nästa steg: granska och förmedla'}</strong><span>${incomplete ? 'Bifoga de saknade fullmakterna i ärendelistan. Underlag med fullmakt kan förmedlas till Kraftringen.' : 'Ni väljer själva när underlagen ska förmedlas till Kraftringen. Registreringen har inte skickat något.'}</span></div>${receipt.duplicates.length ? `<p class="pi-warning-text">${receipt.duplicates.length} ${receipt.duplicates.length === 1 ? 'dubblett skapades' : 'dubbletter skapades'} inte.</p>` : ''}<div class="pi-success-actions"><button class="btn btn-primary" type="button" data-pi-records>Se & förmedla underlagen ${icon('arrow')}</button><button class="btn btn-secondary" type="button" data-pi-new>Registrera fler</button></div></section>${demoNote()}</div>`;
+    return `<div class="pi-shell pi-success-shell"><section class="card pi-success"><span class="pi-success-icon">${icon('check')}</span><span class="eyebrow">UNDERLAG SPARAT</span><h1>${receipt.created.length === 1 ? 'Inflyttningen är registrerad.' : `${receipt.created.length} inflyttningar är registrerade.`}</h1><p>${receipt.saved ? 'Underlagen finns nu bland era inflyttningsärenden.' : 'Underlagen finns i denna flik. Webbläsaren kunde inte spara dem inför omladdning.'}</p><div class="pi-success-next"><strong>${incomplete ? `${incomplete} ${incomplete === 1 ? 'underlag saknar' : 'underlag saknar'} fullmakt` : 'Nästa steg: granska och förmedla'}</strong><span>${incomplete ? 'Bifoga de saknade fullmakterna i ärendelistan. Underlag med fullmakt kan förmedlas till Kraftringen.' : 'Ni väljer själva när underlagen ska förmedlas till Kraftringen. Registreringen har inte skickat något.'}</span></div>${receipt.draftCleared === false ? '<p class="pi-warning-text" role="alert">Underlaget är sparat, men det tidigare utkastet kunde inte rensas. Om det visas igen efter omladdning ska du använda ärendelistan för att komplettera det sparade underlaget.</p>' : ''}${receipt.duplicates.length ? `<p class="pi-warning-text">${receipt.duplicates.length} ${receipt.duplicates.length === 1 ? 'dubblett skapades' : 'dubbletter skapades'} inte.</p>` : ''}<div class="pi-success-actions"><button class="btn btn-primary" type="button" data-pi-records>Se & förmedla underlagen ${icon('arrow')}</button><button class="btn btn-secondary" type="button" data-pi-new>Registrera fler</button></div></section>${demoNote()}</div>`;
   }
   function renderManual() {
     if (!allowed()) return guard();
@@ -149,7 +149,7 @@
     const buffer = await book.xlsx.writeBuffer();
     P.download('inflyttningar-exempelmall.xlsx', buffer, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   }
-  function cellText(cell,key,errors) {
+  function cellText(cell,key,errors,date1904 = false) {
     const value = cell.value;
     if (value === null || value === undefined) return '';
     if (typeof value === 'object' && !(value instanceof Date)) {
@@ -159,7 +159,11 @@
       errors.push('Cellen innehåller ett värde som inte kan läsas.'); return '';
     }
     if (key === 'moveDate' && value instanceof Date) return Number.isNaN(value.getTime()) ? '' : value.toISOString().slice(0,10);
-    if (key === 'moveDate' && typeof value === 'number') return new Date(Date.UTC(1899,11,30) + Math.floor(value) * 86400000).toISOString().slice(0,10);
+    if (key === 'moveDate' && typeof value === 'number') {
+      const parsed = new Date((date1904 ? Date.UTC(1904,0,1) : Date.UTC(1899,11,30)) + Math.floor(value) * 86400000);
+      if (Number.isNaN(parsed.getTime())) { errors.push('Inflyttningsdatumet kunde inte läsas som ett giltigt datum.'); return ''; }
+      return parsed.toISOString().slice(0,10);
+    }
     if (value instanceof Date) return value.toISOString().slice(0,10);
     return String(value).trim();
   }
@@ -185,7 +189,7 @@
     const rows = [];
     for (let number = 2; number <= sheet.rowCount; number++) {
       const parseErrors = [], fields = emptyFields();
-      for (const [key,index] of mapping) fields[key] = cellText(sheet.getRow(number).getCell(index),key,parseErrors);
+      for (const [key,index] of mapping) fields[key] = cellText(sheet.getRow(number).getCell(index),key,parseErrors,book.properties.date1904 === true);
       if (!Object.values(fields).some(Boolean) && !parseErrors.length) continue;
       if (rows.length >= 200) throw new Error('Filen har fler än 200 inflyttningar. Dela upp den i mindre filer.');
       for (const [key,max] of Object.entries(limits)) fields[key] = fields[key].slice(0,max + 1);
@@ -206,7 +210,7 @@
       draft.rows = rows; draft.filename = file.name; draft.batchId = crypto.randomUUID(); draft.confirmed = false;
       inspectRows(draft).forEach(entry => { entry.row.selected = entry.valid; });
       saveDraft(draft);
-      for (const meta of oldFiles) await P.moveinAttachments?.remove(meta).catch(() => {});
+      for (const meta of oldFiles) await P.moveinAttachments?.removeUnreferenced(meta).catch(() => {});
     } catch (error) { if (active(token,expected,draft)) draft.error = error.message || 'Excel-filen kunde inte läsas.'; }
     finally { draft.busy = false; refreshDraft(draft); }
   }
@@ -220,7 +224,7 @@
     try {
       if (!P.moveinAttachments?.storeFiles) throw new Error('Bilagorna kunde inte sparas. Ladda om sidan och försök igen.');
       stored = await P.moveinAttachments.storeFiles(files,draft.partner);
-      if (!active(token,expected,draft)) { for (const meta of stored) await P.moveinAttachments.remove(meta); return; }
+      if (!active(token,expected,draft)) { for (const meta of stored) await P.moveinAttachments.removeUnreferenced(meta); return; }
       row.authorityFiles.push(...stored); saveDraft(draft);
     } catch (error) { if (active(token,expected,draft)) draft.error = error.message || 'Bilagan kunde inte sparas. Försök igen.'; }
     finally { draft.busy = false; refreshDraft(draft); }
@@ -232,7 +236,7 @@
     if (remove) { draft.busy = true; draft.error = ''; P.render(); }
     try {
       if (remove) {
-        await P.moveinAttachments.remove(meta);
+        await P.moveinAttachments.removeUnreferenced(meta);
         // Navigation may finish while IndexedDB deletes the file. Keep the captured
         // draft consistent, but never resurrect a draft discarded by a reset.
         if (cache.get(`${draft.partner}:${draft.mode}`) !== draft || (mode === 'import' && !draft.rows.includes(row))) return;
@@ -266,7 +270,7 @@
         draft.error = errors.join('. ') || (result.duplicates?.length ? 'Den här inflyttningen finns redan bland era ärenden. Öppna ärendelistan för att komplettera den.' : 'Underlaget kunde inte registreras. Kontrollera uppgifterna och försök igen.');
       } else {
         receipt = { partner: draft.partner, created: result.created, duplicates: result.duplicates || [], saved: result.saved !== false };
-        clearDraft(mode,draft.partner);
+        receipt.draftCleared = clearDraft(mode,draft.partner);
       }
     } catch (error) { if (active(token,expected,draft)) draft.error = error.message || 'Underlaget kunde inte registreras.'; }
     finally { draft.busy = false; if (token === generation && context() === expected && allowed()) { P.render(); $('.pi-success h1')?.setAttribute('tabindex','-1'); $('.pi-success h1')?.focus(); } }

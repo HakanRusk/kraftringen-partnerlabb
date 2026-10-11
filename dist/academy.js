@@ -11,45 +11,45 @@
   ];
   const businessCourses = [
     {
-      id: 'intro', category: 'partner', title: 'Kom igång med företagsaffären', description: 'Samla kundens underlag och följ dialogen med Kraftringen.', image: 'assets/office.jpg', duration: '6 min',
+      id: 'intro', category: 'partner', title: 'Kom igång med företagsaffären', description: 'Förstå resultatvyerna och hitta utbildningsstöd för företagsdialogen.', image: 'assets/office.jpg', duration: '6 min',
       lessons: [
-        { id: 'intro-1', title: 'Din företagsarbetsyta', text: 'Savera säljer Kraftringens elhandelsavtal till företagskunder. I demoarbetsytan samlar du kundens behov, följer affären och läser återkoppling från Kraftringen.', bullets: ['Öppna en exempelaffär och granska kundens underlag.', 'Titta på nästa aktivitet i affären.', 'Anteckna vad du saknar för att fortsätta kunddialogen.'] },
-        { id: 'intro-2', title: 'Följ en affär', text: 'I prototypen kan du testa hur en kunddialog dokumenteras och följs upp. Ett tydligt nästa steg hjälper både partnern och det interna teamet att fortsätta arbetet.', bullets: ['Beskriv kundens frågeställning med fiktiva uppgifter.', 'Lägg till nästa aktivitet och ett planerat datum.', 'Statusarna är ett förslag att diskutera med Ludwig och Håkan.'] },
-        { id: 'intro-3', title: 'Testa tillsammans', text: 'Använd demovyerna för att prova samarbetet från båda sidor. Alla exempeluppgifter ligger i din webbläsare.', bullets: ['Byt demovy och prova intern återkoppling.', 'Kontrollera vad som visas i partnerns vy.', 'Två datorer delar ännu inte testdata.'] }
+        { id: 'intro-1', title: 'Din företagsarbetsyta', text: 'Partnerns aktiva företagsförsäljning sker utanför portalen. Här följer du egna exempelresultat, utforskar Insikter och hittar utbildning och produktunderlag.', bullets: ['Öppna Kunder & avtal och se vilka exempelresultat som visas för din partner.', 'Utforska Insikter för din partner och välj en period.', 'Välj ett utbildningskapitel eller ett begrepp att repetera inför kunddialogen.'] },
+        { id: 'intro-2', title: 'Förstå ett resultat', text: 'Resultatvyerna visar manuella exempelutfall. Skilj periodens nya avtal från aktivt kundbestånd och använd filtren för att förstå vad ett mått omfattar.', bullets: ['Välj en period och jämför de mått som finns i Kunder & avtal.', 'Skilj nya avtal under perioden från kunder som är aktiva vid periodens slut.', 'Underlag och resultat här är exempel; saknat underlag är inte ett verifierat nollutfall.'] },
+        { id: 'intro-3', title: 'Testa tillsammans', text: 'Använd demovyerna för att jämföra partnerns egna resultat med Kraftringens interna översikt. Alla exempeluppgifter och utbildningsframsteg ligger i din webbläsare.', bullets: ['Byt demovy och jämför intern resultatöversikt med partnerns egna resultat.', 'Kontrollera vad som visas i partnerns vy.', 'Två datorer delar ännu inte testdata.'] }
       ]
     },
     {
       id: 'dialogue', category: 'sales', title: 'Första kunddialogen', description: 'Förbered ett möte och fånga kundens viktigaste frågor.', image: 'assets/office.jpg', duration: '7 min',
       lessons: [
         { id: 'dialogue-1', title: 'Förbered mötet', text: 'Börja med vad kunden vill diskutera. I ett första möte behöver ni kunna enas om vilka frågor som ska tas vidare.', bullets: ['Vad vill företaget eller föreningen få hjälp med?', 'Vem behöver delta i nästa dialog?', 'Vilka uppgifter behöver ni klargöra tillsammans?'] },
-        { id: 'dialogue-2', title: 'Dokumentera behovet', text: 'Sammanfatta kundens egna frågor och det ni faktiskt har kommit överens om. Undvik att fylla i antaganden som om de vore beslut.', bullets: ['Skriv en kort beskrivning av frågeställningen.', 'Skilj kundens önskemål från sådant som behöver undersökas.', 'I denna testmiljö använder du enbart påhittade kunduppgifter.'] },
+        { id: 'dialogue-2', title: 'Dokumentera behovet', text: 'Sammanfatta kundens egna frågor och det ni faktiskt har kommit överens om. Undvik att fylla i antaganden som om de vore beslut.', bullets: ['Skriv en kort beskrivning av frågeställningen.', 'Skilj kundens önskemål från sådant som behöver undersökas.', 'Använd enbart påhittade kunduppgifter i utbildningens övningar.'] },
         { id: 'dialogue-3', title: 'Enas om nästa steg', text: 'Gör det lätt att fortsätta efter mötet. Dokumentera nästa kontakt och vilket underlag som behöver tas fram.', bullets: ['Vad ska hända härnäst?', 'Vem behöver delta eller återkomma?', 'När vill kunden fortsätta dialogen?'] }
       ]
     },
     {
-      id: 'electric', category: 'electric', title: 'Elhandel – samla kundens underlag', description: 'Testa hur frågor inför en elhandelsdialog kan samlas.', image: 'assets/wind.jpg', duration: '8 min',
+      id: 'electric', category: 'electric', title: 'Elhandel – samla kundens underlag', description: 'Öva på frågorna inför en företagskunds elhandelsdialog.', image: 'assets/wind.jpg', duration: '8 min',
       lessons: [
-        { id: 'electric-1', title: 'Kundens frågeställning', text: 'Kraftringens B2B-team arbetar med elavtal, portföljlösningar och prissäkring. Den här demokursen hjälper dig att strukturera en fråga till teamet.', bullets: ['Vad vill kunden förstå eller diskutera om sin elhandel?', 'Gäller frågan en verksamhet, flera anläggningar eller en BRF?', 'Spara frågan i affären så att nästa deltagare får sammanhanget.'] },
-        { id: 'electric-2', title: 'Skilj fakta från antaganden', text: 'Uppgifter om kundens behov och nuvarande situation behöver bygga på kundens underlag. Ett tomt fält är bättre än en uppgift som ser verifierad ut men är ett antagande.', bullets: ['Markera vad kunden har lämnat och vad som fortfarande saknas.', 'Beskriv vilken fråga du behöver hjälp att reda ut.', 'Produktbeskrivningar och villkor fylls i när godkänt underlag finns.'] },
-        { id: 'electric-3', title: 'Ta frågan vidare', text: 'Förbered en tydlig sammanfattning inför fortsatt dialog. I prototypen går det att testa ett offertunderlag utan att lägga in verkliga priser eller avtalsvillkor.', bullets: ['Samla kundens frågor på ett ställe.', 'Gå igenom vad som behöver verifieras före en offert.', 'Partnerns befogenheter och godkännanden är öppna beslut.'] }
+        { id: 'electric-1', title: 'Kundens frågeställning', text: 'Kraftringens B2B-team arbetar med elavtal, portföljlösningar och prissäkring. Den här demokursen hjälper dig att strukturera en fråga till teamet.', bullets: ['Vad vill kunden förstå eller diskutera om sin elhandel?', 'Gäller frågan en verksamhet, flera anläggningar eller en BRF?', 'Dokumentera frågan i ert ordinarie säljverktyg så att nästa deltagare får sammanhanget.'] },
+        { id: 'electric-2', title: 'Skilj fakta från antaganden', text: 'Uppgifter om kundens behov och nuvarande situation behöver bygga på kundens underlag. Ett tomt fält är bättre än en uppgift som ser verifierad ut men är ett antagande.', bullets: ['Markera vad kunden har lämnat och vad som fortfarande saknas.', 'Beskriv vilken fråga du behöver hjälp att reda ut.', 'Använd aktuellt produktunderlag och kontrollera vad kundens offert och avtal omfattar.'] },
+        { id: 'electric-3', title: 'Ta frågan vidare', text: 'Förbered en tydlig sammanfattning inför fortsatt dialog i ert ordinarie säljverktyg. Portalen ger produktkunskap och övningar; den skapar inga offerter eller elavtal.', bullets: ['Samla kundens frågor på ett ställe.', 'Gå igenom vad som behöver verifieras före en offert.', 'Partnerns befogenheter och godkännanden är öppna beslut.'] }
       ]
     },
     {
-      id: 'collaboration', category: 'partner', title: 'Nästa steg tillsammans', description: 'Håll återkoppling och aktiviteter samlade i affären.', image: 'assets/solar.jpg', duration: '6 min',
+      id: 'collaboration', category: 'partner', title: 'Nästa steg tillsammans', description: 'Samordna kunddialogen utanför portalen och använd utbildningsstödet här.', image: 'assets/solar.jpg', duration: '6 min',
       lessons: [
-        { id: 'collaboration-1', title: 'Samlad återkoppling', text: 'Ett sammanhållet samarbete bygger på att deltagarna vet vad som har hänt och vad som väntar. I testflödet kan det interna teamet dela återkoppling till partnern.', bullets: ['Läs senaste återkopplingen i affären.', 'Svara med en genomförd aktivitet eller ett nytt nästa steg.', 'Testa vilken information ni vill kunna dela mellan rollerna.'] },
-        { id: 'collaboration-2', title: 'Tydligt ansvar', text: 'Portalen kan stödja ansvar och uppföljning, men den avgör inte hur ert partnersamarbete ska organiseras. Använd prototypen för att pröva ett arbetssätt.', bullets: ['Vem samordnar nästa kundkontakt?', 'När behövs en intern avstämning?', 'Vilka aktiviteter får partnern göra på egen hand?'] },
+        { id: 'collaboration-1', title: 'Samlad återkoppling', text: 'Ett sammanhållet samarbete bygger på att deltagarna vet vad som har hänt och vad som väntar. Återkoppling om aktiva kundaffärer hanteras i era ordinarie kanaler utanför portalen.', bullets: ['Samla senaste återkopplingen från er ordinarie kunddialog.', 'Kom överens om nästa steg i ert ordinarie säljverktyg.', 'Använd portalens produktunderlag när en förklaring behöver repeteras.'] },
+        { id: 'collaboration-2', title: 'Tydligt ansvar', text: 'Ansvar och aktiviteter i kundaffären hanteras utanför portalen. Portalens resultatvyer och utbildning ger stöd, men avgör inte hur ert partnersamarbete ska organiseras.', bullets: ['Vem samordnar nästa kundkontakt?', 'När behövs en intern avstämning?', 'Vilka aktiviteter får partnern göra på egen hand?'] },
         { id: 'collaboration-3', title: 'Förbättra arbetsflödet', text: 'Avsluta testet med ett konkret exempel på vad som fungerade och vad som behöver ändras. Det ger Ludwig och Håkan underlag för nästa version.', bullets: ['Vilken uppgift blev enklare att utföra?', 'Var behövde du mer information?', 'Vilken förändring skulle göra störst skillnad nästa gång?'] }
       ]
     }
   ];
   const consumerContent = {
     intro: {
-      title: 'Kom igång med konsumentförsäljning', description: 'Registrera ett testunderlag och följ återkopplingen.',
+      title: 'Kom igång med konsumentförsäljning', description: 'Förstå resultatvyerna och hitta utbildningsstöd för konsumentdialogen.',
       lessons: [
-        { title: 'Din konsumentarbetsyta', text: 'Face2face säljer Kraftringens elhandelsavtal till konsumenter. I demoarbetsytan kan du samla ett kundunderlag, följa registreringen och läsa återkoppling från Kraftringen.', bullets: ['Öppna en exempelregistrering och se vilka uppgifter som finns.', 'Titta på vad som behöver följas upp.', 'Anteckna vad du saknar i ett kundmöte.'] },
-        { title: 'Följ en registrering', text: 'I demoövningen håller du kundens frågor och nästa aktivitet samlade. En registrering visar vad som har dokumenterats och vad som återstår att reda ut.', bullets: ['Beskriv kundens fråga med fiktiva uppgifter.', 'Lägg till nästa aktivitet och ett planerat datum.', 'Statusarna i övningen är förslag att pröva tillsammans.'] },
-        { title: 'Testa återkopplingen', text: 'Använd demovyerna för att prova återkoppling mellan Face2face och Kraftringen. Alla exempeluppgifter ligger i din webbläsare.', bullets: ['Byt demovy och lägg till intern återkoppling.', 'Kontrollera vad partnern kan läsa och följa upp.', 'Två datorer delar ännu inte testdata.'] }
+        { title: 'Din konsumentarbetsyta', text: 'Partnerns aktiva konsumentförsäljning sker utanför portalen. Här följer du egna exempelresultat, utforskar Insikter och övar på att förklara produkter och kundfrågor.', bullets: ['Öppna Kunder & avtal och se vilka exempelresultat som visas för din partner.', 'Utforska Insikter och jämför nya avtal med aktivt kundbestånd.', 'Repetera ett begrepp eller lyssna på ett eget samtalsexempel inför nästa kundmöte.'] },
+        { title: 'Förstå ett resultat', text: 'Resultatvyerna visar manuella exempelutfall. Skilj nya avtal och aktivt kundbestånd åt, samt bortfall före start från churn efter att leveransen har börjat.', bullets: ['Välj en period och jämför de mått som finns i Kunder & avtal.', 'Skilj nya avtal under perioden från kunder som är aktiva vid periodens slut.', 'Underlag och resultat här är exempel; saknat underlag är inte ett verifierat nollutfall.'] },
+        { title: 'Testa resultatvyerna', text: 'Använd demovyerna för att jämföra partnerns egna resultat med Kraftringens interna översikt. Alla exempeluppgifter och utbildningsframsteg ligger i din webbläsare.', bullets: ['Byt demovy och jämför intern resultatöversikt med partnerns egna resultat.', 'Kontrollera vad partnern kan läsa och följa upp.', 'Två datorer delar ännu inte testdata.'] }
       ]
     },
     dialogue: {
@@ -61,17 +61,17 @@
       ]
     },
     electric: {
-      title: 'Elhandel – konsumentunderlag', description: 'Samla testuppgifter och upptäck vad som saknas.',
+      title: 'Elhandel – konsumentunderlag', description: 'Öva på att förstå konsumentens frågor och vad som behöver klargöras.',
       lessons: [
-        { title: 'Samla kundens uppgifter', text: 'Ett tydligt kundunderlag ger sammanhang för fortsatt hantering. I demoövningen samlar du bostadsadress, önskat datum, kontaktuppgifter och kundens fråga.', bullets: ['Använd en fiktiv kund och adress.', 'Skilj önskat datum från ett bekräftat avtalsdatum.', 'Spara kundens fråga tillsammans med registreringen.'] },
+        { title: 'Förstå kundens situation', text: 'Ett tydligt kundunderlag ger sammanhang för fortsatt hantering i ert ordinarie säljverktyg. Här övar du på att förstå kundens fråga och skilja önskemål från bekräftade uppgifter.', bullets: ['Använd en fiktiv kund och adress.', 'Skilj önskat datum från ett bekräftat avtalsdatum.', 'Dokumentera kundens fråga i ert ordinarie säljverktyg.'] },
         { title: 'Granska underlaget', text: 'För in det kunden har lämnat och markera vad som är oklart. Fyll inte i gissningar som om de vore bekräftade uppgifter.', bullets: ['Kontrollera att adress och kontaktuppgifter stämmer i testexemplet.', 'Markera vilken uppgift som behöver kompletteras.', 'Priser och produktvillkor behöver godkänt underlag.'] },
-        { title: 'Ta registreringen vidare', text: 'Gå igenom sammanfattningen innan du fortsätter demoövningen. Här testar du hanteringen av ett underlag; ingen registrering skapar ett verkligt elavtal.', bullets: ['Läs igenom vad som har sparats.', 'Kontrollera vad som behöver återkoppling från Kraftringen.', 'Dokumentera ett tydligt nästa steg.'] }
+        { title: 'Förbered nästa kunddialog', text: 'Gå igenom sammanfattningen i ert ordinarie säljverktyg innan kunddialogen fortsätter. Portalens utbildningsövningar hjälper dig att förklara; de skapar inga elavtal.', bullets: ['Läs igenom vad som har sparats.', 'Kontrollera vad som behöver återkoppling från Kraftringen.', 'Dokumentera ett tydligt nästa steg.'] }
       ]
     },
     collaboration: {
-      title: 'Återkoppling och komplettering', description: 'Följ upp registreringen tillsammans med Kraftringen.',
+      title: 'Återkoppling och komplettering', description: 'Samordna kunddialogen utanför portalen och använd utbildningsstödet här.',
       lessons: [
-        { title: 'Läs återkopplingen', text: 'I demoarbetsytan kan Kraftringen återkoppla på ett kundunderlag. Läs vad som har hänt och vilken uppgift som behöver följas upp.', bullets: ['Öppna senaste återkopplingen i en exempelregistrering.', 'Se vilken fråga eller uppgift återkopplingen gäller.', 'Anteckna vad du behöver göra härnäst.'] },
+        { title: 'Läs återkopplingen', text: 'Återkoppling om aktiva konsumentaffärer hanteras i era ordinarie kanaler utanför portalen. Samla vad som har hänt och vilken uppgift som behöver följas upp.', bullets: ['Samla senaste återkopplingen från er ordinarie kunddialog.', 'Se vilken fråga eller uppgift återkopplingen gäller.', 'Anteckna vad du behöver göra härnäst.'] },
         { title: 'Komplettera med rätt uppgift', text: 'Utgå från den fråga som behöver redas ut och dokumentera det nya underlaget. Ett genomfört teststeg är inte ett besked om ett verkligt avtal.', bullets: ['Ange den fiktiva uppgift som saknades.', 'Beskriv vad du har följt upp med kunden.', 'Markera vad som fortfarande behöver svar.'] },
         { title: 'Förbättra arbetsflödet', text: 'Avsluta övningen med ett konkret exempel på vad som fungerade och vad som behöver ändras. Det hjälper Ludwig och Håkan att utveckla stödet för konsumentförsäljning.', bullets: ['Var kunde du snabbt förstå nästa steg?', 'Vilken återkoppling behövde vara tydligare?', 'Vilken förändring skulle hjälpa mest i ett kundmöte?'] }
       ]
@@ -87,10 +87,20 @@
     image: elakademin.cover, duration: `${elakademin.durationLabel} film`, realContent: true,
     lessons: elakademin.modules.map(module => ({ ...module, text: module.subtitle, bullets: module.takeaways }))
   } : null;
-  const coursesForPartner = () => {
-    const demos = P.partner === 'vast' ? consumerCourses : businessCourses;
-    return academyCourse && ['syd', 'vast'].includes(P.partner) ? [academyCourse, ...demos] : demos;
+  const consumerPartner = () => {
+    const segments = P.getPartner()?.salesAudiences || [];
+    return segments.length === 1 && segments[0] === 'consumer';
   };
+  const coursesForPartner = () => {
+    const demos = consumerPartner() ? consumerCourses : businessCourses;
+    return academyCourse && ['sales', 'field'].includes(P.getPartner()?.type) ? [academyCourse, ...demos] : demos;
+  };
+  function fullCourseHref() {
+    const segments = P.getPartner()?.salesAudiences || [];
+    const query = new URLSearchParams({ track: segments.length === 1 ? segments[0] : 'all', workspace: P.partner });
+    if (P.demoMode) query.set('demo', 'inflyttning');
+    return `elakademin.html?${query}#overview`;
+  }
   const paths = {
     grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
     bolt: '<path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z"/>',
@@ -138,7 +148,7 @@
     const marked = training().bookmarks.includes(course.id);
     const progress = percent(course);
     const category = categories.find(item => item.id === course.category);
-    return `<article class="ac-course ${course.realContent ? 'ac-course-featured' : ''}"><div class="ac-course-image"><img src="${P.e(course.image)}" alt="" loading="lazy"><span class="ac-course-type">${course.realContent ? 'Elakademin · utbildningsmaterial' : P.e(category.label) + ' · demo'}</span><button class="ac-bookmark" data-ac-bookmark="${course.id}" aria-pressed="${marked}" aria-label="${marked ? 'Ta bort bokmärke för' : 'Bokmärk'} ${P.e(course.title)}">${icon('bookmark')}</button><button class="ac-course-play" data-ac-course="${course.id}" aria-label="Öppna ${P.e(course.title)}">${icon('play')}</button></div><div class="ac-course-body"><h3>${P.e(course.title)}</h3><p class="ac-course-description">${P.e(course.description)}</p>${course.realContent ? `<p class="ac-course-segment">${P.partner === 'vast' ? 'Fördjupning i företagselhandel · företagsvillkor' : 'För kunddialogen med företag & BRF'}</p>` : ''}<div class="ac-course-meta"><span>${icon('clock')}${P.e(course.duration)}${course.realContent ? ' · svenskt tal · textat' : ' · demo'}</span><span>${icon('book')}${course.lessons.length} ${course.realContent ? 'kapitel' : 'moment'}</span></div><div class="ac-progress-line" aria-label="${progress} procent lokalt klarmarkerat"><span class="ac-progress-track"><span style="width:${progress}%"></span></span><b>${progress}%</b></div><button class="ac-button" data-ac-course="${course.id}">${progress === 100 ? 'Repetera kursen' : progress > 0 ? 'Fortsätt utbildningen' : 'Öppna utbildningen'} ${icon('arrow')}</button></div></article>`;
+    return `<article class="ac-course ${course.realContent ? 'ac-course-featured' : ''}"><div class="ac-course-image"><img src="${P.e(course.image)}" alt="" loading="lazy"><span class="ac-course-type">${course.realContent ? 'Elakademin · utbildningsmaterial' : P.e(category.label) + ' · demo'}</span><button class="ac-bookmark" data-ac-bookmark="${course.id}" aria-pressed="${marked}" aria-label="${marked ? 'Ta bort bokmärke för' : 'Bokmärk'} ${P.e(course.title)}">${icon('bookmark')}</button><button class="ac-course-play" data-ac-course="${course.id}" aria-label="Öppna ${P.e(course.title)}">${icon('play')}</button></div><div class="ac-course-body"><h3>${P.e(course.title)}</h3><p class="ac-course-description">${P.e(course.description)}</p>${course.realContent ? `<p class="ac-course-segment">${consumerPartner() ? 'Fördjupning i företagselhandel · företagsvillkor' : 'För kunddialogen med företag & BRF'}</p>` : ''}<div class="ac-course-meta"><span>${icon('clock')}${P.e(course.duration)}${course.realContent ? ' · svenskt tal · textat' : ' · demo'}</span><span>${icon('book')}${course.lessons.length} ${course.realContent ? 'kapitel' : 'moment'}</span></div><div class="ac-progress-line" aria-label="${progress} procent lokalt klarmarkerat"><span class="ac-progress-track"><span style="width:${progress}%"></span></span><b>${progress}%</b></div><button class="ac-button" data-ac-course="${course.id}">${progress === 100 ? 'Repetera kursen' : progress > 0 ? 'Fortsätt utbildningen' : 'Öppna utbildningen'} ${icon('arrow')}</button></div></article>`;
   }
   function fullCourseBanner() {
     const partner = typeof P.getPartner === 'function' ? P.getPartner() : null;
@@ -146,13 +156,13 @@
     const segments = Array.isArray(partner.salesAudiences) ? partner.salesAudiences.filter(segment => ['business', 'consumer'].includes(segment)) : [];
     const track = segments.length === 1 ? segments[0] : 'all';
     const segmentLabel = track === 'consumer' ? 'Privatkund · B2C' : track === 'business' ? 'Företag · B2B' : 'Företag och privatkund';
-    return `<section class="ac-full-course" aria-labelledby="ac-full-course-title"><div><span class="ac-eyebrow">Elakademin · fördjupad självstudieutbildning</span><h2 id="ac-full-course-title">Förstå elen. Förklara affären.</h2><p>Elmarknadsgrunder, produkter och kunddialog – med genomräknade exempel, kundfall, ordlista och självtest med förklarat facit.</p><span class="ac-full-course-scope">${P.e(segmentLabel)} · eget spår efter kundsegment</span></div><a class="ac-button primary" href="elakademin.html?track=${track}#overview">Öppna hela utbildningen ${icon('arrow')}</a></section>`;
+    return `<section class="ac-full-course" aria-labelledby="ac-full-course-title"><div><span class="ac-eyebrow">Elakademin · fördjupad självstudieutbildning</span><h2 id="ac-full-course-title">Förstå elen. Förklara affären.</h2><p>Elmarknadsgrunder, produkter och kunddialog – med genomräknade exempel, kundfall, ordlista och självtest med förklarat facit.</p><span class="ac-full-course-scope">${P.e(segmentLabel)} · eget spår efter kundsegment</span></div><a class="ac-button primary" href="${P.e(fullCourseHref())}">Öppna hela utbildningen ${icon('arrow')}</a></section>`;
   }
   function render() {
     const courses = coursesForPartner();
-    const consumer = P.partner === 'vast';
+    const consumer = consumerPartner();
     const subtitle = consumer ? 'Kunddialog och underlag för konsumentelhandel.' : 'Kunddialog och underlag för företagsaffärer.';
-    const heroCopy = consumer ? 'Öva på kunddialogen, registrera testunderlag och följ Kraftringens återkoppling.' : 'Förbered företagskundens underlag och följ nästa steg i affären med Kraftringen.';
+    const heroCopy = 'Lär dig produkterna och öva på att förklara dem. Det aktiva säljarbetet sker utanför portalen.';
     const stats = P.academyStats();
     const progress = training();
     const visible = courses.filter(course => filter === 'all' || course.category === filter || (filter === 'bookmarked' && progress.bookmarks.includes(course.id)));
@@ -218,12 +228,13 @@
     let activeLesson = course.lessons.findIndex(lesson => !training().completed[id].includes(lesson.id));
     if (activeLesson < 0) activeLesson = 0;
     const real = course.realContent;
-    const scopeNote = P.partner === 'vast' ? 'Elmarknadsgrunderna kan användas som bakgrundskunskap. Företagsexemplen och portföljprodukterna gäller företagskunder och är fördjupning för Face2face. De beskriver inte konsumentvillkor eller konsumenterbjudanden.' : 'Utbildningen använder ett fiktivt företag för att förklara elhandel och portföljprodukter. Räkneexemplen är inga offerter; aktuella villkor gäller för varje kund.';
-    const resources = real ? `<div class="ac-b2b-note"><strong>${P.partner === 'vast' ? 'Face2face · fördjupning i företagselhandel' : 'Företagselhandel · för kunddialogen'}</strong><p>${scopeNote}</p></div><div class="ac-resources"><a class="ac-button" href="${P.e(elakademin.academyUrl)}" target="_blank" rel="noopener" aria-label="Öppna hela Elakademin i en ny flik">Hela Elakademin ${icon('arrow')}</a><a class="ac-button" href="${P.e(elakademin.guideUrl)}" target="_blank" rel="noopener" aria-label="Öppna kundguiden som PDF i en ny flik">Kundguide · PDF ${icon('book')}</a><p>Räkneverktyg, slutprov och utbildningsintyg finns i hela Elakademin. Framstegen där sparas separat från partnerportalen.</p></div>` : '';
+    const scopeNote = consumerPartner() ? 'Elmarknadsgrunderna kan användas som bakgrundskunskap. Företagsexemplen och portföljprodukterna gäller företagskunder och är separat fördjupning för en konsumentsäljare. De beskriver inte konsumentvillkor eller konsumenterbjudanden.' : 'Utbildningen använder ett fiktivt företag för att förklara elhandel och portföljprodukter. Räkneexemplen är inga offerter; aktuella villkor gäller för varje kund.';
+    const resources = real ? `<div class="ac-b2b-note"><strong>${consumerPartner() ? 'Fördjupning i företagselhandel' : 'Företagselhandel · för kunddialogen'}</strong><p>${scopeNote}</p></div><div class="ac-resources"><a class="ac-button" href="${P.e(fullCourseHref())}" target="_blank" rel="noopener" aria-label="Öppna hela Elakademin i en ny flik">Hela Elakademin ${icon('arrow')}</a><a class="ac-button" href="${P.e(elakademin.guideUrl)}" target="_blank" rel="noopener" aria-label="Öppna kundguiden som PDF i en ny flik">Kundguide · PDF ${icon('book')}</a><p>Räkneverktyg, ordlista och självtest finns i hela Elakademin. Framstegen där sparas separat från partnerportalen.</p></div>` : '';
     const mountHtml = `<div class="academy-page"><p class="ac-dialog-intro">${real ? 'Sex kapitelfilmer, kapiteltext och tolv frågor. Se filmen, läs i din egen takt och testa din förståelse.' : 'Läs ett kort demomoment och testa att markera det klart.'}</p>${resources}<div id="academy-dialog-mount"></div>${real ? `<details class="ac-source-list"><summary>Källor och aktuella produktvillkor</summary><ul>${elakademin.sources.map(source => `<li><a href="${P.e(source.url)}" target="_blank" rel="noopener">${P.e(source.title)}</a></li>`).join('')}</ul></details>` : ''}<p class="ac-dialog-note">${real ? 'Klarmarkeringar och testsvar sparas lokalt för vald partner. Klarmarkering är din egen uppföljning och verifierar inte filmvisning, slutprov eller partnercertifiering.' : 'Demoinnehåll för att testa portalen. Framsteg sparas i denna webbläsare för vald exempelpartner. Klarmarkering ger inget kunskapsintyg eller certifikat.'}</p></div>`;
     const mount = () => {
       const holder = document.querySelector('#academy-dialog-mount');
       if (!holder) return;
+      holder.querySelectorAll('video,audio').forEach(media => media.pause());
       const progress = training();
       const lesson = course.lessons[activeLesson];
       const done = progress.completed[id].includes(lesson.id);
@@ -235,7 +246,7 @@
         const values = training().completed[id];
         const wasDone = values.includes(lesson.id);
         training().completed[id] = wasDone ? values.filter(value => value !== lesson.id) : [...values, lesson.id];
-        P.save(); P.render();
+        const saved = P.save(); P.render();
         holder.querySelectorAll('[data-ac-lesson]').forEach(button => {
           const index = Number(button.dataset.acLesson);
           const number = button.querySelector('.ac-lesson-number');
@@ -248,7 +259,7 @@
         completeButton.classList.toggle('primary', wasDone);
         completeButton.innerHTML = !wasDone ? 'Ångra klarmarkering' : `${icon('check')} Markera ${real ? 'kapitlet' : 'momentet'} klart`;
         document.querySelector('#ac-complete')?.focus();
-        P.toast(wasDone ? 'Klarmarkeringen borttagen.' : real ? 'Kapitlet klarmarkerat lokalt. Självtest och slutprov bedöms separat.' : 'Demomomentet klarmarkerat. Dina framsteg har sparats lokalt.');
+        P.toast(saved ? wasDone ? 'Klarmarkeringen borttagen.' : real ? 'Kapitlet klarmarkerat lokalt. Självtest och slutprov bedöms separat.' : 'Demomomentet klarmarkerat. Dina framsteg har sparats lokalt.' : 'Klarmarkeringen kunde inte sparas. Ändringen gäller under detta besök.');
       });
       holder.querySelector('#ac-next-lesson')?.addEventListener('click', () => {
         activeLesson += 1; mount(); document.querySelector('#ac-lesson-title')?.focus();
@@ -256,7 +267,11 @@
       holder.querySelector('#ac-close-course')?.addEventListener('click', () => P.closeDialog());
       if (real) {
         bindQuiz(holder, course, lesson);
-        holder.querySelector('[data-ac-video]')?.addEventListener('error', () => { holder.querySelector('[data-ac-video-error]').hidden = false; });
+        const video = holder.querySelector('[data-ac-video]');
+        const revealError = () => { holder.querySelector('[data-ac-video-error]').hidden = false; };
+        video?.addEventListener('error', revealError);
+        video?.querySelectorAll('source').forEach(source => source.addEventListener('error', revealError));
+        if (video?.error || video?.networkState === 3) revealError();
       }
     };
     const dialog = document.querySelector('#portal-dialog');
@@ -282,10 +297,10 @@
       const progress = training();
       const hasBookmark = progress.bookmarks.includes(id);
       progress.bookmarks = hasBookmark ? progress.bookmarks.filter(value => value !== id) : [...progress.bookmarks, id];
-      P.save(); P.render();
+      const saved = P.save(); P.render();
       const restored = document.querySelector(`[data-ac-bookmark="${id}"]`);
       (restored || document.querySelector('[data-ac-filter="bookmarked"]'))?.focus();
-      P.toast(hasBookmark ? 'Bokmärket borttaget.' : 'Utbildningen bokmärkt i denna webbläsare.');
+      P.toast(saved ? hasBookmark ? 'Bokmärket borttaget.' : 'Utbildningen bokmärkt i denna webbläsare.' : 'Bokmärket kunde inte sparas. Ändringen gäller under detta besök.');
     }));
     view.querySelector('#ac-explore')?.addEventListener('click', () => {
       const heading = document.querySelector('#ac-course-heading');
@@ -294,8 +309,8 @@
     });
     view.querySelector('#ac-webinar')?.addEventListener('click', () => {
       training().webinarBooked = !training().webinarBooked;
-      P.save(); P.render(); document.querySelector('#ac-webinar')?.focus();
-      P.toast(training().webinarBooked ? 'Exempelaktiviteten markerad. Ingen mötesbokning har skickats.' : 'Testanmälan borttagen.');
+      const saved = P.save(); P.render(); document.querySelector('#ac-webinar')?.focus();
+      P.toast(saved ? training().webinarBooked ? 'Exempelaktiviteten markerad. Ingen mötesbokning har skickats.' : 'Testanmälan borttagen.' : 'Testanmälan kunde inte sparas. Ändringen gäller under detta besök.');
     });
   }
   P.register('academy', { render, bind });

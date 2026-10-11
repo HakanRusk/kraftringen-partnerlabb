@@ -82,6 +82,7 @@
 .movein-service-next small { display: block; font-size: 10px; font-weight: 650; letter-spacing: .8px; color: #39726f; margin-bottom: 7px; line-height: 1.6; }
 .movein-service-next strong { display: block; font-size: 15px; font-weight: 550; color: #234f55; line-height: 1.7; overflow-wrap: anywhere; }
 .movein-service-detail form { margin-top: 26px; }
+#movein-service-save-feedback { color: #963e37; padding: 12px 14px; background: #fff3ef; border: 1px solid #edcfc7; border-radius: 9px; line-height: 1.7; }
 .movein-service-form-head { padding-top: 26px; margin-top: 26px; border-top: 1px solid #e1e9ed; }
 .movein-service-detail .field { font-size: 12px; line-height: 1.6; font-weight: 550; color: #36596a; margin-bottom: 17px; }
 .movein-service-detail .field input, .movein-service-detail .field select, .movein-service-detail .field textarea { margin-top: 6px; font-size: 14px; font-weight: 400; line-height: 1.55; min-height: 46px; width: 100%; min-width: 0; border: 1px solid #cddbe1; border-radius: 9px; padding: 11px 12px; color: #294958; background: #fff; }
