@@ -1929,3 +1929,22 @@ Verifiering: `node --check dist/commercial.js`, befintlig
 `node qa/results-only.mjs` och `git diff --check`. Runtime-diffen innehåller
 endast den efterfrågade strängändringen. Ingen ny browsergranskning krävs
 för denna kortare rubrik. PR/integration/publicering kvitteras separat.
+
+### Resultatrubrik · Publicerad version 30
+
+PR #40 (https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/40)
+integrerades från `27cabee30fe17a2c58185eff433a6653aa94a729`.
+GitHub-main och exakt publicerad Sites-källa:
+`5311f7f201528dbbf3dcaae2f6c01a2a7015c1c3`.
+
+Native version **30**:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_9b61223ddab48191aa4ee8e43ada264d`.
+Deployment `appgdep_6acba2bf0f248191bcfc4c18fd34813b` bekräftade
+**succeeded** 2026-10-11 **14:53:01.762560 UTC** på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+
+Sites-källan överfördes fast-forward från v29 till samma GitHub-revision,
+utan force. Befintlig privat delning ändrades inte. Syntaxkontroll,
+`qa/results-only.mjs` och diffkontroll passerade före publicering.
+Ingen ny browsergranskning eller hosted visuell kontroll påstås.
+Denna kvittens ändrar endast WORKLOG/BACKLOG och kräver ingen ny deployment.
