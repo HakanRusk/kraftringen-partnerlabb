@@ -10,7 +10,7 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## Direktuppdrag: fullständig utbildning (2026-10-11)
 
-**UTBILDNING-FULL-02:** Ludwigs direkta ”skapa det” och krav på noggrannare,
+**UTBILDNING-FULL-02 · Publicerad v23 via PR #26:** Ludwigs direkta ”skapa det” och krav på noggrannare,
 matigare utbildning utökar version 21:s förhandsvisning till en hel kurs.
 18 kapitel omfattar gemensam grund, alla tio produkter och två tillämpande
 kundfall. 38 lösta exempel, 72 kapitelövningar, 40 slutfrågor och 65 begrepp
@@ -20,8 +20,9 @@ har exporterats med fulla talaranteckningar. Arthur-inläsningarna för alla
 18 kapitel och introduktionen är färdiga, native-bekräftade och oberoende
 AV-granskade. Samlad filmspeltid är 95 minuter. Alla 19 redigerbara projekt
 och svenska textningen är verifierade. Kursens 101 kontroller för faktisk
-filmuppspelning och materialhämtning passerar. Full leveranskandidat
-integreras med senaste PARTNER-06-main; lyckad publicering kvitteras i WORKLOG.
+filmuppspelning och materialhämtning passerar. Full leverans är integrerad
+med senaste PARTNER-06-main och publicerad 08:26:17 UTC. Den publicerade
+sidan klarar 102 browser-/medie-/åtkomstkontroller utan fel. Kvittens i WORKLOG.
 
 **UTBILDNING-PREVIEW-01** är publicerad i version 21 via PR #22.
 Den tidigare sidan bevaras och får en tydlig ingång till hela utbildningen.
