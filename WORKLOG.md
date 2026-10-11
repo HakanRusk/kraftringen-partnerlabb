@@ -1402,3 +1402,68 @@ eller synliga olabelerade formulärkontroller. Långa partnernamn testas
 för sälj-, fastighets- och personalpartners. Även 11 unika officiella
 produkt-/villkorslänkar svarar 200. Slutlig textdiff/syntax passerar.
 Detta är lokal syntetisk browserverifiering; native publicering följer.
+
+### 2026-10-11 · Felgranskningen integrerad och publicerad som version 25
+
+PR #30, https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/30,
+är integrerad. Verifierad GitHub-main och publicerad Sites-källrevision:
+`e9e261ca4d76ee25f717ca8087019a9399e3da4e`. Det testade mergeträdet är
+`e757eabbab36c661c28bb98799b1162514df4cf2`; dist-trädet är
+`9f9a55462639a6fe44a8657371e9fe7742df483a`.
+
+Native version **25**:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_07a9340f47c48191ae1fff528e356c6f`.
+Deployment `appgdep_6acb561ea23c819188333333c1253f8e` bekräftade **succeeded**
+2026-10-11 kl. **09:26:11.031261 UTC** på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Samma Site-identitet och befintliga custom-publik, policyrevision 4, är bevarade.
+Åtkomst och befintliga scheman ändrades inte av felgranskningen.
+
+Rättningarna omfattar navigation/historik, tangentbordsfokus och mobilmeny,
+återställning vid sparfel, bevarande av äldre lokala data, partneravgränsning
+och rapportexport, Excel-datum, bilagereferenser, fastighetsfilter,
+kursreturlänkar/mediafel, uppdaterade Avtalsfakta samt långa texter.
+Detaljer och före/efter-belägg står i föregående granskningsavsnitt.
+Fulla Elakademin, tidigare Academy-kurser, ljudbibliotek och ekonomiska
+exempelunderlag bevaras. Ingen backend eller ny affärsregel infördes.
+
+Verifiering av den samlade publiceringskandidaten:
+
+- **251/251 nya riktade browserkontroller**: navigation 41, fastighet 36,
+  rapporter 89, support/Avtalsfakta 24, bevarade äldre moduler 20 och
+  utbildning/ljud 41. Samtliga godkända utan JavaScriptfel.
+- **916/916 kontroller i den lokala breda ytgranskningen**, med 288
+  vykontroller vid 320, 390 och 1440 px samt 29 lokala destinationsURL:er
+  som svarar 200. Inga JavaScriptfel eller misslyckade HTTP-svar.
+  Granskningen omfattar samtliga aktiva intern-/partnerupplägg, nya partners,
+  90-teckens namn, etiketter, unika ID, tangentbordsnavigation, exporter med
+  felaktig äldre data och bevarande av giltiga kunddialoger/okända fält.
+- Alla åtta befintliga qa/*.mjs och syntax för samtliga dist/*.js passerade.
+  Övriga befintliga browserregressioner och lokala mediekontroller har sina
+  separata kvittenser i föregående avsnitt.
+- **102/102 oberoende medie-/åtkomstkontroller på den faktiskt publicerade
+  sidan** passerade utan script-/resursfel. Filmer, textning, materialhämtning,
+  representativ uppspelning/sökning, partneringångar, tidigare utbildning
+  och skyddad anonym åtkomst är verifierade.
+- **916/916 breda browserkontroller på den faktiskt publicerade sidan**
+  passerar: 288 vykombinationer i 320/390/1440 px, 29 interna
+  länkdestinationer och samtliga tangentbords-/äldre exportfall.
+  Inga JavaScriptfel eller misslyckade HTTP-svar. Rapporten finns i
+  granskningsartefakten surface/hosted-verified/bug-surface-report.json.
+  Första hosted-länkkontrollen stoppades av testverktygets nätverksanrop
+  och omdirigeringsförbud. Sites ger normalt 307 från .html till en
+  kanonisk adress på samma origin. qa/bug-surface.py använder nu faktisk
+  browser-fetch med omdirigering och verifierar slutlig origin; auth
+  läggs endast på portalens egen origin. Oberoende faktisk navigation
+  till fyra kursadresser svarar 200 och behåller track/workspace och
+  partnerns returlänk. Ingen dist-rättning eller ny publicering behövdes.
+
+
+Verifieringen använder Chromium och fiktiva isolerade browserkontexter.
+Den ersätter inte provning i andra webbläsarmotorer, verkliga kundutfall
+eller produktionsbehörighet. Lokal lagring är fortsatt lokal.
+
+Denna efterhandskvittens ändrar dokumentation och QA-hjälparens
+nätverkskontroll. dist/ och
+hostingmanifestet är oförändrade mot publicerad version 25; ingen ny
+deployment följer av kvittens-PR:en.

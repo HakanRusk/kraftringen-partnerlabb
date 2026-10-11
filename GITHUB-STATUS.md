@@ -135,3 +135,27 @@ underlag; sex förslagsidéer har lokala diskussionsfokus. Elakademin v23 är
 bevarad. Delning och Daniels godkännandekrav ändrades inte. Befintligt
 timuppdrag är återaktiverat med exakt återläst uppdaterad prompt och samma
 schema. Denna efterhandskvittens ändrar inga dist-filer.
+
+### 2026-10-11 · Felgranskning publicerad i version 25
+
+PR #30 är integrerad. Verifierad GitHub/Sites-källrevision:
+`e9e261ca4d76ee25f717ca8087019a9399e3da4e`.
+Native version 25:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_07a9340f47c48191ae1fff528e356c6f`.
+Deployment `appgdep_6acb561ea23c819188333333c1253f8e` bekräftar **succeeded**
+2026-10-11 09:26:11 UTC på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Custom-åtkomst revision 4 och samma Site-identitet är bevarade; inga
+schema- eller åtkomständringar ingår.
+
+251 nya riktade browserkontroller och 916 lokala ytkontroller passerar.
+Ytgranskningen omfattar 288 vykontroller i desktop/mobil och 29 lokala
+destinationsURL:er. På den faktiskt publicerade sidan passerar 102
+oberoende medie-/åtkomstkontroller.
+Bred verifiering på samma publicerade version passerar också 916/916,
+288 vykombinationer och alla 29 interna länkdestinationer utan script-
+eller HTTP-fel. Faktisk kursnavigation bevarar partner/spår även efter
+Sites normala omdirigering till kanonisk adress.
+Full kvittens, rättningar och verifieringsgränser finns i WORKLOG.
+Kvittens-PR:en uppdaterar dokumentation och testhjälparens nätverksanrop.
+Den ändrar inte dist/ eller manifest och kräver ingen ny publicering.
