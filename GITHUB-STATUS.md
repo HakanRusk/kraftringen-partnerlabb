@@ -256,5 +256,7 @@ Partnerlabb har nu gemensamt webbappmanifest, appikoner och menyvalet
 custom-policy revision 4 och samma Site-identitet bevarades. Ingen offline-
 cache, backend, dataflytt, App Store-publicering, åtkomst- eller schemaändring
 ingår. Syntetiska installations- och befintliga resultat-/självservice-
-kontroller passerar. Fysisk telefoninstallation och visuell browserkontroll
-återstår; full kvittens finns i WORKLOG.
+kontroller passerar. En ny kontroll 2026-10-11 nådde den avsedda privata
+ChatGPT-inloggningen på liveadressen, men ingen autentiserad session fanns i
+kontrollwebbläsaren. Fysisk telefoninstallation och visuell kontroll av själva
+appen återstår; full kvittens finns i WORKLOG.

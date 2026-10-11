@@ -8,7 +8,9 @@ menyvalet Lägg till som app. iPhone-guide och valfri native installation
 för webbläsare som erbjuder den. Säljpartnerns fyra stora val består.
 Ingen offlinecache eller dataflytt; privat åtkomst och alla dataflöden består.
 Syntetiskt installationstest och befintliga resultat-/självservicesviter
-passerar. Fysisk telefoninstallation och browserlayout återstår.
+passerar. Den privata liveadressen svarar och visar avsedd ChatGPT-inloggning;
+själva browserlayouten och fysisk telefoninstallation återstår att kontrollera
+i en autentiserad session.
 Exakt källrevision, version och lyckad deployment kvitteras i WORKLOG.
 
 ## Tredje felgranskningen – 11 oktober 2026
