@@ -10,11 +10,31 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## Direktuppdrag: bredare fastighetssamarbete (2026-10-11)
 
+**FASTIGHET-FORSLAG-02 · Kandidat: inflyttningen först.** Ludwig har sagt
+”Bygg det och publicera sedan” efter vår rekommendation om kundvärde.
+Omarbeta endast Ert samarbete så att Excel/manuell inflyttning,
+fullmaktsbilaga och tydlig överlämningsstatus kommer först. Visa därefter
+kundinflöde/kickback, föreslagen avlastning av elfrågor och egen fastighetsel.
+Alla sex idéer och lokala fokusval består; fyra idéer samlas i stängd
+fördjupning och möjlig förbrukningsanalys hör till fastighetselen.
+
+Godkänt när länkar återanvänder rätt partners befintliga registrering,
+ärenden och resultat; status inte skapar nya händelser; tidigare fokusval,
+lagringsfel och normal-/demoisolering består. Saknade ekonomiska mått ska
+förbli saknade och partnern ska inte se interna kostnader/nettobidrag.
+Verifiera dator, mobil och tangentbord. Bevara version 25:s rättningar,
+version 23:s fulla Elakademin och användarnas lokala data. Kundnytta är
+ännu en relevansbedömning att pröva; inga riktiga supportärenden, SLA:er,
+elanalys, besparingslöften eller nya backendflöden införs. Agentprompt,
+schema och aktivering lämnas oförändrade. Verifiering/publicering återstår
+att kvittera för denna kandidat.
+
 **FASTIGHET-FORSLAG-01 · Publicerad v24 via PR #28:** Ludwigs ”Bygg ett förslag” omfattar
 **Ert samarbete** för fastighetsbolag. Visualisera inflyttningskanalen och
 partnerns egen fastighetsel på samma sida med separata underlag. Visa sex
-rådgivningsidéer som möjligheter att pröva; börja dialogen med avlastning av
-hyresgästfrågor och onödig förbrukning. Lokala fokusval är endast
+rådgivningsidéer som möjligheter att pröva. Den tidigare rekommendationen
+att börja med hyresgästfrågor och onödig förbrukning ersätts av senaste
+presentationsprioriteringen ovan. Lokala fokusval är endast
 diskussionsunderlag per partner, inte beställningar eller utskick.
 
 Godkänt när vald fastighetspartners interna profil och egen meny når samma

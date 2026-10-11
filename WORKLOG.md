@@ -1468,6 +1468,61 @@ nätverkskontroll. dist/ och
 hostingmanifestet är oförändrade mot publicerad version 25; ingen ny
 deployment följer av kvittens-PR:en.
 
+## 2026-10-11 · FASTIGHET-FORSLAG-02 · Kandidat: inflyttningen först
+
+Ludwig har sagt ”Bygg det och publicera sedan” efter vår bedömning att
+fastighetskundens främsta värde är enkel inflyttning med liten extra
+administration. Presentationen tas fram på
+`codex/property-service-priority` från verifierad GitHub-main
+`edb6fa5efaa7f6aefc9a60b52207b3b0ce54cd81` efter kvittens-PR #31.
+Version 25:s felrättningar och version 23:s fullständiga Elakademin ska
+bevaras, liksom befintliga data och Site-åtkomst.
+
+Avgränsad omarbetning av `property-partnership.js/css`: börja Ert samarbete
+med konkret Excel/manuell inflyttning, fullmaktsbilaga och befintlig status
+för överlämning och nästa aktör. Visa därefter egna kunder/kickback,
+föreslagen hjälp med uthyrarnas elfrågor och separat fastighetsel.
+Alla sex rådgivningsidéer, detaljvyer och partnerns lokala fokusval behålls;
+fyra idéer samlas i stängd fördjupning. Onödig förbrukning diskuteras i
+fastighetseldelen och får ingen fabricerad analys eller besparing.
+
+Detta är ett godkänt presentationsuppdrag, inte belagd kundrespons eller
+nya servicevillkor. Befintliga registrerings-, ärende- och resultatflöden
+återanvänds utan nya händelser, avtal eller ersättningsberäkning. Inga
+verkliga supportärenden, SLA:er, backendflöden eller persondata införs.
+Saknade fastighetselmått förblir **Underlag saknas** och **—**.
+README, AGENTS, PILOT-FACTS och BACKLOG beskriver den nya prioriteringen.
+PILOT-AGENT-PROMPT och den befintliga automationens prompt, schema och
+aktivering ska lämnas oförändrade.
+
+Status vid denna kandidatanteckning: implementation och verifiering pågår.
+Ingen ny QA- eller publiceringskvittens påstås här. Faktiskt testresultat,
+integrerad PR/SHA och native deployment ska dokumenteras efter utfört arbete.
+
+### Slutförd implementation och verifiering
+
+Inflyttningsservicen har två huvudknappar som öppnar vald fastighetspartners
+befintliga Excel- respektive manuella registrering. Tre steg förklarar
+underlag/fullmakt, granskning och överlämning, sedan återkoppling. Befintliga
+kund- och kickbackresultat återanvänds från propertyResults för samma partner;
+nya partners får inga lånade exempel. Elfrågor och egen fastighetsel får
+tydliga kort, medan fyra ytterligare idéer ligger i en stängd fördjupning.
+Alla sex idéers detaljer och lokala fokusval behålls.
+
+Verifierat: 172 unika samarbetskontroller (117 funktionella, 41 layout/
+tangentbord och 15 äldre data, med upprepad JS-slutkontroll räknad en gång),
+samt 67 inflyttningsservicekontroller. Inga JavaScript-fel i slutförda sviter.
+Resultatknappens text/storlek och detaljdialogens stängknapp är rättade
+lokalt i denna modul. Fastighetselens fält är läsbara vid 320 px.
+Visuellt granskat vid 1440, 390 och 320 px; tangentbord, fokusretur,
+normal-/demoisolering, sparfel och befintliga fokusval kontrollerade.
+Periodtest för fastighetsresultat, JavaScript-/Python-syntax och
+git diff --check passerade.
+
+Övriga dist-filer, fullständiga Elakademin och hostingmanifest är oförändrade
+mot verifierad main. Inga avtals-, ersättnings-, support- eller agentregler
+ändras. GitHub-integration och native publiceringskvittens återstår och
+dokumenteras med faktiskt PR, SHA och version efter utförd publicering.
 ## 2026-10-11 · Direktuppdrag: andra felgranskningen
 
 Ludwigs ”Kör en runda till” fortsätter den breda granskningen från GitHub-main
@@ -1585,3 +1640,24 @@ ny deployment behövs. All verifiering använder Chromium och isolerade
 fiktiva browserdata. Andra webbläsarmotorer, verkliga kundutfall och
 produktionsbehörighet påstås inte verifierade. Detaljer i föregående
 avsnitt och artefakter /workspace/bug-audit2.
+
+### FASTIGHET-FORSLAG-02 · Integration med andra felgranskningen
+
+Under slutkontrollen anlände PR #32 och dess kvittens-PR #33. Båda togs in
+med bibehållen historik från main
+`ed5af0988104f6c74220ceac93679eeb89070cd9`. Endast parallella tillägg i
+WORKLOG krävde konfliktlösning; båda avsnitten bevarades. Samarbetsförslagets
+appdelta är fortsatt enbart property-partnership.js/css. Version 26:s
+flikkonflikt-, navigations-, bilage- och utbildningsrättningar bevaras.
+
+Den integrerade inflyttningsservicen passerade åter 67/67 kontroller.
+Samarbetstestet stoppade först när dess assertion läste returfokus före
+det köade native close-eventet efter Escape. En uttrycklig väntan på samma
+returfokus som layouttestet använder rättar QA-synkroniseringen; produktens
+dialogbeteende eller kontrollens krav ändras inte. Den fullständiga
+integrationskörningen passerade därefter 172/172 samarbetskontroller med
+javascript_errors: []; inflyttningen 67/67. Ingen produktändring behövdes
+för integrationen. Loggar finns separat i
+/tmp/partnerlabb-service-priority-integration-partnership.log och
+/tmp/partnerlabb-service-priority-integration-intake.log. Faktisk
+GitHub-PR och native publicering kvitteras efter utförandet.

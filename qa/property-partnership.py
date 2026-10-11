@@ -61,7 +61,16 @@ async def business_data(page):
 
 
 async def choose(page, idea):
+    await reveal(page, '[data-pp-focus="' + idea + '"]')
     await page.locator('.property-partnership-page [data-pp-focus="' + idea + '"]').click()
+
+
+async def reveal(page, selector):
+    """Reveal a secondary idea through its real disclosure, when necessary."""
+    target = page.locator('.property-partnership-page ' + selector)
+    if not await target.is_visible():
+        await page.locator('[data-pp-more] > summary').click()
+    await target.wait_for(state='visible')
 
 
 async def route_checks(test):
@@ -75,7 +84,7 @@ async def route_checks(test):
             await view(test, partner, internal)
             text = await page.locator('.property-partnership-page').inner_text()
             test.good(f'{partner} visar eget samarbetsförslag i ' + ('intern vy' if internal else 'partnerarbetsyta'), name in text and await page.evaluate('Portal.page') == ROUTE)
-            test.good(f'{partner} har sex idéer utan andra partners resultat', await page.locator('.pp-idea-grid [data-pp-detail]').count() == 6 and 'Savera' not in text and 'Face2face' not in text)
+            test.good(f'{partner} har sex idéer utan andra partners resultat', await page.locator('.property-partnership-page [data-pp-detail]').count() == 6 and 'Savera' not in text and 'Face2face' not in text)
             await page.reload(wait_until='networkidle')
             text = await page.locator('.property-partnership-page').inner_text()
             test.good(f'{partner} bevarar egen kontext efter reload i ' + ('intern vy' if internal else 'partnerarbetsyta'), name in text and await page.evaluate('Portal.role') == ('internal' if internal else 'partner') and ('partner=' if internal else 'workspace=') + partner in page.url)
@@ -96,13 +105,14 @@ async def proposal_checks(test):
     await view(test, partner)
     base = await business_data(page)
     electricity = page.locator('.pp-property-electricity')
-    test.good('fastighetsel har ett separat underlag i samarbetet', await electricity.count() == 1 and 'Fastighetsel' in await electricity.inner_text())
+    test.good('fastighetsel har ett separat underlag i samarbetet', await electricity.count() == 1 and 'fastighetsel' in (await electricity.inner_text()).lower())
     test.good('saknade fastighetselavtal visas inte som verkliga avtalsresultat', 'Underlag saknas' in await electricity.inner_text() and '—' in await electricity.inner_text() and await electricity.locator('form,input[type="file"],[data-sr-record],[data-ps-record]').count() == 0)
     test.good('samarbetsförslaget kräver ingen ny ärende- eller avtalsregistrering', await page.locator('.property-partnership-page form,.property-partnership-page input[type="file"]').count() == 0)
-    ids = await page.locator('.pp-idea-grid [data-pp-detail]').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.ppDetail)')
+    ids = await page.locator('.property-partnership-page [data-pp-detail]').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.ppDetail)')
     test.good('alla sex förbättringsförslag finns med unika identiteter', len(ids) == 6 and set(ids) == set(IDEAS))
     for idea in ids:
-        await page.locator('.pp-idea-grid [data-pp-detail="' + idea + '"]').click()
+        await reveal(page, '[data-pp-detail="' + idea + '"]')
+        await page.locator('.property-partnership-page [data-pp-detail="' + idea + '"]').click()
         dialog = page.locator('.pp-detail-dialog')
         await dialog.wait_for()
         text = await dialog.inner_text()
@@ -173,6 +183,81 @@ async def persistence_checks(test):
     test.good('kunddemo lämnar även nyskapad ordinarie partner och dess val orörda', await focus(page, first) == ['wasted-energy'] and await page.evaluate('(id)=>Portal.state.propertyPartnership[id].focus', second) == ['capacity'])
 
 
+async def priority_checks(test):
+    await fresh(test)
+    page = test.page
+    new = await create(page, 'QA Enkel Inflyttning AB')
+    base = await business_data(page)
+    for partner in ['estate1', 'estate2', new]:
+        for internal in [True, False]:
+            await view(test, partner, internal)
+            summary = page.locator('.property-partnership-page .property-results-summary')
+            source_text = await page.evaluate('''(id)=>{
+              const host=document.createElement('div');
+              host.innerHTML=Portal.propertyResults.renderSummary(id);
+              return host.textContent.replace(/\\s+/g,' ').trim();
+            }''', partner)
+            actual_text = ' '.join((await summary.text_content()).split())
+            test.good(f'{partner} visar samma kunder och kickback som den befintliga resultatkällan i ' + ('intern vy' if internal else 'partnerarbetsyta'), actual_text == source_text and len(source_text) > 100)
+            if partner == new:
+                test.good('ny fastighetspartner får saknat underlag och inga andra bolags resultat', await summary.get_attribute('data-property-results-availability') == 'missing' and await summary.locator('.property-results-summary-value strong').all_text_contents() == ['—', '—'])
+            for mode, route, selector in [('import', 'property-import', '.pi-import-upload'), ('manual', 'property-manual', '#pi-manual-form')]:
+                await view(test, partner, internal)
+                await page.locator('.pp-primary-service [data-pp-intake="' + mode + '"]').click()
+                test.good(f'{partner} {mode} öppnar rätt befintliga arbetsflöde från ' + ('intern vy' if internal else 'partnerarbetsyta'), await page.evaluate('Portal.page') == route and await page.evaluate('Portal.partner') == partner and await page.evaluate('Portal.role') == 'partner' and 'workspace=' + partner in page.url and await page.locator(selector).is_visible())
+                test.good(f'{partner} {mode} navigation skapar inga ärenden, avtal eller ekonomiska utfall', await business_data(page) == base)
+            await view(test, partner, internal)
+            await page.locator('.property-partnership-page .property-results-summary [data-go="property-results"]').click()
+            test.good(f'{partner} resultatlänken bevarar rätt partner i ' + ('intern vy' if internal else 'partnerarbetsyta'), await page.evaluate('Portal.page') == 'property-results' and await page.evaluate('Portal.role==="internal"?Portal.selectedPartnerId:Portal.partner') == partner)
+
+    await view(test, new)
+    ordering = await page.evaluate('''()=>{
+      const selectors=['.pp-primary-service','.property-results-summary','.pp-tenant-support','.pp-property-electricity','[data-pp-more]'];
+      const nodes=selectors.map(selector=>document.querySelector('.property-partnership-page '+selector));
+      return nodes.every(Boolean) && nodes.slice(1).every((node,index)=>Boolean(nodes[index].compareDocumentPosition(node)&Node.DOCUMENT_POSITION_FOLLOWING));
+    }''')
+    test.good('inflyttning kommer först, följt av eget resultat, elfrågor, fastighetsel och fler idéer', ordering)
+    more = page.locator('[data-pp-more]')
+    test.good('fyra övriga idéer är samlade under en stängd fördjupning från start', not await more.evaluate('(node)=>node.open') and await more.locator('[data-pp-detail]').count() == 4 and not await more.locator('[data-pp-detail="capacity"]').is_visible())
+    test.good('elfrågor och onödig förbrukning kan läsas direkt utan att öppna fler idéer', await page.locator('[data-pp-detail="tenant-questions"]').is_visible() and await page.locator('[data-pp-detail="wasted-energy"]').is_visible())
+    disclosure = more.locator('summary')
+    await disclosure.focus()
+    await page.keyboard.press('Enter')
+    test.good('fler idéer öppnas med Enter och visar innehållet', await more.evaluate('(node)=>node.open') and await more.locator('[data-pp-detail="capacity"]').is_visible())
+    await page.keyboard.press('Space')
+    test.good('fler idéer stängs med mellanslag utan att navigera', not await more.evaluate('(node)=>node.open') and await page.evaluate('Portal.page') == ROUTE)
+    await page.keyboard.press('Enter')
+    await choose(page, 'capacity')
+    test.good('ett fokusval under fler idéer bevarar den öppna fördjupningen', await more.evaluate('(node)=>node.open') and await page.locator('[data-pp-focus="capacity"]').get_attribute('aria-pressed') == 'true')
+    await page.evaluate('Portal.render()')
+    test.good('omrendering bevarar öppna fler idéer och valt fokus', await more.evaluate('(node)=>node.open') and await focus(page, new) == ['capacity'])
+    await page.locator('[data-pp-detail="capacity"]').click()
+    await page.locator('#portal-dialog [data-pp-focus="capacity"]').click()
+    await page.keyboard.press('Escape')
+    # Native dialog close restores focus in its queued close event.
+    await page.wait_for_function('document.activeElement?.dataset.ppDetail==="capacity"')
+    test.good('fokusändring i dialogen behåller öppna fler idéer och återför fokus', await more.evaluate('(node)=>node.open') and await focus(page, new) == [] and await page.locator('[data-pp-detail="capacity"]').evaluate('(node)=>node===document.activeElement'))
+    await choose(page, 'handover')
+    await page.locator('[data-pp-remove="handover"]').click()
+    test.good('borttagning från fokussammanfattningen stänger inte fler idéer', await more.evaluate('(node)=>node.open') and await focus(page, new) == [])
+    await choose(page, 'housing-cost')
+    await page.reload(wait_until='networkidle')
+    test.good('sekundärt fokus består efter reload utan tjänsteaktivering', await focus(page, new) == ['housing-cost'] and await business_data(page) == base)
+    test.good('fler idéer börjar stängda efter reload även med ett sparat sekundärt fokus', not await more.evaluate('(node)=>node.open'))
+    await reveal(page, '[data-pp-focus="housing-cost"]')
+    test.good('sparat sekundärt fokus visas som valt när fördjupningen öppnas', await page.locator('[data-pp-focus="housing-cost"]').get_attribute('aria-pressed') == 'true')
+    await more.locator('summary').focus()
+    await page.keyboard.press('Enter')
+    await page.locator('[data-pp-remove="housing-cost"]').focus()
+    await page.keyboard.press('Enter')
+    visible_focus = await page.evaluate('''()=>{
+      const active=document.activeElement;
+      return !!active && active!==document.body && active.getClientRects().length>0;
+    }''')
+    test.good('borttagning av ett dolt sekundärt fokus återför fokus till en synlig kontroll', not await more.evaluate('(node)=>node.open') and await focus(page, new) == [] and visible_focus)
+    test.good('prioritering och fördjupningar skapar aldrig affärsdata', await business_data(page) == base)
+
+
 async def layout_checks(test):
     await fresh(test)
     page = test.page
@@ -180,15 +265,26 @@ async def layout_checks(test):
     await view(test, partner)
     for width in [1440, 390, 320]:
         await page.set_viewport_size({'width': width, 'height': 1000 if width == 1440 else 844})
+        if await page.locator('[data-pp-more]').evaluate('(node)=>node.open'):
+            await page.locator('[data-pp-more] > summary').click()
         await test.nooverflow(f'samarbetssidan saknar sidöverflöde vid {width}px')
         sizes = await page.locator('.property-partnership-page button').evaluate_all('(nodes)=>nodes.map(n=>parseFloat(getComputedStyle(n).fontSize))')
-        test.good(f'samarbetssidans knappar har läsbar text vid {width}px', bool(sizes) and min(sizes) >= 12)
+        test.good(f'samarbetssidans knappar har läsbar text vid {width}px', bool(sizes) and min(sizes) >= 13)
+        await page.evaluate('window.scrollTo(0,0)')
         await test.shot(f'property-partnership-{width}.png')
+        await reveal(page, '[data-pp-detail="housing-cost"]')
+        targets = await page.locator('.property-partnership-page button,[data-pp-more] > summary').evaluate_all('(nodes)=>nodes.filter(n=>n.getClientRects().length).map(n=>({height:n.getBoundingClientRect().height,font:parseFloat(getComputedStyle(n).fontSize)}))')
+        test.good(f'alla synliga handlingar har minst 44px höjd och 13px text vid {width}px', bool(targets) and all(item['height'] >= 44 and item['font'] >= 13 for item in targets))
+        await test.nooverflow(f'öppna fler idéer saknar sidöverflöde vid {width}px')
         for idea in IDEAS:
-            await page.locator('.pp-idea-grid [data-pp-detail="' + idea + '"]').click()
+            await reveal(page, '[data-pp-detail="' + idea + '"]')
+            await page.locator('.property-partnership-page [data-pp-detail="' + idea + '"]').click()
             await page.locator('.pp-detail-dialog').wait_for()
             size = await page.locator('#portal-dialog').evaluate('(node)=>({width:node.getBoundingClientRect().width,scroll:node.scrollWidth,client:node.clientWidth})')
             test.good(f'{idea} fördjupning ryms på {width}px', size['width'] <= width and size['scroll'] <= size['client'] + 1)
+            if idea == 'tenant-questions':
+                targets = await page.locator('#portal-dialog button').evaluate_all('(nodes)=>nodes.filter(n=>n.getClientRects().length).map(n=>({height:n.getBoundingClientRect().height,font:parseFloat(getComputedStyle(n).fontSize)}))')
+                test.good(f'dialogens handlingar har minst 44px höjd och 13px text vid {width}px', bool(targets) and all(item['height'] >= 44 and item['font'] >= 13 for item in targets))
             await page.locator('#close-dialog').click()
     await page.set_viewport_size({'width': 1440, 'height': 1000})
     button = page.locator('[data-pp-detail="tenant-questions"]')
@@ -207,18 +303,19 @@ async def layout_checks(test):
     test.good('fokusval kan tas bort inne i samma fördjupning', 'tenant-questions' not in await focus(page, partner) and await page.locator('#portal-dialog [data-pp-focus="tenant-questions"]').get_attribute('aria-pressed') == 'false')
     await page.keyboard.press('Escape')
     await page.wait_for_function('document.activeElement?.dataset.ppDetail==="tenant-questions"')
-    test.good('Escape återför fokus även när fokusval uppdaterat samarbetskortet', not await page.locator('#portal-dialog').evaluate('(node)=>node.open') and await page.locator('.pp-idea-grid [data-pp-detail="tenant-questions"]').evaluate('(node)=>node===document.activeElement'))
+    test.good('Escape återför fokus även när fokusval uppdaterat samarbetskortet', not await page.locator('#portal-dialog').evaluate('(node)=>node.open') and await page.locator('.property-partnership-page [data-pp-detail="tenant-questions"]').evaluate('(node)=>node===document.activeElement'))
     # Native dialog close events are queued. Reopening and rerendering in the
     # same task must not consume the new dialog's focus-restoration target.
     await page.evaluate('''()=>{
-      const first=document.querySelector('.pp-idea-grid [data-pp-detail="tenant-questions"]');
+      const first=document.querySelector('.property-partnership-page [data-pp-detail="tenant-questions"]');
       first.focus();first.click();document.querySelector('#portal-dialog').close();
-      const next=document.querySelector('.pp-idea-grid [data-pp-detail="housing-cost"]');
+      const next=document.querySelector('.property-partnership-page [data-pp-detail="housing-cost"]');
       next.focus();next.click();document.querySelector('#portal-dialog [data-pp-focus="housing-cost"]').click();
     }''')
     await page.keyboard.press('Escape')
     await page.wait_for_function('document.activeElement?.dataset.ppDetail==="housing-cost"')
-    test.good('köat close-event från tidigare dialog tappar inte den nya dialogens returfokus', not await page.locator('#portal-dialog').evaluate('(node)=>node.open') and await page.locator('.pp-idea-grid [data-pp-detail="housing-cost"]').evaluate('(node)=>node===document.activeElement'))
+    test.good('köat close-event från tidigare dialog tappar inte den nya dialogens returfokus', not await page.locator('#portal-dialog').evaluate('(node)=>node.open') and await page.locator('.property-partnership-page [data-pp-detail="housing-cost"]').evaluate('(node)=>node===document.activeElement'))
+    await reveal(page, '[data-pp-focus="handover"]')
     choose_button = page.locator('.property-partnership-page [data-pp-focus="handover"]')
     await choose_button.focus()
     await page.keyboard.press('Enter')
@@ -245,7 +342,7 @@ async def stored_data_checks(test):
         await page.goto(BASE + '?workspace=estate1#property-partnership', wait_until='networkidle')
         await page.reload(wait_until='networkidle')
         await page.locator('.property-partnership-page').wait_for()
-        test.good('felaktigt sparat underlag hanteras: ' + label, await focus(page, 'estate1') == expected and await page.locator('.pp-idea-grid [data-pp-detail]').count() == 6)
+        test.good('felaktigt sparat underlag hanteras: ' + label, await focus(page, 'estate1') == expected and await page.locator('.property-partnership-page [data-pp-detail]').count() == 6)
         test.good('felaktigt förslagsunderlag ändrar inga affärsdata: ' + label, await business_data(page) == base)
     await page.evaluate('localStorage.removeItem("partnerlabb.portal.v2")')
     await page.goto(BASE, wait_until='networkidle')
@@ -260,7 +357,7 @@ async def stored_data_checks(test):
 
 async def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--suite', choices=['all', 'routes', 'proposal', 'persistence', 'layout', 'stored-data'], default='all')
+    parser.add_argument('--suite', choices=['all', 'routes', 'proposal', 'persistence', 'priority', 'layout', 'stored-data'], default='all')
     args = parser.parse_args()
     chromium = shutil.which('chromium') or shutil.which('chromium-browser')
     if not chromium:
@@ -269,7 +366,7 @@ async def main():
         browser = await playwright.chromium.launch(executable_path=chromium, headless=True, args=['--no-sandbox'])
         test = Suite(browser)
         try:
-            for name, run in [('routes', route_checks), ('proposal', proposal_checks), ('persistence', persistence_checks), ('layout', layout_checks), ('stored-data', stored_data_checks)]:
+            for name, run in [('routes', route_checks), ('proposal', proposal_checks), ('persistence', persistence_checks), ('priority', priority_checks), ('layout', layout_checks), ('stored-data', stored_data_checks)]:
                 if args.suite in ['all', name]:
                     await run(test)
             test.good('inga JavaScript-fel i samarbetsförslagen', not test.errors)
