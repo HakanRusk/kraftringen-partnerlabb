@@ -562,3 +562,17 @@ PR #20 integrerad; GitHub/Sites publicerad källrevision `66d8046558728fd21dd6be
 Säljpartnerns meny: Mina resultat, Insikter, Avtalsfakta, Utbildning och support. Endast egna rapportdata i partnervy; inga interna kostnader/nettobidrag. Fastighetsbolag: Avtalsval med Kvartspris som grundval, Opti och Rörligt månadspris som alternativ. Nya utkast får en ändringsbar kopia av grundvalet; äldre underlag bevaras. Excelval gäller hela urvalet nya rader. Ingen automatisk avtalsteckning.
 
 Faktakort har officiella källänkar och relevanta befintliga Elakademin-filmer, inte kompletta produktspecifika filmer. Saknade exakta produktblad för Stabil/B2B Kvartspris och specifikation av Individuell portfölj är nästa innehållsbehov, inte ett skäl att fabricera villkor. Detta är en efterhandskvittens, dist/ oförändrad.
+
+
+## 2026-10-11 · Tre partnerupplägg publicerade i version 22
+
+Partners → Ny partner erbjuder Säljpartner (B2B/B2C/båda), Fastighetsbolag
+och Personalavtal för företag. Nya fastighetsbolag får befintliga egna
+manuella/Excel-flöden och fullmaktsbilagor. Personalavtal har egen översikt
+med saknat resultatunderlag; erbjudande och anmälningsprocess är ännu öppna.
+Befintlig partnertyp och sparad historik bevaras; namn kan ändras för alla.
+
+PR #24 integrerad, publicerad källrevision `9b935a533229881e2ca0bef83d3c84f5fc9468dd`. Sites version 22
+och succeeded-kvittens finns i WORKLOG.md. Befintligt timuppdrag är
+återaktiverat med uppdaterad, native återläst prompt.
+Browserregression för de nya typerna: `python qa/partner-types.py`.

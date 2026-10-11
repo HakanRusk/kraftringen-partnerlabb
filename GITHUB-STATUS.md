@@ -96,3 +96,16 @@ PR #20 integrerad; GitHub/Sites publicerad källrevision `66d8046558728fd21dd6be
 Säljpartnerns meny: Mina resultat, Insikter, Avtalsfakta, Utbildning och support. Endast egna rapportdata i partnervy; inga interna kostnader/nettobidrag. Fastighetsbolag: Avtalsval med Kvartspris som grundval, Opti och Rörligt månadspris som alternativ. Nya utkast får en ändringsbar kopia av grundvalet; äldre underlag bevaras. Excelval gäller hela urvalet nya rader. Ingen automatisk avtalsteckning.
 
 Faktakort har officiella källänkar och relevanta befintliga Elakademin-filmer, inte kompletta produktspecifika filmer. Saknade exakta produktblad för Stabil/B2B Kvartspris och specifikation av Individuell portfölj är nästa innehållsbehov, inte ett skäl att fabricera villkor. Detta är en efterhandskvittens, dist/ oförändrad.
+
+
+## 2026-10-11 · Senaste applikationsleverans: PARTNER-06 / version 22
+
+PR #24 är integrerad. GitHub/Sites publicerad källrevision
+`9b935a533229881e2ca0bef83d3c84f5fc9468dd`. Native version 22 och deployment `appgdep_6acb44b7f54081919734b72a86af7ab7`
+har succeeded-kvittens 08:11:51 UTC på https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Tre partnerupplägg under Partners; tidigare egna säljrapporter, utbildning
+och befintlig inflyttningsservice är bevarade. Delning och Daniels
+granskning före integration är oförändrade. Befintliga pilotagenten är
+återaktiverad med exakt uppdaterad prompt och oförändrat timschema;
+native återläsning kvitterad i WORKLOG. Denna dokumentationsrevision
+ändrar inte den publicerade appen.

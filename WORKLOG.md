@@ -1031,3 +1031,28 @@ utbildningsförhandsvisning, partnernas egna rapporter och B2C-samtalsbibliotek
 GitHub-integration, Sites-publicering och native agentprompt kvitteras
 efter genomförandet; den befintliga timuppgiften är tillfälligt pausad under
 samordnad leverans och ska återaktiveras efteråt.
+
+
+## 2026-10-11 · PARTNER-06 · Publicerad version 22 och agent återaktiverad
+
+PR #24 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/24
+integrerad 08:10:17 UTC. Kandidat b32218a4d54e993ff6219cd0026ef720c7320829;
+GitHub-main och exakt pushad Sites-källa: `9b935a533229881e2ca0bef83d3c84f5fc9468dd`.
+Arkivet innehåller bara `.openai/hosting.json` och `dist/` från denna SHA.
+Native saved version 22: `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_10835f3ffdd08191ae6d1d18cdc533d1`.
+Native publish deployment: `appgdep_6acb44b7f54081919734b72a86af7ab7`; **succeeded**
+2026-10-11 08:11:51 UTC. URL https://kraftringen-partnerlabb.rosen123.chatgpt.site. Befintlig custom-delning revision 4
+bevarad genom publicering på samma Site utan åtkomständringar.
+
+Valen finns under Partners → Ny partner: Säljpartner, Fastighetsbolag,
+Personalavtal. Säljsegment ligger bara på Säljpartner. Nya fastighetsbolag
+har egna registreringsvägar och saknat resultatunderlag; personalavtal
+har egen avgränsad översikt. Verifieringskvittens finns i föregående post.
+
+Befintliga Partnerlivs pilotagent
+`Automation_e03c6b2fc3448191a58c63c969a090c0` uppdaterad med exakt
+PILOT-AGENT-PROMPT.txt och återaktiverad. Native återläsning bekräftar
+is_enabled=true, exakt prompt och oförändrat timschema i Europe/Stockholm
+från 2026-10-08 23:00. Inga andra automationer har ändrats. Det verifierar
+konfigurationen, inte oavbruten processdrift eller framtida leverans.
+Denna efterhandskvittens ändrar ingen dist-fil och skapar ingen ny deployment.
