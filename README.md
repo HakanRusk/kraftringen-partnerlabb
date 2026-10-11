@@ -1,5 +1,22 @@
 # Kraftringen Partnerportal – frontendprototyp
 
+## Partnerlabb på hemskärmen
+
+Välj **Lägg till som app** i sidomenyn. På iPhone: öppna portalen i Safari,
+tryck Dela → Lägg till på hemskärmen, behåll Öppna som webbapp om valet
+visas och tryck Lägg till. Chrome/Edge kan erbjuda en direkt installationsknapp.
+Den installerade webbappen får namnet Partnerlabb, egen ikon och eget fönster.
+Samma manifest används av portalen och båda utbildningssidorna. Startadressen
+är ordinarie portalrot; tillfälliga demo- och partnerparametrar bakas inte in.
+
+Internet och befintlig Sites-inloggning behövs. Ingen service worker eller
+offlinekopia införs, så appen fortsätter hämta den publicerade sajten.
+Lokal data kan vara separat i hemskärmsappen och webbläsaren; installationen
+kopierar eller synkroniserar inga ärenden, bilagor eller utbildningsframsteg.
+Installation är användarens val, inga popupfönster visas automatiskt.
+Kontroller: `node qa/install-app.mjs`. Verklig installation på telefon och
+visuell browserkontroll återstår; käll- och syntetiska kontroller är inte detsamma.
+
 ## Portalens flödesgranskning – publicerad version 29 (11 oktober 2026)
 
 Utbildningens returlänkar bevarar perspektiv, partner och produktsegment.
