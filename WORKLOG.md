@@ -1948,3 +1948,26 @@ utan force. Befintlig privat delning ändrades inte. Syntaxkontroll,
 `qa/results-only.mjs` och diffkontroll passerade före publicering.
 Ingen ny browsergranskning eller hosted visuell kontroll påstås.
 Denna kvittens ändrar endast WORKLOG/BACKLOG och kräver ingen ny deployment.
+
+## 2026-10-11 · Fyra stora val på säljpartnerns startsida
+
+Ludwigs skärmbild IMG_9058 och direkta instruktion: visa bara partnernamnet
+samt Mina resultat, Avtalsfakta, Utbildning och Hjälp & support. På
+`codex/partner-start-four` från main `b03dcade7993bf1534d680c3617693cbae127ecc`
+ersätts introduktionskort och produktlistor med fyra stora knappar.
+Två kolumner på större skärmar, en kolumn och minst 96 px höga val på mobil.
+Gemensam säljpartnerstart gäller Savera, Face2face och framtida säljpartners.
+Befintliga destinationsvyer, utbildningsmaterial, data, demomärkning och
+fastighetsflöden bevaras. Ingen lagringslogik ändras.
+
+Verifierat: `node --check dist/app.js`, `node qa/results-only.mjs`,
+`node qa/partner-self-service.mjs` och `git diff --check` passerar.
+Den befintliga startsidesassertionen uppdaterades från borttagen introtext
+till exakt fyra destinationer. Browser-/mobil-/tangentbordsgranskning har
+inte körts: managed-miljön saknar control-browser. CSS och native knappar
+är kodgranskade, men visuell verifiering återstår.
+
+Färsk main oförändrad; inga öppna PR:er vid inledande överlappskontroll.
+Kandidat för PR, inte integrerad eller publicerad. Senaste instruktionen
+begränsar detta pass till egen gren/PR. Nästa steg är visuell kontroll vid
+320/390/1440 px och samordnad integration/publicering till samma Site.

@@ -659,3 +659,20 @@ dialog::backdrop { background: #071b308a; backdrop-filter: blur(3px); }
 #view .panel-heading > div,
 #view .ac-header > div { min-width: 0; max-width: 100%; }
 #view .employee-actions { flex-shrink: 0; }
+
+/* Partner start: four direct entrances, with no introductory cards. */
+.partner-start { max-width: 960px; }
+.partner-start .page-head h1 { min-width: 0; max-width: 100%; }
+.partner-start-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.partner-start-choice { display: flex; align-items: center; gap: 20px; width: 100%; min-width: 0; min-height: 148px; padding: 28px; border: 1px solid #d5e1e6; border-radius: 16px; background: #fff; color: #203d4d; font: inherit; font-size: 21px; font-weight: 600; text-align: left; cursor: pointer; }
+.partner-start-choice:hover { border-color: #2c6970; background: #f2f8f8; }
+.partner-start-choice:focus-visible { outline: 3px solid #2c6970; outline-offset: 4px; }
+.partner-start-icon { display: grid; place-items: center; flex: 0 0 48px; height: 48px; border-radius: 12px; background: #eaf3f3; color: #2c6970; }
+.partner-start-icon .icon { width: 26px; height: 26px; }
+.partner-start-arrow { flex-shrink: 0; margin-left: auto; color: #2c6970; }
+.partner-start-arrow .icon { width: 22px; height: 22px; }
+@media (max-width: 600px) {
+  .partner-start-choices { grid-template-columns: 1fr; gap: 14px; }
+  .partner-start-choice { min-height: 96px; padding: 20px; gap: 16px; font-size: 18px; }
+  .partner-start-icon { flex-basis: 40px; height: 40px; }
+}
