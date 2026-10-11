@@ -1188,3 +1188,37 @@ fem representativa filmer och introduktionen spelas och söks på riktigt.
 Alla fyra PDF/PPTX-källhämtningar är bytekontrollerade. Mobil-layout,
 båda säljspåren, tidigare kurser och B2C-bibliotek är bevarade. Lyckad
 GitHub-integration och exakt Sites-publicering kvitteras efter utförandet.
+
+### FULL-02 · Publicerad som version 23
+
+PR #26 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/26
+integrerad från kandidat `3f02f545352e708498019bbfed00ff78b7f7a4dd`.
+GitHub-main och exakt fast-forward-pushad Sites-källa:
+`c5d4076dc30aae84e2c6fc1d83d5023d688d35b9`.
+Mergeträdet `e558c452d666e84b940c35e179ba2e5a8098ced7` är exakt samma
+byteverifierade träd som den testade kandidaten. Inga andra ändringar
+tillkom efter integrationskontrollen; ingen force-push användes.
+
+Native saved version 23:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_cac3365f6b54819198f0479697c1c5d9`.
+Deployment `appgdep_6acb4815b5e08191a55100a4c80bb532` är **succeeded**
+2026-10-11 08:26:17 UTC. Arkivet på 10 591 773 bytes byggdes direkt från
+denna SHA och innehåller bara hostingmanifest och dist/, 97 poster.
+Kursen: https://kraftringen-partnerlabb.rosen123.chatgpt.site/elakademin.html
+Färsk Sites-metadata bekräftar exakt bevarad custom-publik, revision 4.
+Inga scheman, åtkomstregler eller verkliga kunddata ändras av denna leverans.
+
+På publicerad version passerar 102 faktiska Chromium-kontroller:
+18 kompletta filmlänkar och verklig metadata, poster och svensk VTT;
+uppspelning och hopp i fem representativa kapitelfilmer samt intro;
+alla fyra materialnedladdningar med exakt filstorlek och format; mobil
+utan sidöverflöde; rätt företag-/privatspår från Savera/Face2face;
+fem tidigare kurser och B2C-bibliotek; äldre förhandsvisnings kurslänk;
+skyddad anonym åtkomst och noll script-/resursfel. Lokal kurs-, partner-
+och regressionskvittens finns ovan. Framsteg och uppladdade samtal är
+fortsatt lokala i webbläsaren; ingen central certifiering eller delad
+resultatdatabas påstås.
+
+Denna efterhandskvittens ändrar enbart rot-dokumentation. dist/ och
+hostingmanifest är exakt oförändrade mot publicerad version 23 och
+behöver inte publiceras igen.

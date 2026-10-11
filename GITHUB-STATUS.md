@@ -109,3 +109,16 @@ granskning före integration är oförändrade. Befintliga pilotagenten är
 återaktiverad med exakt uppdaterad prompt och oförändrat timschema;
 native återläsning kvitterad i WORKLOG. Denna dokumentationsrevision
 ändrar inte den publicerade appen.
+
+## 2026-10-11 · Elakademin publicerad i version 23
+
+PR #26 är integrerad. Verifierad GitHub/Sites-källrevision
+`c5d4076dc30aae84e2c6fc1d83d5023d688d35b9` innehåller senaste PARTNER-06
+och hela Elakademin: 18 kapitel, 18 Arthur-filmer med svensk textning,
+139-sidig PDF och 463-bilders redigerbar PowerPoint. Native deployment
+`appgdep_6acb4815b5e08191a55100a4c80bb532` bekräftar succeeded
+2026-10-11 08:26:17 UTC. Full kurslänk:
+https://kraftringen-partnerlabb.rosen123.chatgpt.site/elakademin.html
+Den publicerade sidan passerar 102 kontroller; custom-åtkomst revision 4
+är bevarad. B2C-samtalsbibliotek och lokala framsteg består. Detaljer i
+WORKLOG. Efterhandskvittensen ändrar ingen dist-fil eller deployment.
