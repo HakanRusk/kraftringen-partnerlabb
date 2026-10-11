@@ -178,3 +178,26 @@ data har rättats. Full kurs och tidigare rapport-/serviceunderlag bevaras.
 Full kvittens och verifieringsgränser finns i WORKLOG. Kvittens-PR ändrar
 bara dokumentation och testets väntan på nytt dokument, inte dist/ eller
 manifest; ingen ny publicering krävs.
+
+## 2026-10-11 · Inflyttningen först, publicerad i version 27
+
+PR #34 är integrerad. Exakt publicerad GitHub/Sites-källrevision:
+`5794d27122ff0b6be7c99527d2864ceddc9b6987`.
+Native version `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_1072adfb024481919756db9a4c70ed82`.
+Deployment `appgdep_6acb60b3c950819182bc379686c92783` bekräftar succeeded
+2026-10-11 10:11:14 UTC på https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Samma Site och befintlig custom-policy revision 4 bevaras. Ingen ändring
+av agentens prompt, schema eller aktivering gjordes.
+
+Ert samarbete börjar med Excel/manuell inflyttning och tre tydliga steg
+för fullmaktsunderlag, överlämning och återkoppling. Därefter visas egna
+kunder/kickback, föreslagen avlastning av elfrågor och egen fastighetsel.
+Fyra ytterligare idéer ligger i en öppningsbar fördjupning; alla sex idéers
+detaljer och lokala fokusval finns kvar. Nya partnerresultat fabriceras inte.
+
+Den samlade integrationen med version 26:s rättningar passerade 172
+samarbetskontroller och 67 servicekontroller utan JavaScript-fel.
+Visuellt granskat på dator/mobil och tangentbord verifierat. Full kurs,
+tidigare underlag, delning och Daniels godkännandekrav består.
+Full kvittens i WORKLOG. Dokumentationskvittensen ändrar inte dist/ eller
+manifest och kräver ingen ny publicering.

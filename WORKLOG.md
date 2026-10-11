@@ -1661,3 +1661,38 @@ för integrationen. Loggar finns separat i
 /tmp/partnerlabb-service-priority-integration-partnership.log och
 /tmp/partnerlabb-service-priority-integration-intake.log. Faktisk
 GitHub-PR och native publicering kvitteras efter utförandet.
+
+### FASTIGHET-FORSLAG-02 · Publicerad som version 27
+
+PR #34 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/34
+är integrerad från verifierad kandidat
+`7ae2f18906958eaaf078d0a6bc4ad1f324832475`. Exakt GitHub-main och publicerad
+Sites-källa: `5794d27122ff0b6be7c99527d2864ceddc9b6987`. Kandidat och merge
+har samma träd `3ea855e18f4f09825facbc439eaaa99b107792b7`.
+Sites-källan överfördes fast-forward från version 26:s revision, utan force
+eller separat utveckling. Arkivet är byggt från samma pushade revision och
+innehåller bara dist/ samt hostingmanifestet.
+
+Native version **27**:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_1072adfb024481919756db9a4c70ed82`.
+Deployment `appgdep_6acb60b3c950819182bc379686c92783` bekräftade **succeeded**
+2026-10-11 **10:11:14.600518 UTC** på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Färsk metadata före publiceringen bekräftade samma Site och custom-policy
+revision 4. Publiceringen ändrar inga åtkomstinställningar, tunnelbindningar
+eller automationer. Agentens prompt, schema och aktivering lämnades orörda.
+
+Den samlade publicerade koden är lokalt verifierad med 172/172
+samarbetskontroller och 67/67 inflyttningsservicekontroller utan
+JavaScript-fel. Dator/mobil, tangentbord, fokusretur, äldre fokusval,
+partner-/demoisolering, saknade resultat och sparfel ingår. Inga breda nya
+hosted-kontroller påstås för v27; native succeeded med rätt URL kvitterar
+publiceringen. Version 26:s oberoende felrättningar och hela Elakademin
+bevaras. Ingen verklig kund- eller produktionsvalidering påstås.
+
+Direkt partneringång till förslaget:
+https://kraftringen-partnerlabb.rosen123.chatgpt.site/?workspace=estate1#property-partnership
+
+Denna efterhandskvittens ändrar endast README, BACKLOG, WORKLOG och
+GITHUB-STATUS. dist/ och hostingmanifestet är identiska med publicerad
+revision; ingen ny deployment följer av kvittens-PR:en.
