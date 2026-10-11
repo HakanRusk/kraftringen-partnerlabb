@@ -1971,3 +1971,17 @@ Färsk main oförändrad; inga öppna PR:er vid inledande överlappskontroll.
 Kandidat för PR, inte integrerad eller publicerad. Senaste instruktionen
 begränsar detta pass till egen gren/PR. Nästa steg är visuell kontroll vid
 320/390/1440 px och samordnad integration/publicering till samma Site.
+
+### PARTNER-START-01 · Publicerad version 31
+
+Ludwigs direkta ”Publicera” efter PR #42 gav publiceringsmandat.
+PR #42 integrerad från `a2fe0553527435bb7858361d707ed224de578029`.
+Exakt GitHub/Sites-källrevision: `c56f80a0e81ffdf3b7c0cea64d31f4a89e3f1466`.
+Sites överfördes fast-forward från v30. Syntaxkontroll och båda tidigare
+Node-sviter passerade även på integrationen; browserkontroll är fortfarande
+inte utförd i denna miljö. Befintlig custom-delning bevarad.
+
+Version 31: `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_fc89f8cb470c81919c9b6d80520218aa`.
+Deployment `appgdep_6acba52acb688191b82cebbe02881196` bekräftar succeeded
+2026-10-11 15:03:22 UTC på https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Denna efterhandskvittens ändrar endast dokumentation; dist/ är oförändrad.
