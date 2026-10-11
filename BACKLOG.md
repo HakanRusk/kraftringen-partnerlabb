@@ -282,3 +282,10 @@ Implementering på codex/partner-results-product-facts från f30f86739bf5fb60ccc
 Avtalsfakta har sex B2B- och fem B2C-kort, källdatum och officiella produkt-/villkorslänkar. Befintliga Elakademin-filmer länkas som principutbildning, inte kompletta produktspecifika genomgångar. Verifierat exakt produktblad saknas för Kraftringen Stabil och företagets Kvartspris; Individuell portfölj har bara allmän portföljkälla. Saknade detaljer markeras, inga priser eller bindningstider gissas.
 
 Grundval sparas i propertyDefaults i befintlig normal-/demoisolerad state. Nya manuella/Excel-utkast får en ögonblicksbild som går att ändra; importens val gäller valda nya rader. Äldre utkast utan val förblir utan val. Registrerad desiredProduct är ett önskemål; fullmakt och offerChoice förändras inte. Dubbletter skriver inte om tidigare val; sparfel återställer data.
+
+
+## 2026-10-11 · Resultatrubrik
+
+Ludwigs skärmbildsförtydligande: ersätt ”Vad ger partnersamarbetena?” med
+**Partnerresultat** på interna översikten. Avgränsad textkandidat på
+`codex/partnerresultat-heading`; detaljer och verifiering i WORKLOG.

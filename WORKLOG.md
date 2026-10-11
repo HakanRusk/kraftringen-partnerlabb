@@ -1915,3 +1915,17 @@ krävs för dokumentationen. All kontroll använder fiktiv browserdata i
 Chromium. Andra browsermotorer, verklig kundnytta och produktionsbehörighet
 påstås inte verifierade. Inga öppna, reproducerade fel återstår inom denna
 gransknings omfattning; detta garanterar inte att okända fel saknas.
+
+
+## 2026-10-11 · Direktuppdrag: kortare resultatrubrik
+
+Ludwigs skärmbild pekar uttryckligen ut rubriken ”Vad ger
+partnersamarbetena?” på den interna översikten. Den ändras till
+**Partnerresultat** på `codex/partnerresultat-heading`, från main `c8cab58`.
+Ändringen gäller enbart rubriken; ingress, menyer, filter, data och
+beräkningar lämnas orörda. Detta är ett självständigt Codex-textarbete.
+
+Verifiering: `node --check dist/commercial.js`, befintlig
+`node qa/results-only.mjs` och `git diff --check`. Runtime-diffen innehåller
+endast den efterfrågade strängändringen. Ingen ny browsergranskning krävs
+för denna kortare rubrik. PR/integration/publicering kvitteras separat.
