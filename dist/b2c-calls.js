@@ -46,16 +46,19 @@
     }).catch(error => { databasePromise = undefined; throw error; });
     return databasePromise;
   }
-  async function transaction(mode, work, guard) {
+  async function transaction(mode, work, guard, cancelers) {
     const db = await openDatabase();
     if (guard && !guard()) throw new DOMException('Samtalsåtgärden avbröts när vyn ändrades.', 'AbortError');
     return new Promise((resolve, reject) => {
       let tx, value;
+      const cancel = () => { try { tx?.abort(); } catch {} };
+      const cleanup = () => cancelers?.delete(cancel);
       try { tx = db.transaction(STORE, mode); work(tx.objectStore(STORE), result => { value = result; }); }
       catch (error) { try { tx?.abort(); } catch {} reject(error); return; }
-      tx.oncomplete = () => resolve(value);
-      tx.onerror = () => reject(tx.error || new Error('Ljudlagringen misslyckades.'));
-      tx.onabort = () => reject(tx.error || new Error('Ljudlagringen avbröts.'));
+      cancelers?.add(cancel);
+      tx.oncomplete = () => { cleanup(); resolve(value); };
+      tx.onerror = () => { cleanup(); reject(tx.error || new Error('Ljudlagringen misslyckades.')); };
+      tx.onabort = () => { cleanup(); reject(tx.error || new Error('Ljudlagringen avbröts.')); };
     });
   }
   const listRecords = value => transaction('readonly', (store, done) => {
@@ -71,8 +74,8 @@
     const request = store.get(id);
     request.onsuccess = () => done(request.result?.scope === value.scope && request.result?.partner === value.partner ? request.result : undefined);
   });
-  const saveRecord = (record, guard) => transaction('readwrite', (store, done) => { store.add(record); done(record); }, guard);
-  const updateRecord = (id, value, fields, guard) => transaction('readwrite', (store, done) => {
+  const saveRecord = (record, guard, cancelers) => transaction('readwrite', (store, done) => { store.add(record); done(record); }, guard, cancelers);
+  const updateRecord = (id, value, fields, guard, cancelers) => transaction('readwrite', (store, done) => {
     const request = store.get(id);
     request.onsuccess = () => {
       const row = request.result;
@@ -80,14 +83,14 @@
       const updated = { ...row, ...fields, updatedAt: new Date().toISOString() };
       store.put(updated); done(updated);
     };
-  }, guard);
-  const deleteRecord = (id, value, guard) => transaction('readwrite', (store, done) => {
+  }, guard, cancelers);
+  const deleteRecord = (id, value, guard, cancelers) => transaction('readwrite', (store, done) => {
     const request = store.get(id);
     request.onsuccess = () => {
       if (request.result?.scope === value.scope && request.result?.partner === value.partner) { store.delete(id); done(true); }
       else done(false);
     };
-  }, guard);
+  }, guard, cancelers);
   const storageMessage = error => error?.name === 'QuotaExceededError' ? 'Webbläsarens lagringsutrymme är fullt. Ta bort ett tidigare samtal eller välj en mindre ljudfil och försök igen.' : `Webbläsaren kunde inte spara eller läsa samtalet. ${error?.message?.startsWith('Stäng andra') ? error.message : 'Försök igen; dina tidigare exempel har inte ändrats.'}`;
 
   function render() {
@@ -249,7 +252,7 @@
       const metadata = { title: form.elements.title.value.trim(), category: form.elements.category.value, note: form.elements.note.value.trim() };
       try {
         const now = new Date().toISOString();
-        const saved = row ? await updateRecord(row.id, value, metadata, () => sessionAlive(session)) : await saveRecord({ id: crypto.randomUUID(), ...value, ...metadata, ...candidate, createdAt: now, updatedAt: now }, () => sessionAlive(session));
+        const saved = row ? await updateRecord(row.id, value, metadata, () => sessionAlive(session), session.cancelers) : await saveRecord({ id: crypto.randomUUID(), ...value, ...metadata, ...candidate, createdAt: now, updatedAt: now }, () => sessionAlive(session), session.cancelers);
         if (!sessionAlive(session)) return;
         if (!saved) { showError(session, 'Samtalet finns inte längre. Stäng dialogen och uppdatera listan.'); return; }
         await finishMutation(session, row ? 'Samtalsexemplet är uppdaterat i den här webbläsaren.' : 'Samtalsexemplet är sparat i den här webbläsaren.');
@@ -290,7 +293,7 @@
       if (!sessionAlive(session) || button.disabled) return;
       button.disabled = true; hideError(session);
       try {
-        const deleted = await deleteRecord(id, value, () => sessionAlive(session));
+        const deleted = await deleteRecord(id, value, () => sessionAlive(session), session.cancelers);
         if (!sessionAlive(session)) return;
         await finishMutation(session, deleted ? 'Samtalsexemplet är borttaget.' : 'Samtalet var redan borttaget. Listan är uppdaterad.');
       } catch (error) { showError(session, storageMessage(error)); }

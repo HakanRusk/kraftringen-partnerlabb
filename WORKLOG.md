@@ -1467,3 +1467,76 @@ Denna efterhandskvittens ändrar dokumentation och QA-hjälparens
 nätverkskontroll. dist/ och
 hostingmanifestet är oförändrade mot publicerad version 25; ingen ny
 deployment följer av kvittens-PR:en.
+
+## 2026-10-11 · Direktuppdrag: andra felgranskningen
+
+Ludwigs ”Kör en runda till” fortsätter den breda granskningen från GitHub-main
+`edb6fa5efaa7f6aefc9a60b52207b3b0ce54cd81`, publicerad version 25 och
+Sites-källa `e9e261ca4d76ee25f717ca8087019a9399e3da4e`. Ingen öppen PR eller
+separat Sites-revision hittades. Samma projekt och custom-policy behålls.
+Egen kandidat: codex/audit-round2-20261011.
+
+Nya reproducerade fel och rättningar:
+
+- Två flikar kunde spara hela sin gamla state och radera den andra flikens
+  nya partner eller supportfråga. Sparningen jämför nu med den senast lästa
+  eller sparade strängen innan den skriver. En äldre flik avvisas med
+  instruktion att kopiera osparad inmatning och ladda om. Formulärens
+  återställning bevarar inmatningen. En stale omstart stoppas före rensning
+  av bilagor/samtal. Separat kunddemo och oförändrade bytes blockeras inte.
+  Detta är konfliktkontroll för lokal frontenddata, ingen gemensam backend.
+- Avbryt/navigering/partnerbyte kunde lämna en köad IndexedDB-skrivning
+  som sedan skapade, redigerade eller raderade samtalet ändå. Den verkliga
+  transaktionen registreras nu i sessionens befintliga avbrottshantering.
+  Native blockerade transaktioner används i testet; tidigare ljud och
+  anteckningar bevaras när operationen avbryts.
+- Globalt spårbyte under sluttestet visade B2C men behöll B2B i URL och
+  återgick vid omladdning. Testets segment och hash synkas vid rendering;
+  svar/facit förblir separata, partner- och demo-parametrar bevaras.
+- Kunddemots stegmarkering ersatte föregående historikpost innan sidbyte.
+  Steg 3 och 5 använder samma vy, så Back hoppade över steg 3. Sid-/steg-
+  URL skrivs nu i ett enda navigationssteg. Giltigt kodade djuplänkar
+  avkodas; felaktig kodning ger en fungerande reservvy. Fokus bevaras
+  efter supportsparning och återgår till menyknappen när sidebar döljs.
+- Excelgranskning missade kontrolltecken och valde en felaktig rad som
+  därefter blockerade hela registreringen. Radvis förhandsvalidering
+  följer registrerings-API:ts fältregler. Separatorn | i tillåtna adress-
+  och lägenhetsfält gav falska dubbletter; identiteten kodas nu som tuple.
+- Bilageuppdatering ritade om kompletteringsdialogen och tappade skriven
+  återkoppling och rättade bostadsuppgifter. Fälten återställs efter
+  uppdatering. Ett fördröjt raderingsfel kunde återställa en gammal hel
+  ärendekopia över en ny filkoppling. Återställning görs endast när
+  ärendet fortfarande har samma revision; nyare ändringar behålls och
+  rensfelet redovisas. En äldre operation tar inte över en annan dialog.
+- Ny personalavtalspartner kunde inte öppna sin partnerresa, och sparad
+  reseplacering visades som Ny partner när ekonomiskt underlag saknades.
+  Registry-ID synkas före navigation och placeringen visas oberoende av
+  ekonomins saknade värden. Reserverade rapport-ID slog upp prototyp-
+  egenskaper och kraschade; egen-nyckelkontroll ger saknat underlag.
+- Supportöppning ersatte äldre support-/kundsidebehållare med tomma
+  listor och senare sparning tog bort underlaget. Felaktig container
+  bevaras; nya supportskrivningar avvisas när supportformatet är okänt.
+  Datumobjekt kunde krascha före validering; datumtyper kontrolleras
+  före konvertering. Giltiga tomma arrayer får fortfarande demodata.
+
+Verifiering på den samlade kandidaten:
+
+- Nya riktade browserregressioner: storage 28, navigation 30, rapporter 47,
+  fastighet 25 och utbildning/ljud 27; totalt **157/157**, inga scriptfel.
+- Bred slutgranskning **916/916**: **288** aktiva vykombinationer i
+  320/390/1440 px och **29** interna länkdestinationer. Inga JavaScript-
+  eller HTTP-fel, överbredd, duplicerade ID eller olabelerade kontroller.
+- Alla åtta befintliga qa/*.mjs passerar. JS-syntax, Python-kompilering
+  och textdiff kontrolleras före integration.
+- Tidigare berörda browserregressioner passerar: navigation 41,
+  support/Avtalsfakta 24, fastighet 36, inflyttning 112, utbildning 41
+  och B2C-bibliotek 69. Native IndexedDB-avbrott, kvotfel, reload och
+  sena bilageoperationer verifieras med fiktiva isolerade fixtures.
+
+Källspecifikation, kapiteldata, PDF/PPTX, media-URL:er, framstegsnycklar,
+finansiella fixtures och hostingmanifest ändras inte. Ingen affärsregel,
+backend, verkliga kunduppgifter, extern kommunikation eller schemaändring.
+Chromium är den verifierade webbläsarmotorn. Granskningens artefakter finns
+utanför repot i /workspace/bug-audit2; reproducerbara nya tester i qa/round2-*.
+Faktisk integration/publicering och hosted-resultat kvitteras först efter
+utförandet nedan.

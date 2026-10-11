@@ -16,7 +16,7 @@
   const emptyFields = () => Object.fromEntries(Object.keys(limits).map(key => [key, '']));
   const validDate = value => /^\d{4}-\d{2}-\d{2}$/.test(value) && Number(value.slice(0,4)) >= 2000 && Number(value.slice(0,4)) <= 2100 && !Number.isNaN(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
   const normalize = value => String(value || '').trim().toLocaleLowerCase('sv-SE').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
-  const identity = row => [row.partner || P.partner, row.address, row.apartment, row.moveDate, row.email].map(value => String(value || '').trim().replace(/\s+/g,' ').toLocaleLowerCase('sv-SE')).join('|');
+  const identity = row => JSON.stringify([row.partner || P.partner, row.address, row.apartment, row.moveDate, row.email].map(value => String(value || '').trim().replace(/\s+/g,' ').toLocaleLowerCase('sv-SE')));
   const cleanFiles = (files, partner) => Array.isArray(files) ? files.slice(0, 3).filter(meta => meta && typeof meta.id === 'string' && typeof meta.name === 'string' && meta.partner === partner && meta.scope === (P.demoMode ? 'demo' : 'normal')).map(meta => ({ id: meta.id, name: meta.name.slice(0, 250), type: String(meta.type || ''), size: Number(meta.size) || 0, scope: meta.scope, partner, createdAt: String(meta.createdAt || '') })) : [];
   function fresh(mode, partner) {
     return mode === 'manual' ? { mode, partner, desiredProduct: P.propertyDefaults?.get(partner) || 'Kvartspris', fields: emptyFields(), authorityFiles: [], confirmed: false, busy: false, error: '' } : { mode, partner, desiredProduct: P.propertyDefaults?.get(partner) || 'Kvartspris', filename: '', rows: [], confirmed: false, busy: false, error: '', batchId: crypto.randomUUID() };
@@ -68,6 +68,7 @@
     if (fields.moveDate && !validDate(fields.moveDate)) errors.push('Inflyttningsdatum ska vara ÅÅÅÅ-MM-DD');
     if (fields.email && !/^[^\s@]+@[^\s@]+\.example$/i.test(fields.email)) errors.push('Använd en fiktiv e-postadress som slutar på .example');
     for (const [key,max] of Object.entries(limits)) if (String(fields[key] || '').length > max) errors.push(`${columns.find(([name]) => name === key)[1]} är för långt`);
+    for (const key of Object.keys(limits)) if (/[\u0000-\u001f\u007f]/.test(String(fields[key] || ''))) errors.push(`${columns.find(([name]) => name === key)[1]} innehåller en radbrytning eller annat kontrolltecken. Använd en rad vanlig text`);
     return errors;
   }
   function inspectRows(draft) {
@@ -87,10 +88,10 @@
   function refreshDraft(draft) {
     if (allowed() && P.partner === draft.partner && P.page === `property-${draft.mode}` && cache.get(`${draft.partner}:${draft.mode}`) === draft) P.render();
   }
-  function open(mode = 'choice', partnerId = P.partner) {
+  function open(mode = 'choice', partnerId = P.partner, navigationOptions = {}) {
     if (!isProperty(partnerId)) return;
     generation++; receipt = null; P.role = 'partner'; P.partner = partnerId;
-    P.go(mode === 'manual' ? 'property-manual' : mode === 'import' ? 'property-import' : 'property-intake');
+    P.go(mode === 'manual' ? 'property-manual' : mode === 'import' ? 'property-import' : 'property-intake', navigationOptions);
   }
   function top(title, text, mode) {
     return `<div class="pi-heading"><div><button class="text-button pi-back" type="button" data-pi-back>${icon('arrow')} ${mode ? 'Välj registreringssätt' : 'Inflyttningsservice'}</button><span class="eyebrow">${e(P.getPartner().name)} · INFLYTTNINGSSERVICE</span><h1>${title}</h1><p>${text}</p></div>${mode ? `<span class="pi-mode-tag">${icon(mode === 'import' ? 'file' : 'edit')}${mode === 'import' ? 'Excel-import' : 'Manuell registrering'}</span>` : ''}</div>`;

@@ -317,13 +317,16 @@
         note:'Om samma försäljningstempo fortsätter efter 7 oktober: utfallet 1 januari–7 oktober plus vald periods avtal per observerad kalenderdag × 85 återstående dagar till 31 december. Ett villkorat scenario för sålda avtal, utan justering för framtida churn eller bortfall.'};
     }
     return Object.freeze({partnerId,available,cutoff,ledger,sellers,regions,coveredAudiences:historicAudiences,availableForSegment,period,periods,normalizeFilters,query,summary,insights,projection,attrition,statusAt,statusLabels,productsFor,
-      get name(){return P.getPartner?.(partnerId)?.name||fixtureNames[partnerId]||'Partner';},
+      get name(){return P.getPartner?.(partnerId)?.name||(Object.prototype.hasOwnProperty.call(fixtureNames,partnerId) ? fixtureNames[partnerId] : 'Partner');},
       get products(){return Object.freeze(productsFor());},get salesAudiences(){return Object.freeze(configuredAudiences());},get reportedAudiences(){return Object.freeze(reportedAudiences());}});
   }
   const fixtureLedgers=Object.freeze(Object.fromEntries(Object.keys(fixtureNames).map(id=>[id,buildLedger(id)])));
   const reports=new Map();
   function forPartner(partnerId) {
-    if(!reports.has(partnerId)) reports.set(partnerId,createReport({partnerId,ledger:fixtureLedgers[partnerId]||[],available:Boolean(fixtureLedgers[partnerId])}));
+    if(!reports.has(partnerId)) {
+      const available=Object.prototype.hasOwnProperty.call(fixtureLedgers,partnerId);
+      reports.set(partnerId,createReport({partnerId,ledger:available ? fixtureLedgers[partnerId] : [],available}));
+    }
     return reports.get(partnerId);
   }
   P.partnerSalesData=Object.freeze({catalog,catalogs:catalog,cutoff,forPartner,createReport,period,periods,normalizeFilters});

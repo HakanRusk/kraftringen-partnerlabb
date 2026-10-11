@@ -48,37 +48,34 @@
       location.href = url.toString();
       return;
     }
-    markStep(2);
     P.partner = propertyId;
     P.selectedPartnerId = propertyId;
     P.role = 'partner';
-    P.propertyIntake?.open(mode, propertyId);
+    P.propertyIntake?.open(mode, propertyId, { demoStep: 2 });
     focusView();
   }
 
   function openStep(number) {
     if (!P.demoMode) { location.href = demoURL(); return; }
     if (!Number.isInteger(number) || number < 1 || number > steps.length) return;
-    markStep(number);
     P.partner = propertyId;
     P.selectedPartnerId = propertyId;
     if (number === 4) {
       P.role = 'internal';
-      P.go('movein-cases');
+      P.go('movein-cases', { demoStep: number });
     } else if (number === 2) openIntake();
     else {
       P.role = 'partner';
-      P.go(number === 1 ? 'overview' : 'property-registrations');
+      P.go(number === 1 ? 'overview' : 'property-registrations', { demoStep: number });
     }
     focusView();
   }
 
   function openResult(partnerId = propertyId) {
     if (!P.getPartner(partnerId)) return;
-    markStep(partnerId === propertyId ? 5 : 0);
     P.role = 'internal';
     P.selectedPartnerId = partnerId;
-    P.go('partner-detail');
+    P.go('partner-detail', { demoStep: partnerId === propertyId ? 5 : 0 });
     focusView();
   }
 
@@ -169,8 +166,8 @@
     if (resultButton) { event.preventDefault(); openResult(resultButton.dataset.demoResult); return; }
     const intakeButton = event.target.closest('[data-demo-intake]');
     if (intakeButton) { event.preventDefault(); openIntake(intakeButton.dataset.demoIntake); return; }
-    if (event.target.closest('[data-demo-home]')) { event.preventDefault(); markStep(0); P.go('demo'); focusView(); return; }
-    if (event.target.closest('[data-demo-internal]')) { markStep(0); P.role = 'internal'; P.go('overview'); focusView(); return; }
+    if (event.target.closest('[data-demo-home]')) { event.preventDefault(); P.go('demo', { demoStep: 0 }); focusView(); return; }
+    if (event.target.closest('[data-demo-internal]')) { P.role = 'internal'; P.go('overview', { demoStep: 0 }); focusView(); return; }
     const recordButton = event.target.closest('[data-demo-open-case]');
     if (recordButton) { P.moveinService?.open(recordButton.dataset.demoOpenCase); return; }
     if (event.target.closest('[data-demo-reset]')) P.resetDemo?.();

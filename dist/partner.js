@@ -14,19 +14,21 @@
   const uid = prefix => `${prefix}-${crypto.randomUUID().slice(0, 8)}`;
   const partnerName = id => P.partners[id] || 'Exempelpartner';
   const visible = items => (Array.isArray(items) ? items : []).filter(item => item && typeof item === 'object' && !Array.isArray(item) && (P.role === 'internal' || item.partner === P.partner));
-  const dateLabel = value => { const date = new Date(value); return typeof value === 'string' && value && Number.isFinite(date.getTime()) ? new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' }).format(date) : 'Datum saknas'; };
+  const dateLabel = value => { if (typeof value !== 'string' || !value) return 'Datum saknas'; const date = new Date(value); return Number.isFinite(date.getTime()) ? new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' }).format(date) : 'Datum saknas'; };
   const nonempty = (input, value) => {
     input.setCustomValidity(value.trim() ? '' : 'Skriv text, inte enbart blanksteg.');
     input.addEventListener('input', () => input.setCustomValidity(''), { once: true });
     return input.reportValidity();
   };
   function initState() {
-    if (!Array.isArray(P.state.sites)) P.state.sites = [];
+    // Keep unreadable older site containers intact, including from support.
+    // Only an actual array may receive the optional fictional seed below.
     if (!P.state.journey || typeof P.state.journey !== 'object') P.state.journey = {};
-    if (!Array.isArray(P.state.support)) P.state.support = [];
+    // An unreadable saved support container must remain available for recovery.
+    // Rendering can show an empty list without silently replacing that data.
     if (!P.state.partnerModulesSeeded) {
       const records = (Array.isArray(P.state.records) ? P.state.records : []).filter(record => record && typeof record === 'object' && !Array.isArray(record));
-      if (!P.state.sites.length) {
+      if (Array.isArray(P.state.sites) && !P.state.sites.length) {
         ['syd', 'vast'].forEach(partner => records.filter(r => r.partner === partner).slice(0, partner === 'syd' ? 2 : 1).forEach((r, index) => {
           P.state.sites.push({ id: uid('sida'), partner, recordId: r.id, customer: r.company, title: `Välkommen, ${r.company}`, subtitle: r.kind === 'BRF' ? 'En samlad plats för er dialog om elhandel. Här kan styrelsen förbereda nästa samtal med sin partner.' : 'En samlad plats för er dialog om elhandel. Här kan ni förbereda nästa samtal med er partner.', hero: index ? 'wind' : 'office', cta: 'Boka ett samtal', created: '2026-10-07T09:00:00Z' });
         }));
@@ -174,12 +176,13 @@
     const form = document.querySelector('#partner-support-form');
     form.onsubmit = event => {
       event.preventDefault();
+      if (!Array.isArray(P.state.support)) { P.toast('Tidigare supportunderlag kunde inte läsas. Ingen ny fråga sparades; dina tidigare uppgifter har behållits.'); return; }
       if (!nonempty(form.elements.title, form.elements.title.value) || !nonempty(form.elements.message, form.elements.message.value)) return;
       const customer = P.getRecords().find(r => r.id === form.elements.customer.value);
       const request = { id: uid('fraga'), partner: customer?.partner || P.partner, customer: customer?.company || '', type: form.elements.type.value, title: form.elements.title.value.trim(), message: form.elements.message.value.trim(), created: new Date().toISOString() };
       P.state.support.unshift(request);
       if (!P.save()) { P.state.support.splice(P.state.support.indexOf(request), 1); P.toast('Kunde inte spara testförfrågan. Din inmatning finns kvar; försök igen.'); return; }
-      P.render(); P.toast('Testförfrågan är sparad lokalt. Inget har skickats.');
+      P.render(); document.querySelector('#partner-support-title')?.focus({preventScroll:true}); P.toast('Testförfrågan är sparad lokalt. Inget har skickats.');
     };
   } });
 })();
