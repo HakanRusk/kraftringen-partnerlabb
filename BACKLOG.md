@@ -301,3 +301,7 @@ val på säljpartnerns startsida, enligt Ludwigs skärmbild. Intro och
 produktlistor tas bort från startsidan. Befintliga resultat, avtalsfakta,
 utbildning och support består. Kodkontroller gröna; visuell browserkontroll
 återstår. Inte integrerad/publicerad. Full checkpoint i WORKLOG.
+
+PARTNER-START-01 är integrerad via PR #42 och publicerad i version 31 efter
+Ludwigs ”Publicera”. Fyra stora ingångar levererade; full kvittens och
+verifieringsbegränsning i WORKLOG.
