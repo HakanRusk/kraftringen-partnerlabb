@@ -14,8 +14,12 @@ offlinekopia införs, så appen fortsätter hämta den publicerade sajten.
 Lokal data kan vara separat i hemskärmsappen och webbläsaren; installationen
 kopierar eller synkroniserar inga ärenden, bilagor eller utbildningsframsteg.
 Installation är användarens val, inga popupfönster visas automatiskt.
-Kontroller: `node qa/install-app.mjs`. Verklig installation på telefon och
-visuell browserkontroll återstår; käll- och syntetiska kontroller är inte detsamma.
+Appstödet är publicerat som version 33 via PR #46. 79 fokuserade Chromium-
+kontroller passerar både lokalt och på publicerad portal: manifest, ikoner,
+mobil/datorlayout, fokus och egna partnervyer. Promptval och appvyläge är
+syntetiska; fysisk installation och inloggning på telefon återstår.
+Kontroller: `node qa/install-app.mjs` och `qa/install-app-browser.py`.
+Full käll-/publiceringskvittens finns i WORKLOG.
 
 ## Portalens flödesgranskning – publicerad version 29 (11 oktober 2026)
 
