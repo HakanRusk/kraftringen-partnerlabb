@@ -1,15 +1,17 @@
 # Prioriterad utvecklingskö
 
-## APP-01 · Partnerlabb på hemskärmen (11 oktober 2026)
+## APP-01 · Partnerlabb på hemskärmen (publicerad 11 oktober 2026)
 
-Direktuppdrag: ”Gör så att man kan göra denna till en app”. Kandidat på
-`codex/partnerlabb-install-app`: gemensamt webbappmanifest, appikoner och
+Direktuppdrag: ”Gör så att man kan göra denna till en app”. Integrerad via
+PR #44 och publicerad som version 32: gemensamt webbappmanifest, appikoner och
 menyvalet Lägg till som app. iPhone-guide och valfri native installation
 för webbläsare som erbjuder den. Säljpartnerns fyra stora val består.
 Ingen offlinecache eller dataflytt; privat åtkomst och alla dataflöden består.
 Syntetiskt installationstest och befintliga resultat-/självservicesviter
-passerar. Fysisk telefoninstallation och browserlayout återstår.
-Integration och publicering kvitteras efter faktiskt utförande i WORKLOG.
+passerar. Den privata liveadressen svarar och visar avsedd ChatGPT-inloggning;
+själva browserlayouten och fysisk telefoninstallation återstår att kontrollera
+i en autentiserad session.
+Exakt källrevision, version och lyckad deployment kvitteras i WORKLOG.
 
 ## Tredje felgranskningen – 11 oktober 2026
 
