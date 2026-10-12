@@ -65,8 +65,9 @@
             status.textContent = 'Installationen kunde inte öppnas. Använd stegen ovan i webbläsaren.';
           } finally {
             prompting = false;
-            // A late response must not change a different portal dialog.
-            if (activeGuide() && document.querySelector('#install-app-confirm') === button) refresh();
+            // Refresh the current guide after the shared pending state clears.
+            // refresh() leaves other portal dialogs untouched.
+            refresh();
           }
         });
         refresh();

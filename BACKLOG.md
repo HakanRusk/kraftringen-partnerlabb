@@ -1,5 +1,17 @@
 # Prioriterad utvecklingskö
 
+## APP-02 · Slutkontroll av installerbar app (12 oktober 2026)
+
+Ludwigs direktuppdrag: ”Gör en app av partnersidan”. Återanvänder APP-01:s
+redan publicerade version 32, med samma ikon, identitet och skyddade Site.
+En reproducerad bugg i återöppnad installationsguide rättas: en ny
+installationsknapp får tillbaka sitt aktiva läge när föregående svar är klart.
+79 riktade Chromiumkontroller passerar, inklusive 320/390/1440 px,
+plattformssteg, fokus, manifest och syntetisk prompt/appvyläge. Normal
+persistent Chromiumprofil har inga installability errors. Fysisk
+installation/inloggning på telefon återstår. Integration och native
+publicering kvitteras i WORKLOG efter utförandet.
+
 ## APP-01 · Partnerlabb på hemskärmen (publicerad 11 oktober 2026)
 
 Direktuppdrag: ”Gör så att man kan göra denna till en app”. Integrerad via

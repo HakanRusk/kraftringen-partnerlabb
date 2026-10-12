@@ -96,4 +96,21 @@ late.listeners.beforeinstallprompt({preventDefault() {}, prompt: () => new Promi
 late.node('#install-app').click(); const pending = late.node('#install-app-confirm').click();
 late.node('#install-app').click(); const freshStatus = late.node('#install-app-status');
 resolve(); await pending; assert.equal(freshStatus.textContent, '');
+
+// A fresh install opportunity must remain usable in a replacement guide.
+const reopened = app(); let resolvePrevious;
+reopened.listeners.beforeinstallprompt({preventDefault() {}, prompt: () => new Promise(r => {resolvePrevious = r;}), userChoice: Promise.resolve({outcome: 'dismissed'})});
+reopened.node('#install-app').click();
+const previousPending = reopened.node('#install-app-confirm').click();
+reopened.node('#install-app').click();
+const nextCount = reopened.native();
+const nextButton = reopened.node('#install-app-confirm');
+assert.equal(nextButton.disabled, true);
+resolvePrevious(); await previousPending;
+assert.equal(nextButton.hidden, false);
+assert.equal(nextButton.disabled, false);
+assert.equal(reopened.node('#install-app-status').textContent, '');
+await nextButton.click();
+assert.equal(nextCount(), 1);
+assert.match(reopened.node('#install-app-status').textContent, /sista steg/);
 console.log('PASS manifest, PNG dimensions, iPhone/iPad/Android/desktop guidance, explicit install, cancel/error, standalone and late response. No storage APIs supplied to install controller.');
