@@ -260,3 +260,24 @@ kontroller passerar. En ny kontroll 2026-10-11 nådde den avsedda privata
 ChatGPT-inloggningen på liveadressen, men ingen autentiserad session fanns i
 kontrollwebbläsaren. Fysisk telefoninstallation och visuell kontroll av själva
 appen återstår; full kvittens finns i WORKLOG.
+
+## 2026-10-12 · Installerbar Partnerlabb verifierad, publicerad version 33
+
+PR #46 är integrerad. Exakt GitHub-main/Sites-källa:
+acb9be0e55b77d2899630942c2df99d003596bcd. Kandidat och merge har identisk
+testad runtime; källöverföring är fast-forward från v32.
+Native version
+appgprj_6ac600ecf7d48191923687550810c1d4~appgver_f63663d871948191906feed712e87922
+och deployment appgdep_6acd395a58b48191ab9215c3be98f61b bekräftar succeeded
+2026-10-12 19:47:53 UTC på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+
+Återanvänder appikoner, manifest och plattformssteg. Rättar en låst knapp
+vid återöppnad installationsguide. 79 lokala och 79 hosted fokuserade
+Chromiumkontroller passerar, inga scriptfel. Manifest och ikonresurser är
+verifierade på liveorigin; normal Chromiumprofil har inga installationshinder.
+Promptval/appvyläge är syntetiska. Fysisk telefoninstallation och faktisk
+appsession-SSO återstår. Samma custom-policy revision 4 och all data består;
+ingen cache, offlinefunktion, backend, App Store- eller schemaändring.
+Full kvittens i WORKLOG. Dokumentationskvittensen ändrar inte dist/ eller
+hosting och kräver ingen ny publicering.

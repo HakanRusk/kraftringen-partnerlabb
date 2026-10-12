@@ -1,6 +1,6 @@
 # Prioriterad utvecklingskö
 
-## APP-02 · Slutkontroll av installerbar app (12 oktober 2026)
+## APP-02 · Installerbar app verifierad och publicerad v33 (12 oktober 2026)
 
 Ludwigs direktuppdrag: ”Gör en app av partnersidan”. Återanvänder APP-01:s
 redan publicerade version 32, med samma ikon, identitet och skyddade Site.
@@ -9,8 +9,9 @@ installationsknapp får tillbaka sitt aktiva läge när föregående svar är kl
 79 riktade Chromiumkontroller passerar, inklusive 320/390/1440 px,
 plattformssteg, fokus, manifest och syntetisk prompt/appvyläge. Normal
 persistent Chromiumprofil har inga installability errors. Fysisk
-installation/inloggning på telefon återstår. Integration och native
-publicering kvitteras i WORKLOG efter utförandet.
+installation/inloggning på telefon återstår. PR #46 är integrerad; native
+succeeded 19:47:53 UTC och 79 hosted appkontroller passerar utan scriptfel.
+Exakt källa acb9be0e55b77d2899630942c2df99d003596bcd. Kvittens i WORKLOG.
 
 ## APP-01 · Partnerlabb på hemskärmen (publicerad 11 oktober 2026)
 
@@ -21,8 +22,8 @@ för webbläsare som erbjuder den. Säljpartnerns fyra stora val består.
 Ingen offlinecache eller dataflytt; privat åtkomst och alla dataflöden består.
 Syntetiskt installationstest och befintliga resultat-/självservicesviter
 passerar. Den privata liveadressen svarar och visar avsedd ChatGPT-inloggning;
-själva browserlayouten och fysisk telefoninstallation återstår att kontrollera
-i en autentiserad session.
+browserlayouten är verifierad i APP-02. Fysisk telefoninstallation och
+inloggning i telefonens appsession återstår.
 Exakt källrevision, version och lyckad deployment kvitteras i WORKLOG.
 
 ## Tredje felgranskningen – 11 oktober 2026

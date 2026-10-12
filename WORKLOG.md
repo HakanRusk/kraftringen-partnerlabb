@@ -2101,3 +2101,41 @@ fyra stora säljpartnerval, partnerdata och befintlig åtkomst består. Fysisk
 telefoninstallation och inloggning i dess appsession återstår att verifiera.
 Faktisk integration, version, deployment och hosted kontroll kvitteras
 efter utförandet; detta är färdig verifierad kandidat.
+
+### APP-02 · Publicerad version 33 och hosted verifiering
+
+PR #46 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/46
+integrerades från verifierad kandidat
+5688a6cf39b02bf593a19aa8ecf9e5460ec706c1. Exakt GitHub-main och publicerad
+Sites-källa: acb9be0e55b77d2899630942c2df99d003596bcd. Kandidat och merge
+har samma träd 23673f717320498a3b078befb7b8f1888bb44c06 och dist-träd
+cc6fdac9789ba79e87322e23d003293b4752c6cd.
+
+Sites överfördes fast-forward från v32 via dess dokumentationskvittens till
+exakt verifierad main, utan force. Arkivet från samma rena pushade revision
+innehåller endast dist/ och hostingmanifestet.
+
+Native version **33**:
+appgprj_6ac600ecf7d48191923687550810c1d4~appgver_f63663d871948191906feed712e87922.
+Deployment appgdep_6acd395a58b48191ab9215c3be98f61b bekräftade **succeeded**
+2026-10-12 **19:47:53.756915 UTC** på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Efter publiceringen visar färsk metadata v33 och oförändrad custom-policy
+revision 4. Inga åtkomst-, agent-, schema- eller tunneländringar gjordes.
+
+Fokuserad hosted kontroll passerar **79/79** utan scriptfel. Manifest och
+alla ikoner hämtas från den faktiska publicerade origin, installationsguide,
+mobil-/datorlayout, tangentbord/fokus, egna partnervyer och rättad async
+återöppning fungerar. Normal persistent Chromiumprofil har
+installabilityErrors: []; isolerad incognitoprofil har endast in-incognito.
+Artefakt: /workspace/partnerapp-qa/hosted/report.json.
+
+Promptval och standalone-visning är uttryckligen syntetiska. Ingen fysisk
+iPhone-/Android-installation eller faktisk användares SSO i installerad
+appsession påstås. Teståtkomst till skyddad portal använder minneshållen
+bearer via dolt stdin och skickas endast till samma origin; inga credentials
+sparas i källkod, argv eller rapporter. All lokal data i QA är fiktiv.
+
+Efterhandskvittensen ändrar endast README, BACKLOG, WORKLOG och GITHUB-STATUS.
+dist/ och hosting är byteidentiska med publicerad v33; ingen extra deployment
+krävs. Installation använder samma liveadress och befintlig inloggning.
