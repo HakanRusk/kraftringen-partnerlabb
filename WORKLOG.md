@@ -2059,3 +2059,45 @@ en autentiserad browser är fortsatt verifieringsbegränsningar. Native
 har provats på en verklig telefon. Denna efterhandskvittens ändrar endast
 dokumentation; dist/ och hostingmanifest är identiska med publicerad version
 32 och kräver ingen ny deployment.
+
+## 2026-10-12 · APP-02 · Verifierad installerbar Partnerlabb
+
+Ludwigs direktuppdrag: ”Gör en app av partnersidan”. Färsk main
+7f8dce30ca1bfdd34cbac09ae83e5cc7cfc02353 innehåller redan APP-01/PR #44;
+Sites-metadata och källöppning verifierar v32, samma källa och custom-policy
+revision 4. Befintligt appstöd återanvänds. Granskad dokumentations-PR #45
+integreras från c26759f1cea9eac2862ed0164341247a0bede8fa till
+aba5652b04d326a8201d795b0406e7f73d439136; endast tre dokument ändras.
+Egen gren: codex/partnerlabb-app-check-20261012.
+
+En bugg reproduceras: tidigare installprompt väntar, ny guide öppnas och
+ny beforeinstallprompt kommer. När det första svaret är klart kunde den
+nya knappen förbli inaktiverad. refresh körs nu mot aktuell guide efter
+att det gemensamma vänteläget återställts. Andra dialoger lämnas orörda.
+Ny regression i qa/install-app.mjs fallerar för v32:s script och passerar
+för rättningen. Förebevis: /workspace/partnerapp-qa/before-replacement-guide.log.
+
+Fokuserad faktisk Chromiumkontroll passerar 79/79 utan scriptfel. Dator,
+iPhone-/Android-instruktioner, 320/390/1440 px, tangentbord, fokus, Escape,
+egna partnervyer och oförändrad lokal data ingår. Manifestet parsas korrekt
+och alla ikonstorlekar finns. Normal persistent Chromiumprofil rapporterar
+installabilityErrors: []; incognitoprofilens in-incognito är ingen produktbugg.
+Native promptval och standalone-visning är uttryckligen syntetiska; ny
+återöppningsregression använder portalens verkliga DOM. Första harnessens
+skrivning till readonly matches rättades med property descriptor; ingen
+produktändring för det. Före-/slutartefakter ligger separat.
+
+Root har visuellt granskat iPhone-guiden och egna fastighetsresultat i
+syntetisk appvy. node qa/install-app.mjs, results-only.mjs,
+partner-self-service.mjs, JS/Python-syntax och diffkontroll passerar.
+QA finns i qa/install-app-browser.py; artefakter /workspace/partnerapp-qa.
+Apple/MDN bekräftar installationsstegen; service worker behövs inte för
+menyinstallation. Direkta installationsknappen visas endast när browsern
+faktiskt ger installationshändelsen.
+
+Ingen service worker/cache, offlinefunktion, lagringsändring, dataflytt,
+backend, App Store-publicering eller ny inloggning införs. Hela kursen,
+fyra stora säljpartnerval, partnerdata och befintlig åtkomst består. Fysisk
+telefoninstallation och inloggning i dess appsession återstår att verifiera.
+Faktisk integration, version, deployment och hosted kontroll kvitteras
+efter utförandet; detta är färdig verifierad kandidat.
