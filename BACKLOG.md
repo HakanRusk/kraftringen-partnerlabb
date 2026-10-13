@@ -339,3 +339,7 @@ Utvalda utbildningar. Kortet och dess bidrag till listans mått tas bort;
 sparade framsteg och fullständiga Elakademin bevaras. Verifierad kandidat
 på `codex/remove-legacy-academy-card`; testbelägg i WORKLOG. Faktisk
 integration och publicering kvitteras i PR efter utförandet.
+
+ACADEMY-REMOVE-01 är klar: PR #48 integrerad och publicerad som version 34
+13 oktober 2026. Native deployment bekräftar succeeded; full kvittens i
+WORKLOG. Fullständiga Elakademin och lokal historik bevaras.

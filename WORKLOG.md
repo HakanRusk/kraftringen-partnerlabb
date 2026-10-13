@@ -2163,3 +2163,25 @@ bokmärkesantal och fortsatt ingång till fullständig utbildning.
 Miljön erbjuder inte Sites-föreskriven control-browser; ingen ny visuell
 webbläsar- eller fysisk mobilkontroll påstås. Ändringen använder befintlig
 layout. Integration och lyckad publicering kvitteras i PR efter utförandet.
+
+### ACADEMY-REMOVE-01 · Publicerad version 34
+
+PR #48 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/48
+integrerades från kandidat `9a253e9dac75b90e0ebee4c6f2b29f02e6d93c7e`.
+GitHub-main och exakt pushad Sites-källa:
+`abe462486362ed528465abc2e23df7c26b984c06`.
+Merge och kandidat har samma verifierade träd
+`c106595f83adb8dcc9536f304b2741e82af4a8be`.
+Överföringen från publicerad v33 var fast-forward med bevarad historik.
+
+Sites version **34**:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_4a27fb551fe48191beebade8938c22f1`.
+Deployment `appgdep_6ace0ee13de0819183a6f098b0a88879` kvitterade
+**succeeded** 2026-10-13 kl. 10:58:56 UTC på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Befintlig custom-delning bevarades. Inga schema- eller åtkomständringar.
+
+Kodkontroller och verifieringsbegränsningar gäller enligt posten ovan;
+ingen ny browserkontroll påstås. Denna efterhandskvittens ändrar endast
+arbetsminnet; dist/ och hostingmanifest är identiska med publicerad v34
+så ingen ytterligare publicering behövs.
