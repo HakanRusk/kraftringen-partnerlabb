@@ -331,3 +331,11 @@ utbildning och support består. Kodkontroller gröna; visuell browserkontroll
 PARTNER-START-01 är integrerad via PR #42 och publicerad i version 31 efter
 Ludwigs ”Publicera”. Fyra stora ingångar levererade; full kvittens och
 verifieringsbegränsning i WORKLOG.
+
+## 2026-10-13 · ACADEMY-REMOVE-01 · Äldre Elakademin-kort
+
+Ludwigs skärmbildsuppdrag: ta bort äldre ”Förstå din elaffär” från
+Utvalda utbildningar. Kortet och dess bidrag till listans mått tas bort;
+sparade framsteg och fullständiga Elakademin bevaras. Verifierad kandidat
+på `codex/remove-legacy-academy-card`; testbelägg i WORKLOG. Faktisk
+integration och publicering kvitteras i PR efter utförandet.
