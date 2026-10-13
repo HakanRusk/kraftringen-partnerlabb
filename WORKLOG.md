@@ -2139,3 +2139,27 @@ sparas i källkod, argv eller rapporter. All lokal data i QA är fiktiv.
 Efterhandskvittensen ändrar endast README, BACKLOG, WORKLOG och GITHUB-STATUS.
 dist/ och hosting är byteidentiska med publicerad v33; ingen extra deployment
 krävs. Installation använder samma liveadress och befintlig inloggning.
+
+## 2026-10-13 · ACADEMY-REMOVE-01 · Ta bort äldre kurskort
+
+Ludwigs direktuppdrag med skärmbild: ”Ta bort denna utb ifrån partnersidan”.
+Bilden visar äldre **Elakademin – Förstå din elaffär** under Utvalda
+utbildningar, inte den fullständiga kursens separata ingång.
+Egen gren `codex/remove-legacy-academy-card` från main `b2bf534`.
+Färsk GitHub-källa, öppna PR:er och Sites v33 kontrollerade före ändringen;
+ingen öppen PR överlappar. Inga nya Daniel-ändringar tas in.
+
+Kurskortet tas bort från alla kategorier och bokmärkesvyn. Sidans mått
+räknar de fyra kvarvarande demokurserna. Det gamla bokmärket, klarmarkeringar
+för kapitel och självtestsvar bevaras lokalt men ingår inte i visade mått.
+Den gamla hänvisningstexten är rättad. Fullständiga Elakademin, allt
+utbildningsmaterial, B2C-samtalsbiblioteket, partnerdata och åtkomst bevaras.
+
+Verifierat: JavaScript-syntax, `qa/results-only.mjs`,
+`qa/partner-self-service.mjs`, diffkontroll samt 18 renderingsfall i Node VM
+för B2B/B2C/båda, normal/demo och alla/elhandel/bokmärken. Kontrollerna visar
+bevarad äldre lärhistorik vid render och JSON-återläsning, rätt kurs-/moment-/
+bokmärkesantal och fortsatt ingång till fullständig utbildning.
+Miljön erbjuder inte Sites-föreskriven control-browser; ingen ny visuell
+webbläsar- eller fysisk mobilkontroll påstås. Ändringen använder befintlig
+layout. Integration och lyckad publicering kvitteras i PR efter utförandet.
