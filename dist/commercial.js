@@ -67,7 +67,7 @@
     month: [
       { id:'2026-09', label:'September 2026', current:['2026-09'], previous:['2026-08'], comparison:'augusti 2026', range:'1–30 september 2026' },
       { id:'2026-08', label:'Augusti 2026', current:['2026-08'], previous:['2026-07'], comparison:'juli 2026', range:'1–31 augusti 2026' },
-      { id:'2026-10', label:'Oktober 2026 · 1–7 okt', current:['2026-10'], partial:'month', comparison:'1–7 september 2026', range:'1–7 oktober 2026 · delperiod' },
+      { id:'2026-10', label:'Oktober 2026 · till 7 okt (delperiod)', current:['2026-10'], partial:'month', comparison:'1–7 september 2026', range:'1–7 oktober 2026 · delperiod' },
       { id:'2026-07', label:'Juli 2026', current:['2026-07'], previous:['2026-06'], comparison:'juni 2026', range:'1–31 juli 2026' },
       { id:'2026-06', label:'Juni 2026', current:['2026-06'], previous:['2026-05'], comparison:'maj 2026', range:'1–30 juni 2026' },
       { id:'2026-05', label:'Maj 2026', current:['2026-05'], previous:['2026-04'], comparison:'april 2026', range:'1–31 maj 2026' },
@@ -86,6 +86,8 @@
       { id:'2026-ytd', label:'2026 · till 7 okt', current:Object.keys(fixtures), previous:[], comparison:'ingen tidigare årsbas i exemplet', range:'1 januari–7 oktober 2026 · året hittills', isPartial:true }
     ]
   };
+  // ISO period IDs sort newest first; keep the last complete month as initial selection.
+  Object.values(periods).forEach(items => items.sort((a, b) => b.id.localeCompare(a.id)));
   let periodKind = 'month';
   let periodId = '2026-09';
   let typeFilter = 'all';

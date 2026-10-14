@@ -1,0 +1,76 @@
+name: Partnerlabb QA
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: qa-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  unit:
+    name: Node and DOM
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+  browser:
+    name: Chromium flows
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: qa/requirements.txt
+      - run: python -m pip install -r qa/requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - name: Start test server
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 --directory dist > "$RUNNER_TEMP/partnerlabb-http.log" 2>&1 &
+          python - <<'PY'
+          import time, urllib.request
+          for attempt in range(20):
+              try:
+                  with urllib.request.urlopen('http://127.0.0.1:8000/', timeout=2) as response:
+                      if response.status == 200:
+                          break
+              except OSError:
+                  time.sleep(0.5)
+          else:
+              raise SystemExit('Test server did not start')
+          PY
+      - name: Intake, handover and partner types
+        env:
+          PARTNERLABB_QA_URL: http://127.0.0.1:8000/
+          PARTNERLABB_QA_SHOTS: ${{ runner.temp }}/partnerlabb-shots
+        run: python qa/run-browser.py
+      - uses: actions/upload-artifact@v5
+        if: failure()
+        with:
+          name: chromium-failure-evidence
+          path: |
+            ${{ runner.temp }}/partnerlabb-shots
+            ${{ runner.temp }}/partnerlabb-http.log
+          retention-days: 7
+  gate:
+    name: QA gate
+    if: always()
+    needs: [unit, browser]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require both suites to pass
+        env:
+          UNIT_RESULT: ${{ needs.unit.result }}
+          BROWSER_RESULT: ${{ needs.browser.result }}
+        run: test "$UNIT_RESULT" = success && test "$BROWSER_RESULT" = success

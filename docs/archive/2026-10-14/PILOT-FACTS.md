@@ -1,0 +1,96 @@
+# Pilotens fakta och belägg
+
+## Senaste direktuppdrag: valbart CRM – 14 oktober 2026
+
+Ludwig vill vid skapande av säljpartner välja **Har eget CRM** eller
+**Använd Partnerportalen som CRM**. Det förtydligar den äldre generella
+inriktningen att säljpartners arbetar utanför portalen: den gäller fortsatt
+partners med eget CRM, inklusive Savera/Face2face som standard. Valbart
+portalarbetssätt är nu uttryckligen beställt. Partnertyp och B2B/B2C/båda är
+fortsatt separata val. Inget schema eller befintlig åtkomst ändras.
+
+`partnerProfiles.crmMode` styr arbetssättet (`external`/`portal`). Äldre
+profiler utan val behåller eget CRM. Båda alternativen kan väljas i
+partnerinställningar; byte bevarar kundhistorik. Fastighetsbolag och
+personalavtal påverkas inte. Portal-CRM har kundkort, ansvarig säljare,
+kontaktuppgifter, säljsteg, nästa aktivitet/datum, förlustorsak och historik.
+Kundsegment låses på sparad rad. `state.crmRecords` använder befintlig
+normal-/demoisolerad lagring; inga äldre underlag omklassificeras.
+
+Denna leverans är lokal frontend. Vunnen CRM-status skapar inga bindande
+avtal, resultat eller kickback. Gemensam lagring och identitetsbaserad
+partnerbehörighet är fortfarande en separat etapp. Verifiera formulär,
+B2B/B2C/båda, segment-/arbetssättsbyte, sparfel, flikkonflikt, omladdning,
+filter, partneravgränsning och bevarade ekonomiska/serviceunderlag.
+
+
+## Bekräftad inriktning: resultat och utbildning (2026-10-11)
+
+Källa: Ludwigs direkta förtydligande i uppgiften. Säljpartnernas affärer och nästa aktiviteter hanteras utanför Partnerlabb. Kraftringen följer resultat, Kunder & avtal, Insikter och villkorade scenarier under Partners. Säljpartners använder utbildning och stöd. Detta ersätter äldre mål om aktiv kundregistrering, pipeline, offertarbete och återkopplingsflöden för Savera/Face2face i portalen. Äldre lokala underlag och utkast bevaras; de blir inte resultathistorik. Fastighetsbolagens registrering, fullmaktsbilagor, förmedling och handläggning behåller operativa nästa steg. Ingen ny verksamhetsregel eller integration införs.
+
+Första inventering: 10 oktober 2026. Datum nedan avser dokumentation eller
+observation; användarens tidigare verksamhetsbeskrivning finns i denna
+konversation och AGENTS.md. Uppdatera endast när nytt belägg finns.
+
+| Typ | Underlag | Källa / observation | Betydelse för arbetet |
+| --- | --- | --- | --- |
+| Bekräftat, senaste presentationsuppdrag | Bygg och publicera vår föreslagna kunddemo med konkret inflyttning och överlämning först; därefter resultat/kickback, elfrågor och egen fastighetsel. | Ludwigs ”Bygg det och publicera sedan” efter vår rekommendation, 2026-10-11. | Omarbeta Ert samarbete inom befintlig frontend. Återanvänd Excel/manuell registrering, fullmaktsbilagor och status; inga nya aktiva hyresgäststeg. Mandatet ändrar inte service-, avtals- eller ersättningsregler. |
+| Förslag, presentationsprioritering | Enkel inflyttning är huvudvärdet i demon. Föreslagen avlastning av uthyrarnas elfrågor kommer därefter; fyra övriga idéer samlas i en stängd fördjupning. Onödig förbrukning diskuteras tillsammans med egen fastighetsel. | Assistentens relevansbedömning som användaren gav byggmandat för, 2026-10-11. | Alla sex idéer, detaljvyer och lokala fokusval bevaras. Presentationen är inte belagd kundrespons, faktisk tidsbesparing, färdig supporttjänst, SLA eller besparingsgaranti. |
+| Bekräftat, senaste fastighetsbehov | Elavtalet för kundens egen fastighetsel ska också visualiseras i samarbetet. | Ludwigs direkta instruktion, 2026-10-11: ”vi även inkluderar ett elavtal till kundens fastighetsel i dealen och det borde vi också visualisera”. | Samma fastighetspartner kan vara hyresgästkanal och företagskund; håll egna fastighetselavtal skilda från hyresgästernas avtal och kanalens kickback. Inget visst tecknat avtal eller dess omfattning är belagt. |
+| Bekräftat, frontenduppdrag | Bygg ett förslag som visualiserar ytterligare hjälp för fastighetsbolagen. | Ludwigs ”Bygg ett förslag” efter assistentens sex idéer, 2026-10-11. | Genomför ett konkret, avgränsat frontendförslag inom befintlig portal. Instruktionen fastställer inte tjänstevillkor, priser eller nya operativa processer. |
+| Förslag, partnernytta | Hyresgästernas elfrågor; underbyggda elkostnadsintervall i bostadsannonser; upptäcka onödig förbrukning; elbehov före lokaluthyrning; elöversikt vid fastighetsköp/försäljning; bedöma laddning, solceller, batterier och styrning. | Assistentens idéer i samtalet före bygguppdraget, 2026-10-11. Den senaste presentationsordningen ovan ersätter tidigare rekommenderad start. | Visa som möjligheter att undersöka, inte belagda behov hos faktisk kund, färdiga Kraftringen-tjänster eller garanterade besparingar. |
+| Förslag, avgränsad implementation | Ert samarbete, property-partnership, nås från vald fastighetspartners interna profil och egna meny. Lokala fokusval sparas per partner som diskussionsunderlag. | Frontendkandidat för senaste bygguppdrag, 2026-10-11. | Bevara befintlig inflyttning, normal-/demoisolering och återställning vid sparfel. Fokusval skapar inga utskick, support-/serviceärenden, avtal eller ekonomiskt utfall. Faktisk verifiering/publicering kvitteras separat i WORKLOG. |
+| Saknas, egen fastighetsel och bredare stöd | Partnerns egna elavtal, anläggningsomfattning, volymer, kostnader, avtalsperioder, besparingsunderlag och godkänd leveransprocess för de sex idéerna. | Inget sådant partner- eller verksamhetsunderlag har lämnats i senaste uppdraget, 2026-10-11. | Saknade mått visas som Underlag saknas/—. Fastighetsregister är inte avtalsomfattning; säljpartnerexempel och hyresgästärenden är inga datakällor för egen fastighetsel. Förbered dialog utan att starta verkliga tjänster. |
+| Bekräftat, senaste partneralternativ | Vid skapande ska också Fastighetsbolag och företag med Personalavtal vara alternativ, tillsammans med Säljpartner. Alla ligger under Partners. | Ludwigs direkta instruktion, 2026-10-11: ”Fastighetsbolag lr ett företag som vill ha en personalavtal? Vill jag också ska vara alternativ”. | Skilj samarbetstyp från säljpartnerns B2B/B2C/båda. Företaget som erbjuder personalavtal är en kanal till anställda; egen företagsel är separat. |
+| Förslag, avgränsad implementation | Lokala profiler kan skapas som sales/property/employee och bevarar befintlig field-typ. Typen på befintlig partner behålls; namn kan ändras för alla typer. Ny fastighetspartner får befintlig inflyttningsservice; personalavtalspartner får egen översikt. | Frontendkandidat för senaste instruktion, 2026-10-11. | Ingen omklassificering av historik. Ny profil utan kommersiell källa visar saknat underlag, inte andra partners resultat. Verifiering och eventuell publicering kvitteras separat i WORKLOG. |
+| Saknas, personalavtal | Erbjudande/produktval, villkor, arbetsgivarens och de anställdas eventuella steg, registrering och ersättningsregler för personalavtal. | Inget sådant verksamhetsunderlag har lämnats i senaste instruktionen, 2026-10-11. | Typvalet auktoriserar inte ny anmälningsprocess, avtalsvillkor, bindande avtal eller kickbackberäkning. Fortsätt oberoende partnerregistrering och översikt. |
+| Bekräftat | Agenten ska hjälpa till att göra Partnerlabb enkelt och användbart, med återkommande arbete. | Ludwigs instruktion ”Skapa agenten”, 2026-10-10. | Pilotprioritering; återanvänd samma befintliga timuppgift. |
+| Bekräftat, mål | Kom så långt som möjligt utan en faktisk kund; gör en mycket snygg, enkel och intuitiv kunddemo. | Ludwigs nya styrning ”kom så långt du kan utan en faktisk kund”, 2026-10-10. | Slutför oberoende frontend-, test- och demoarbete självständigt. Saknad pilotkund stoppar inte en fungerande fiktiv demo. |
+| Bekräftat, senaste arbetssätt | Fastighetsbolaget sköter allt aktivt portaljobb: Excel-uppladdning med befintliga fullmaktsbilagor eller manuell registrering med bilaga. Hyresgästen gör inget aktivt i portalen. Partnern förmedlar; Kraftringen hanterar och återkopplar. | Ludwigs senaste instruktion om två registreringsvägar, 2026-10-10. | Ersätter äldre hyresgästformulär/QR-antaganden. Frånvaro av portalsteg upphäver inte behovet av giltigt uppdrag eller separat avtalsval. |
+| Bekräftat, senaste uppföljningskrav | Fastighetspartnern ska se hur många kunder samarbetet gett Kraftringen och vilken kickback det gett. Kraftringen vill hålla uppföljningen enkel. | Ludwigs senaste instruktion, 2026-10-10. | Egen partneravgränsad resultatpresentation. Kunder, serviceunderlag och hjälpta inflyttare är skilda mått; ingen intern kostnad/nettobidrag i partnervyn. |
+| Bekräftat, senaste uppföljningskrav | Säljpartners ligger under Partners med generisk Kunder & avtal och Insikter; inga separata globala kategorier för Savera eller Insikter. Välj företag (B2B), konsument (B2C) eller båda när partner skapas. Savera och Face2face ska ha samma avtal-/bestånds-/insiktsuppföljning per år/månad/vecka med produktfilter, kundtid, popularitet och scenario vid fortsatt tempo. | Ludwigs senaste instruktion, 2026-10-10, efter version 15. | Genomför gemensamma rapporter och valbara kundsegment inom frontendmandatet. Framtida användning som säljverktyg är fortfarande inte beslutad; Saleshub är inte identifierad. |
+| Förslag, implementation | Även ändring av partnerns kundsegment erbjuds. Lokala profiler kompletterar grundregistret; historiska kund-/avtalsrader behåller sitt eget segment. Ny partner utan resultatunderlag visar saknat underlag. | Anpassning till senaste uppföljningskravet, 2026-10-10. | Verifiera B2B, B2C och båda, lagringsfel och normal-/demoisolering. Ingen verklig partnerbehörighet eller central lagring införs. |
+| Förslag, måttdefinitioner | Nya avtal följer stängningsdatum; aktiva kunder är bestånd vid vald periods observerade slut. Avslutad kundtid skiljs från aktiv kunds observerade ålder. Prognosen är ett kalenderdagsbaserat scenario från vald periods takt till årets slut. | Anpassning till senaste uppföljningskravet, 2026-10-10. | Visa period, kundbas, brytdatum och horisont. Måttdefinitionerna behöver verkliga källor/fastställande enligt D-04; aktiva kunder har ingen observerad slutlig livslängd. |
+| Bekräftat, tekniskt, historisk version 15 | En fiktiv Savera-kundledger stämmer mot befintliga månads-/produkt-/säljar-/regionceller för nya avtal och års-MWh: 207 avtal, 8 175 års-MWh och 305 aktiva kunder vid 7 oktober. Insikter och fastighetspartnerns egna resultat är implementerade. | 104 browserkontroller, 13 data-Node-kontroller och Sites version 15, SHA 3e1b873f5a2fdacf1dbd14e733155a226d53f5ed; kvittens i WORKLOG. | Verifierad exempelimplementation, ingen verklig kundimport eller ersättningsregel. Äldre kohorter ger separat exempelhistorik för bestånd/kundtid. Kickback har egen källa; nya serviceärenden skapar inget utfall. |
+| Förslag, kandidathistorik | Face2face-exemplen behåller 437 nya avtal/1 804 avtalade års-MWh 2026, 785 öppningsaktiva kunder och en separat kö av fyra äldre väntande avtal. Kön börjar 2026 och ska stämma av 399 starter med 990 aktiva vid 7 oktober. Produktfördelningen över fem B2C-produkter är fiktiv. | Generisk datakandidat, 2026-10-10; avstämning mot tidigare manuella aggregat. | Detta är konstruerad demohistorik, ingen verklig kundimport. Kön ingår inte i årets nya försäljning eller öppningsaktiva churnbas. Faktisk kod-/publiceringskvittens redovisas separat i WORKLOG. |
+| Bekräftat | Fastighetsbolagets egen elförbrukning är en separat företagsaffär. | Samma verksamhetsbeskrivning. | Blanda inte ihop hyresgästkanal och partnerns egna avtal. |
+| Bekräftat | Savera säljer till företag. Utbud: Rörligt pris, Kvartspris, Poolportfölj Trygg, Poolportfölj Offensiv, Individuell portfölj, Kraftringen Stabil. | Användarens uttryckliga produktlista; AGENTS.md. | Följ avtal, avtalad årsvolym i MWh, produkt och säljare; senaste instruktion gör år/månad/vecka, per-kund-avtal, aktivt bestånd och Insikter gemensamt för alla säljpartners under Partners. Villkor och priser saknas. |
+| Bekräftat, senaste produktlista | Face2face säljer till konsumenter: Fastpris, Vintersäkrat, Opti, Kvartspris och Rörligt pris. Face2face använder Beest. | Ludwigs senaste uttryckliga produktlista, 2026-10-10; tidigare Beest-bekräftelse. | Ersätter tidigare begränsning till Opti/Kvartspris. Använd B2C-katalogen för alla konsumentpartners och B2B-katalogen för företag; blandade partners har båda. Beest ersätts eller integreras inte här. |
+| Bekräftat | Bortfall före avtalsstart och churn efter start ska visas som separata mått. | Användarens svar i konversationen. | Definiera period och korrekt bas för varje mått. |
+| Bekräftat | Kickback ska kunna följas för alla tre partnerkanaler. | Användarens uttryckliga instruktion. | Redovisningsbehov är bekräftat; faktiska regler och belopp är det inte. |
+| Bekräftat, tekniskt | GitHub-main var 347f02a1a1cdfe47e2abb33793e9f24b1575f758 vid uppdragets start. Repo är publikt. | GitHub-läsning och git fetch, 2026-10-10. | Gemensam kodkälla; inga riktiga kundärenden eller hemligheter i repo. |
+| Bekräftat, tekniskt | Prototypen är statisk med lokal webbläsardata. Ingen delad backend, verklig rollstyrning eller Beest-integration finns. | Aktuell kod och README.md, avläst 2026-10-10. | Två användare delar inte ärendedata eller fullmaktsbilagor. Demovyer är inte behörighetsgränser. |
+| Bekräftat, tekniskt | INFLYTT-01, -02 och -03 har publiceringskvittens. PR #1 införlivades genom kunddemot i PR #4; native GitHub-status är merged. | WORKLOG.md, [PR #4](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/4) och Sites version 12, SHA c956ab385493df4479338cec6a60ccfed1f69bc3, verifierat 2026-10-10 kl. 19:07 UTC. | Historiskt belägg för återanvändbar ärendereferens; verifierar inte det nya Excel-/manuella gränssnittet. Skapa ingen konkurrerande kvittokopia. |
+| Bekräftat, instruktion | Ludwig ska godkänna Daniels konkreta PR och aktuella HEAD-SHA före integration/publicering. | Användarbeslut och COLLABORATION.md. | Ta inte in Daniels ogranskade arbete i agentens egen leverans. |
+| Förslag | Avgränsa första verkliga piloten till ett fastighetsbolag och en namngiven Kraftringen-handläggare. | Senaste pilotupplägget, dokumenterat 2026-10-10. | Föreslagen avgränsning; inga deltagare är utsedda här. |
+| Förslag, designval | Guidad kedja från fastighetsbolagets Excel/manuella registrering genom dokument, förmedling, Kraftringens handläggning och återkoppling. | Anpassning till Ludwigs senaste arbetssätt, 2026-10-10. | Verifiera båda ingångarna och nästa handling; designval är inte bevis på faktisk användarnytta. |
+| Bekräftat, tekniskt | `?demo=inflyttning` öppnar en separat fiktiv demoyta med egna lokala ärende-/utkastnycklar och återställning av bara denna yta. | Källkod, 34 browserkontroller och lyckad Sites-publicering version 12 den 2026-10-10; kvittens i WORKLOG. | Generalrepetitionen bevarar ordinarie labbdata. Guidad navigation och lokal isolering är inga riktiga behörigheter. |
+| Ersatt antagande | Tidigare direkt hyresgästlänk/QR och aktiv hyresgästregistrering. | Ersatt av Ludwigs senaste instruktion, 2026-10-10. | Bygg inte vidare på dessa förslag. Äldre registrerade poster/utkast bevaras utan nya val eller befogenheter. |
+| Bekräftat, tekniskt | Partnerregistrering har två ingångar (.xlsx/manuell) och lokala fullmaktsbilagor i IndexedDB, avskilda mellan kunddemo och ordinarie labb. | 109 browserkontroller och Sites version 13, SHA eaa303f8f09df2e9ed4ab74324b799607877729e, verifierat 2026-10-10 kl. 19:32 UTC. Kvittens i WORKLOG/GITHUB-STATUS. | Filens förekomst är inte godkänd fullmakt. Saknad bilaga och lagringsfel ska redovisas; JSON-export är inte dokumentbackup. |
+| Förslag | Börja uppföljningen med kontrollerade importer/avstämningar innan automatiska integrationer. | Pilotresonemang, 2026-10-10. | Förbered en liten fiktiv mall; faktisk datakälla och mandat saknas. |
+| Saknas | Namn på pilotpartner, ansvarig handläggare och ett anonymiserat representativt ärende. | Inte lämnat i nuvarande underlag, 2026-10-10. | [Beslut D-01](PILOT-DECISIONS.md). Behövs för verklig pilot och användarutfall, inte för färdig fiktiv demo. Inga verkliga tids-/nyttopåståenden kan göras. |
+| Saknas | Godkända uppgifter, fullmaktsmall, identifiering, signering och återkopplingsprocess. | AGENTS.md och aktuella öppna beslut, 2026-10-10. | [Beslut D-02](PILOT-DECISIONS.md). Nuvarande formulärfält är demo, inte godkänd verksamhetsmall. |
+| Saknas | Godkänd miljö för gemensam lagring, identiteter, åtkomst, personuppgifter och pilotdrift samt genomförandemandat. | Nuvarande uppdrag gäller frontend; inget senare driftbeslut finns här. | [Beslut D-03](PILOT-DECISIONS.md). Förbered specifikation; aktivera inte backend/persondata. |
+| Saknas | Verifierade avtals-/volym-/churndatakällor och kickbackregler per kanal. | DATA-01, 2026-10-10. | [Beslut D-04](PILOT-DECISIONS.md). Saknat underlag får inte visas som nollutfall eller påhittad verklig ekonomi. |
+
+MWh betyder i nuvarande rapporter **avtalad årsvolym för periodens nya avtal**,
+inte levererad el under månaden. Verklig energi, avtalsutfall och ekonomiskt
+resultat kräver egna källor och definitioner. Regeluppgifter som inte behövs
+för pilotuppgiften får inte förvandlas till produktlöften.
+
+- Den generiska rapporten skiljer datatäckning per segment från
+  partnerns valda konfiguration. Nytt segment utan historik visar saknat
+  underlag, inte observerad nollförsäljning. Nya/blandade partnerarbetsytor
+  visar egna kataloger, utbildning och support utan att läsa andra partners
+  redigerbara demo-underlag. Intern rapportering och kickbackurval är
+  generiska; inga riktiga integrationer eller ersättningsregler tillkommer.
+
+## 2026-10-11 · PARTNER-05 · Egna resultat, avtalsfakta och grundval
+
+Ludwigs direkta korrigering: säljpartners ska också se sina egna resultat. Utbildning och Avtalsfakta ska vara separata ingångar för B2B/B2C. Fastighetsbolag väljer grundval mellan Opti, Kvartspris och Rörligt månadspris; Kvartspris är initialt grundval. Detta är uttryckligt frontendmandat, ingen automatisk avtalsteckning eller ny ersättningsregel.
+
+Implementering på codex/partner-results-product-facts från f30f86739bf5fb60ccc7e09e2f9fca5545b2c7e2: gemensamma kund-/avtalsrapporter och Insikter avgränsas till P.partner i partnervy, oavsett intern vald partner. Inga interna kostnader, nettobidrag eller partnerinställningar exponeras i dessa vyer. Rapportfilter bevaras separat per perspektiv/partner. Lokal visningsavgränsning är inte autentisering.
+
+Avtalsfakta har sex B2B- och fem B2C-kort, källdatum och officiella produkt-/villkorslänkar. Befintliga Elakademin-filmer länkas som principutbildning, inte kompletta produktspecifika genomgångar. Verifierat exakt produktblad saknas för Kraftringen Stabil och företagets Kvartspris; Individuell portfölj har bara allmän portföljkälla. Saknade detaljer markeras, inga priser eller bindningstider gissas.
+
+Grundval sparas i propertyDefaults i befintlig normal-/demoisolerad state. Nya manuella/Excel-utkast får en ögonblicksbild som går att ändra; importens val gäller valda nya rader. Äldre utkast utan val förblir utan val. Registrerad desiredProduct är ett önskemål; fullmakt och offerChoice förändras inte. Dubbletter skriver inte om tidigare val; sparfel återställer data.

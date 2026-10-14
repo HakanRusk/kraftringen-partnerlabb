@@ -1,10 +1,9 @@
 // DOM behaviour verification, not a browser/layout test.
-// npm install --prefix /tmp/partner-crm-qa jsdom
-// CRM_QA_JSDOM=/tmp/partner-crm-qa/node_modules/jsdom/lib/api.js node qa/partner-crm.mjs
+// npm ci && node qa/partner-crm.mjs; CRM_QA_JSDOM can override the installed dependency.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { pathToFileURL } from 'node:url';
-const {JSDOM} = await import(pathToFileURL(process.env.CRM_QA_JSDOM).href);
+const {JSDOM} = await import(process.env.CRM_QA_JSDOM ? pathToFileURL(process.env.CRM_QA_JSDOM).href : 'jsdom');
 const html = fs.readFileSync('dist/index.html','utf8');
 let checks=0;
 const test=(name,run)=>{run();checks++;console.log(`PASS ${name}`);};

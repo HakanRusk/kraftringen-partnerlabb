@@ -1,0 +1,41 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { JSDOM } from 'jsdom';
+const dom = new JSDOM(fs.readFileSync('dist/index.html', 'utf8'), {
+  url: 'https://portal.example/', runScripts: 'outside-only'
+});
+await new Promise(resolve => dom.window.addEventListener('load', resolve, { once: true }));
+const w = dom.window;
+w.scrollTo = () => {};
+w.matchMedia = () => ({ matches: false, addEventListener() {} });
+for (const name of ['partner-setup', 'app', 'commercial']) w.eval(fs.readFileSync(`dist/${name}.js`, 'utf8'));
+w.document.dispatchEvent(new w.Event('DOMContentLoaded'));
+const P = w.Portal;
+P.go('internal-overview');
+const choose = (id, value) => {
+  const el = w.document.getElementById(id);
+  el.value = value;
+  el.dispatchEvent(new w.Event('change', { bubbles: true }));
+};
+const options = () => Array.from(w.document.querySelectorAll('#commercial-period option'), o => o.value);
+const baseline = JSON.stringify(P.state);
+assert.deepEqual(options(), ['2026-10','2026-09','2026-08','2026-07','2026-06','2026-05','2026-04','2026-03','2026-02','2026-01']);
+assert.equal(P.commercial.currentPeriod().id, '2026-09');
+choose('commercial-period','2026-10');
+assert.match(w.document.querySelector('#commercial-period option:checked').textContent,/7 okt.*delperiod/);
+assert.equal(P.commercial.currentPeriod().comparison,'1–7 september 2026');
+assert.equal(P.commercial.valuesFor('syd').agreements,6);
+choose('commercial-period-kind','quarter');
+assert.deepEqual(options(),['2026-q4','2026-q3','2026-q2','2026-q1']);
+assert.equal(P.commercial.currentPeriod().comparison,'1–7 juli 2026');
+choose('commercial-period-kind','year');
+assert.equal(P.commercial.currentPeriod().range,'1 januari–7 oktober 2026 · året hittills');
+choose('commercial-period-kind','month');
+assert.equal(P.commercial.currentPeriod().id,'2026-10');
+choose('commercial-period','2026-09');
+P.render();
+assert.equal(w.document.getElementById('commercial-period').value,'2026-09');
+assert.equal(P.commercial.valuesFor('syd').agreements,31);
+assert.equal(JSON.stringify(P.state),baseline,'period filters must not mutate stored records');
+dom.window.close();
+console.log('PASS chronological periods, partial comparisons, initial and retained selection, unchanged records');
