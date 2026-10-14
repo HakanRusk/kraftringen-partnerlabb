@@ -2218,4 +2218,9 @@ Chromium (`/usr/bin/chromium` finns inte); därför påstås ingen visuell
 320/390/1440- eller tangentbordskontroll i detta pass.
 
 Detta är en frontendkandidat. Ingen merge eller Sites-publicering har
-gjorts. PR-länk och exakt HEAD kvitteras efter push och öppnad PR.
+gjorts. Färdig gransknings-PR:
+https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/50.
+Det lokalt testade och därefter exakt verifierade implementationsträdet är
+`bf281b549fae79c9b5225c12b273a9585861bc37`; första kompletta GitHub-
+checkpoint efter överföringskontroll är
+`92acf0b7598f387e175a49d29e5196c178cb0ebe`.
