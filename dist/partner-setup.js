@@ -9,6 +9,8 @@
   const cleanAudiences = value => Array.isArray(value) ? allowedAudiences.filter(item => value.includes(item)) : [];
   const isSales = partner => partner && ['sales', 'field'].includes(partner.type);
   const partnerTypes = ['sales', 'property', 'employee'];
+  const crmModes = ['external', 'portal'];
+  const crmMode = partner => partner?.crmMode === 'portal' ? 'portal' : 'external';
   const supportedType = type => ['sales', 'field', 'property', 'employee'].includes(type);
   const profileType = partner => isSales(partner) ? 'sales' : partner?.type;
   const typeLabels = { sales: 'Säljpartner', property: 'Fastighetsbolag', employee: 'Personalavtal' };
@@ -39,7 +41,7 @@
       if (!name || name.length > 90 || !supportedType(type) || (['sales', 'field'].includes(type) && !salesAudiences.length)) continue;
       // Preserve older profile metadata and extensions. Only validated identity
       // and segment fields below configure the actual partner view.
-      profiles[id] = { ...value, id, name, type, salesAudiences };
+      profiles[id] = { ...value, id, name, type, salesAudiences, crmMode: crmMode(value) };
     }
     // Resolve names from the complete saved set. Object insertion order must not
     // decide whether a renamed original partner frees its former name.
@@ -90,9 +92,10 @@
       ...base,
       ...settings,
       audience,
+      crmMode: crmMode(profile || base),
       salesAudiences,
       typeLabel,
-      description: profile ? `Säljpartner för elhandelsavtal till ${segmentText}.${base.id === 'vast' ? ' Face2face arbetar i Beest; portalen följer resultaten internt.' : ''}` : base.description,
+      description: profile ? `Säljpartner för elhandelsavtal till ${segmentText}.${base.id === 'vast' && crmMode(profile) === 'external' ? ' Face2face arbetar i Beest; portalen följer resultaten internt.' : ''}` : base.description,
       ...(profile && !base.name ? { description: `Säljpartner för elhandelsavtal till ${segmentText}. Försäljningsunderlag saknas.` } : {})
     };
   }
@@ -132,7 +135,9 @@
       if (P.partnerRegistry.some(partner => partner.id !== id && nameKey(partner.name) === nameKey(name))) return { ok: false, field: 'name', error: 'Det finns redan en partner med det namnet.' };
       const salesAudiences = selectedType === 'sales' ? cleanAudiences(payload?.salesAudiences) : [];
       if (selectedType === 'sales' && !salesAudiences.length) return { ok: false, field: 'salesAudience', error: 'Välj vilka kunder partnern säljer till.' };
-      return { ok: true, profile: { name, type: existing?.type || selectedType, salesAudiences } };
+      const mode = payload?.crmMode ?? crmMode(existing);
+      if (selectedType === 'sales' && !crmModes.includes(mode)) return { ok: false, field: 'crmMode', error: 'Välj eget CRM eller Partnerportalen som CRM.' };
+      return { ok: true, profile: { name, type: existing?.type || selectedType, salesAudiences, ...(selectedType === 'sales' ? { crmMode: mode } : {}) } };
     }
 
     function saveProfile(payload, id) {
@@ -182,6 +187,14 @@
               ['both', 'Båda', 'Samma partner kan sälja till både företag och konsumenter.', 'users']
             ].map(([value, title, text, icon]) => `<label class="partner-setup-choice"><input type="radio" name="salesAudience" value="${value}" ${selected === value ? 'checked' : ''} required><span class="partner-setup-choice-icon">${P.icon(icon)}</span><span><strong>${title}</strong><small>${text}</small></span><span class="partner-setup-choice-check" aria-hidden="true">${P.icon('check')}</span></label>`).join('')}
           </fieldset>
+          <fieldset class="partner-setup-segments" id="partner-setup-crm" ${selectedType !== 'sales' ? 'hidden disabled' : ''}>
+            <legend>Var arbetar partnern med sina kunder?</legend>
+            ${[
+              ['external', 'Har eget CRM', 'Behåll kundarbetet i ert eget system. Använd portalen för resultat, avtalsfakta och utbildning.', 'chart'],
+              ['portal', 'Använd Partnerportalen som CRM', 'Samla kunder, affärer, anteckningar och nästa aktivitet direkt här.', 'users']
+            ].map(([value, title, text, icon]) => `<label class="partner-setup-choice"><input type="radio" name="crmMode" value="${value}" ${crmMode(existing) === value ? 'checked' : ''} required><span class="partner-setup-choice-icon">${P.icon(icon)}</span><span><strong>${title}</strong><small>${text}</small></span></label>`).join('')}
+            ${existing ? '<small>Byte av arbetssätt bevarar tidigare sparade kunder och aktiviteter.</small>' : ''}
+          </fieldset>
           <p class="partner-setup-note" id="partner-setup-note"></p>
           <p class="partner-setup-error" id="partner-setup-error" role="alert" hidden></p>
           <div class="modal-actions"><button class="btn btn-secondary" id="partner-setup-cancel" type="button">Avbryt</button><button class="btn btn-primary" type="submit">${existing ? 'Spara inställningar' : 'Skapa partner'} ${P.icon('arrow')}</button></div>
@@ -191,18 +204,21 @@
         const nameInput = form.elements.namedItem('name');
         const error = document.querySelector('#partner-setup-error');
         const salesFields = document.querySelector('#partner-setup-sales');
+        const crmFields = document.querySelector('#partner-setup-crm');
         const note = document.querySelector('#partner-setup-note');
         const currentType = () => existing ? selectedType : form.elements.namedItem('partnerType').value;
         const updateType = () => {
           const type = currentType();
           salesFields.hidden = type !== 'sales';
           salesFields.disabled = type !== 'sales';
+          crmFields.hidden = type !== 'sales';
+          crmFields.disabled = type !== 'sales';
           const notes = {
             sales: existing ? 'Sparade kunduppgifter och avtal behålls. Kundsegmentet styr vilka avtalsalternativ som kan väljas.' : 'Kunder & avtal och Insikter samlas under partnern. Resultat visas när det finns underlag.',
             property: 'Fastighetsbolaget registrerar inflyttningar manuellt eller via Excel och bifogar fullmakter. Hyresgästen gör inget aktivt i portalen.',
             employee: 'Samarbetet gäller elavtal för företagets anställda. Erbjudande och arbetssätt bestäms separat; inga priser eller förmåner skapas här.'
           };
-          note.textContent = notes[type];
+          note.textContent = type === 'sales' && form.elements.namedItem('crmMode').value === 'portal' ? 'CRM sparas i denna webbläsare. Gemensam lagring och personliga användarkonton ingår inte ännu.' : notes[type];
         };
         updateType();
         nameInput.focus();
@@ -213,7 +229,7 @@
           event.preventDefault();
           if (!form.reportValidity()) return;
           const choice = new FormData(form).get('salesAudience');
-          const result = saveProfile({ name: nameInput.value, partnerType: currentType(), salesAudiences: choiceAudiences(choice) }, id);
+          const result = saveProfile({ name: nameInput.value, partnerType: currentType(), salesAudiences: choiceAudiences(choice), crmMode: new FormData(form).get('crmMode') || 'external' }, id);
           if (!result.ok) {
             error.textContent = result.error;
             error.hidden = false;
@@ -223,7 +239,7 @@
           P.selectedPartnerId = result.id;
           P.closeDialog();
           const type = profileType(getPartner(result.id));
-          P.go(type === 'property' ? 'partner-detail' : type === 'employee' ? 'employee-channel' : 'partner-sales');
+          P.go(type === 'property' || (type === 'sales' && crmMode(getPartner(result.id)) === 'portal') ? 'partner-detail' : type === 'employee' ? 'employee-channel' : 'partner-sales');
           P.toast(result.created ? 'Partnern är skapad.' : 'Partnerinställningarna är sparade.');
         });
       });

@@ -1,5 +1,29 @@
 # Kraftringen Partnerportal – frontendprototyp
 
+
+## Val av CRM för säljpartners
+
+I **Partners → Ny partner → Säljpartner** väljer du **Har eget CRM** eller
+**Använd Partnerportalen som CRM**, samt företag, konsumenter eller båda.
+Befintliga partners behåller eget CRM. **Redigera partner** kan byta
+arbetssätt utan att kundhistoriken försvinner.
+
+Portal-CRM nås via **Öppna CRM** på partnerprofilen eller genom partnerns
+arbetsyta. Lägg till kund/affär, kontaktuppgifter, ansvarig säljare och nästa
+aktivitet. Pipeline visar Ny kontakt, Dialog pågår, Möte bokat, Offert
+skickad, Vunnen och Förlorad. Öppna affärer kräver nästa aktivitet och datum;
+förlorade affärer kräver orsak. Kundkortet sparar anteckningar och historik.
+Sök och filtrera kunder; aktivitetsvyn visar planerade/försenade kontakter.
+
+Allt sparas i samma webbläsare. CRM är ännu inte ett gemensamt system för
+flera användare. Befintlig JSON-export inkluderar CRM-rader för vald demovy,
+men är inte en fullständig backup eller synkronisering. Vunnen CRM-status
+ändrar inte avtal, resultat eller kickback. Testa med fiktiva uppgifter.
+
+DOM-test: installera jsdom i en separat QA-miljö och kör
+`CRM_QA_JSDOM=/sökväg/till/jsdom/lib/api.js node qa/partner-crm.mjs`.
+Det testar DOM-händelser och datalogik, inte layout i en riktig webbläsare.
+
 ## Partnerlabb på hemskärmen
 
 Välj **Lägg till som app** i sidomenyn. På iPhone: öppna portalen i Safari,

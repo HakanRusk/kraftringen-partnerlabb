@@ -1,5 +1,29 @@
 # Instruktioner för arbete i Kraftringen Partnerportal
 
+## Senaste direktuppdrag: valbart CRM – 14 oktober 2026
+
+Ludwig vill vid skapande av säljpartner välja **Har eget CRM** eller
+**Använd Partnerportalen som CRM**. Det förtydligar den äldre generella
+inriktningen att säljpartners arbetar utanför portalen: den gäller fortsatt
+partners med eget CRM, inklusive Savera/Face2face som standard. Valbart
+portalarbetssätt är nu uttryckligen beställt. Partnertyp och B2B/B2C/båda är
+fortsatt separata val. Inget schema eller befintlig åtkomst ändras.
+
+`partnerProfiles.crmMode` styr arbetssättet (`external`/`portal`). Äldre
+profiler utan val behåller eget CRM. Båda alternativen kan väljas i
+partnerinställningar; byte bevarar kundhistorik. Fastighetsbolag och
+personalavtal påverkas inte. Portal-CRM har kundkort, ansvarig säljare,
+kontaktuppgifter, säljsteg, nästa aktivitet/datum, förlustorsak och historik.
+Kundsegment låses på sparad rad. `state.crmRecords` använder befintlig
+normal-/demoisolerad lagring; inga äldre underlag omklassificeras.
+
+Denna leverans är lokal frontend. Vunnen CRM-status skapar inga bindande
+avtal, resultat eller kickback. Gemensam lagring och identitetsbaserad
+partnerbehörighet är fortfarande en separat etapp. Verifiera formulär,
+B2B/B2C/båda, segment-/arbetssättsbyte, sparfel, flikkonflikt, omladdning,
+filter, partneravgränsning och bevarade ekonomiska/serviceunderlag.
+
+
 ## Senaste direktuppdrag: inflyttningen först – 11 oktober 2026
 
 - Ludwig har sagt **”Bygg det och publicera sedan”** efter vår rekommendation att börja fastighetskundens demo med en konkret inflyttning och visa hela överlämningen. Prioritera enkel inflyttningsservice: Excel eller manuell registrering, fullmaktsbilaga, status, saknat underlag och vem som behöver agera. Återanvänd befintliga flöden; hyresgästen får inga aktiva portalsteg.

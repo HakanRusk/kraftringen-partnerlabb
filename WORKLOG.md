@@ -2185,3 +2185,66 @@ Kodkontroller och verifieringsbegränsningar gäller enligt posten ovan;
 ingen ny browserkontroll påstås. Denna efterhandskvittens ändrar endast
 arbetsminnet; dist/ och hostingmanifest är identiska med publicerad v34
 så ingen ytterligare publicering behövs.
+
+## 2026-10-14 · CRM-01 · Val av eget CRM eller portal-CRM
+
+Ludwigs direktuppdrag i samma Sites-konversation: nya partners ska kunna
+välja eget CRM (dagens upplägg för Savera/Face2face) eller arbeta i
+Partnerportalen som CRM. Egen gren `codex/partner-crm-choice` från aktuell
+GitHub-main `0e849efbba2c6740df1a1562e75a2f3585bf0a0a`. Inga öppna PR:er
+vid start, inga Daniel-ändringar tas in. Sites v34 och custom-delning
+kontrollerade före arbetet. Ingen förändring av agent, schema eller åtkomst.
+
+Kandidaten inför val vid skapande/redigering av säljpartner. Äldre profiler
+behåller external. Portal-arbetssättet ger CRM-översikt, kundkort,
+B2B/B2C-segment, kontaktuppgifter, ansvarig säljare, säljsteg, nästa
+aktivitet/datum, sökning/filter, förlustorsak och händelsehistorik. Byte av
+arbetssätt eller partnersegment bevarar CRM-historiken och radens segment.
+Äldre säljunderlag bevaras utan omklassificering. Nya crmRecords använder
+befintlig lagring och ingår i vald demovys JSON-export. Vunnen CRM-status
+skapar inga avtal, resultat eller kickback. Ingen gemensam backend införs.
+
+Verifierat: 13 samlade DOM-/datascenarier i `qa/partner-crm.mjs` med jsdom,
+inklusive riktiga formulärhändelser, B2B/B2C, stängning/återöppning,
+validering, HTML-escaping, filter, sparfel, flikkonflikt, revisionskontroll,
+partneravgränsning, export, omladdning, normal-/demoisolering och bevarad
+ekonomi/service. Testharnessen justerades för partnerregistrets befintliga
+initiering av intern uppföljning; ett filterproblem rättades så att dolt
+stegfilter inte begränsar aktivitetsvyn och synliga val bevaras per vy.
+Även `qa/partner-registry.mjs` (16 scenarier), `qa/results-only.mjs`,
+`qa/partner-self-service.mjs`, JavaScript-syntax och diffkontroll passerar.
+jsdom är en separat QA-installation, inget nytt runtimeberoende i appen.
+
+Sites-föreskriven control-browser är inte tillgänglig. Ingen previewserver,
+visuell browserkontroll eller fysisk mobilkontroll har gjorts. Responsiv
+CSS använder befintliga komponenter; layout i faktisk webbläsare återstår.
+Detta är verifierad lokal kandidat. PR, integration och publicering
+kvitteras först efter native resultat.
+
+### CRM-01 · Publicering blockerad efter verifierad kandidat
+
+Lokal kandidat är committad som
+`15451d30b96f13c783a4841c28ceb70a69deea5a`. Den automatiska
+godkännandegranskningen avvisade GitHub-pushen: publicering av kod och
+projektdokumentation till ett publikt repo saknade verifierat uttryckligt
+godkännande. Inga alternativa skrivvägar har använts. Read-only
+`ls-remote` bekräftar att arbetsgrenen inte finns på GitHub.
+GitHub-metadata bekräftar rätt repo, public och push/admin-behörighet,
+men behörighet är inte i sig godkännande för publicering. Personal Context
+hittade endast användarens begäran att kontrollera att senaste versionen
+finns i GitHub, inte direkt godkännande för denna push.
+
+Ingen PR, integration eller Sites-publicering har skett. Version 34 är
+fortsatt live. Kandidat och tester är klara. Återstående steg efter konkret
+användargodkännande: push av egen gren, PR/integration enligt RUNBOOK,
+fast-forward till Sites, paket från exakt main och native publicering med
+bibehållen custom-åtkomst.
+
+### CRM-01 · Användargodkännande 14 oktober 2026, 09:17 svensk tid
+
+Ludwig svarade **”ja”** på den konkreta frågan om att synka den färdiga
+CRM-ändringen inklusive kod och projektdokumentation till det publika repot
+https://github.com/ludros93-prog/kraftringen-partnerlabb och publicera i
+Partnerlabb. Godkännandet gäller denna egenutvecklade CRM-leverans och dess
+publicering. Ingen Daniel-ändring ingår. Den tidigare publiceringsblockeringen
+är därmed adresserad med användarens uttryckliga tillstånd.
