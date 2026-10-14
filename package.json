@@ -1,0 +1,11 @@
+{
+  "name": "kraftringen-partnerlabb-qa",
+  "private": true,
+  "description": "Development-only QA. Serve dist directly; the portal needs no installation or build.",
+  "scripts": {
+    "test": "node qa/run.mjs",
+    "test:browser": "python qa/run-browser.py"
+  },
+  "engines": { "node": ">=24" },
+  "devDependencies": { "jsdom": "30.1.2" }
+}
