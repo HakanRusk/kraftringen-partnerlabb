@@ -2248,3 +2248,31 @@ https://github.com/ludros93-prog/kraftringen-partnerlabb och publicera i
 Partnerlabb. Godkännandet gäller denna egenutvecklade CRM-leverans och dess
 publicering. Ingen Daniel-ändring ingår. Den tidigare publiceringsblockeringen
 är därmed adresserad med användarens uttryckliga tillstånd.
+
+
+### CRM-01 · Publicerad version 35
+
+PR #51 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/51
+integrerades från verifierad kandidat
+`ba5ce5027de3ab454b0a6a715b3c039055a0fe24` till GitHub-main
+`ae18c0cd0ca5d4ef6cb11b5434bc0218c9bb64b8`.
+Kandidat, lokalt verifierat underlag och merge har samma träd
+`bc0591414f2e695e589b38607f004d01c375dd40`.
+Git-push saknade CLI-inloggning; den anslutna GitHub-tjänsten överförde
+samma verifierade filinnehåll efter användarens uttryckliga godkännande.
+
+Sites-källan överfördes fast-forward från publicerad v34 till exakt
+GitHub-main. Arkivet paketerades från samma rena revision. Befintlig
+custom-delning och alla scheman behölls.
+
+Sites version **35**:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_3d23466657a08191966f5b56568effd1`.
+Deployment `appgdep_6acf2dabe1b88191b5dc61231852641c` bekräftade
+**succeeded** 2026-10-14 kl. **07:22:37.984067 UTC** på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+
+13 CRM DOM-/datascenarier och befintliga riktade kontroller gäller enligt
+kandidatposten. Ingen browserlayout-, fysisk mobil- eller fleranvändartest
+påstås. CRM är fortsatt lokalt; gemensam backend är inte implementerad.
+Denna kvittens ändrar endast WORKLOG; dist/ och hostingmanifest är identiska
+med publicerad v35 och behöver inte publiceras igen.
