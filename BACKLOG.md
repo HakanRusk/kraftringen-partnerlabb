@@ -1,5 +1,14 @@
 # Prioriterad utvecklingskö
 
+
+## CRM-01 · Valbart CRM för säljpartners (14 oktober 2026)
+
+Direktuppdrag: eget CRM eller arbete i Partnerportalen som CRM. Implementerad
+kandidat på `codex/partner-crm-choice`: profilval, kundkort, pipeline,
+aktiviteter och historik. Befintliga partnerflöden, ekonomi och lagring
+bevaras. Gemensam backend och personliga behörigheter återstår som separat
+etapp. Verifiering och publiceringskvittens finns i WORKLOG.
+
 ## APP-02 · Installerbar app verifierad och publicerad v33 (12 oktober 2026)
 
 Ludwigs direktuppdrag: ”Gör en app av partnersidan”. Återanvänder APP-01:s

@@ -1,5 +1,29 @@
 # Pilotens fakta och belägg
 
+## Senaste direktuppdrag: valbart CRM – 14 oktober 2026
+
+Ludwig vill vid skapande av säljpartner välja **Har eget CRM** eller
+**Använd Partnerportalen som CRM**. Det förtydligar den äldre generella
+inriktningen att säljpartners arbetar utanför portalen: den gäller fortsatt
+partners med eget CRM, inklusive Savera/Face2face som standard. Valbart
+portalarbetssätt är nu uttryckligen beställt. Partnertyp och B2B/B2C/båda är
+fortsatt separata val. Inget schema eller befintlig åtkomst ändras.
+
+`partnerProfiles.crmMode` styr arbetssättet (`external`/`portal`). Äldre
+profiler utan val behåller eget CRM. Båda alternativen kan väljas i
+partnerinställningar; byte bevarar kundhistorik. Fastighetsbolag och
+personalavtal påverkas inte. Portal-CRM har kundkort, ansvarig säljare,
+kontaktuppgifter, säljsteg, nästa aktivitet/datum, förlustorsak och historik.
+Kundsegment låses på sparad rad. `state.crmRecords` använder befintlig
+normal-/demoisolerad lagring; inga äldre underlag omklassificeras.
+
+Denna leverans är lokal frontend. Vunnen CRM-status skapar inga bindande
+avtal, resultat eller kickback. Gemensam lagring och identitetsbaserad
+partnerbehörighet är fortfarande en separat etapp. Verifiera formulär,
+B2B/B2C/båda, segment-/arbetssättsbyte, sparfel, flikkonflikt, omladdning,
+filter, partneravgränsning och bevarade ekonomiska/serviceunderlag.
+
+
 ## Bekräftad inriktning: resultat och utbildning (2026-10-11)
 
 Källa: Ludwigs direkta förtydligande i uppgiften. Säljpartnernas affärer och nästa aktiviteter hanteras utanför Partnerlabb. Kraftringen följer resultat, Kunder & avtal, Insikter och villkorade scenarier under Partners. Säljpartners använder utbildning och stöd. Detta ersätter äldre mål om aktiv kundregistrering, pipeline, offertarbete och återkopplingsflöden för Savera/Face2face i portalen. Äldre lokala underlag och utkast bevaras; de blir inte resultathistorik. Fastighetsbolagens registrering, fullmaktsbilagor, förmedling och handläggning behåller operativa nästa steg. Ingen ny verksamhetsregel eller integration införs.
