@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 35504)
-Total output lines: 2221
-
 # Arbetslogg
 
 ## 2026-10-09 — Kandidat: hitta sparat testunderlag efter omladdning
@@ -890,7 +887,321 @@ inklusive periodval efter omladdning, normal-/demoisolering och mobil.
 
 ## 2026-10-11 · PR #18 integrerad och publicerad som version 19
 
-Ludwigs direkta uppdrag ”Publicera” följde presentat…5504 tokens truncated…ppgdep_6acb4815b5e08191a55100a4c80bb532` är **succeeded**
+Ludwigs direkta uppdrag ”Publicera” följde presentationen av PR #18. Oberoende Codex-revision `04b542964614b326675c6feaf1289b0ed8f825bd` integrerad genom PR #18; GitHub-main och exakt publicerad Sites-källa: `35874dfc5ef017926316cc09593a904e4dd1a8e0`. Sites överfördes fast-forward från v18, utan att skriva över nyare arbete.
+
+- Version: `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_edd41b5f23048191843ec65203f42847` (19).
+- Deployment: `appgdep_6acab861afa88191acd51fcda0072721`, `succeeded` 2026-10-10 22:13:04 UTC (11 oktober 00:13 Stockholm).
+- URL: https://kraftringen-partnerlabb.rosen123.chatgpt.site
+- Befintlig custom-delning revision 4 bevarad; inget åtkomst- eller schemaarbete.
+- Alla sju qa/*.mjs samt syntaxkontroll av alla dist/*.js passerade på överföringskandidaten; mergeträdet är identiskt. Webbläsar-/mobil-/tangentbordskontroll kunde inte köras med miljöns tillgängliga kapabiliteter och är fortfarande en verifieringsbegränsning. Ingen verklig kund- eller produktionsvalidering påstås.
+- PARTNER-04 är integrerad och publicerad. Tidigare kandidatstatus ovan är historik. Denna efterhandskvittens ändrar enbart dokumentation; dist/ är oförändrad och kräver ingen ny publicering.
+
+## 2026-10-11 · PARTNER-05 · Egna resultat, avtalsfakta och grundval
+
+Ludwigs direkta korrigering: säljpartners ska också se sina egna resultat. Utbildning och Avtalsfakta ska vara separata ingångar för B2B/B2C. Fastighetsbolag väljer grundval mellan Opti, Kvartspris och Rörligt månadspris; Kvartspris är initialt grundval. Detta är uttryckligt frontendmandat, ingen automatisk avtalsteckning eller ny ersättningsregel.
+
+Implementering på codex/partner-results-product-facts från f30f86739bf5fb60ccc7e09e2f9fca5545b2c7e2: gemensamma kund-/avtalsrapporter och Insikter avgränsas till P.partner i partnervy, oavsett intern vald partner. Inga interna kostnader, nettobidrag eller partnerinställningar exponeras i dessa vyer. Rapportfilter bevaras separat per perspektiv/partner. Lokal visningsavgränsning är inte autentisering.
+
+Avtalsfakta har sex B2B- och fem B2C-kort, källdatum och officiella produkt-/villkorslänkar. Befintliga Elakademin-filmer länkas som principutbildning, inte kompletta produktspecifika genomgångar. Verifierat exakt produktblad saknas för Kraftringen Stabil och företagets Kvartspris; Individuell portfölj har bara allmän portföljkälla. Saknade detaljer markeras, inga priser eller bindningstider gissas.
+
+Grundval sparas i propertyDefaults i befintlig normal-/demoisolerad state. Nya manuella/Excel-utkast får en ögonblicksbild som går att ändra; importens val gäller valda nya rader. Äldre utkast utan val förblir utan val. Registrerad desiredProduct är ett önskemål; fullmakt och offerChoice förändras inte. Dubbletter skriver inte om tidigare val; sparfel återställer data.
+
+Verifiering: samtliga åtta qa/*.mjs och JS-syntaxkontroller passerar. Nytt test täcker egna rapporter/filter, segment/faktakort/video, partnerisolerade grundval, manuella och Excel-utkast, gamla utkast, dubbletter och återställning efter lagringsfel. Ingen browser-kapabilitet finns i denna managed-miljö; visuell mobil-/tangentbordskontroll inte körd. Nästa steg: samordnad integration/publicering av denna korrigering; inga andra PR:er öppna vid start.
+
+## 2026-10-11 · PARTNER-05 publicerad som version 20
+
+PR #20 integrerad; GitHub/Sites publicerad källrevision `66d8046558728fd21dd6be09373e2a4eaeddc364`. Sites version `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_cfab5f7d13c88191b334487f90012965`, deployment `appgdep_6acabb57a94881918954329a003a92a8`, succeeded 2026-10-10 22:25:42 UTC (11 oktober 00:25 Stockholm). URL https://kraftringen-partnerlabb.rosen123.chatgpt.site. Custom-delning revision 4 bevarad. Alla åtta qa/*.mjs och JS-syntaxkontroller passerade på publicerad källa. Browser-/mobil-/tangentbords-/videouppspelning inte verifierad i denna miljö.
+
+Säljpartnerns meny: Mina resultat, Insikter, Avtalsfakta, Utbildning och support. Endast egna rapportdata i partnervy; inga interna kostnader/nettobidrag. Fastighetsbolag: Avtalsval med Kvartspris som grundval, Opti och Rörligt månadspris som alternativ. Nya utkast får en ändringsbar kopia av grundvalet; äldre underlag bevaras. Excelval gäller hela urvalet nya rader. Ingen automatisk avtalsteckning.
+
+Faktakort har officiella källänkar och relevanta befintliga Elakademin-filmer, inte kompletta produktspecifika filmer. Saknade exakta produktblad för Stabil/B2B Kvartspris och specifikation av Individuell portfölj är nästa innehållsbehov, inte ett skäl att fabricera villkor. Detta är en efterhandskvittens, dist/ oförändrad.
+
+## 2026-10-11 · UTBILDNING-PREVIEW-01 · Läsbar ny utbildning
+
+Ludwigs direkta ”Länka så får jag se” efter genomgång av det 31-sidiga
+säljarunderlaget auktoriserar denna avgränsade innehållsförhandsvisning.
+Egen Codex-gren från a901c7f9705783606d0dbad0ad6c121e72de137d; ingen
+Daniel-ändring eller ny verksamhetsregel ingår.
+
+Fristående utbildning-preview.html innehåller fyra grundkapitel, Savera-
+och Face2face-spår, tio produkter med källsidnummer, Direkt/Stabil-jämförelse,
+viktad komponentpriskalkyl, fem facitövningar och nio Arthur-manusutkast.
+Stabil avser endast säkrat, månadsutjämnat SYS/EPAD-pris. Osäkrad volym,
+dygnsprofil och andra kostnader hålls separata. PDF-källan är användarens
+säljarunderlag från 10 oktober 2026. Exemplen är syntetiska, inga kunddata.
+De nya Arthur-/avatarvideorna, presentationen och självstudierna återstår.
+
+Verifiering: 48/48 Playwright/Chromium-kontroller passerar i portabel miljö:
+produktkort, sökning/spårfilter, tangentbordstabbar, fem facit, nio manus,
+80/75/-10 öres viktning, nollvolym/overflow, PDF och kvarvarande portal.
+Alla tre flikar utan horisontellt överflöde vid 320/390/1440 px. Desktop-
+och mobilbilder har granskats. Inga webbläsar-/scriptfel. Samtliga åtta
+befintliga qa/*.mjs, JS-syntax och diffkontroll passerar. Oberoende
+innehållsgranskning bekräftar exakt matchning mot katalog och lektionsutkast.
+
+Befintliga portalmoduler, fem Academy-kurser, B2C-samtal, sparade data och
+hostingmanifest ändras inte. Publicering ska bevara custom-publik revision 4.
+GitHub PR/integration och exakt Sites-version kvitteras efter utförandet.
+
+## 2026-10-11 · UTBILDNING-PREVIEW-01 publicerad som version 21
+
+PR #22 integrerad som `4c30c0c3ecf15302361ef513b89a01fa356829fd`.
+GitHub-main och fast-forward-överförd Sites-källa är exakt samma revision;
+alla åtta uppladdade filer och integrerat dist/ matchar den testade kandidaten.
+Native save: version 21,
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_da6f1dcc2bd08191bc91d6cf182cc631`.
+Deployment `appgdep_6acb32c39460819186f7722812b8bb14` bekräftar succeeded
+2026-10-11 06:55:16 UTC. URL:
+https://kraftringen-partnerlabb.rosen123.chatgpt.site/utbildning-preview.html
+
+Färsk metadata bekräftar exakt bevarad custom-publik, policyrevision 4.
+Tolv kontroller på publicerad sida passerar: rätt HTML/data, tio produkter,
+B2C-filter, 80-öreskalkyl, fem övningar, nio manus, mobil utan överflöde,
+PDF med exakt källfilslängd, anonym åtkomst skyddad och inga browserfel.
+Ingen verklig kunddata eller inspelning skapades. En separat Node HTTP-
+kontroll kunde inte använda miljöns IPv6-rutt; samma PDF kontrollerades
+framgångsrikt genom webbläsaren. Inga begränsningar i den verifierade
+webbläsarleveransen kvarstår. Arthur-/avatarfilmer återstår som tidigare.
+
+Denna efterhandskvittens ändrar enbart dokumentation; dist/ och hosting-
+manifest är identiska med publicerad version 21 och behöver inte publiceras igen.
+
+
+## 2026-10-11 · PARTNER-06 · Fastighetsbolag och personalavtal som partneralternativ
+
+Ludwigs direkta senaste instruktion är att Fastighetsbolag eller ett företag
+med Personalavtal också ska kunna väljas när en partner skapas. Ny kandidat
+på codex/partner-types från GitHub-main
+`aafa6244836a8ad86978af6d788c1db7c35eaa3e` behåller allt under Partners och
+skiljer samarbetstyp från säljpartnerns B2B/B2C/båda. Befintlig utbildnings-
+förhandsvisning i version 21, Academy/B2C-samtal och partnernas egna resultat
+ska bevaras.
+
+Ny fastighetspartner ska få det befintliga Excel-/manuella flödet med egna
+ärenden, bilagor och Avtalsval (Kvartspris initialt, Opti och Rörligt
+månadspris som alternativ). Personalavtal avser ett företag som kanal till
+anställda, skilt från företagets egen B2B-el. Kandidaten avgränsas till
+klassificering och egen översikt; erbjudande, produkt-/ersättningsvillkor
+och eventuell anmälningsprocess kräver fortsatt verksamhetsunderlag.
+Nya profiler får inget påhittat kundutfall eller kickback. Namn får ändras
+för alla typer, medan befintlig typ och historik behålls.
+
+AGENTS, README, pilotfakta/mission, MISSION, BACKLOG och agentprompt har
+uppdaterats för detta mandat och dess gränser. Dokumentationsgranskningen
+ändrar inga affärsregler. Kandidatens testresultat, GitHub-integration och
+native Sites-publicering kvitteras efter att de utförts.
+
+
+## 2026-10-11 · PARTNER-06 · Verifierad kandidat
+
+Tre partnerupplägg i samma skapandedialog: Säljpartner (B2B/B2C/båda),
+Fastighetsbolag och Personalavtal för företag. Alla ligger under Partners.
+Nya fastighetsbolag använder befintligt manuellt/Excel-flöde med egna
+fullmaktsbilagor och Kvartspris som initialt grundval. Personalavtal har
+egen intern/partneröversikt, inte ett uppfunnet anmälningsflöde eller
+produktutbud. Ny profil har inget kommersiellt utfall. Befintlig typ och
+historik bevaras, namn får ändras på samtliga typer.
+
+Verifierat på denna kandidat, lokal Chromium på 127.0.0.1:8000:
+- node qa/partner-registry.mjs: 16 godkända kontroller.
+- node qa/savera-data.mjs: 23 godkända kontroller.
+- node qa/property-results-period.mjs: godkänd period-/partner-/demoisolering.
+- python qa/partner-types.py: 106 godkända kontroller i komplett körning.
+  Efter riktad typografikorrigering och nio nya kontrollpunkter: layoutdelen
+  46 godkända; nya kontroller omfattar typfilter, minst 12 px knapptext och
+  faktisk mobilregistrering efter rullning av dialogen.
+- python qa/partner-segments.py: 105 godkända kontroller i komplett körning;
+  äldre QA-förväntningar uppdaterade till bekräftad resultat-/utbildningsvy.
+- PARTNERLABB_QA_URL=http://127.0.0.1:8000 node qa/b2c-calls.cjs: 69
+  godkända kontroller. Det inledande försöket använde testets standardport
+  4183 utan server; rätt previewadress gav ren terminalkvittens.
+- 26 app-JavaScript-filer passerar syntaxkontroll; 48 statiska script-/
+  stilreferenser finns; git diff --check passerar.
+
+Browserkontroller verifierar riktiga syntetiska PDF/XLSX-bytes, sparning,
+omladdning, uttrycklig överlämning, ny intern partnerfiltrering, utebliven
+automatisk kund-/avtals-/kickbackgenerering och normal-/demoisolering.
+Personalavtalens egna direktlänkar, namn, meny och saknade resultat är
+verifierade. Separat granskning verifierar gamla direktlänksalias och att
+fastighetsresultatens ärendelänk öppnar rätt bolag, utan sidfel.
+
+Skärmbilder granskade för 1440/390/320 px. Befintlig version 21:s
+utbildningsförhandsvisning, partnernas egna rapporter och B2C-samtalsbibliotek
+är bevarade. Verkliga villkor, delad drift och integrationer tillkommer inte.
+GitHub-integration, Sites-publicering och native agentprompt kvitteras
+efter genomförandet; den befintliga timuppgiften är tillfälligt pausad under
+samordnad leverans och ska återaktiveras efteråt.
+
+
+## 2026-10-11 · PARTNER-06 · Publicerad version 22 och agent återaktiverad
+
+PR #24 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/24
+integrerad 08:10:17 UTC. Kandidat b32218a4d54e993ff6219cd0026ef720c7320829;
+GitHub-main och exakt pushad Sites-källa: `9b935a533229881e2ca0bef83d3c84f5fc9468dd`.
+Arkivet innehåller bara `.openai/hosting.json` och `dist/` från denna SHA.
+Native saved version 22: `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_10835f3ffdd08191ae6d1d18cdc533d1`.
+Native publish deployment: `appgdep_6acb44b7f54081919734b72a86af7ab7`; **succeeded**
+2026-10-11 08:11:51 UTC. URL https://kraftringen-partnerlabb.rosen123.chatgpt.site. Befintlig custom-delning revision 4
+bevarad genom publicering på samma Site utan åtkomständringar.
+
+Valen finns under Partners → Ny partner: Säljpartner, Fastighetsbolag,
+Personalavtal. Säljsegment ligger bara på Säljpartner. Nya fastighetsbolag
+har egna registreringsvägar och saknat resultatunderlag; personalavtal
+har egen avgränsad översikt. Verifieringskvittens finns i föregående post.
+
+Befintliga Partnerlivs pilotagent
+`Automation_e03c6b2fc3448191a58c63c969a090c0` uppdaterad med exakt
+PILOT-AGENT-PROMPT.txt och återaktiverad. Native återläsning bekräftar
+is_enabled=true, exakt prompt och oförändrat timschema i Europe/Stockholm
+från 2026-10-08 23:00. Inga andra automationer har ändrats. Det verifierar
+konfigurationen, inte oavbruten processdrift eller framtida leverans.
+Denna efterhandskvittens ändrar ingen dist-fil och skapar ingen ny deployment.
+
+## 2026-10-11 · UTBILDNING-FULL-02 · Komplett utbildningskandidat
+
+Ludwigs direkta uppdrag ”skapa det” och ”mycket noggrannare och matigare”
+auktoriserar denna fullständiga kurs och de tidigare beställda Arthur-/avatar-
+filmerna. Egen Codex-gren codex/elakademin-full-20261011 från
+`aafa6244836a8ad86978af6d788c1db7c35eaa3e`; ingen Daniel-revision ingår.
+GitHub-main och öppna PR:er kontrollerade; inga främmande pågående ändringar
+identifierades. Befintlig Sites-källa är en förfader till GitHub-main.
+
+Kursen i dist/elakademin-data.json omfattar 18 kapitel, ungefär 26 500 ord,
+38 lösta räkneexempel, 18 fiktiva kundfall, 72 kapitelövningar, 20 avslutande
+frågor per spår och en ordlista med 65 begrepp. Gemensam grund och tre
+gemensamma prisprodukter återanvänds mellan företagsspårets 15 och
+privatkundsspårets 12 kapitel. Alla tio produkter från användarens
+31-sidiga säljarunderlag, 10 oktober 2026, ingår. Originalpresentationens
+91 bilder och originalsjälvstudiernas 91 sidor används för grundbegrepp.
+Källsidnummer anges per kapitel; aktuell offert och avtal styr kundvillkor.
+
+Kritiska skillnader genomgår särskilda kundfall, beräkningar och facit:
+SYS/EPAD skiljs från profil och osäkrad volym; Stabils gemensamma pris gäller
+endast den säkrade månadsutjämnade delen. Förväntad och faktisk volym skiljs;
+80/125 ger 64 procent och 80/60 ungefär 133 procent. Opti jämför två hela
+månadsutfall på samma volym och omfattning. Vintersäkrats standardvinter har
+alla elhandelsdelar fasta inklusive dygnsprofil. Poolernas strategifördelning
+är inte en utförd position. Individuell horisont är inte avtalslängd.
+Alla priser och kundfall är syntetiska; inga nya skattesatser, kundvillkor,
+volymtoleranser eller resultatgarantier hittas på.
+
+Oberoende innehållsgranskning jämförde produktunderlaget, tio tillämpande
+lektioner och 50 manussegment samt 82 omräknade numeriska led. Separat
+slutgranskning läste alla 65 begrepp och 40 slutfrågor med alternativ,
+facit och bedömningsstöd; tio numeriska svar och solelexemplet 310 MWh
+kontrollerades separat. Två små preciseringar i ordlista och slutprov är
+rättade i såväl kursdata som dokumentexporter.
+
+Självstudiehandboken har 139 sidor, 21 PDF-bokmärken och klickbar innehålls-
+förteckning. PowerPointen har 463 redigerbara bilder och full undervisning
+samt alla 90 berättarsegment i talaranteckningarna. Fyra pedagogiska diagram
+är redigerbara former. Faktisk PDF-/PPT-text innehåller alla 198 undervisnings-
+stycken, 38 exempel med mellanled, 18 fall, 112 frågor, 65 begrepp och
+34 källreferenser. Alla 463 bilder renderades med LibreOffice och scannades
+för textöverlapp och text utanför bilden: noll av vardera. Långa bilder,
+figurer, titel och innehållsförteckning har även granskats visuellt.
+Microsoft Office har inte provats. Alla fyra materialhämtningar är exakt
+jämförda med lokal fil. PDF SHA256:
+`bd6517b2256c6d6324f853e3d52f6ac262128eb2df86734906342bac38754653`.
+PPTX SHA256:
+`9c4bb2152a2c9299e23457600f0b5d9396d3eef23e372586acfc3ffb2c41ec15`.
+
+Komplett kursvy klarar 168 Playwright/Chromium-kontroller på samtliga
+18 kapitel och 40 slutfrågor: spår, alla facit, ordlista, viktning,
+negativa priser, noll/overflow, över-/undersäkring, anteckningar,
+bokmärken, testsvar, klarmarkering, omladdning och ärligt lagringsfel.
+Alla fem vyer saknar horisontellt överflöde vid 320/390/1440 px.
+Inga browser-/scriptfel. Separata UI-kontroller verifierar tangentbord,
+portalens kursingångar och tidigare kurser. Samtliga åtta befintliga
+qa/*.mjs, JS-syntax och diffkontroll passerar. Ingen orelaterad lokal
+lagring skrivs över. Metaversionen avgränsar den nya kursens framsteg.
+
+Arthur är exakt Higgsfield-preset `30fc8796-ceb6-4a66-b3a7-4a145ef7f346`,
+genererad via ElevenLabs Text-to-Speech V2. Den ursprungliga inskickade
+figuren hittades och används som referens för den godkända restaurerade
+3D-figuren. En första bild med felaktigt skägg och en sämre talprobe
+underkändes och används inte. Alla 18 fulla kapitelinläsningar är färdiga;
+270 native grafiktillstånd är författade för innehållet. Faktiska svenska
+ordtider styr förklaringar och textning. Första hela filmmastern och tre
+faktiska intro-/Direkt-bilder är renderade och granskade. Samlad film-
+leverans, slutlig AV-kontroll och publicering kvitteras efter utförandet;
+ingen pågående render räknas som publicerad film.
+
+Befintliga fem Academy-kurser, B2C-samtalsbibliotek, portalmoduler och äldre
+lagring bevaras. Den nya ingången följer partnerns konfigurerade kundsegment.
+Anteckningar, självtest och uppladdade samtal är fortsatt lokal lagring;
+ingen formell certifiering, central resultatrapportering eller verklig
+kundintegration införs. Äldre förhandsvisning får länk till hela kursen.
+Hostingmanifest och custom-publik revision 4 ändras inte. Integration och
+exakt Sites-publicering följer RUNBOOK efter slutlig media-kontroll.
+
+### FULL-02 · Slutlig media och samlad integrationskontroll
+
+Alla 18 kapitelfilmer och introduktionen är färdiga, native-bekräftade och
+oberoende granskade. Sammanlagd kapitelspeltid är 5 710,715 sekunder
+(95 min 10,715 s); introduktionen 16,939 s. H.264/AAC, 1280 × 720 och
+nominalt 24 fps. Alla 8 693 kanoniska berättarord finns i giltig svensk
+WebVTT; alla 18 fullständiga ASR-transkript är granskade för materiella
+utelämningar och felaktiga kritiska tal. Direkt genomlyssning görs inte.
+
+Full fontkontroll av fyra inkluderade Montserrat-varianter omfattar 270
+scener och 2 321 textfält. Ej stödda pil-/relationssymboler ersattes med
+tydliga ord; åtta filmer exporterades om. Oberoende slutgranskning läste
+31 faktiskt avkodade bildrutor, inklusive alla 12 rättade scener och deras
+17 textfält, utan kvarstående fel eller materiell klippning. En separat
+granskare inspekterade även slutbilder för samtliga 18 filmer. Figuren är
+en animerad illustrerad guide utan läppsynk.
+
+Varaktighet avviker högst 1 ms från manifest, ljud/video-slut högst 28 ms
+och hela AAC-spårets längd från original-MP3 högst 18,286 ms. Första
+30 sekunderna av varje faktiskt MP4/AAC-spår och hela introduktionen
+matchar rätt godkända Arthur-original, minsta korrelation 0,999730094 och
+ingen förskjutning. Detta är ljudidentitet och tekniska/visuella stickprov,
+inte fullständig genomlyssning av varje slutfilm.
+
+Ett gemensamt native-bekräftat källpaket innehåller 19 portabla projekt,
+325 filer och 229 682 163 bytes. CRC, alla relativa media/fontreferenser,
+asset-hashar och 19 kanoniska originalinläsningar passerar oberoende kontroll;
+noll saknade filer, hashfel, credentials eller presignerade receipts.
+Arkiv SHA256 `6a93ccaf8a8754e3adc5976654bbc1b3f641b01d6c3ad00d662fb0e690593ba3`.
+Fryst mediemanifest SHA256
+`62e06483a929d2ab4445fd82d05d51002c24b7066bbbf69606b26b0c8ed1e152`.
+Slutliga mediafält är exakt lika den oberoende granskade kandidaten;
+endast manifestets QA/statusmetadata ändrades vid frysning.
+
+Parallell PARTNER-06 levererades via PR #24 och dokumenterades i PR #25
+under arbetet. Full kurs är därför förenad med verifierad färsk main
+`a77255ab32ce27a5b7a6c61f9fb5a0ef6413cca1`. Dess samtliga ändringar och
+nyare instruktioner bevaras. WORKLOGs samtidiga tillägg förenades genom
+att bevara hela senaste main-loggen och därefter hela kursposten.
+Git-objekt återlästes och SHA-verifierades mot GitHub/Sites; inga force-
+uppdateringar eller Daniels ändringar ingår i denna integrationsåtgärd.
+
+På den samlade kandidaten passerar åter 168 fullkurskontroller, 101
+kontroller av faktisk uppspelning/textning/materialhämtning, alla åtta
+qa/*.mjs, syntax för samtliga dist/*.js och diffkontroll för textfiler.
+PDF/PPTX verifieras bytevis med SHA; deras formatwhitespace ändras inte.
+Nya partnertyper
+kontrolleras separat med qa/partner-types.py: 115 browserkontroller,
+inga scriptfel. Alla 18 filmer har faktiska metadata, poster och textning;
+fem representativa filmer och introduktionen spelas och söks på riktigt.
+Alla fyra PDF/PPTX-källhämtningar är bytekontrollerade. Mobil-layout,
+båda säljspåren, tidigare kurser och B2C-bibliotek är bevarade. Lyckad
+GitHub-integration och exakt Sites-publicering kvitteras efter utförandet.
+
+### FULL-02 · Publicerad som version 23
+
+PR #26 https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/26
+integrerad från kandidat `3f02f545352e708498019bbfed00ff78b7f7a4dd`.
+GitHub-main och exakt fast-forward-pushad Sites-källa:
+`c5d4076dc30aae84e2c6fc1d83d5023d688d35b9`.
+Mergeträdet `e558c452d666e84b940c35e179ba2e5a8098ced7` är exakt samma
+byteverifierade träd som den testade kandidaten. Inga andra ändringar
+tillkom efter integrationskontrollen; ingen force-push användes.
+
+Native saved version 23:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_cac3365f6b54819198f0479697c1c5d9`.
+Deployment `appgdep_6acb4815b5e08191a55100a4c80bb532` är **succeeded**
 2026-10-11 08:26:17 UTC. Arkivet på 10 591 773 bytes byggdes direkt från
 denna SHA och innehåller bara hostingmanifest och dist/, 97 poster.
 Kursen: https://kraftringen-partnerlabb.rosen123.chatgpt.site/elakademin.html
