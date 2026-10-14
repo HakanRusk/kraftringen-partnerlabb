@@ -15,6 +15,8 @@ Portal-CRM nås via **Öppna CRM** på partnerprofilen eller partnerns arbetsyta
 Kundkort har kontakt, ansvarig säljare, anteckningar och historik. Pipeline:
 Ny kontakt, Dialog pågår, Möte bokat, Offert skickad, Vunnen och Förlorad.
 Öppna affärer behöver nästa aktivitet/datum; Förlorad behöver orsak.
+Vid valet Vunnen och när ett vunnet kundkort öppnas visas nästa steg: hantera
+elhandelsavtalet separat enligt Kraftringens godkända process. Beskedet skickar inget.
 Kunder och aktiviteter kan sökas/filtreras. Vunnen skapar inget avtal eller
 resultat. Använd fiktiva uppgifter; data delas ännu inte mellan användare.
 

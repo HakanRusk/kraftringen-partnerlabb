@@ -9,7 +9,7 @@ Avslutade uppgifter och äldre prioriteringar finns i docs/archive/2026-10-14/BA
 | Klar v36 · PERIOD-01 | Kronologiska periodval med rätt delperiodsmärkning | Månad/kvartal nyast först, september initialt, oförändrade data/jämförelser. |
 | Klar v36 · DOC-01 | Kort arbetsminne, historik i arkiv, en definition per beslut | Gällande regler/bevarande/godkännandekrav kvar; beslut länkas. |
 | Klar · PILOT-04A | Konkret litet backendunderlag för D-03 | Arkitektur, roller, data/dokument, API, migrering, drift och acceptans går att besluta om. |
-| Nästa förslag · CRM-02 | Tydligt besked vid Vunnen | Förklara kvarvarande separat avtalsprocess utan att påstå att något skickats/bekräftats. |
+| Kandidat · CRM-02 | Tydligt besked vid Vunnen | agent/crm-won-guidance: separat avtalsprocess förklarad vid val/återöppning; DOM verifierat, visuell kontroll återstår. |
 | Nästa förslag · MOBILE-01 | Få fram nyckeltal tidigare på mobil | Pröva kompakt/hopfällbart filter med tydligt aktivt urval och tangentbord. |
 | Nästa · PILOT-03 | Reproducerad friktion i inflyttning/handläggning | Konkret före/efter, bevarad data, relevant verifiering. |
 | Vid underlag · PILOT-00 | Uppdatera fakta/beslut från faktisk återkoppling | D-01–D-04 besvaras med källa, inte antaganden. |

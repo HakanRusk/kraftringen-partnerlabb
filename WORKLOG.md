@@ -4,6 +4,22 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## CRM-02 · kandidat 14 oktober 2026
+
+Eget oberoende agentarbete från main c781230b07dea395b4ddc2ffae50d197603c3c7e,
+gren agent/crm-won-guidance. Inga öppna PR:er vid start.
+Kundkortet hade bara en allmän fotnot vid valet Vunnen. Nu visas ett direkt
+besked om nästa steg: separat elhandelsavtal enligt Kraftringens godkända process.
+Samma besked visas när ett sparat vunnet kort återöppnas och försvinner vid annat
+säljsteg. Ingen ny process, integration, lagringsnyckel eller affärshändelse.
+
+Verifierat: npm ci och npm test, 11 Node-/DOM-sviter gröna inklusive 13 CRM-fall.
+Utökade kontroller för val utan mutation, sparat/återöppnat Vunnen, statusregion
+och återgång till öppet steg. Befintliga sparfel, isolering och historik passerar.
+DOM är inte layout-/skärmläsartest. Lokal Chromium saknas på PATH; 320/390/1440 px
+och faktisk tangentbords-/skärmläsarkontroll återstår för denna ändring.
+Nästa steg: PR-granskning och visuell kontroll. Ingen merge eller publicering.
+
 ## Publicerad v36 · 14 oktober 2026
 
 PR [#53](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/53)
