@@ -4,6 +4,37 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad v36 · 14 oktober 2026
+
+PR [#53](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/53)
+integrerad med HEAD 399559be6cc68e669f4d4aa7391edd1515270b11.
+GitHub-main och publicerad källrevision:
+**da858f3c5e1cea2936a7684bb45c8cd9c096299e**.
+Testat/pushat träd: fea6350155a212054f220ca8831c89606b0dd6fc.
+
+[GitHub Actions körning 38544546559](https://github.com/ludros93-prog/kraftringen-partnerlabb/actions/runs/38544546559)
+är completed/success för aktuell PR-revision. Node and DOM, Chromium flows och
+QA gate är gröna: 11 Node-/DOM-sviter och 195 browserkontroller (utkast 13,
+service 67, partnertyper 115). Inga JavaScript-fel rapporterades i browserflödena.
+Detta är verifierad CI, inte enbart en upplagd workflowfil. Grenskydd är fortsatt
+inte verifierat och måste hanteras separat av ägaren enligt GITHUB-ACCESS.md.
+
+Sites-källan överfördes fast-forward från ae18c0c till samma GitHub-main;
+ren checkout och identiskt träd verifierades före paketering.
+Version-ID: appgprj_6ac600ecf7d48191923687550810c1d4~appgver_1282ce4966c48191b1182d23cfaa4ab4.
+Deployment-ID: appgdep_6acf4fe0b7b88191bd3130400f2ac47d.
+Native status **succeeded**, 2026-10-14T09:48:30.970944+00:00:
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Befintlig custom-delning/policyrevision 4 bevarades; inga åtkomstverktyg ändrades.
+
+QA-01, PERIOD-01, DOC-01 och PILOT-04A är klara. Backendunderlaget är ett
+förslag inför D-03, ingen aktiverad backend eller delad data. Claudes automatiska
+startimport är 86 rader AGENTS/MISSION; övrig läsning sker via aktuell läskarta.
+Elva arkiverade original verifierades byte för byte mot main 2fe6381.
+
+Denna efterhandskvittens ändrar enbart WORKLOG, BACKLOG och GITHUB-STATUS.
+dist/, tester och workflow är oförändrade från den publicerade revisionen.
+
 ## 14 oktober 2026 · CI, perioder, arbetsminne och backendunderlag
 
 Ludwigs uppdrag: ”Är det inte lättare att du gör det själv?” efter förslaget
