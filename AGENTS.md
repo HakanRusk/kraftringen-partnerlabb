@@ -1,5 +1,13 @@
 # Instruktioner för arbete i Kraftringen Partnerportal
 
+## Senaste direktuppdrag: valbart CRM-arbetssätt – 14 oktober 2026
+
+- När en säljpartner skapas ska arbetssättet väljas separat: **Eget CRM finns** eller **Partnerportalen som CRM**. Detta är skilt från kundsegmentet B2B/B2C/båda.
+- Savera, Face2face och äldre profiler behåller tidigare arbetssätt som **Eget CRM** om inget annat uttryckligen väljs. Deras nuvarande fyra stora ingångar och resultatuppföljning ska inte förändras av migreringen.
+- En säljpartner som väljer Partnerportalen som CRM får en avgränsad lokal arbetsyta för fiktiva kundaktiviteter, status och nästa steg. Den får inte automatiskt skapa offert, elavtal, försäljningsresultat, intäkt eller kickback.
+- Arbetssättet får ändras utan att kundsegment eller historiska aktiviteter skrivs om. Byte till Eget CRM döljer portalens CRM-arbetsyta men raderar inte dess lokala historik.
+- Frontendprototypen är fortfarande lokal. Verkliga kunduppgifter, delning mellan användare, integration, autentisering och ett fastställt CRM-flöde kräver verksamhetsunderlag, godkänd miljö och separat mandat.
+
 ## Senaste direktuppdrag: inflyttningen först – 11 oktober 2026
 
 - Ludwig har sagt **”Bygg det och publicera sedan”** efter vår rekommendation att börja fastighetskundens demo med en konkret inflyttning och visa hela överlämningen. Prioritera enkel inflyttningsservice: Excel eller manuell registrering, fullmaktsbilaga, status, saknat underlag och vem som behöver agera. Återanvänd befintliga flöden; hyresgästen får inga aktiva portalsteg.

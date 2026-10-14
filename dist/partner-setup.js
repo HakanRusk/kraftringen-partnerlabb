@@ -9,6 +9,7 @@
   const cleanAudiences = value => Array.isArray(value) ? allowedAudiences.filter(item => value.includes(item)) : [];
   const isSales = partner => partner && ['sales', 'field'].includes(partner.type);
   const partnerTypes = ['sales', 'property', 'employee'];
+  const salesWorkModes = ['external', 'portal'];
   const supportedType = type => ['sales', 'field', 'property', 'employee'].includes(type);
   const profileType = partner => isSales(partner) ? 'sales' : partner?.type;
   const typeLabels = { sales: 'Säljpartner', property: 'Fastighetsbolag', employee: 'Personalavtal' };
@@ -36,10 +37,11 @@
       // This protects the meaning of already saved customer and service history.
       if (existing && value.type && value.type !== existing.type) continue;
       const salesAudiences = ['sales', 'field'].includes(type) ? cleanAudiences(value.salesAudiences) : [];
+      const salesWorkMode = ['sales', 'field'].includes(type) && salesWorkModes.includes(value.salesWorkMode) ? value.salesWorkMode : 'external';
       if (!name || name.length > 90 || !supportedType(type) || (['sales', 'field'].includes(type) && !salesAudiences.length)) continue;
       // Preserve older profile metadata and extensions. Only validated identity
       // and segment fields below configure the actual partner view.
-      profiles[id] = { ...value, id, name, type, salesAudiences };
+      profiles[id] = { ...value, id, name, type, salesAudiences, ...(['sales', 'field'].includes(type) ? { salesWorkMode } : {}) };
     }
     // Resolve names from the complete saved set. Object insertion order must not
     // decide whether a renamed original partner frees its former name.
@@ -66,7 +68,7 @@
 
   function configuredPartner(base, profile) {
     const salesAudiences = profile ? [...profile.salesAudiences] : [...(base.salesAudiences || [])];
-    const settings = profile ? {id:profile.id,name:profile.name,type:profile.type,salesAudiences} : {};
+    const settings = profile ? {id:profile.id,name:profile.name,type:profile.type,salesAudiences,salesWorkMode:profile.salesWorkMode} : {};
     const partner = { ...base, ...settings };
     if (partner.type === 'property') return {
       ...partner,
@@ -91,6 +93,7 @@
       ...settings,
       audience,
       salesAudiences,
+      salesWorkMode: partner.salesWorkMode === 'portal' ? 'portal' : 'external',
       typeLabel,
       description: profile ? `Säljpartner för elhandelsavtal till ${segmentText}.${base.id === 'vast' ? ' Face2face arbetar i Beest; portalen följer resultaten internt.' : ''}` : base.description,
       ...(profile && !base.name ? { description: `Säljpartner för elhandelsavtal till ${segmentText}. Försäljningsunderlag saknas.` } : {})
@@ -132,7 +135,9 @@
       if (P.partnerRegistry.some(partner => partner.id !== id && nameKey(partner.name) === nameKey(name))) return { ok: false, field: 'name', error: 'Det finns redan en partner med det namnet.' };
       const salesAudiences = selectedType === 'sales' ? cleanAudiences(payload?.salesAudiences) : [];
       if (selectedType === 'sales' && !salesAudiences.length) return { ok: false, field: 'salesAudience', error: 'Välj vilka kunder partnern säljer till.' };
-      return { ok: true, profile: { name, type: existing?.type || selectedType, salesAudiences } };
+      const salesWorkMode = selectedType === 'sales' ? (payload?.salesWorkMode ?? existing?.salesWorkMode ?? 'external') : undefined;
+      if (selectedType === 'sales' && !salesWorkModes.includes(salesWorkMode)) return { ok: false, field: 'salesWorkMode', error: 'Välj om partnern arbetar i eget CRM eller i Partnerportalen.' };
+      return { ok: true, profile: { name, type: existing?.type || selectedType, salesAudiences, ...(selectedType === 'sales' ? { salesWorkMode } : {}) } };
     }
 
     function saveProfile(payload, id) {
@@ -160,6 +165,7 @@
       if (id && (!existing || !supportedType(existing.type))) return;
       const selectedType = existing ? profileType(existing) : 'sales';
       const selected = audienceChoice(cleanAudiences(existing?.salesAudiences?.length ? existing.salesAudiences : [existing?.audience]));
+      const selectedWorkMode = existing?.salesWorkMode === 'portal' ? 'portal' : 'external';
       P.openDialog(existing ? 'Partnerinställningar' : 'Ny partner', `
         <form id="partner-setup-form" class="partner-setup-form">
           <p class="partner-setup-intro">${existing ? 'Uppdatera partnerns uppgifter.' : 'Välj samarbete. Partnern får en arbetsyta anpassad till sitt uppdrag.'}</p>
@@ -182,6 +188,13 @@
               ['both', 'Båda', 'Samma partner kan sälja till både företag och konsumenter.', 'users']
             ].map(([value, title, text, icon]) => `<label class="partner-setup-choice"><input type="radio" name="salesAudience" value="${value}" ${selected === value ? 'checked' : ''} required><span class="partner-setup-choice-icon">${P.icon(icon)}</span><span><strong>${title}</strong><small>${text}</small></span><span class="partner-setup-choice-check" aria-hidden="true">${P.icon('check')}</span></label>`).join('')}
           </fieldset>
+          <fieldset class="partner-setup-segments" id="partner-setup-work-mode" ${selectedType !== 'sales' ? 'hidden disabled' : ''}>
+            <legend>Arbetssätt</legend>
+            ${[
+              ['external', 'Eget CRM finns', 'Partnerportalen används för resultat, avtalsfakta, utbildning och stöd.', 'layers'],
+              ['portal', 'Partnerportalen som CRM', 'Partnern får även ett lokalt kundarbete för aktiviteter och nästa steg.', 'users']
+            ].map(([value, title, text, icon]) => `<label class="partner-setup-choice"><input type="radio" name="salesWorkMode" value="${value}" ${selectedWorkMode === value ? 'checked' : ''} required><span class="partner-setup-choice-icon">${P.icon(icon)}</span><span><strong>${title}</strong><small>${text}</small></span><span class="partner-setup-choice-check" aria-hidden="true">${P.icon('check')}</span></label>`).join('')}
+          </fieldset>
           <p class="partner-setup-note" id="partner-setup-note"></p>
           <p class="partner-setup-error" id="partner-setup-error" role="alert" hidden></p>
           <div class="modal-actions"><button class="btn btn-secondary" id="partner-setup-cancel" type="button">Avbryt</button><button class="btn btn-primary" type="submit">${existing ? 'Spara inställningar' : 'Skapa partner'} ${P.icon('arrow')}</button></div>
@@ -191,14 +204,17 @@
         const nameInput = form.elements.namedItem('name');
         const error = document.querySelector('#partner-setup-error');
         const salesFields = document.querySelector('#partner-setup-sales');
+        const workModeFields = document.querySelector('#partner-setup-work-mode');
         const note = document.querySelector('#partner-setup-note');
         const currentType = () => existing ? selectedType : form.elements.namedItem('partnerType').value;
         const updateType = () => {
           const type = currentType();
           salesFields.hidden = type !== 'sales';
           salesFields.disabled = type !== 'sales';
+          workModeFields.hidden = type !== 'sales';
+          workModeFields.disabled = type !== 'sales';
           const notes = {
-            sales: existing ? 'Sparade kunduppgifter och avtal behålls. Kundsegmentet styr vilka avtalsalternativ som kan väljas.' : 'Kunder & avtal och Insikter samlas under partnern. Resultat visas när det finns underlag.',
+            sales: existing ? 'Sparade kunduppgifter, kundaktiviteter och avtal behålls. Kundsegmentet och arbetssättet kan ändras utan att skriva om historiken.' : 'Kunder & avtal och Insikter samlas under partnern. CRM-arbetsytan visas bara när Partnerportalen väljs som arbetssätt.',
             property: 'Fastighetsbolaget registrerar inflyttningar manuellt eller via Excel och bifogar fullmakter. Hyresgästen gör inget aktivt i portalen.',
             employee: 'Samarbetet gäller elavtal för företagets anställda. Erbjudande och arbetssätt bestäms separat; inga priser eller förmåner skapas här.'
           };
@@ -213,7 +229,8 @@
           event.preventDefault();
           if (!form.reportValidity()) return;
           const choice = new FormData(form).get('salesAudience');
-          const result = saveProfile({ name: nameInput.value, partnerType: currentType(), salesAudiences: choiceAudiences(choice) }, id);
+          const workMode = new FormData(form).get('salesWorkMode');
+          const result = saveProfile({ name: nameInput.value, partnerType: currentType(), salesAudiences: choiceAudiences(choice), salesWorkMode: workMode }, id);
           if (!result.ok) {
             error.textContent = result.error;
             error.hidden = false;

@@ -1,5 +1,14 @@
 # Partnerlabbs uppdrag
 
+## Valbart CRM-arbetssätt – 14 oktober 2026
+
+Ludwig vill att en ny säljpartner väljer mellan **Eget CRM finns** och
+**Partnerportalen som CRM**. Det nya valet kompletterar partnertyp och
+B2B/B2C/båda. Eget CRM bevarar den nuvarande resultatuppföljningen för
+Savera och Face2face. Portal-CRM får ett litet lokalt kundarbete för
+fiktiva aktiviteter och nästa steg; det är inte en generell färdig säljapp,
+delad databas eller integration. Byte av arbetssätt bevarar historiken.
+
 ## Senaste partneralternativ – 11 oktober 2026
 
 Ludwig vill också kunna skapa **Fastighetsbolag** och **Personalavtal** under

@@ -1,5 +1,18 @@
 # Prioriterad utvecklingskö
 
+## CRM-01 · Valbart säljpartnerarbetssätt (kandidat 14 oktober 2026)
+
+Ludwigs direktuppdrag: vid skapande av säljpartner ska **Eget CRM finns**
+och **Partnerportalen som CRM** vara separata val. Kandidaten bevarar
+Savera/Face2face och äldre profiler som eget CRM. Portalvalet ger en lokal
+arbetsyta för fiktiva kundaktiviteter, status och nästa steg, separat från
+resultat, avtal och kickback. Byte av arbetssätt bevarar historiken.
+
+Godkänt när C1–C5 i PILOT-ACCEPTANCE passerar. Verklig kunddata, delning,
+autentisering, integration och fastställt CRM-flöde väntar på D-03/D-05.
+Kandidatgren, tester och PR-status kvitteras i WORKLOG; ingen publicering
+följer automatiskt av frontendförslaget.
+
 ## APP-02 · Installerbar app verifierad och publicerad v33 (12 oktober 2026)
 
 Ludwigs direktuppdrag: ”Gör en app av partnersidan”. Återanvänder APP-01:s

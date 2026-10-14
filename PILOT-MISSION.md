@@ -1,5 +1,14 @@
 # Partnerlivs pilotagent
 
+## Senaste säljpartneralternativ – 14 oktober 2026
+
+Vid skapande av säljpartner väljs också arbetssätt: eget CRM eller
+Partnerportalen som CRM. Den senare får en avgränsad lokal demoyta för
+fiktiva kundaktiviteter, status och nästa steg. Befintliga partners
+fortsätter med eget CRM tills annat väljs. Historik ska bevaras vid byte;
+aktiviteten får inte skapa avtal, resultat eller ersättning. Verklig CRM-
+drift och kunddata väntar på verksamhetsflöde, godkänd miljö och behörighet.
+
 ## Senaste partneralternativ – 11 oktober 2026
 
 Ludwig vill också kunna skapa **Fastighetsbolag** och **Personalavtal** under

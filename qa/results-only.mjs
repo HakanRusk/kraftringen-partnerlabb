@@ -37,6 +37,14 @@ for (const id of ['syd', 'vast']) {
   assert.doesNotMatch(detail, /Ansvar & nästa steg|Vad gör partnern|commercial-process-demo/);
   P.go('customers'); assert.equal(P.page, 'partners');
 }
+P.getPartner('syd').salesWorkMode = 'portal';
+P.previewPartner('syd');
+assert.deepEqual([...node('#view').innerHTML.matchAll(/data-go="([^"]+)"/g)].map(match => match[1]), ['sales-crm', 'partner-sales', 'product-facts', 'academy', 'support']);
+assert.match(node('#nav').innerHTML, /data-go="sales-crm"/);
+P.getPartner('syd').salesWorkMode = 'external';
+P.go('overview');
+assert.doesNotMatch(node('#view').innerHTML, /data-go="sales-crm"/);
+assert.doesNotMatch(node('#nav').innerHTML, /data-go="sales-crm"/);
 P.state.moveins = [{ id: 'property-case', partner: 'estate1', name: 'Fiktiv inflyttare', handoverStatus: 'submitted', events: [] }];
 P.partner = 'estate1'; P.role = 'partner';
 P.register('property-manual', { render: () => 'manuell registrering' });

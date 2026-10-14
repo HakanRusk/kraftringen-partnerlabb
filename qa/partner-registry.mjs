@@ -84,6 +84,26 @@ test('explicit sales creation retains all three segment choices and omitted part
   }
   const legacyCall = P.partnerSetup.saveProfile({ name: 'Legacy caller', salesAudiences: ['business'] });
   assert.equal(P.getPartner(legacyCall.id).type, 'sales');
+  assert.equal(P.getPartner(legacyCall.id).salesWorkMode, 'external');
+});
+
+test('sales work mode is explicit, reloadable and can change without rewriting history', () => {
+  const P = fixture();
+  const before = JSON.stringify({ records: P.state.records, offers: P.state.offers, consumerSales: P.state.consumerSales });
+  const external = P.partnerSetup.saveProfile({ name: 'Partner med eget CRM', partnerType: 'sales', salesAudiences: ['business'], salesWorkMode: 'external' });
+  const portal = P.partnerSetup.saveProfile({ name: 'Partner med portal-CRM', partnerType: 'sales', salesAudiences: ['business', 'consumer'], salesWorkMode: 'portal' });
+  assert.equal(P.getPartner(external.id).salesWorkMode, 'external');
+  assert.equal(P.getPartner(portal.id).salesWorkMode, 'portal');
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Partner med portal-CRM', salesAudiences: ['consumer'], salesWorkMode: 'external' }, portal.id).ok, true);
+  assert.equal(P.getPartner(portal.id).salesWorkMode, 'external');
+  assert.equal(JSON.stringify({ records: P.state.records, offers: P.state.offers, consumerSales: P.state.consumerSales }), before);
+  const reloaded = fixture();
+  reloaded.state.partnerProfiles = H.hydrate(plain(P.state.partnerProfiles), reloaded.partnerRegistry, reloaded.partners);
+  assert.equal(reloaded.getPartner(external.id).salesWorkMode, 'external');
+  assert.equal(reloaded.getPartner(portal.id).salesWorkMode, 'external');
+  assert.equal(reloaded.getPartner('syd').salesWorkMode, 'external');
+  assert.equal(reloaded.getPartner('vast').salesWorkMode, 'external');
+  assert.equal(P.partnerSetup.saveProfile({ name: 'Ogiltigt arbetssätt', partnerType: 'sales', salesAudiences: ['business'], salesWorkMode: 'unknown' }).ok, false);
 });
 
 test('all channel types and renamed seed property reload without changing stored customer or service data', () => {

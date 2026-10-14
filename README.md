@@ -223,7 +223,11 @@ säljar- och regionurval styr nyckeltalen och Insikter.
 Välj **Partners → Skapa partner** och därefter samarbetstyp:
 
 - **Säljpartner:** välj **Företag (B2B)**, **Konsument (B2C)** eller **båda**.
-  Kundsegmentet kan senare ändras med befintlig kundhistorik bevarad.
+  Välj också **Eget CRM finns** eller **Partnerportalen som CRM**.
+  Kundsegment och arbetssätt kan senare ändras med befintlig historik
+  bevarad. Eget CRM ger samma fyra stora ingångar som Savera och Face2face.
+  Portal-CRM lägger till **Kundarbete** för lokala fiktiva aktiviteter,
+  status och nästa steg.
 - **Fastighetsbolag:** den nya partnern får den befintliga
   inflyttningsservicen med Excel/manuell registrering, fullmaktsbilagor,
   förmedling och egna kunder/kickback. Kvartspris är initialt grundval under
@@ -251,7 +255,10 @@ verksamhetsspår. Säljpartnerns produktkatalog styrs av kundsegmentet:
 
 Partnerprofiler med typen `sales`, `field`, `property` eller `employee`
 sparas lokalt i `state.partnerProfiles`, skilt mellan vanlig labbyta och
-kunddemo. En ny partner har inget resultatunderlag förrän ett
+kunddemo. Säljpartnerns `salesWorkMode` är `external` eller `portal`;
+äldre profiler får `external`. Portalens CRM-poster ligger separat i
+`state.salesCrmRecords`, avgränsas per partner och påverkar inga
+resultat-/avtalsfixtures. En ny partner har inget resultatunderlag förrän ett
 sådant finns: visa **Underlag saknas** i stället för påhittade nollresultat,
 kunder, avtal, prognoser eller kickback. En ny fastighetspartner börjar med
 egna tomma ärenden; en ny personalavtalspartner saknar kommersiellt underlag
@@ -261,7 +268,9 @@ ingen inloggning och ingen serverstyrd behörighet.
 Savera är den bekräftade företagspartnern och Face2face den bekräftade
 konsumentpartnern. Face2face arbetar fortsatt i Beest; detta är intern
 uppföljning utan integration med eller ersättning av Beest. Saveras
-framtida användning av portalen som säljverktyg är inte beslutad.
+och Face2faces befintliga profiler använder eget CRM. Portal-CRM är en lokal
+frontenddemo: inga riktiga kunduppgifter, fleranvändardelning, erbjudanden,
+avtal, resultat, kickback eller integrationer skapas.
 
 ### Insikter och mått
 
@@ -500,7 +509,8 @@ hyresgästsida sätts inte i drift.
 - `dist/movein-attachments.js` och `.css`: lokal bilagelagring och dokumentkoppling.
 - `dist/vendor/exceljs-4.4.0.min.js`: lokalt paketerad ExcelJS för .xlsx-läsning och mall; MIT-licens följer med.
 - `dist/movein-service.js`: gemensam ärendedata, förmedling, kompletteringar och Kraftringens interna handläggningsvy.
-- `dist/partner-setup.js` och `.css`: lokala partnerprofiler, val av säljpartner/fastighetsbolag/personalavtal vid skapande samt ändring av namn och säljkundsegment.
+- `dist/partner-setup.js` och `.css`: lokala partnerprofiler, val av säljpartner/fastighetsbolag/personalavtal samt säljarbetssätt vid skapande, och ändring av namn, säljkundsegment och arbetssätt.
+- `dist/sales-crm.js` och `.css`: lokalt, partneravgränsat kundarbete för säljpartners som valt Partnerportalen som CRM; fiktiva aktiviteter och nästa steg utan avtals- eller resultatpåverkan.
 - `dist/savera-data.js`: generiskt fiktivt kund-/avtalsregister för säljpartners, perioder, segment, bestånd, kundtid och scenario vid fortsatt tempo.
 - `dist/savera-reports.js` och `.css`: gemensamma interna vyer `partner-sales` och `partner-insights` under Partners. Partner-ID bevaras som `?partner=<id>`; äldre Savera-/Insikter-länkar är kompatibilitetsingångar.
 - `dist/property-results.js` och `.css`: fastighetspartnerns egna kunder, serviceutfall och manuella kickbackposter.

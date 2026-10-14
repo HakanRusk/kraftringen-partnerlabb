@@ -92,6 +92,19 @@ redovisas i WORKLOG.md. Saknad verklig kund begränsar uppmätt användarnytta
 och produktionsvalidering, men stoppar inte att S-/I-/P-/R-fallen verifieras
 med kontrollerade fiktiva underlag.
 
+## CRM-01 — Valbart arbetssätt för säljpartner
+
+| Fall | Handling och godkänt resultat |
+|---|---|
+| C1 — Skapa partner | Skapa B2B, B2C och blandad säljpartner med vartdera arbetssättet. Valet består efter omladdning och påverkar inte kundsegment eller resultathistorik. Äldre profiler blir Eget CRM. |
+| C2 — Eget CRM | Partnern behåller de fyra befintliga ingångarna. Kundarbete visas inte i meny eller start, och direkt öppning anger att arbetsytan inte är aktiverad. |
+| C3 — Portal-CRM | Partnern får Kundarbete i meny och start. En fiktiv kundaktivitet kan skapas och ändras med partnerns segment, `.example`-kontakt, teststatus och nästa steg. |
+| C4 — Isolering och betydelse | Partner A ser inte partner B:s aktiviteter. Aktiviteten skapar inte avtal, resultat, intäkt eller kickback. Byte till Eget CRM döljer men raderar inte poster; återgång visar samma historik. |
+| C5 — Fel och layout | Sparfel återställer tidigare data utan falsk kvittens. Dialog, lista och huvudhandling fungerar med tangentbord samt vid 320/390/1440 px. |
+
+Detta verifierar en lokal frontenddemo. Verklig CRM-process, delad lagring,
+behörighet och personuppgiftsbehandling kräver D-03/D-05 och separat mandat.
+
 ## Kodverifiering att återanvända och anpassa
 
 - `qa/property-intake.py`: aktuella browserkontroller för manuellt/Excel,

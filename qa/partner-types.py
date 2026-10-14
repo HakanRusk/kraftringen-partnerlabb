@@ -38,13 +38,14 @@ async def open_create(test):
     await test.page.locator('#partner-setup-form').wait_for()
 
 
-async def create(test, name, kind='sales', audience='business'):
+async def create(test, name, kind='sales', audience='business', work_mode='external'):
     await open_create(test)
     page = test.page
     await page.locator('#partner-setup-name').fill(name)
     await page.locator(f'input[name="partnerType"][value="{kind}"]').check()
     if kind == 'sales':
         await page.locator(f'input[name="salesAudience"][value="{audience}"]').check()
+        await page.locator(f'input[name="salesWorkMode"][value="{work_mode}"]').check()
     await page.get_by_role('button', name='Skapa partner', exact=True).click()
     await page.locator('#partner-setup-form').wait_for(state='hidden')
     return await page.evaluate('Portal.selectedPartnerId')
@@ -71,9 +72,10 @@ async def registry_checks(test):
     form_text = await page.locator('#partner-setup-form').inner_text()
     test.good('ny partner erbjuder säljpartner, fastighetsbolag och personalavtal i samma dialog', await page.locator('input[name="partnerType"]').evaluate_all('(nodes)=>nodes.map(n=>n.value)') == ['sales', 'property', 'employee'] and all(label in form_text for label in ['Säljpartner', 'Fastighetsbolag', 'Personalavtal']))
     test.good('säljpartner är standard och behåller företag, konsument och båda', await page.locator('input[name="partnerType"][value="sales"]').is_checked() and await page.locator('input[name="salesAudience"]').evaluate_all('(nodes)=>nodes.map(n=>n.value)') == ['business', 'consumer', 'both'])
+    test.good('säljpartner väljer mellan eget CRM och Partnerportalen som CRM', await page.locator('input[name="salesWorkMode"]').evaluate_all('(nodes)=>nodes.map(n=>n.value)') == ['external', 'portal'] and await page.locator('input[name="salesWorkMode"][value="external"]').is_checked())
     for kind in ['property', 'employee']:
         await page.locator(f'input[name="partnerType"][value="{kind}"]').check()
-        test.good(f'{kind} kräver inte säljsegment', not await page.locator('#partner-setup-sales').is_visible() and await page.locator('#partner-setup-sales').evaluate('(field)=>field.disabled'))
+        test.good(f'{kind} kräver inte säljsegment eller CRM-arbetssätt', not await page.locator('#partner-setup-sales').is_visible() and await page.locator('#partner-setup-sales').evaluate('(field)=>field.disabled') and not await page.locator('#partner-setup-work-mode').is_visible() and await page.locator('#partner-setup-work-mode').evaluate('(field)=>field.disabled'))
     await page.locator('input[name="partnerType"][value="sales"]').check()
     test.good('återgång till säljpartner återaktiverar segmentvalen', await page.locator('#partner-setup-sales').is_visible() and not await page.locator('#partner-setup-sales').evaluate('(field)=>field.disabled'))
     await page.locator('#partner-setup-cancel').click()
@@ -104,6 +106,17 @@ async def registry_checks(test):
         partners[audience] = partner
         data = await profile(page, partner)
         test.good(f'säljpartner {audience} behåller rätt kundsegment och avtalsöversikt', data['type'] == 'sales' and data['salesAudiences'] == expected and await page.evaluate('Portal.page') == 'partner-sales' and await page.locator('[data-sr-metric] strong').all_inner_texts() == ['—', '—', '—'])
+
+    portal_partner = await create(test, 'QA Portal CRM', 'sales', 'both', 'portal')
+    portal_data = await profile(page, portal_partner)
+    test.good('portal-CRM sparas separat från kundsegmentet', portal_data['salesAudiences'] == ['business', 'consumer'] and portal_data['salesWorkMode'] == 'portal')
+    await test.view(portal_partner)
+    test.good('portal-CRM får Kundarbete i meny och start', await page.locator('#nav [data-go="sales-crm"]').count() == 1 and await page.locator('#view [data-go="sales-crm"]').count() == 1)
+    await route(test, 'sales-crm')
+    test.good('portal-CRM öppnar en tom partneravgränsad arbetsyta', await page.locator('h1').inner_text() == 'Kundarbete' and 'Börja med en fiktiv kundaktivitet' in await page.locator('#view').inner_text())
+    await page.evaluate('(id)=>{Portal.returnInternal();Portal.partnerSetup.saveProfile({name:"QA Portal CRM",partnerType:"sales",salesAudiences:["business","consumer"],salesWorkMode:"external"},id)}', portal_partner)
+    await test.view(portal_partner)
+    test.good('byte till eget CRM döljer Kundarbete men behåller profilen', await page.locator('#nav [data-go="sales-crm"]').count() == 0 and (await profile(page, portal_partner))['salesWorkMode'] == 'external')
 
     test.good('nya partnertyper skapar inga kundavtal, serviceärenden eller ekonomiska utfall', await counts(page) == baseline)
     await open_create(test)
