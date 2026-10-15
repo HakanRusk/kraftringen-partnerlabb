@@ -4,6 +4,47 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad v38 · 15 oktober 2026
+
+Samtliga nio operativa CRM-förbättringar enligt uppdraget **Ludwig via Claude,
+15 oktober** publicerade via [PR #58](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/58).
+Verifierad PR-HEAD: 49bb376ff116de82f699a4c31554e8e5cb2896d6.
+GitHub-main och publicerad Sites-källa:
+**ef2c08a1076a7d64d6113ae8d3d71c21e1606e99**.
+Verifierat och överfört träd: ee6941f75de0a3c0d15b7395559fb45294af68bd.
+
+[CI-körning 38747767459](https://github.com/ludros93-prog/kraftringen-partnerlabb/actions/runs/38747767459)
+är completed/success för aktuell HEAD: Node/DOM, Chromium flows och QA gate.
+13 Node-/DOM-sviter, inklusive 12 operativa CRM-scenarier, 13 tidigare CRM-
+scenarier och 8 identifierarscenarier. Chromium körde de befintliga
+inflyttnings-/partnertypsflödena samt både identifierarflödet och det nya
+CRM-arbetsflödet vid **1440, 390 och 320 px**. Fältbredd, köer, länkar,
+sökning under inmatning med bibehållet fokus, pipeline, avbrutet stegbyte,
+avslutsdatum och omladdning passerade utan scriptfel i kontrollerade flöden.
+Ingen lokal browserkontroll eller fullständig visuell/skärmläsargranskning påstås.
+
+Första browserförsöket upptäckte ett testurval som räknade kontaktlänkar både
+i synlig lista och stängd dialog. Testet avgränsades till kundlistan; slutlig
+CI ovan kör alla krav. Riktad regression säkerställer också att äldre kända
+closedAt behålls som wonAt/lostAt vid återöppning. Okända datum fabriceras inte.
+
+Sites-källan uppdaterades fast-forward från v37 med ren checkout och exakt
+samma träd som grön CI. Version-ID:
+appgprj_6ac600ecf7d48191923687550810c1d4~appgver_0c4c854d81608191b452fdac85db75c4.
+Deployment-ID: appgdep_6ad0ddc97f248191acc1971ff5bdf01c.
+Native **succeeded** 2026-10-15T14:06:17.763634+00:00:
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Custom-delning/policyrevision 4 bevarad; inga åtkomst-, schema- eller backendändringar.
+
+PR #55:s vägledning och regressioner är återanvända i #58; #55 stängdes som
+ersatt utan separat merge av den äldre grenen. CRM-02/04 är klara. Tidigare
+CRM-val och kund-/anläggningsidentifierare är klara i v35/v37. Gemensam lagring
+är fortsatt ett separat förslag enligt D-03, med färdigt underlag men utan backend.
+Vunnen skapar fortsatt inga avtal, resultat, utskick eller kickback.
+
+Denna efterhandskvittens ändrar bara WORKLOG, BACKLOG och GITHUB-STATUS.
+Applikation, tester och workflow är identiska med publicerad v38.
+
 ## 15 oktober 2026 · Operativt CRM, uppdrag 1
 
 Källa: **Ludwig via Claude, 15 oktober**, med uttryckligt genomförande-, test-

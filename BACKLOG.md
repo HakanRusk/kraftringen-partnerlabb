@@ -10,7 +10,7 @@ Avslutade uppgifter och äldre prioriteringar finns i docs/archive/2026-10-14/BA
 | Klar v36 · DOC-01 | Kort arbetsminne, historik i arkiv, en definition per beslut | Gällande regler/bevarande/godkännandekrav kvar; beslut länkas. |
 | Klar · PILOT-04A | Konkret litet backendunderlag för D-03 | Arkitektur, roller, data/dokument, API, migrering, drift och acceptans går att besluta om. |
 | Klar v37 · CRM-03 | Kund-/anläggningsidentifierare i portal-CRM | Nya/befintliga kort, B2B/B2C, format, bevarande, export och tre browserstorlekar verifierade; kvittens i WORKLOG. |
-| Kandidat · CRM-02/04 | Vunnen-besked och nio operativa CRM-förbättringar | Uppdrag 15 oktober enligt P-02; 13 Node-/DOM-sviter gröna. Chromium/CI och publicering kvitteras i WORKLOG. |
+| Klar v38 · CRM-02/04 | Vunnen-besked och nio operativa CRM-förbättringar | 13 Node-/DOM-sviter, Chromium vid 320/390/1440 px och publicering verifierade; kvittens i WORKLOG. |
 | Nästa förslag · MOBILE-01 | Få fram nyckeltal tidigare på mobil | Pröva kompakt/hopfällbart filter med tydligt aktivt urval och tangentbord. |
 | Nästa · PILOT-03 | Reproducerad friktion i inflyttning/handläggning | Konkret före/efter, bevarad data, relevant verifiering. |
 | Vid underlag · PILOT-00 | Uppdatera fakta/beslut från faktisk återkoppling | D-01–D-04 besvaras med källa, inte antaganden. |
