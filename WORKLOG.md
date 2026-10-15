@@ -4,6 +4,35 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad v37 · 15 oktober 2026
+
+Kund-/anläggningsidentifierare i portal-CRM publicerade via
+[PR #56](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/56),
+HEAD bf2c19505f6646162ea5de336873dd97fecc4214.
+GitHub-main och publicerad Sites-källa:
+**19230f7574ab1590669d604881f712a82c8ffe9c**.
+Testat/source-synkat träd: 87b7e68eadddf4f07656fb754dc312e915976400.
+Öppen PR #55 ingår inte i denna version.
+
+[CI-körning 38708091237](https://github.com/ludros93-prog/kraftringen-partnerlabb/actions/runs/38708091237)
+passerade Node and DOM, Chromium flows och QA gate. 12 Node-/DOM-sviter,
+inklusive 8 identifierarscenarier och 13 befintliga CRM-scenarier. Chromium:
+195 befintliga kontroller och nya CRM-flödet vid 1440, 390 och 320 px.
+Skapa, kundtypstyrt nummerfält, formatfel/fokus, fältbredd, omladdning och
+ändring passerade i alla tre storlekar; inga scriptfel i de kontrollerade flödena.
+Ingen lokal browserautomation gjordes; browserbeläggen kommer från CI.
+
+Sites överfördes fast-forward från da858f3 med ren checkout och identiskt träd.
+Version-ID: appgprj_6ac600ecf7d48191923687550810c1d4~appgver_887eec398c60819194cb7d3871962fd8.
+Deployment-ID: appgdep_6ad0941a0668819197f73efea1d7a921.
+Native **succeeded** 2026-10-15T08:51:58.031805+00:00:
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Befintlig custom-delning/policyrevision 4 bevarades utan åtkomständringar.
+
+Denna efterhandskvittens uppdaterar endast WORKLOG, BACKLOG och GITHUB-STATUS.
+Applikation, tester och workflow är oförändrade från publicerad v37. Uppgifterna
+lagras fortfarande lokalt och identifierarna verifieras inte mot externa register.
+
 ## 15 oktober 2026 · CRM-kundens identifierare
 
 Direkt användaruppdrag: anläggnings-ID, nätområdeskod och personnummer respektive

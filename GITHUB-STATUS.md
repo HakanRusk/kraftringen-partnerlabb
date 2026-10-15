@@ -5,8 +5,8 @@ Publikt repo valt av Ludwig 8 oktober; kod/docs-synk och publicering bekräftad
 igen 14 oktober. Källhistoriken bevaras. Sites är separat privat publiceringsmål.
 
 - Senaste publiceringskvittens, exakta SHA/version/deployment: WORKLOG.md.
-- Senast bekräftat publicerad: v36, periodordning, 14 oktober 2026 via PR #53.
-  CRM från v35 bevaras. Exakt käll-/publiceringskvittens finns i WORKLOG.md.
+- Senast bekräftat publicerad: v37, CRM-kundens identifierare, 15 oktober 2026
+  via PR #56. Exakt käll-/publiceringskvittens finns i WORKLOG.md.
 - Custom-delningen ska bevaras. GitHubs synlighet ändrar inte portalens inloggning.
 - Daniels konto daniel-smail: senast verifierad publik läsning, ej bekräftad skrivåtkomst.
   Tidigare försök att ändra åtkomst och grenskydd nekades med 403.
