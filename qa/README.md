@@ -1,9 +1,9 @@
 # Underhållna QA-ingångar
 
-`npm ci && npm test` (Node 24) kör syntaxkontroll för dist-JavaScript och 11
+`npm ci && npm test` (Node 24) kör syntaxkontroll för dist-JavaScript och 12
 utvalda sviter: partnerregister, resultat utan CRM, partnersjälvservice,
 rapportdata, importdubbletter, nästa handling, kvittoåteröppning,
-fastighetsperiod, appmanifest, portal-CRM och kommersiella periodval.
+fastighetsperiod, appmanifest, portal-CRM, kund-/anläggningsidentifierare och kommersiella periodval.
 jsdom verifierar DOM-händelser/data, inte riktig rendering eller layout.
 
 Browserflöden körs i GitHub Actions med Python 3.12 och Chromium. I en miljö
@@ -18,7 +18,7 @@ PARTNERLABB_QA_URL=http://127.0.0.1:8000/ python qa/run-browser.py
 ```
 
 Runnern kör movein-drafts.py, movein-service.py (båda använder property-intake.py)
-och partner-types.py. De provar riktig Excel, bilagor, handläggning, sparfel,
+samt partner-types.py och crm-identifiers-browser.py. De provar riktig Excel, bilagor, handläggning, sparfel,
 isolering och nya partnertyper med fiktiva data. Vid CI-fel sparas tillgängliga
 skärmbilder och serverlogg i sju dagar. Det är inte visuell granskning av hela portalen.
 
@@ -29,3 +29,8 @@ kontroller ignoreras inte. CI ger ingen automatisk merge eller publicering.
 Övriga audit/round/bug-skript är historiska, riktade undersökningar. De raderas
 inte här och körs inte blint som en enda stabil svit. Välj dem efter berört område
 eller konsolidera i separat uppgift. Godkända tester och revision kvitteras i WORKLOG.
+
+Identifierarsviterna använder enbart uppenbart fiktiva nummersträngar. DOM
+kontrollerar format, byte av kundsegment, precision, ändring/rensning, äldre poster,
+sparfel, export och demoisolering. Chromium provar skapa/ändra/omladdning,
+felmeddelande/fokus och fältens bredd vid 320, 390 och 1440 px.

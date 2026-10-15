@@ -6,7 +6,7 @@ process.chdir(fileURLToPath(new URL('../', import.meta.url)));
 const suites = [
   'partner-registry', 'results-only', 'partner-self-service', 'savera-data',
   'property-intake-dedup', 'movein-next-action', 'movein-receipt',
-  'property-results-period', 'install-app', 'partner-crm', 'commercial-periods'
+  'property-results-period', 'install-app', 'partner-crm', 'crm-identifiers', 'commercial-periods'
 ];
 let failures = 0;
 function run(args) {
