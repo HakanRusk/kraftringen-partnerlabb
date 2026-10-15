@@ -21,12 +21,33 @@
     date.setUTCDate(date.getUTCDate()+days);
     return date.toISOString().slice(0,10);
   }
-  function closedDate(row) {
-    const value = row.closedAt || row[row.stage==='won'?'wonAt':'lostAt'];
-    if (typeof value !== 'string' || !value || Number.isNaN(Date.parse(value))) return 'Datum saknas';
-    return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Stockholm',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(value));
+  function displayDate(value, missing='Datum saknas') {
+    if (typeof value!=='string' || !value || Number.isNaN(Date.parse(value))) return missing;
+    const calendar=/^\d{4}-\d{2}-\d{2}$/.test(value);
+    if (calendar && !validDate(value)) return missing;
+    const date=new Date(calendar?`${value}T12:00:00Z`:value);
+    const year=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Stockholm',year:'numeric'}).format(date);
+    return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Stockholm',day:'numeric',month:'short',...(year!==today().slice(0,4)?{year:'numeric'}:{})}).format(date);
   }
-  const consumption = row => row.annualConsumptionKwh !== '' && row.annualConsumptionKwh != null && Number.isFinite(Number(row.annualConsumptionKwh)) && Number(row.annualConsumptionKwh)>=0 ? Number(row.annualConsumptionKwh) : null;
+  const closedDate = row => displayDate(row.closedAt || row[row.stage==='won'?'wonAt':'lostAt']);
+  const compactConsumption = value => String(value??'').trim().replace(/[ \u00a0\u202f]/g,'').replace(',','.');
+  const consumption = row => {
+    const input=String(row.annualConsumptionKwh??'').trim();
+    if (!/^(?:\d+|\d{1,3}(?:[ \u00a0\u202f]\d{3})+)(?:[.,]\d+)?$/.test(input)) return null;
+    const value=compactConsumption(input);
+    return /^\d+(?:\.\d+)?$/.test(value) && Number.isFinite(Number(value)) && Number(value)>=0 ? Number(value) : null;
+  };
+  const formattedConsumption = value => {
+    const number=consumption({annualConsumptionKwh:value});
+    return number===null?'':number.toLocaleString('sv-SE',{maximumFractionDigits:20});
+  };
+  function wholeConsumption(value) {
+    const input=String(value??'').trim();
+    if (!input) return '';
+    if (!/^(?:\d+|\d{1,3}(?:[ \u00a0\u202f]\d{3})+)$/.test(input)) return null;
+    const number=Number(compactConsumption(input));
+    return Number.isSafeInteger(number)?String(number):null;
+  }
   const nextStage = stage => ({lead:'contact',contact:'meeting',meeting:'offer',offer:'won'})[stage];
   const closed = row => ['won', 'lost'].includes(row.stage);
   const activePartner = () => P.role === 'partner' ? P.partner : P.selectedPartnerId;
@@ -95,9 +116,16 @@
     if (text(row.currentSupplier).length>120) return {ok:false,error:'Leverantörens namn får vara högst 120 tecken.',field:'currentSupplier'};
     if (row.contractEndDate && !validDate(row.contractEndDate)) return {ok:false,error:'Ange ett giltigt slutdatum för nuvarande avtal.',field:'contractEndDate'};
     if (row.electricityArea && !['SE1','SE2','SE3','SE4'].includes(row.electricityArea)) return {ok:false,error:'Välj elområde SE1–SE4.',field:'electricityArea'};
-    if (own(payload,'annualConsumptionKwh') && row.annualConsumptionKwh) {
-      row.annualConsumptionKwh = row.annualConsumptionKwh.replace(',','.');
-      if (!/^\d+(?:\.\d{1,3})?$/.test(row.annualConsumptionKwh) || Number(row.annualConsumptionKwh)>Number.MAX_SAFE_INTEGER) return {ok:false,error:'Ange årsförbrukning i kWh som ett positivt tal eller 0, med högst tre decimaler.',field:'annualConsumptionKwh'};
+    if (own(payload,'annualConsumptionKwh')) {
+      const original=old?.annualConsumptionKwh;
+      // A previously accepted decimal remains exact when other fields are edited.
+      const unchanged=original!==undefined && [String(original),formattedConsumption(original)].includes(row.annualConsumptionKwh);
+      if (unchanged) row.annualConsumptionKwh=original;
+      else {
+        const normalized=wholeConsumption(row.annualConsumptionKwh);
+        if (normalized===null) return {ok:false,error:'Ange årsförbrukningen i hela kWh, till exempel 250 000.',field:'annualConsumptionKwh'};
+        row.annualConsumptionKwh=normalized;
+      }
     }
     if (row.productInterest && row.productInterest!==old?.productInterest && !products(segment).includes(row.productInterest)) return {ok:false,error:'Välj ett produktintresse från kundsegmentets katalog.',field:'productInterest'};
     row.stage = payload.stage; row.nextDate = text(payload.nextDate);
@@ -138,7 +166,7 @@
   const button = (label, attrs, primary=false) => `<button type="button" class="btn ${primary?'btn-primary':'btn-secondary'}" ${attrs}>${label}</button>`;
   const empty = (title,body,action='') => `<div class="crm-empty"><span class="crm-empty-icon">${icon('users')}</span><h2>${title}</h2><p>${body}</p>${action}</div>`;
   const newButton = () => button(`${icon('plus')} Ny kund / affär`,'data-crm-new',true);
-  const dueLabel = row => closed(row) ? closedDate(row) : row.nextDate<today()?`Försenad sedan ${P.date(row.nextDate)}`:row.nextDate===today()?'Idag':P.date(row.nextDate);
+  const dueLabel = row => closed(row) ? closedDate(row) : row.nextDate<today()?`Försenad sedan ${displayDate(row.nextDate)}`:row.nextDate===today()?'Idag':displayDate(row.nextDate);
   const badge = row => `<span class="crm-stage crm-stage-${e(row.stage)}">${e(stages[row.stage])}</span>`;
   function header(title,description) {
     return `${P.role==='internal'?'<button class="text-button" data-go="partner-detail">← Till partnern</button>':''}<div class="page-head"><div><span class="eyebrow">${e(P.getPartner(activePartner())?.name)} / CRM</span><h1>${title}</h1><p class="muted">${description}</p></div>${newButton()}</div><p class="crm-scope">Lokalt CRM · sparas i denna webbläsare</p>`;
@@ -172,8 +200,8 @@
       ${!list.length?`<section class="card">${empty('Lägg till din första kund','Samla kontaktuppgifter, välj säljsteg och planera nästa kontakt.',newButton())}</section>`:''}
       <section class="card"><div class="panel-heading"><h2>Idag och försenat</h2><button class="text-button" data-go="crm-activities">Alla aktiviteter →</button></div>${due.length?activityList(due):'<p class="muted">Du har inga öppna aktiviteter med datum idag eller tidigare.</p>'}</section>
       <section class="card" id="crm-upcoming"><h2>Kommande 7 dagar</h2>${upcoming.length?activityList(upcoming):'<p class="muted">Inga aktiviteter planerade för de kommande sju dagarna.</p>'}</section>
-      <section class="card" id="crm-expiring"><h2>Avtal som löper ut inom 6 månader</h2><p class="muted">Kundernas nuvarande avtal, från idag till ${e(shiftDate(date,0,6))}. Öppna ett kundkort för att planera kontakt.</p>
-        ${expiring.length?`<div class="crm-activity-list">${expiring.map(row=>`<button class="crm-activity" type="button" data-crm-open="${e(row.id)}"><span class="crm-due">${e(row.contractEndDate)}</span><span><strong>${e(row.name)}</strong><small>${e(row.currentSupplier||'Leverantör ej angiven')} · ${e(stages[row.stage])}</small></span>${icon('arrow')}</button>`).join('')}</div>`:'<p class="muted">Inga registrerade slutdatum inom perioden.</p>'}
+      <section class="card" id="crm-expiring"><h2>Avtal som löper ut inom 6 månader</h2><p class="muted">Kundernas nuvarande avtal, från idag till ${e(displayDate(shiftDate(date,0,6)))}. Öppna ett kundkort för att planera kontakt.</p>
+        ${expiring.length?`<div class="crm-activity-list">${expiring.map(row=>`<button class="crm-activity" type="button" data-crm-open="${e(row.id)}"><span class="crm-due">${e(displayDate(row.contractEndDate))}</span><span><strong>${e(row.name)}</strong><small>${e(row.currentSupplier||'Leverantör ej angiven')} · ${e(stages[row.stage])}</small></span>${icon('arrow')}</button>`).join('')}</div>`:'<p class="muted">Inga registrerade slutdatum inom perioden.</p>'}
       </section>
       <p class="crm-footnote">Vunnen är en manuellt registrerad CRM-status. Den tecknar inget elavtal och ändrar inte resultat eller kickback.</p>
     </div>`;
@@ -186,14 +214,15 @@
       </tbody></table></div>`:empty('Inga kunder i urvalet','Lägg till en kund eller ändra ditt filter.',newButton())}</section></div>`;
   }
   function stageVolume(group) {
+    if (!group.length) return '';
     const values=group.map(consumption).filter(value=>value!==null);
     if (!values.length) return '<p class="crm-volume">Årsförbrukning saknas</p>';
     const mwh=values.reduce((sum,value)=>sum+value,0)/1000;
     return `<p class="crm-volume"><strong>${e(mwh.toLocaleString('sv-SE',{maximumFractionDigits:6}))} MWh/år</strong><span>Angiven för ${values.length} av ${group.length} affärer</span></p>`;
   }
   function renderPipeline() {
-    const list=filtered();
-    return `<div class="crm-page">${header('Säljpipeline','Öppna ett kundkort för att ändra säljsteg och boka nästa aktivitet.')}${tabs('crm-pipeline')}<section class="card">${toolbar()}</section>
+    const list=filtered(), open=list.filter(row=>!closed(row));
+    return `<div class="crm-page">${header('Säljpipeline','Öppna ett kundkort för att ändra säljsteg och boka nästa aktivitet.')}${tabs('crm-pipeline')}<section class="card crm-pipeline-summary" aria-label="Sammanfattning av öppen pipeline"><div><span>Öppna affärer i urvalet</span><strong>${open.length}</strong></div><div><span>Angiven årsförbrukning · öppna affärer</span>${stageVolume(open)||'<p class="crm-volume">—</p>'}</div></section><section class="card">${toolbar()}</section>
       <div class="crm-board">${Object.entries(stages).map(([key,label])=>{
         const group=list.filter(r=>r.stage===key);
         return `<section class="crm-column" data-crm-stage="${key}"><h2>${label}<span>${group.length}</span></h2>${stageVolume(group)}
@@ -204,6 +233,14 @@
   function renderActivities() {
     const list=filtered().filter(row=>!closed(row)).sort((a,b)=>a.nextDate.localeCompare(b.nextDate));
     return `<div class="crm-page">${header('Aktiviteter','Följ upp planerade kundkontakter. Öppna kortet, anteckna och planera nästa steg.')}${tabs('crm-activities')}<section class="card">${toolbar(true)}${activityList(list)}</section></div>`;
+  }
+  const historyText = value => value.replace(/(^Nästa aktivitet: .* \()(\d{4}-\d{2}-\d{2})(\)\.$)/gm,(_,before,date,after)=>`${before}${displayDate(date)}${after}`);
+  function cardSummary(row) {
+    return `<div class="crm-summary-heading"><h3>Överblick</h3>${badge(row)}</div><dl class="crm-summary-facts">
+      <div><dt>Nästa aktivitet</dt><dd>${closed(row)?'Avslutad affär':`${e(row.nextAction||'Ej angiven')} · ${e(displayDate(row.nextDate))}`}</dd></div>
+      <div><dt>Avtal löper ut</dt><dd>${e(displayDate(row.contractEndDate,'Ej angivet'))}</dd></div>
+      <div><dt>Årsförbrukning</dt><dd>${consumption(row)===null?'Ej angiven':`${e(formattedConsumption(row.annualConsumptionKwh))} kWh/år`}</dd></div>
+      </dl><div id="crm-card-contact">${contactLinks(row)}</div>`;
   }
   function open(id, advance=false) {
     if (!allowed(activePartner())) return;
@@ -218,16 +255,17 @@
     const electricityFields = `<fieldset class="crm-facility"><legend>Elavtal i dag</legend><p class="crm-input-hint">Frivilliga uppgifter för nästa kunddialog.</p><div class="crm-form-grid">
       ${input('currentSupplier','Nuvarande elleverantör')}${input('contractEndDate','Nuvarande avtal löper ut','date')}
       <label class="field">Elområde<select name="electricityArea"><option value="">Ej angivet</option>${['SE1','SE2','SE3','SE4'].map(area=>`<option ${row?.electricityArea===area?'selected':''}>${area}</option>`).join('')}</select></label>
-      <label class="field">Årsförbrukning i kWh<input name="annualConsumptionKwh" inputmode="decimal" maxlength="24" value="${e(row?.annualConsumptionKwh??'')}" placeholder="Exempel: 25000"></label>
+      <label class="field">Årsförbrukning i kWh<input name="annualConsumptionKwh" inputmode="numeric" maxlength="24" value="${e(formattedConsumption(row?.annualConsumptionKwh))}" placeholder="Exempel: 250 000"></label>
       <label class="field">Produktintresse<select name="productInterest"></select></label>
     </div></fieldset>`;
     P.openDialog(row?'Kundkort':'Ny kund / affär',`<form id="crm-customer-form" class="crm-form">
-      <p class="muted">${e(P.getPartner(partner).name)} · lokalt CRM</p>
+      ${row?`<section id="crm-card-summary" class="crm-card-summary" aria-label="Överblick över kundkortet" tabindex="-1">${cardSummary({...row,stage:selectedStage})}</section>`:''}
+      <p class="crm-form-context muted">${e(P.getPartner(partner).name)} · lokalt CRM</p>
       <div class="crm-form-grid">${input('name','Kundnamn *')}
         ${row?`<label class="field">Kundsegment<input value="${e(segments[row.segment])}" disabled></label>`:`<label class="field">Kundsegment<select name="segment">${available.map(key=>`<option value="${key}">${segments[key]}</option>`).join('')}</select></label>`}
         ${identityFields}${input('contact','Kontaktperson','text',100)}${input('email','E-post','email',160)}${input('phone','Telefon','tel',60)}${input('city','Ort','text',100)}${input('owner','Ansvarig säljare','text',100)}
         <label class="field">Säljsteg<select name="stage">${Object.entries(stages).map(([key,label])=>`<option value="${key}" ${selectedStage===key?'selected':''}>${label}</option>`).join('')}</select></label>
-      </div><div id="crm-card-contact">${contactLinks(row||{})}</div>${facilityFields}${electricityFields}
+      </div>${!row?'<div id="crm-card-contact"></div>':''}${facilityFields}${electricityFields}
       <p id="crm-won-guidance" class="crm-won-guidance" role="status" hidden></p>
       <fieldset id="crm-next" class="crm-next"><legend>Nästa aktivitet</legend>
         <label class="field">Vad ska göras? *<input name="nextAction" maxlength="240" placeholder="Exempel: Ring och boka möte" value="${e(row?.nextAction||'')}"></label>
@@ -240,7 +278,7 @@
       <p id="crm-form-error" class="partner-setup-error" role="alert" hidden></p>
       <div class="modal-actions"><button type="button" class="btn btn-secondary" id="crm-cancel">Avbryt</button><button class="btn btn-primary" type="submit">Spara kundkort ${icon('check')}</button></div>
       <p class="crm-footnote">Sparas i denna webbläsare. En statusändring tecknar inget avtal och skickar inget meddelande.</p>
-      ${row?`<details class="crm-history"><summary>Historik & anteckningar</summary>${(Array.isArray(row.events)?row.events:[]).filter(ev=>ev&&typeof ev.text==='string').map(ev=>`<article><small>${e(P.date(ev.at))}</small><p>${e(ev.text)}</p></article>`).join('')||'<p>Ingen historik ännu.</p>'}</details>`:''}
+      ${row?`<details class="crm-history"><summary>Historik & anteckningar</summary>${(Array.isArray(row.events)?row.events:[]).filter(ev=>ev&&typeof ev.text==='string').map(ev=>`<article><small>${e(displayDate(ev.at))}</small><p>${e(historyText(ev.text))}</p></article>`).join('')||'<p>Ingen historik ännu.</p>'}</details>`:''}
     </form>`,()=>{
       const form=document.querySelector('#crm-customer-form'), error=document.querySelector('#crm-form-error');
       const next=document.querySelector('#crm-next'),lost=document.querySelector('#crm-lost');
@@ -258,8 +296,16 @@
         field.value=[...catalog,...retained].includes(selected)?selected:'';
       };
       updateProducts();form.elements.segment?.addEventListener('change',updateProducts);
-      const updateContacts=()=>{document.querySelector('#crm-card-contact').innerHTML=contactLinks({email:form.elements.email.value,phone:form.elements.phone.value});};
-      form.elements.email.addEventListener('input',updateContacts);form.elements.phone.addEventListener('input',updateContacts);
+      const updateSummary=()=>{
+        if (row) document.querySelector('#crm-card-summary').innerHTML=cardSummary({...row,...Object.fromEntries(new FormData(form))});
+        else document.querySelector('#crm-card-contact').innerHTML=contactLinks({email:form.elements.email.value,phone:form.elements.phone.value});
+      };
+      form.addEventListener('input',updateSummary);form.addEventListener('change',updateSummary);
+      form.elements.annualConsumptionKwh.addEventListener('blur',()=>{
+        const field=form.elements.annualConsumptionKwh, normalized=wholeConsumption(field.value);
+        if (normalized!==null) field.value=formattedConsumption(normalized);
+        updateSummary();
+      });
       form.querySelectorAll('[data-crm-date]').forEach(node=>node.onclick=()=>{
         const key=node.dataset.crmDate;
         form.elements.nextDate.value=shiftDate(today(),key==='tomorrow'?1:key==='week'?7:0,key==='month'?1:0);
@@ -287,7 +333,9 @@
         const savedStage=form.elements.stage.value;
         P.closeDialog();P.render();P.toast(savedStage==='won'?wonMessage:'Kundkortet är sparat.');
       });
-      (advance && !['won','lost'].includes(selectedStage)?form.elements.nextAction:form.elements.name).focus();
+      if (advance && !['won','lost'].includes(selectedStage)) form.elements.nextAction.focus();
+      else if (row) { document.querySelector('#crm-card-summary').focus({preventScroll:true});document.querySelector('#portal-dialog').scrollTop=0; }
+      else form.elements.name.focus();
     });
   }
   function bind() {

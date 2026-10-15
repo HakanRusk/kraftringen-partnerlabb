@@ -85,6 +85,30 @@ v1→v2-migrering, normal-/demoisolering, identifierare och historik bevaras.
 Äldre anrop som utelämnar nya fält raderar dem inte. Sparfel och flikkonflikter
 hanteras fortsatt utan att skriva över tidigare sparade uppgifter.
 
+### CRM-finputs · uppdrag 2, 15 oktober 2026
+
+Källa: **Ludwig via Claude, 15 oktober**. Åtta korrigeringar med mandat att
+genomföra, testa och publicera: svensk kWh-inmatning/visning, enhetliga svenska
+datum, lika översiktsrubriker, summering av öppen pipeline utan förbrukningstext
+i tomma steg, bibehållet huvudfokus utan ram, kompakta partner-/kunddialoger
+med obligatorisk stjärna på samma rad, B2B-produktlista enligt P-07 samt en
+kundkortssammanfattning före formuläret.
+
+Nya/ändrade förbrukningsvärden anges i hela kWh. Vanligt mellanslag, hårt
+mellanslag och smalt hårt mellanslag accepteras som grupper om tre siffror.
+Sparat värde är fortsatt numerisk text; visningen använder svensk gruppering.
+Tidigare accepterade decimalvärden bevaras exakt vid annan redigering och
+visas med decimaler; de avrundas eller migreras inte automatiskt. Fältet kan
+fortsatt lämnas tomt. Feltext: Ange årsförbrukningen i hela kWh, till exempel 250 000.
+
+CRM-datum visas med svensk kort månad, med årtal utanför innevarande år i
+Europe/Stockholm. Datumfält och lagring behåller ISO-format; historik sparas
+oförändrad och formateras bara vid visning. Pipelinerutan omfattar öppna
+affärer i aktuellt filter, med antal och summa angiven års-MWh/täckningsgrad.
+Saknade uppgifter visas inte som noll. Kundkortets överblick visar status,
+nästa aktivitet/datum, avtalslut, förbrukning och kontaktlänkar och följer
+osparade ändringar i formuläret. Avbryt skriver inget.
+
 ## P-03 · Partnerns arbetsyta och intern uppföljning
 
 Beslut 10–11 oktober: Kraftringens interna resultatöversikt är huvudvy. Generiska

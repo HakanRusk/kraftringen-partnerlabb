@@ -1,9 +1,9 @@
 # Underhållna QA-ingångar
 
-`npm ci && npm test` (Node 24) kör syntaxkontroll för dist-JavaScript och 13
+`npm ci && npm test` (Node 24) kör syntaxkontroll för dist-JavaScript och 14
 utvalda sviter: partnerregister, resultat utan CRM, partnersjälvservice,
 rapportdata, importdubbletter, nästa handling, kvittoåteröppning,
-fastighetsperiod, appmanifest, portal-CRM, kund-/anläggningsidentifierare, CRM-arbetsflöden och kommersiella periodval.
+fastighetsperiod, appmanifest, portal-CRM, kund-/anläggningsidentifierare, CRM-arbetsflöden, CRM-finputs och kommersiella periodval.
 jsdom verifierar DOM-händelser/data, inte riktig rendering eller layout.
 
 Browserflöden körs i GitHub Actions med Python 3.12 och Chromium. I en miljö
@@ -39,3 +39,8 @@ CRM-arbetsflöden provar katalog per kundsegment, frivilliga fält, sparfel,
 ändringskonflikter, avslutsdatum/äldre kort, kalendergränser, arbetslistor,
 kontaktlänkar, livesökning med fokus, MWh-underlag, avbrutna stegbyten och
 navigation per roll. Chromium kör nya flödet vid 320, 390 och 1440 px.
+
+CRM-finputs verifierar grupperad heltalsinmatning, exakta äldre decimalvärden,
+datum med årsskifte/tidszon, överblick, öppna volymer och B2B-katalog. Den
+befintliga CRM-browsersekvensen kontrollerar också dialogavstånd, stjärnans rad,
+svensk formattering, fokus utan huvudram och sammanfattning vid tre bredder.

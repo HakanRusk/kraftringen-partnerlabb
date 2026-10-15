@@ -70,6 +70,10 @@ small, .small { font-size: 12px; }
 .field input:focus, .field textarea:focus, .field select:focus { border-color: #17848a; box-shadow: 0 0 0 3px #17848a12; }
 .field small, .form-hint { font-size: 12px; color: var(--muted); }
 .modal-head { padding: 24px; }
+main#view:focus { outline: none; }
+#portal-dialog:has(.crm-form, .partner-setup-form) .modal-head { padding: 0 0 14px; margin-bottom: 0; align-items: center; }
+#portal-dialog:has(.crm-form, .partner-setup-form) .modal-head h2 { margin: 0; }
+#portal-dialog:has(.crm-form, .partner-setup-form) #dialog-body { padding: 0; }
 dialog { border-radius: 18px; border-color: #e0e8eb; box-shadow: 0 24px 100px #0e2a3a26; }
 #dialog-body { padding: 24px; }
 .kpi { border-radius: 14px; padding: 20px; }

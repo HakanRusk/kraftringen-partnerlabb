@@ -1,5 +1,13 @@
 .crm-page { display:grid;gap:20px;max-width:1500px;margin:0 auto; }
 .crm-page .page-head { margin-bottom:0; }
+.crm-page > .card > h2,.crm-page > .card > .panel-heading h2 { font-size:16px;font-weight:650;letter-spacing:0;text-transform:none;line-height:1.4; }
+.crm-page > .card > h2 { margin:0 0 16px; }
+.crm-pipeline-summary { display:grid;grid-template-columns:1fr 2fr;gap:20px; }
+.crm-pipeline-summary > div { display:grid;gap:8px;align-content:start; }
+.crm-pipeline-summary > div > span { font-size:13px;color:#526b79; }
+.crm-pipeline-summary > div > strong { font-size:27px; }
+.crm-pipeline-summary .crm-volume { margin:0; }
+.crm-pipeline-summary .crm-volume strong { font-size:22px; }
 .crm-scope { margin:-12px 0 0;color:#667984;font-size:12px; }
 .crm-tabs { display:flex;flex-wrap:wrap;gap:6px;padding:5px;border:1px solid var(--line);border-radius:12px;background:white;justify-self:start; }
 .crm-tabs button { border:0;background:transparent;color:#496170;padding:11px 16px;border-radius:8px;min-height:44px; }
@@ -53,6 +61,15 @@
 .crm-date-shortcuts { display:flex;flex-wrap:wrap;gap:8px;grid-column:1/-1; }
 .crm-date-shortcuts .btn { font-size:12px;padding:9px 12px;min-height:44px; }
 .crm-form { display:grid;gap:17px; }
+.crm-form-context { margin:0;font-size:13px; }
+.crm-card-summary { padding:16px;border:1px solid #cfe2df;border-radius:10px;background:#f4faf8;min-width:0; }
+.crm-card-summary:focus { outline:none; }
+.crm-summary-heading { display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap; }
+.crm-summary-heading h3 { margin:0;font-size:15px; }
+.crm-summary-facts { display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;margin:16px 0 0; }
+.crm-summary-facts > div:first-child { grid-column:1/-1; }
+.crm-summary-facts dt { font-size:12px;color:#607782; }
+.crm-summary-facts dd { margin:4px 0 0;font-size:14px;overflow-wrap:anywhere; }
 .crm-form-grid { display:grid;grid-template-columns:1fr 1fr;gap:14px; }
 .crm-form .field { margin:0;min-width:0; }
 .crm-form .field[hidden] { display:none; }
@@ -69,6 +86,7 @@
 .crm-history p { white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0; }
 @media(max-width:1100px) { .crm-board { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:600px) {
+  .crm-pipeline-summary,.crm-summary-facts { grid-template-columns:1fr; }
   .crm-page { gap:15px; }.crm-board,.crm-form-grid,.crm-next { grid-template-columns:1fr; }
   .crm-metrics { gap:8px; }.crm-metrics button { padding:14px 10px; }.crm-metrics strong { font-size:26px; }.crm-metrics span { font-size:11px; }
   .crm-tabs { width:100%;display:grid;grid-template-columns:1fr 1fr; }.crm-tabs button { padding:9px; }

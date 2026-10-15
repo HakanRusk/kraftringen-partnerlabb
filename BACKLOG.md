@@ -11,6 +11,7 @@ Avslutade uppgifter och äldre prioriteringar finns i docs/archive/2026-10-14/BA
 | Klar · PILOT-04A | Konkret litet backendunderlag för D-03 | Arkitektur, roller, data/dokument, API, migrering, drift och acceptans går att besluta om. |
 | Klar v37 · CRM-03 | Kund-/anläggningsidentifierare i portal-CRM | Nya/befintliga kort, B2B/B2C, format, bevarande, export och tre browserstorlekar verifierade; kvittens i WORKLOG. |
 | Klar v38 · CRM-02/04 | Vunnen-besked och nio operativa CRM-förbättringar | 13 Node-/DOM-sviter, Chromium vid 320/390/1440 px och publicering verifierade; kvittens i WORKLOG. |
+| Kandidat · CRM-05 | Svensk inmatning och finputs i CRM | Åtta punkter enligt P-02 uppdrag 2; tester och publicering kvitteras i WORKLOG. |
 | Nästa förslag · MOBILE-01 | Få fram nyckeltal tidigare på mobil | Pröva kompakt/hopfällbart filter med tydligt aktivt urval och tangentbord. |
 | Nästa · PILOT-03 | Reproducerad friktion i inflyttning/handläggning | Konkret före/efter, bevarad data, relevant verifiering. |
 | Vid underlag · PILOT-00 | Uppdatera fakta/beslut från faktisk återkoppling | D-01–D-04 besvaras med källa, inte antaganden. |
