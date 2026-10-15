@@ -4,6 +4,26 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 15 oktober 2026 · CRM-kundens identifierare
+
+Direkt användaruppdrag: anläggnings-ID, nätområdeskod och personnummer respektive
+organisationsnummer på ny kund för partners med portal-CRM. Eget Codex-arbete
+från main c781230b07dea395b4ddc2ffae50d197603c3c7e, gren
+codex/crm-customer-identifiers. Öppen PR #55 (besked vid Vunnen) lästes som
+överlappande men separat arbete; dess ändringar ingår inte i denna kandidat.
+
+Fält på nya/befintliga kundkort, kundtypstyrt nummerfält och separat anläggningsdel.
+Formatkontroll utan register-/identitetsverifiering. Fälten kan kompletteras senare;
+18-siffriga värden lagras som strängar utan precisionsförlust. Identifierarändring
+sparas även utan ny anteckning. Historiktext kopierar inte numren. Befintlig
+partneravgränsning, sparfelsåterställning och demoisolering återanvänds.
+
+Lokal verifiering: npm test passerar samtliga 12 Node-/DOM-sviter, inklusive
+8 nya identifierarscenarier och 13 befintliga CRM-scenarier. Python-syntax och
+git diff --check passerar. Ny Chromiumkontroll vid 320/390/1440 px ingår i CI;
+CI/publicering kvitteras efter faktisk körning. Ingen backend,
+verklig kunddata, delnings-, schema- eller affärsregeländring ingår.
+
 ## Publicerad v36 · 14 oktober 2026
 
 PR [#53](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/53)

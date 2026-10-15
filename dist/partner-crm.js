@@ -49,6 +49,22 @@
       row[key] = text(payload[key]);
       if (row[key].length > max) return {ok:false,error:`Ett fält innehåller för mycket text (högst ${max} tecken).`};
     }
+    // Keep identifiers as strings: an 18-digit installation ID exceeds safe integer precision.
+    const identityKey = segment === 'business' ? 'organizationNumber' : 'personalNumber';
+    const identifierRules = {
+      organizationNumber: [/^\d{6}-?\d{4}$/, 'Organisationsnummer ska innehålla 10 siffror, med eller utan bindestreck.'],
+      personalNumber: [/^(?:\d{6}|\d{8})[-+]?\d{4}$/, 'Personnummer ska innehålla 10 eller 12 siffror, med eller utan bindestreck eller plustecken.'],
+      facilityId: [/^\d{18}$/, 'Anläggnings-ID ska innehålla 18 siffror.'],
+      gridAreaCode: [/^[A-Z]{3}$/, 'Nätområdeskod ska innehålla tre bokstäver (A–Z).']
+    };
+    for (const key of [identityKey, 'facilityId', 'gridAreaCode']) {
+      const [pattern, message] = identifierRules[key];
+      if (own(payload,key) && typeof payload[key] !== 'string') return {ok:false,error:message,field:key};
+      // Omitted fields from older clients must not erase saved identifiers.
+      row[key] = own(payload,key) ? text(payload[key]).replace(/\s/g,'') : text(old?.[key]);
+      if (key === 'gridAreaCode') row[key] = row[key].toUpperCase();
+      if (row[key] && !pattern.test(row[key])) return {ok:false,error:message,field:key};
+    }
     row.stage = payload.stage; row.nextDate = text(payload.nextDate);
     const note = text(payload.note);
     if (!row.name) return {ok:false,error:'Ange kundens namn.'};
@@ -67,7 +83,8 @@
     if (old && old.stage!==row.stage) changes.push(`Säljsteg: ${stages[old.stage]} → ${stages[row.stage]}.`);
     if (old && (old.nextAction!==row.nextAction||old.nextDate!==row.nextDate)) changes.push(row.nextAction?`Nästa aktivitet: ${row.nextAction} (${row.nextDate}).`:'Planerad aktivitet avslutad när affären stängdes.');
     if (row.lostReason && row.lostReason !== old?.lostReason) changes.push(`Förlustorsak: ${row.lostReason}`);
-    if (old && ['name','contact','email','phone','city','owner'].some(key=>row[key]!==old[key])) changes.push('Kunduppgifter uppdaterade.');
+    if (old && ['name','contact','email','phone','city','owner',identityKey].some(key=>(row[key]||'')!==(old[key]||''))) changes.push('Kunduppgifter uppdaterade.');
+    if (old && ['facilityId','gridAreaCode'].some(key=>(row[key]||'')!==(old[key]||''))) changes.push('Anläggningsuppgifter uppdaterade.');
     if (note) changes.push(note);
     if (old && !changes.length) return {ok:true,id:old.id};
     row.events = [{at:now,text:changes.join('\n')},...previousEvents];
@@ -118,18 +135,30 @@
     const partner=activePartner(), selectedStage=row?.stage||'lead';
     const input=(key,label,type='text',max=120)=>`<label class="field">${label}<input name="${key}" type="${type}" maxlength="${max}" value="${e(row?.[key]||'')}"></label>`;
     const available=row?[row.segment]:P.getPartner(partner).salesAudiences;
-    P.openDialog(row?'Kundkort':'Ny kund / affär',`<form id="crm-customer-form" class="crm-form"><p class="muted">${e(P.getPartner(partner).name)} · lokalt CRM</p><div class="crm-form-grid">${input('name','Kundnamn *')}${row?`<label class="field">Kundsegment<input value="${e(segments[row.segment])}" disabled></label>`:`<label class="field">Kundsegment<select name="segment">${available.map(key=>`<option value="${key}">${segments[key]}</option>`).join('')}</select></label>`}${input('contact','Kontaktperson','text',100)}${input('email','E-post','email',160)}${input('phone','Telefon','tel',60)}${input('city','Ort','text',100)}${input('owner','Ansvarig säljare','text',100)}<label class="field">Säljsteg<select name="stage">${Object.entries(stages).map(([key,label])=>`<option value="${key}" ${selectedStage===key?'selected':''}>${label}</option>`).join('')}</select></label></div><fieldset id="crm-next" class="crm-next"><legend>Nästa aktivitet</legend><label class="field">Vad ska göras? *<input name="nextAction" maxlength="240" placeholder="Exempel: Ring och boka möte" value="${e(row?.nextAction||'')}"></label><label class="field">Datum *<input name="nextDate" type="date" value="${e(row?.nextDate||'')}"></label></fieldset><label class="field" id="crm-lost">Varför förlorades affären? *<input name="lostReason" maxlength="300" value="${e(row?.lostReason||'')}"></label><label class="field">Ny anteckning<textarea name="note" maxlength="4000" rows="3" placeholder="Vad kom ni överens om?"></textarea></label><p id="crm-form-error" class="partner-setup-error" role="alert" hidden></p><div class="modal-actions"><button type="button" class="btn btn-secondary" id="crm-cancel">Avbryt</button><button class="btn btn-primary" type="submit">Spara kundkort ${icon('check')}</button></div><p class="crm-footnote">Sparas i denna webbläsare. En statusändring tecknar inget avtal och skickar inget meddelande.</p>${row?`<details class="crm-history"><summary>Historik & anteckningar</summary>${(Array.isArray(row.events)?row.events:[]).filter(ev=>ev&&typeof ev.text==='string').map(ev=>`<article><small>${e(P.date(ev.at))}</small><p>${e(ev.text)}</p></article>`).join('')||'<p>Ingen historik ännu.</p>'}</details>`:''}</form>`,()=>{
+    const identifierInput=(key,label,hint,mode='numeric')=>`<label class="field" data-crm-identifier="${key}">${label}<input name="${key}" type="text" inputmode="${mode}" maxlength="40" autocomplete="off" spellcheck="false" aria-describedby="crm-${key}-hint" value="${e(row?.[key]||'')}"><small id="crm-${key}-hint" class="crm-input-hint">${hint}</small></label>`;
+    const identityFields = `${available.includes('business')?identifierInput('organizationNumber','Organisationsnummer','10 siffror, med eller utan bindestreck.'):''}${available.includes('consumer')?identifierInput('personalNumber','Personnummer','ÅÅMMDD-XXXX eller ÅÅÅÅMMDD-XXXX.'):''}`;
+    const facilityFields = `<fieldset class="crm-facility"><legend>Anläggningsuppgifter</legend><p class="crm-input-hint">Finns på kundens elnätsfaktura. Kan kompletteras senare.</p><div class="crm-form-grid">${identifierInput('facilityId','Anläggnings-ID','18 siffror. Mellanslag går bra vid inklistring.')}${identifierInput('gridAreaCode','Nätområdeskod','Tre bokstäver, även kallat nätområdes-ID.','text')}</div></fieldset>`;
+    P.openDialog(row?'Kundkort':'Ny kund / affär',`<form id="crm-customer-form" class="crm-form"><p class="muted">${e(P.getPartner(partner).name)} · lokalt CRM</p><div class="crm-form-grid">${input('name','Kundnamn *')}${row?`<label class="field">Kundsegment<input value="${e(segments[row.segment])}" disabled></label>`:`<label class="field">Kundsegment<select name="segment">${available.map(key=>`<option value="${key}">${segments[key]}</option>`).join('')}</select></label>`}${identityFields}${input('contact','Kontaktperson','text',100)}${input('email','E-post','email',160)}${input('phone','Telefon','tel',60)}${input('city','Ort','text',100)}${input('owner','Ansvarig säljare','text',100)}<label class="field">Säljsteg<select name="stage">${Object.entries(stages).map(([key,label])=>`<option value="${key}" ${selectedStage===key?'selected':''}>${label}</option>`).join('')}</select></label></div>${facilityFields}<fieldset id="crm-next" class="crm-next"><legend>Nästa aktivitet</legend><label class="field">Vad ska göras? *<input name="nextAction" maxlength="240" placeholder="Exempel: Ring och boka möte" value="${e(row?.nextAction||'')}"></label><label class="field">Datum *<input name="nextDate" type="date" value="${e(row?.nextDate||'')}"></label></fieldset><label class="field" id="crm-lost">Varför förlorades affären? *<input name="lostReason" maxlength="300" value="${e(row?.lostReason||'')}"></label><label class="field">Ny anteckning<textarea name="note" maxlength="4000" rows="3" placeholder="Vad kom ni överens om?"></textarea></label><p id="crm-form-error" class="partner-setup-error" role="alert" hidden></p><div class="modal-actions"><button type="button" class="btn btn-secondary" id="crm-cancel">Avbryt</button><button class="btn btn-primary" type="submit">Spara kundkort ${icon('check')}</button></div><p class="crm-footnote">Sparas i denna webbläsare. En statusändring tecknar inget avtal och skickar inget meddelande.</p>${row?`<details class="crm-history"><summary>Historik & anteckningar</summary>${(Array.isArray(row.events)?row.events:[]).filter(ev=>ev&&typeof ev.text==='string').map(ev=>`<article><small>${e(P.date(ev.at))}</small><p>${e(ev.text)}</p></article>`).join('')||'<p>Ingen historik ännu.</p>'}</details>`:''}</form>`,()=>{
       const form=document.querySelector('#crm-customer-form'), error=document.querySelector('#crm-form-error');
       const next=document.querySelector('#crm-next'),lost=document.querySelector('#crm-lost');
       form.elements.name.required=true;
       const update=()=>{const stage=form.elements.stage.value,isClosed=['won','lost'].includes(stage);next.hidden=isClosed;next.disabled=isClosed;form.elements.nextAction.required=!isClosed;form.elements.nextDate.required=!isClosed;lost.hidden=stage!=='lost';form.elements.lostReason.disabled=stage!=='lost';form.elements.lostReason.required=stage==='lost';};
+      const updateIdentity=()=>{
+        const segment=row?.segment||form.elements.segment.value;
+        for (const [key,target] of [['organizationNumber','business'],['personalNumber','consumer']]) {
+          const field=form.querySelector(`[data-crm-identifier="${key}"]`);
+          if (field) { field.hidden=segment!==target;form.elements[key].disabled=segment!==target; }
+        }
+      };
+      updateIdentity();form.elements.segment?.addEventListener('change',updateIdentity);
+      form.addEventListener('input',event=>event.target.removeAttribute('aria-invalid'));
       update();form.elements.stage.addEventListener('change',update);
       document.querySelector('#crm-cancel').onclick=P.closeDialog;
       form.addEventListener('submit',event=>{
         event.preventDefault();if(!form.reportValidity())return;
         if(partner!==activePartner()||!allowed(partner)){error.textContent='Partnern har ändrats. Öppna kundkortet igen.';error.hidden=false;return;}
         const result=save(Object.fromEntries(new FormData(form)),id,row?.revision || 0);
-        if(!result.ok){error.textContent=result.error;error.hidden=false;return;}
+        if(!result.ok){error.textContent=result.error;error.hidden=false;if(result.field){form.elements[result.field].setAttribute('aria-invalid','true');form.elements[result.field].focus();}return;}
         P.closeDialog();P.render();P.toast('Kundkortet är sparat.');
       });
       form.elements.name.focus();

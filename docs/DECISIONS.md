@@ -34,6 +34,21 @@ byte av arbetssätt/konfiguration bevarar rader. Vunnen är en lokal säljstatus
 inte ett avtal, inskickat bekräftelseärende, resultat eller kickback. Delat CRM
 återstår. Äldre säljunderlag/utkast bevaras utan att återinföras i aktiv meny.
 
+Tillägg beslutat 15 oktober: kundkort i portal-CRM ska också ha anläggnings-ID,
+nätområdeskod och personnummer respektive organisationsnummer. Implementationsval:
+personnummer visas för B2C, organisationsnummer för B2B; anläggningsuppgifter
+visas för båda. Uppgifter kan kompletteras senare utan att blockera tidig kontakt
+eller äldre kundkort. Anläggnings-ID lagras som text (18 siffror), nätområdeskod
+som tre versala bokstäver. Organisationsnummer har 10 siffror; personnummer
+accepterar 10/12 siffror med bibehållet bindestreck/plustecken. Endast format
+kontrolleras, ingen kontrollsiffra, identitetskontroll eller registerverifiering.
+Historiken anger ändrade uppgifter utan att kopiera identifierarna till historiktext.
+
+Formatunderlag kontrollerat 15 oktober:
+[Kraftringens tecknaflöde](https://prod.kraftringen.se/foretag/el/teckna-elavtal/),
+[Skellefteå Kraft om områdes-ID](https://www.skekraft.se/sv/faq/omrades-id-vad-ar-omrades-id/)
+och [Skatteverkets individuppgifter](https://www7.skatteverket.se/portal-wapi/open/apier-och-oppna-data/utvecklarportalen/v1/getFile/tjanstebeskrivning-individuppgifter-api/pdf/1.5.0/tjanstebeskrivning-individuppgifter-v1.pdf).
+
 ## P-03 · Partnerns arbetsyta och intern uppföljning
 
 Beslut 10–11 oktober: Kraftringens interna resultatöversikt är huvudvy. Generiska

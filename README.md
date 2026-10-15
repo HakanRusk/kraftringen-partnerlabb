@@ -12,7 +12,11 @@ eller **Använd Partnerportalen som CRM**. Befintliga partners behåller eget CR
 **Redigera partner** kan ändra arbetssätt utan att kundhistoriken försvinner.
 
 Portal-CRM nås via **Öppna CRM** på partnerprofilen eller partnerns arbetsyta.
-Kundkort har kontakt, ansvarig säljare, anteckningar och historik. Pipeline:
+Kundkort har kontakt, ansvarig säljare, anteckningar och historik.
+Organisationsnummer visas för B2B och personnummer för B2C. Anläggnings-ID
+och nätområdeskod finns under Anläggningsuppgifter. Fälten kan kompletteras
+senare och sparas även på befintliga kundkort. Ifyllda värden formatkontrolleras;
+ingen kontroll mot kund- eller anläggningsregister görs. Pipeline:
 Ny kontakt, Dialog pågår, Möte bokat, Offert skickad, Vunnen och Förlorad.
 Öppna affärer behöver nästa aktivitet/datum; Förlorad behöver orsak.
 Kunder och aktiviteter kan sökas/filtreras. Vunnen skapar inget avtal eller
@@ -58,7 +62,7 @@ npm ci
 npm test
 ```
 
-11 underhållna Node-/DOM-sviter plus JavaScript-syntaxkontroll. Browsermiljö och
+12 underhållna Node-/DOM-sviter plus JavaScript-syntaxkontroll. Browsermiljö och
 kommandon: [qa/README.md](qa/README.md). GitHub Actions kör Node/DOM och centrala
 Chromiumflöden på PR, push till main och manuell start. **QA gate** kräver båda
 jobben. Workflowen använder inga secrets och publicerar inte. Grenskydd måste
