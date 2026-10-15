@@ -49,6 +49,42 @@ Formatunderlag kontrollerat 15 oktober:
 [Skellefteå Kraft om områdes-ID](https://www.skekraft.se/sv/faq/omrades-id-vad-ar-omrades-id/)
 och [Skatteverkets individuppgifter](https://www7.skatteverket.se/portal-wapi/open/apier-och-oppna-data/utvecklarportalen/v1/getFile/tjanstebeskrivning-individuppgifter-api/pdf/1.5.0/tjanstebeskrivning-individuppgifter-v1.pdf).
 
+### CRM-arbetsflöde · 15 oktober 2026
+
+Källa: **Ludwig via Claude, 15 oktober**. Uppdraget omfattar genomförande,
+test och publicering av nio förbättringar i portal-CRM:
+
+- Tydligt besked vid val, återöppning och sparning av Vunnen; separat avtalsprocess
+  kvarstår och inget skickas. Spara vunnet/förlorat datum och visa datum i kundlistan.
+- Frivilligt **Elavtal i dag**: nuvarande elleverantör, avtalets slutdatum,
+  elområde SE1–SE4, årsförbrukning i kWh och produktintresse från P-07 för kundens
+  sparade segment. Inga priser eller besparingsberäkningar.
+- Översikten visar kommande sju dagars aktiviteter samt avtal som löper ut inom
+  sex månader, sorterade på slutdatum. Snabbdatum: idag, imorgon, en vecka, en månad.
+- Klickbara telefon-/e-postuppgifter i lista och kort. Sökning filtrerar under
+  inmatning i kunder, pipeline och aktiviteter.
+- Pipeline summerar angiven årsförbrukning i MWh per steg. Nästa-steg-knappen
+  öppnar ett osparat kundkort med nästa steg förvalt; nästa aktivitet kan fyllas i.
+- Partnerns vänstermeny behålls och dubblerande CRM-flikar tas bort. Interna
+  CRM-flikar finns kvar där motsvarande vänstermeny saknas.
+
+Implementationsval: datum utgår från Europe/Stockholm. Kommande sju dagar är
+imorgon till och med dag sju; utgående avtal är idag till och med samma datum
+sex kalendermånader framåt (månadsslut kläms till sista giltiga dagen).
+Avtalslistan omfattar alla kundkort med registrerat slutdatum, även avslutade
+CRM-affärer, med synlig säljstatus. Saknad förbrukning räknas inte som noll;
+pipelinen visar hur många affärer som har underlag. Detta är kundens uppgivna
+förbrukning, inte avtalad volym eller försäljningsutfall. Vunnen/Förlorad är
+slutsteg utan en automatisk nästa-steg-knapp.
+
+Befintligt closedAt används för aktuellt avslut. wonAt/lostAt bevarar senaste
+faktiska markering även vid återöppning; tidigare övergångar finns kvar i events.
+Samma avslutade steg behåller datum vid redigering. Äldre kort utan datum visar
+Datum saknas och får inget påhittat datum av en vanlig komplettering. Befintlig
+v1→v2-migrering, normal-/demoisolering, identifierare och historik bevaras.
+Äldre anrop som utelämnar nya fält raderar dem inte. Sparfel och flikkonflikter
+hanteras fortsatt utan att skriva över tidigare sparade uppgifter.
+
 ## P-03 · Partnerns arbetsyta och intern uppföljning
 
 Beslut 10–11 oktober: Kraftringens interna resultatöversikt är huvudvy. Generiska
