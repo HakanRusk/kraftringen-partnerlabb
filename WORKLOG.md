@@ -4,6 +4,31 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 15 oktober 2026 · Operativt CRM, uppdrag 1
+
+Källa: **Ludwig via Claude, 15 oktober**, med uttryckligt genomförande-, test-
+och publiceringsuppdrag. Eget Codex-arbete från main
+34b2760f2bba2c30dc563792bcf62aebd947a833, gren codex/crm-sales-workflow.
+PR #55 (d7719ae67d7af01d6c67af8fc907d64637a428b7) lästes som befintligt
+oberoende agentarbete. Dess Vunnen-besked och regressionskontroller har tagits
+in och anpassats till v37, så att förslaget hanteras i denna samlade leverans.
+Inga Daniels ändringar ingår.
+
+Samtliga nio önskemål implementerade enligt docs/DECISIONS.md P-02. Nya
+elavtalsfält återanvänder segmentCatalog från befintligt resultatunderlag;
+ingen ny katalog, prislista eller resultatkoppling. Tidigare identifierare,
+historik, sparfelsåterställning och demoavgränsning behålls. Äldre avslutsdatum
+bevaras utan att hitta på datum för kort som saknar dem.
+
+Lokal verifiering: npm test passerar 13 Node-/DOM-sviter, inklusive 12 nya
+operativa CRM-scenarier, 13 befintliga CRM-scenarier och 8 identifierarscenarier.
+Nya fall täcker datum/månadsslut/skottår/tidszon, katalog, tomma/utelämnade fält,
+listgränser, partneravgränsning, klickbara kontakter, livesökning/fokus,
+MWh-underlag, osparade stegbyten, sparfel, konflikter, omladdning och demo.
+Python-syntax passerar för nya Chromiumsviten. Lokal browser saknar tillåten
+styrning i miljön; Chromium körs via befintlig CI. Verifierad CI, integration
+och publicering kvitteras efter faktisk körning, inte i förväg.
+
 ## Publicerad v37 · 15 oktober 2026
 
 Kund-/anläggningsidentifierare i portal-CRM publicerade via

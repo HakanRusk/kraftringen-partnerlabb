@@ -19,8 +19,24 @@ senare och sparas även på befintliga kundkort. Ifyllda värden formatkontrolle
 ingen kontroll mot kund- eller anläggningsregister görs. Pipeline:
 Ny kontakt, Dialog pågår, Möte bokat, Offert skickad, Vunnen och Förlorad.
 Öppna affärer behöver nästa aktivitet/datum; Förlorad behöver orsak.
-Kunder och aktiviteter kan sökas/filtreras. Vunnen skapar inget avtal eller
-resultat. Använd fiktiva uppgifter; data delas ännu inte mellan användare.
+**Elavtal i dag** samlar frivillig elleverantör, slutdatum, elområde, årsförbrukning
+(kWh) och produktintresse från kundsegmentets bekräftade katalog. Översikten visar
+idag/försenat, kommande sju dagar och avtal som löper ut inom sex månader.
+Telefon och e-post är klickbara i kundlista och kundkort. Sökning i kunder,
+pipeline och aktiviteter filtrerar direkt medan du skriver. Nästa aktivitet har
+snabbval för idag, imorgon, om en vecka och om en månad.
+
+Pipeline visar angiven årsförbrukning i MWh per steg och hur många affärer som
+har underlag. **Flytta till nästa steg** öppnar kortet med nästa steg förvalt;
+du kan fylla i nästa aktivitet och spara eller avbryta. Avslutade steg har ingen
+sådan knapp. Partnern använder vänstermenyn utan dubbla flikar; interna CRM-vyer
+behåller flikarna.
+
+Vunnen ger ett tydligt besked på kortet och efter sparning om separat
+avtalsprocess och att inget har skickats. Datumkolumnen visar avslutsdatum för
+Vunnen/Förlorad; okänt äldre datum visas som Datum saknas. Datum och historik
+bevaras vid redigering. Vunnen skapar inget avtal eller resultat.
+Använd fiktiva uppgifter; data delas ännu inte mellan användare.
 
 ## Övriga arbetsflöden
 
@@ -62,7 +78,7 @@ npm ci
 npm test
 ```
 
-12 underhållna Node-/DOM-sviter plus JavaScript-syntaxkontroll. Browsermiljö och
+13 underhållna Node-/DOM-sviter plus JavaScript-syntaxkontroll. Browsermiljö och
 kommandon: [qa/README.md](qa/README.md). GitHub Actions kör Node/DOM och centrala
 Chromiumflöden på PR, push till main och manuell start. **QA gate** kräver båda
 jobben. Workflowen använder inga secrets och publicerar inte. Grenskydd måste
