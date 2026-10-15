@@ -83,6 +83,9 @@ test('legacy closed dates are displayed when known and never fabricated by edits
   P.go('crm-customers');assert.match(doc.querySelector('#view').textContent,/2026-09-01/);assert.match(doc.querySelector('#view').textContent,/Datum saknas/);
   P.crm.save({...current('legacy-unknown'),note:'Komplettering'},'legacy-unknown');assert.equal(current('legacy-unknown').closedAt,'');
   assert.equal(current('legacy-unknown').events[1].text,'Bevarad historik');
+  P.crm.save({...current('legacy-won'),stage:'contact',nextAction:'Återkom',nextDate:'2026-11-01'},'legacy-won');
+  assert.equal(current('legacy-won').wonAt,'2026-09-01T12:00:00Z');
+  assert.equal(current('legacy-won').closedAt,'');
 });
 test('home queues include inclusive boundaries, exclude past expiry and remain partner-scoped',()=>{
   for(const [name,nextDate,end] of [['Idag','2026-10-15','2026-10-15'],['Imorgon','2026-10-16','2026-11-01'],['Dag sju','2026-10-22','2027-04-15'],['Dag åtta','2026-10-23','2027-04-16'],['Försenad','2026-10-14','2026-10-14']])P.crm.save({...base,name,nextDate,contractEndDate:end});

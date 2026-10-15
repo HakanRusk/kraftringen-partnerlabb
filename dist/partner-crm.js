@@ -113,6 +113,10 @@
     const now = new Date().toISOString();
     row.id = old?.id || `crm-${crypto.randomUUID()}`; row.createdAt = old?.createdAt || now;
     row.updatedAt = now; row.revision = (Number.isSafeInteger(old?.revision) ? old.revision : 0) + 1;
+    if (old && closed(old) && old.closedAt) {
+      const previousCloseKey = old.stage==='won'?'wonAt':'lostAt';
+      if (!row[previousCloseKey]) row[previousCloseKey] = old.closedAt;
+    }
     // Editing a legacy closed card must not invent a close date. Actual transitions stamp it.
     row.closedAt = closed(row) ? old?.stage===row.stage ? old.closedAt || old[row.stage==='won'?'wonAt':'lostAt'] || '' : now : '';
     if (closed(row) && old?.stage!==row.stage) row[row.stage==='won'?'wonAt':'lostAt'] = now;
