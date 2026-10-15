@@ -4,6 +4,37 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad v39 · 15 oktober 2026
+
+Alla åtta punkter i uppdrag 2 (**Ludwig via Claude, 15 oktober**) levererade
+via [PR #60](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/60).
+PR-HEAD: 41a163ae907a397fef4db96d8bde1d8b824ac044.
+Verifierad GitHub-main och publicerad Sites-källa:
+**c561f1d75ef72f70a382774217da8b2a3726a719**.
+Exakt testat/överfört träd: 78dad76a837579e46438a274edb7fff9014e357f.
+
+[CI-körning 38751827132](https://github.com/ludros93-prog/kraftringen-partnerlabb/actions/runs/38751827132)
+completed/success: 14 Node-/DOM-sviter, Chromium flows och QA gate.
+Åtta nya DOM-scenarier täcker talgruppering, ogiltiga värden, exakta äldre
+decimaler, överblick/avbryt, svenska datum/årtal, öppna pipelinevolymer,
+partnerkatalog och omladdning/demo. Befintliga sviter behålls.
+Chromium passerar vid **1440, 390 och 320 px**: partner-/kunddialogernas
+rubrikavstånd, stjärnans rad, B2B-produkter, fokusflytt utan main-ram,
+rubrikstil, formaterad förbrukning, datum, sammanfattningar och tidigare
+CRM-/identifierarflöden. Inga scriptfel i kontrollerade flöden. Browserbelägg
+kommer från CI; ingen lokal visuell helhets- eller skärmläsargranskning påstås.
+
+Sites uppdaterades fast-forward från v38; ren checkout och exakt testat träd.
+Version-ID: appgprj_6ac600ecf7d48191923687550810c1d4~appgver_2af8c40759fc8191b560cf2c6d439288.
+Deployment-ID: appgdep_6ad0e42aef688191a253b568ecf75988.
+Native **succeeded** 2026-10-15T14:33:30.119333+00:00:
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Custom-delning/policyrevision 4 bevarad. Inga ändringar av åtkomst, automation,
+backend, migrering eller resultatregler. Sparade decimaler och historik bevaras.
+
+CRM-05 är klar. Denna efterhandskvittens ändrar endast WORKLOG, BACKLOG och
+GITHUB-STATUS; app, tester och workflow är identiska med publicerad v39.
+
 ## 15 oktober 2026 · CRM-finputs, uppdrag 2
 
 Källa: **Ludwig via Claude, 15 oktober**, uttryckligt uppdrag att genomföra,
