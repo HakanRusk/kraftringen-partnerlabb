@@ -176,13 +176,13 @@
               ['employee', 'Personalavtal', 'Företag som vill erbjuda elavtal till sina anställda.', 'users']
             ].map(([value, title, text, icon]) => `<label class="partner-setup-choice partner-setup-type-choice"><input type="radio" name="partnerType" value="${value}" ${selectedType === value ? 'checked' : ''} required><span class="partner-setup-choice-icon">${P.icon(icon)}</span><span><strong>${title}</strong><small>${text}</small></span><span class="partner-setup-choice-check" aria-hidden="true">${P.icon('check')}</span></label>`).join('')}
           </fieldset>`}
-          <label class="field" for="partner-setup-name">Partnernamn <span aria-hidden="true">*</span>
+          <label class="field" for="partner-setup-name"><span>Partnernamn <span aria-hidden="true">*</span></span>
             <input id="partner-setup-name" name="name" required maxlength="90" autocomplete="organization" value="${e(existing?.name || '')}" placeholder="Exempelpartner AB">
           </label>
           <fieldset class="partner-setup-segments" id="partner-setup-sales" ${selectedType !== 'sales' ? 'hidden disabled' : ''}>
             <legend>Kundsegment</legend>
             ${[
-              ['business', 'Företag (B2B)', 'Företagsavtal och portföljprodukter.', 'briefcase'],
+              ['business', 'Företag (B2B)', 'Rörligt pris, Kvartspris, Poolportfölj Trygg, Poolportfölj Offensiv, Individuell portfölj och Kraftringen Stabil.', 'briefcase'],
               ['consumer', 'Konsument (B2C)', 'Fastpris, Vintersäkrat, Opti, Kvartspris och Rörligt pris.', 'user'],
               ['both', 'Båda', 'Samma partner kan sälja till både företag och konsumenter.', 'users']
             ].map(([value, title, text, icon]) => `<label class="partner-setup-choice"><input type="radio" name="salesAudience" value="${value}" ${selected === value ? 'checked' : ''} required><span class="partner-setup-choice-icon">${P.icon(icon)}</span><span><strong>${title}</strong><small>${text}</small></span><span class="partner-setup-choice-check" aria-hidden="true">${P.icon('check')}</span></label>`).join('')}

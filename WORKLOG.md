@@ -4,6 +4,28 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 15 oktober 2026 · CRM-finputs, uppdrag 2
+
+Källa: **Ludwig via Claude, 15 oktober**, uttryckligt uppdrag att genomföra,
+testa och publicera åtta punkter. Eget arbete från main
+7e6ca9765a163847c9f1d0155b20abf14802e52f, gren codex/crm-polish.
+Inga öppna PR:er vid start. Beteende och bevarande dokumenteras i P-02.
+
+Svensk kWh-inmatning med grupperade heltal och formaterad visning. Äldre
+v38-decimaler bevaras exakt vid annan redigering; ingen tyst avrundning.
+Gemensam CRM-datumvisning även för historikens genererade aktivitetsdatum,
+utan att skriva om lagrade datum eller historik. Pipeline- och kundkortssummering,
+enhetliga rubriker och tomsteg. Partnernamnets stjärna har gemensam textrad;
+B2B-kortet listar P-07. Dialogavståndet rättas där styles.css och design.css
+lade marginal/padding ovanpå varandra. main behåller fokus men utan ram.
+
+Befintliga sviter behålls; förväntade datum/visningsvärden uppdateras för det
+nya beteendet. npm test passerar 14 Node-/DOM-sviter; åtta nya DOM-regressioner
+passerar även efter skärpt kontroll av talgruppering. Python-syntax och diffkontroll
+passerar. Utökad befintlig Chromiumsekvens vid 320/390/1440 px körs i CI; lokal
+browserstyrning saknas. Faktisk CI och publicering kvitteras efter körningen.
+Ingen ändring av migration, affärsresultat, åtkomst, automation eller backend.
+
 ## Publicerad v38 · 15 oktober 2026
 
 Samtliga nio operativa CRM-förbättringar enligt uppdraget **Ludwig via Claude,

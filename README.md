@@ -20,14 +20,19 @@ ingen kontroll mot kund- eller anläggningsregister görs. Pipeline:
 Ny kontakt, Dialog pågår, Möte bokat, Offert skickad, Vunnen och Förlorad.
 Öppna affärer behöver nästa aktivitet/datum; Förlorad behöver orsak.
 **Elavtal i dag** samlar frivillig elleverantör, slutdatum, elområde, årsförbrukning
-(kWh) och produktintresse från kundsegmentets bekräftade katalog. Översikten visar
+(hela kWh, exempelvis 250 000) och produktintresse från kundsegmentets bekräftade katalog. Översikten visar
 idag/försenat, kommande sju dagar och avtal som löper ut inom sex månader.
 Telefon och e-post är klickbara i kundlista och kundkort. Sökning i kunder,
 pipeline och aktiviteter filtrerar direkt medan du skriver. Nästa aktivitet har
 snabbval för idag, imorgon, om en vecka och om en månad.
 
-Pipeline visar angiven årsförbrukning i MWh per steg och hur många affärer som
-har underlag. **Flytta till nästa steg** öppnar kortet med nästa steg förvalt;
+Kundkortet börjar med en överblick över status, nästa aktivitet, avtalslut,
+förbrukning och klickbara kontaktuppgifter. Formuläret finns under överblicken.
+Datum visas med svensk kort månad och årtal för andra år. Äldre sparade decimaler
+i förbrukningen bevaras exakt när andra uppgifter ändras.
+
+Pipeline visar antal öppna affärer och deras angivna års-MWh för aktuellt filter,
+samt årsförbrukning per steg och hur många affärer som har underlag. **Flytta till nästa steg** öppnar kortet med nästa steg förvalt;
 du kan fylla i nästa aktivitet och spara eller avbryta. Avslutade steg har ingen
 sådan knapp. Partnern använder vänstermenyn utan dubbla flikar; interna CRM-vyer
 behåller flikarna.
@@ -78,7 +83,7 @@ npm ci
 npm test
 ```
 
-13 underhållna Node-/DOM-sviter plus JavaScript-syntaxkontroll. Browsermiljö och
+14 underhållna Node-/DOM-sviter plus JavaScript-syntaxkontroll. Browsermiljö och
 kommandon: [qa/README.md](qa/README.md). GitHub Actions kör Node/DOM och centrala
 Chromiumflöden på PR, push till main och manuell start. **QA gate** kräver båda
 jobben. Workflowen använder inga secrets och publicerar inte. Grenskydd måste

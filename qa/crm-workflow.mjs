@@ -41,10 +41,10 @@ test('optional electricity fields use segment catalog and save without prices or
   assert.equal(f.elements.productInterest.value,'');
   assert.deepEqual(Array.from(f.elements.productInterest.options).slice(1).map(o=>o.value),Array.from(P.partnerResultsData.segmentCatalog.consumer));
   f.elements.segment.value='business';change(f.elements.segment);
-  const fields={...base,currentSupplier:'Fiktiv leverantör',contractEndDate:'2027-01-31',electricityArea:'SE4',annualConsumptionKwh:'25000,5',productInterest:'Poolportfölj Trygg',phone:'+46 (0) 700-000 000',email:'kontakt@bageriet.example'};
+  const fields={...base,currentSupplier:'Fiktiv leverantör',contractEndDate:'2027-01-31',electricityArea:'SE4',annualConsumptionKwh:'25 000',productInterest:'Poolportfölj Trygg',phone:'+46 (0) 700-000 000',email:'kontakt@bageriet.example'};
   for(const [key,value] of Object.entries(fields))f.elements[key].value=value;
   submit(f);id=P.crm.rows()[0].id;
-  assert.equal(current(id).annualConsumptionKwh,'25000.5');assert.equal(current(id).contractEndDate,'2027-01-31');
+  assert.equal(current(id).annualConsumptionKwh,'25000');assert.equal(current(id).contractEndDate,'2027-01-31');
   assert.equal(unaffected(),baseline);
 });
 test('invalid electricity input is atomic; omitted values survive and explicit clears save history',()=>{
@@ -59,7 +59,7 @@ test('invalid electricity input is atomic; omitted values survive and explicit c
   assert.equal(doc.querySelector('#portal-dialog').open,true);assert.equal(doc.activeElement,f.elements.annualConsumptionKwh);
   f.elements.annualConsumptionKwh.value='';submit(f);
   assert.equal(current(id).annualConsumptionKwh,'');assert.match(current(id).events[0].text,/Elavtal i dag/);
-  assert.equal(P.crm.save({...current(id),annualConsumptionKwh:'25000.5'},id).ok,true);
+  assert.equal(P.crm.save({...current(id),annualConsumptionKwh:'25000'},id).ok,true);
 });
 test('won save has specific feedback; close dates use Stockholm and persist across edits/reopen',()=>{
   ctx.time('2026-10-15T23:30:00Z');let toast='';const original=P.toast;P.toast=message=>{toast=message;};
@@ -68,10 +68,10 @@ test('won save has specific feedback; close dates use Stockholm and persist acro
   submit(form());P.toast=original;
   assert.match(toast,/Markerad som vunnen i CRM/);assert.match(toast,/Inget har skickats/);
   const won=current(id).closedAt;assert.equal(won,'2026-10-15T23:30:00.000Z');assert.equal(current(id).wonAt,won);
-  P.go('crm-customers');assert.equal(doc.querySelector('tbody tr td:last-child').textContent,'2026-10-16');
+  P.go('crm-customers');assert.equal(doc.querySelector('tbody tr td:last-child').textContent,'16 okt.');
   ctx.time('2026-10-20T12:00:00Z');P.crm.save({...current(id),note:'Ny anteckning'},id);assert.equal(current(id).closedAt,won);
   P.crm.save({...current(id),stage:'lost',lostReason:'Fiktiv orsak'},id);const lost=current(id).lostAt;
-  assert.equal(current(id).wonAt,won);P.go('crm-customers');assert.equal(doc.querySelector('tbody tr td:last-child').textContent,'2026-10-20');
+  assert.equal(current(id).wonAt,won);P.go('crm-customers');assert.equal(doc.querySelector('tbody tr td:last-child').textContent,'20 okt.');
   P.crm.save({...current(id),stage:'contact',nextAction:'Återuppta kontakt',nextDate:'2026-10-22'},id);
   assert.equal(current(id).closedAt,'');assert.equal(current(id).wonAt,won);assert.equal(current(id).lostAt,lost);
   assert.match(current(id).events.map(ev=>ev.text).join(' '),/Förlustorsak/);assert.equal(unaffected(),baseline);
@@ -80,7 +80,7 @@ test('won save has specific feedback; close dates use Stockholm and persist acro
 test('legacy closed dates are displayed when known and never fabricated by edits',()=>{
   const old={...base,name:'Äldre känd kund',id:'legacy-won',partner,stage:'won',nextAction:'',nextDate:'',closedAt:'2026-09-01T12:00:00Z',events:[{at:'2026-09-01T12:00:00Z',text:'Bevarad historik'}]};
   P.state.crmRecords.push(old,{...old,id:'legacy-unknown',name:'Äldre kund utan datum',closedAt:''});
-  P.go('crm-customers');assert.match(doc.querySelector('#view').textContent,/2026-09-01/);assert.match(doc.querySelector('#view').textContent,/Datum saknas/);
+  P.go('crm-customers');assert.match(doc.querySelector('#view').textContent,/1 sep\./);assert.match(doc.querySelector('#view').textContent,/Datum saknas/);
   P.crm.save({...current('legacy-unknown'),note:'Komplettering'},'legacy-unknown');assert.equal(current('legacy-unknown').closedAt,'');
   assert.equal(current('legacy-unknown').events[1].text,'Bevarad historik');
   P.crm.save({...current('legacy-won'),stage:'contact',nextAction:'Återkom',nextDate:'2026-11-01'},'legacy-won');
@@ -94,7 +94,7 @@ test('home queues include inclusive boundaries, exclude past expiry and remain p
   P.go('crm');const upcoming=doc.querySelector('#crm-upcoming').textContent,expiry=doc.querySelector('#crm-expiring');
   assert.match(upcoming,/Imorgon/);assert.match(upcoming,/Dag sju/);assert.doesNotMatch(upcoming,/Dag åtta|Försenad|Får inte visas/);
   const dates=Array.from(expiry.querySelectorAll('.crm-due')).map(n=>n.textContent);
-  assert.deepEqual(dates,['2026-10-15','2026-11-01','2027-01-31','2027-04-15']);assert.doesNotMatch(expiry.textContent,/Dag åtta|Försenad|Får inte visas/);
+  assert.deepEqual(dates,['15 okt.','1 nov.','31 jan. 2027','15 apr. 2027']);assert.doesNotMatch(expiry.textContent,/Dag åtta|Försenad|Får inte visas/);
 });
 test('quick dates are unsaved drafts with month-end, leap-year and DST-safe boundaries',()=>{
   const before=JSON.stringify(P.state);P.crm.open(id);
@@ -123,7 +123,7 @@ test('live search keeps focus and caret while filtering all three views without 
   }
 });
 test('pipeline sums only supplied consumption and next-stage action is a cancellable draft',()=>{
-  P.go('crm-pipeline');const column=doc.querySelector('[data-crm-stage=contact]');assert.match(column.querySelector('.crm-volume').textContent,/25,0005 MWh\/år/);
+  P.go('crm-pipeline');const column=doc.querySelector('[data-crm-stage=contact]');assert.match(column.querySelector('.crm-volume').textContent,/25 MWh\/år/);
   assert.match(doc.querySelector('[data-crm-stage=lead] .crm-volume').textContent,/saknas/);
   assert.equal(doc.querySelector('[data-crm-stage=won] [data-crm-advance]'),null);
   const before=JSON.stringify(P.state);doc.querySelector(`[data-crm-advance="${id}"]`).click();
