@@ -48,6 +48,10 @@ Använd fiktiva uppgifter; data delas ännu inte mellan användare.
 - Interna **Partners → Kunder & avtal / Insikter** visar fiktiva periodutfall,
   bestånd och villkorade scenarier. Periodlistor är nyast först; september är
   initialt månadsval. Oktober/kvartal 4/år 2026 har underlag till **7 oktober**.
+  På mobil öppnas kontrollerna med **Visa filter**; period, datadatum och aktivt
+  urval syns även när filtren är stängda. **Dölj filter** ändrar inga urval.
+  Desktop visar kontrollerna direkt. Öppningen är tillfällig och återgår till
+  stängd vid omladdning eller partnerbyte utan att rensa sparade rapportfilter.
 - Säljpartner ser egna resultat, Avtalsfakta, Academy och stöd; portal-CRM
   tillkommer för partnern som valt det arbetssättet.
 - Fastighetsbolag registrerar manuellt eller granskar Excel, bifogar befintliga

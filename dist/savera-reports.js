@@ -9,7 +9,7 @@
   const D = () => P.partnerSalesData?.forPartner(partnerId()) || (partnerId() === 'syd' ? P.saveraData : null);
   const storageKey = () => `${P.demoMode ? 'partnerlabb.demo' : 'partnerlabb'}.partnerSalesReports.v1.${P.role==='partner'?'own.':''}${partnerId()}`;
   const defaultFilters = () => ({mode: 'year', value: '2026', segment: 'all', product: 'all', seller: 'all', region: 'all', query: '', status: 'all'});
-  let current = defaultFilters(), list = 'period', page = 1, activePartner = '', moreFiltersOpen = false;
+  let current = defaultFilters(), list = 'period', page = 1, activePartner = '', moreFiltersOpen = false, filtersExpanded = false;
   const pageSize = 20;
   const number = (value, digits = 0) => new Intl.NumberFormat('sv-SE', {maximumFractionDigits: digits, minimumFractionDigits: digits}).format(Number(value) || 0);
   const date = value => value ? new Date(`${String(value).slice(0, 10)}T12:00:00Z`).toLocaleDateString('sv-SE', {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'}) : '—';
@@ -41,7 +41,7 @@
     page = 1;
   }
   function ensureContext() {
-    if (activePartner !== P.role + ':' + partnerId()) { activePartner = P.role + ':' + partnerId(); restore(); }
+    if (activePartner !== P.role + ':' + partnerId()) { activePartner = P.role + ':' + partnerId(); restore(); filtersExpanded = false; }
     else current = validFilters(current);
   }
   function save() {
@@ -79,7 +79,9 @@
     const selected = ['segment', 'product', 'seller', 'region'].some(key => current[key] !== 'all');
     const secondary = ['seller', 'region'].filter(key => current[key] !== 'all').length;
     const catalogue = key => [{value: 'all', label: key === 'product' ? 'Alla elavtal' : key === 'seller' ? 'Alla säljare' : 'Alla områden'}, ...(key === 'product' ? (D()?.productsFor?.(current.segment) || D()?.products || []) : D()?.[`${key}s`] || []).map(value => ({value, label: value}))];
-    return `<section class="sr-filter-bar" aria-label="Gemensamma rapportfilter">${segmentControls()}<div class="sr-primary-filters"><fieldset class="sr-period-mode"><legend>Visa period</legend><div class="sr-segmented">${[['year', 'År'], ['month', 'Månad'], ['week', 'Vecka']].map(([mode, label]) => `<button type="button" data-sr-mode="${mode}" aria-pressed="${current.mode === mode}"${current.mode === mode ? ' class="selected"' : ''}>${label}</button>`).join('')}</div></fieldset>${select('period', current.mode === 'year' ? 'År' : current.mode === 'month' ? 'Månad' : 'Vecka', options(current.mode), current.value)}${select('product', 'Elavtal', catalogue('product'), current.product)}<button type="button" class="sr-reset" id="sr-reset"${selected || current.query || current.status !== 'all' ? '' : ' disabled'}>${P.icon('settings')} Rensa filter</button></div><details class="sr-more-filters"${secondary || moreFiltersOpen ? ' open' : ''}><summary>${P.icon('layers')} Fler filter${secondary ? `<span>${secondary}</span>` : ''}</summary><div class="sr-secondary-filters">${select('seller', 'Säljare · exempel', catalogue('seller'), current.seller)}${select('region', 'Geografiskt område', catalogue('region'), current.region)}<p>Kundsegment, elavtal, säljare och område gäller båda rapportsidorna.</p></div></details></section>`;
+    return `<section class="sr-filter-bar${filtersExpanded ? '' : ' sr-filters-collapsed'}" aria-label="Gemensamma rapportfilter">
+      <button type="button" class="sr-filter-toggle" id="sr-filter-toggle" aria-controls="sr-filter-content" aria-expanded="${filtersExpanded}">${P.icon('settings')} ${filtersExpanded ? 'Dölj filter' : 'Visa filter'}<span>${e(audiences().length === 1 ? segmentLabel(audiences()[0]) : segmentLabel(current.segment))}</span>${P.icon('arrow')}</button>
+      <div id="sr-filter-content">${segmentControls()}<div class="sr-primary-filters"><fieldset class="sr-period-mode"><legend>Visa period</legend><div class="sr-segmented">${[['year', 'År'], ['month', 'Månad'], ['week', 'Vecka']].map(([mode, label]) => `<button type="button" data-sr-mode="${mode}" aria-pressed="${current.mode === mode}"${current.mode === mode ? ' class="selected"' : ''}>${label}</button>`).join('')}</div></fieldset>${select('period', current.mode === 'year' ? 'År' : current.mode === 'month' ? 'Månad' : 'Vecka', options(current.mode), current.value)}${select('product', 'Elavtal', catalogue('product'), current.product)}<button type="button" class="sr-reset" id="sr-reset"${selected || current.query || current.status !== 'all' ? '' : ' disabled'}>${P.icon('settings')} Rensa filter</button></div><details class="sr-more-filters"${secondary || moreFiltersOpen ? ' open' : ''}><summary>${P.icon('layers')} Fler filter${secondary ? `<span>${secondary}</span>` : ''}</summary><div class="sr-secondary-filters">${select('seller', 'Säljare · exempel', catalogue('seller'), current.seller)}${select('region', 'Geografiskt område', catalogue('region'), current.region)}<p>Kundsegment, elavtal, säljare och område gäller båda rapportsidorna.</p></div></details></div></section>`;
   }
   function selectionNote(period) {
     const labels = [current.segment === 'all' ? null : segmentLabel(current.segment), current.product, current.seller, current.region].filter(value => value && value !== 'all');
@@ -197,6 +199,10 @@
   }
   function bind() {
     if (!allowed() || !D()) return;
+    document.getElementById('sr-filter-toggle')?.addEventListener('click', () => {
+      filtersExpanded = !filtersExpanded;
+      repaint('sr-filter-toggle');
+    });
     document.querySelector('.sr-more-filters')?.addEventListener('toggle', event => {if (!event.currentTarget.isConnected) return; moreFiltersOpen = event.currentTarget.open; save();});
     (P.role==='internal'?document.querySelectorAll('[data-sr-configure]'):[]).forEach(button => button.addEventListener('click', () => P.partnerSetup?.open(partnerId())));
     document.querySelectorAll('[data-sr-segment]').forEach(button => button.addEventListener('click', () => {

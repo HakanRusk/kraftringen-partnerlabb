@@ -12,7 +12,7 @@ Avslutade uppgifter och äldre prioriteringar finns i docs/archive/2026-10-14/BA
 | Klar v37 · CRM-03 | Kund-/anläggningsidentifierare i portal-CRM | Nya/befintliga kort, B2B/B2C, format, bevarande, export och tre browserstorlekar verifierade; kvittens i WORKLOG. |
 | Klar v38 · CRM-02/04 | Vunnen-besked och nio operativa CRM-förbättringar | 13 Node-/DOM-sviter, Chromium vid 320/390/1440 px och publicering verifierade; kvittens i WORKLOG. |
 | Klar v39 · CRM-05 | Svensk inmatning och finputs i CRM | Åtta punkter, 14 Node-/DOM-sviter, Chromium vid tre bredder och publicering verifierade; WORKLOG. |
-| Nästa förslag · MOBILE-01 | Få fram nyckeltal tidigare på mobil | Pröva kompakt/hopfällbart filter med tydligt aktivt urval och tangentbord. |
+| Pågår · MOBILE-01 | Få fram nyckeltal tidigare på mobil | PR #62: grön verifierad baslinje; mobil hopfällning under ny verifiering. Aktivt urval/tangentbord/före–efter, se WORKLOG. |
 | Nästa · PILOT-03 | Reproducerad friktion i inflyttning/handläggning | Konkret före/efter, bevarad data, relevant verifiering. |
 | Vid underlag · PILOT-00 | Uppdatera fakta/beslut från faktisk återkoppling | D-01–D-04 besvaras med källa, inte antaganden. |
 | Förberedelse · PILOT-02 | Liten fiktiv import-/avstämningsmall | Service, avtal, års-MWh och kickback har separata källor/händelser. |

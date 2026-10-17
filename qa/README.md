@@ -53,4 +53,9 @@ fälls ihop, omladdning och periodbyte. Domändata ska vara oförändrade.
 `report-mobile-evidence` sparar skärmbilder och `report-layout.json` i sju dagar
 även vid lyckad CI. JSON/loggen visar filterhöjd och första resultatets position
 som underlag för MOBILE-01, utan godtycklig godkäntgräns för skärmhöjd.
+Mobilsekvensen öppnar/stänger primärfilter med tangentbord, kontrollerar
+aria-expanded/fokus, synligt urval, återöppning efter omladdning och synliga
+desktopkontroller efter breddbyte. Filterhöjden ska minska minst 250 px mot
+den dokumenterade 410 px-baslinjen; det är ett geometriskt regressionskrav,
+inte en gräns för verklig användarnytta. DOM-fallen ingår i commercial-periods.
 Detta ersätter inte manuell visuell granskning, skärmläsare eller verklig användarrespons.

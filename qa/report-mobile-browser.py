@@ -16,6 +16,8 @@ OUT = Path(os.environ.get('PARTNERLABB_QA_SHOTS', '/tmp/partnerlabb-report-shots
 async def within_page(page, width):
     assert await page.evaluate('document.documentElement.scrollWidth') <= width + 1
     for selector in ('.sr-filter-bar', '.sr-selection', '#sr-product', '.sr-more-filters > summary'):
+        if not await page.locator(selector).is_visible():
+            continue
         box = await page.locator(selector).bounding_box()
         assert box and box['x'] >= 0 and box['x'] + box['width'] <= width + 1, (selector, box)
 
@@ -50,6 +52,11 @@ async def main():
                     for route in ('partner-sales', 'partner-insights'):
                         await page.evaluate('route => Portal.go(route)', route)
                         await page.evaluate('Portal.partnerSalesReports.reset()')
+                        if width <= 600:
+                            toggle = page.locator('#sr-filter-toggle')
+                            if await toggle.get_attribute('aria-expanded') == 'true':
+                                await toggle.click()
+                            await expect(page.locator('#sr-product')).not_to_be_visible()
                         await page.evaluate('window.scrollTo(0,0)')
                         await within_page(page, width)
                         first = '.sr-metrics' if route == 'partner-sales' else '.sr-tenure'
@@ -59,6 +66,18 @@ async def main():
                                 firstResultTop: Math.round(document.querySelector(selector).getBoundingClientRect().top + scrollY)
                             })''', first)})
                         await page.screenshot(path=str(OUT / f'report-{partner}-{route}-{width}.png'), full_page=True)
+                        if width <= 600:
+                            # Relative to the recorded baseline, not an assumed usability threshold.
+                            assert evidence[-1]['filterHeight'] < 410 - 250
+                            await toggle.focus()
+                            await page.keyboard.press('Enter')
+                            await expect(toggle).to_be_focused()
+                            await expect(toggle).to_have_attribute('aria-expanded', 'true')
+                            await expect(page.locator('#sr-product')).to_be_visible()
+                            await within_page(page, width)
+                        else:
+                            await expect(page.locator('#sr-filter-toggle')).not_to_be_visible()
+                            await expect(page.locator('#sr-product')).to_be_visible()
                         summary = page.locator('.sr-more-filters > summary')
                         await summary.focus()
                         await page.keyboard.press('Enter')
@@ -74,7 +93,22 @@ async def main():
                         await page.keyboard.press('Space')
                         await expect(page.locator('#sr-seller')).not_to_be_visible()
                         await expect(page.locator('.sr-selection')).to_contain_text(seller)
+                        if width <= 600:
+                            await toggle.focus()
+                            await page.keyboard.press('Space')
+                            await expect(toggle).to_be_focused()
+                            await expect(toggle).to_have_attribute('aria-expanded', 'false')
+                            await expect(page.locator('.sr-selection')).to_contain_text(seller)
+                            await expect(page.locator('#sr-product')).not_to_be_visible()
                         await page.reload()
+                        if width <= 600:
+                            await expect(page.locator('#sr-filter-toggle')).to_have_attribute('aria-expanded', 'false')
+                            await expect(page.locator('.sr-selection')).to_contain_text(seller)
+                            # Desktop must expose controls even after a mobile collapse.
+                            await page.set_viewport_size({'width': 1440, 'height': 900})
+                            await expect(page.locator('#sr-product')).to_be_visible()
+                            await page.set_viewport_size({'width': width, 'height': 900})
+                            await page.locator('#sr-filter-toggle').click()
                         await expect(page.locator('#sr-seller')).to_have_value(seller)
                         await expect(page.locator('.sr-selection')).to_contain_text(seller)
                         await within_page(page, width)

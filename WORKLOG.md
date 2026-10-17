@@ -4,6 +4,31 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 17 oktober 2026 · Mobilfilter, fortsättning av PR #62
+
+Baslinje c61cc22 verifierad med grön CI 39023266108: samtliga 14 Node-/DOM-
+sviter, befintliga Chromiumflöden och tolv rapportkombinationer passerade.
+Sparat domänunderlag var oförändrat. Artifact 12096654545 innehåller geometri
+och skärmbilder. Savera Kunder & avtal 390 px, Face2face Insikter 320 px och
+Savera 1440 px granskade. Filtren var 410 px höga på mobil; första resultatet
+började 987–1034 px ned. Desktop: 192 / 672 px. Detta är layoutbelägg,
+inte en användarstudie eller skärmläsarkvittens.
+
+Fortsätter på samma agent/report-mobile-verification, ingen konkurrerande PR.
+Kandidaten fäller ihop rapportkontrollerna vid högst 600 px med Visa/Dölj filter,
+aria-controls/expanded och bibehållet knappfokus. Period/datadatum/aktivt urval
+ligger utanför. Desktopkontrollerna är alltid synliga. Öppningen sparas inte:
+omladdning/partnerbyte stänger mobilkontroller utan att rensa rapportfiltren.
+Samma urval/mått/fixtures och befintliga extrafilter återanvänds.
+
+DOM-regression täcker toggle/fokus, aktivt säljarurval, sidbyte, partnerisolering,
+återställning och oförändrade nyckeltal/domändata. Browsersekvensen utökad med
+tangentbord, mobil→desktop-breddbyte och före/efter-geometri. Ny CI krävs för
+den ändrade kandidaten; tidigare grön CI gäller endast baslinjen. Ingen merge,
+publicering, backend, migrering, åtkomst eller ändrade verksamhetsbeslut.
+Lokalt passerar alla 14 Node-/DOM-sviter inklusive nya rapportfallen, Python-
+syntax och git diff --check. Lokal browser är fortsatt otillgänglig.
+
 ## 17 oktober 2026 · Riktad rapportverifiering för MOBILE-01
 
 Uppföljning av första CI-försöket 39019844112 på c719afc: Node/DOM samt
