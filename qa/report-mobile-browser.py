@@ -34,7 +34,14 @@ async def main():
             try:
                 await page.goto(BASE)
                 await page.wait_for_function('window.Portal && Portal.partnerSalesReports')
-                before = await page.evaluate('JSON.stringify(Portal.state)')
+                # The fresh overview lazily initializes example management data.
+                # Persist that fictional fixture before testing reload, otherwise
+                # reload legitimately reads a new seed rather than this baseline.
+                before = await page.evaluate('''() => {
+                    if (!Portal.save()) throw new Error('Could not prepare saved QA fixture');
+                    return JSON.parse(JSON.stringify(Portal.state));
+                }''')
+                stored_before = await page.evaluate('localStorage.getItem("partnerlabb.portal.v2")')
                 for partner in ('syd', 'vast'):
                     await page.evaluate('''id => {
                         Portal.returnInternal(); Portal.selectedPartnerId=id;
@@ -81,7 +88,10 @@ async def main():
                             await expect(page.locator(f'[data-sr-mode={mode}]')).to_be_focused()
                             await expect(page.locator(f'[data-sr-mode={mode}]')).to_have_attribute('aria-pressed', 'true')
                         print(f'PASS report filters {partner} {route} {width}px', flush=True)
-                assert await page.evaluate('JSON.stringify(Portal.state)') == before, 'Report navigation changed domain data'
+                after = await page.evaluate('JSON.parse(JSON.stringify(Portal.state))')
+                changed = [key for key in before.keys() | after.keys() if before.get(key) != after.get(key)]
+                assert not changed, ('Report navigation changed domain data', changed)
+                assert await page.evaluate('localStorage.getItem("partnerlabb.portal.v2")') == stored_before, 'Report navigation wrote domain storage'
                 assert not errors, errors
             except Exception:
                 await page.screenshot(path=str(OUT / f'report-failure-{width}.png'), full_page=True)

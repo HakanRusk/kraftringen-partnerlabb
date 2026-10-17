@@ -6,6 +6,16 @@ Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISI
 
 ## 17 oktober 2026 · Riktad rapportverifiering för MOBILE-01
 
+Uppföljning av första CI-försöket 39019844112 på c719afc: Node/DOM samt
+befintliga Chromiumflöden passerade. Rapportsekvensens fyra 1440 px-flöden
+passerade, men slutkontrollen av hela state stoppade före mobilbredderna.
+Testet hade inte sparat den initiala översiktens lazily initierade exempeldata
+före omladdning; appens readState läser då ett nytt seed. Testfixturen sparas
+nu uttryckligt i sin isolerade browserkontext före baslinjen. Djupjämförelse
+anger ändrade toppnycklar och en separat kontroll kräver oförändrat sparat
+domänunderlag. Ingen appändring eller försvagad domänkontroll. Ny CI krävs;
+320/390 px är ännu inte verifierade. Första körningens artifact finns sparat.
+
 Eget agentarbete från main 0876eaeedc5e8f69a3b18403c1d3d9748fa5b830,
 gren agent/report-mobile-verification. Inga öppna PR:er vid start.
 Ingen ändring i dist/, affärsregler, data, åtkomst eller publicering.
