@@ -4,6 +4,25 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 17 oktober 2026 · Riktad rapportverifiering för MOBILE-01
+
+Eget agentarbete från main 0876eaeedc5e8f69a3b18403c1d3d9748fa5b830,
+gren agent/report-mobile-verification. Inga öppna PR:er vid start.
+Ingen ändring i dist/, affärsregler, data, åtkomst eller publicering.
+
+Lokal installation av Playwright 1.63.0 lyckades, men Chromium v1243 gav
+åter oläsbart 0 MiB-arkiv (ZIP central directory saknas); browserflödet är
+inte lokalt kört. För att få belägg i befintlig CI tillkommer en avgränsad
+rapportsekvens: Savera/Face2face, båda rapportsidorna, 320/390/1440 px,
+filter/fokus/omladdning/återställning och oförändrade domändata.
+Skärmbilder och geometri sparas som CI-artifact även vid lyckad körning.
+Filterhöjd/första resultatets position registreras utan att påstå uppmätt
+användarnytta eller redan reproducerad mobilbrist. Ingen designändring föreslås nu.
+
+Python-syntax, git diff --check och alla 14 Node-/DOM-sviter passerar lokalt.
+Faktisk CI-status kvitteras i PR efter körning. Nästa steg: granska rapportbilder och
+geometri från aktuell PR-HEAD, åtgärda bara belagd friktion. D-01–D-04 ändras inte.
+
 ## Publicerad v39 · 15 oktober 2026
 
 Alla åtta punkter i uppdrag 2 (**Ludwig via Claude, 15 oktober**) levererade
