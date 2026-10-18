@@ -12,8 +12,9 @@ Avslutade uppgifter och äldre prioriteringar finns i docs/archive/2026-10-14/BA
 | Klar v37 · CRM-03 | Kund-/anläggningsidentifierare i portal-CRM | Nya/befintliga kort, B2B/B2C, format, bevarande, export och tre browserstorlekar verifierade; kvittens i WORKLOG. |
 | Klar v38 · CRM-02/04 | Vunnen-besked och nio operativa CRM-förbättringar | 13 Node-/DOM-sviter, Chromium vid 320/390/1440 px och publicering verifierade; kvittens i WORKLOG. |
 | Klar v39 · CRM-05 | Svensk inmatning och finputs i CRM | Åtta punkter, 14 Node-/DOM-sviter, Chromium vid tre bredder och publicering verifierade; WORKLOG. |
-| Pågår · MOBILE-01 | Få fram nyckeltal tidigare på mobil | PR #62: grön verifierad baslinje; mobil hopfällning under ny verifiering. Aktivt urval/tangentbord/före–efter, se WORKLOG. |
-| Nästa · PILOT-03 | Reproducerad friktion i inflyttning/handläggning | Konkret före/efter, bevarad data, relevant verifiering. |
+| Klar v40 · MOBILE-01 | Få fram nyckeltal tidigare på mobil | Hopfällbara filter, synligt urval och 363 px tidigare resultat vid 320/390 px; tangentbord, omladdning och data bevarade. |
+| Nästa · PILOT-03 | Reproducerad friktion i inflyttning/handläggning | Konkret före/efter, bevarad data, relevant verifiering. DESIGN-01 är en möjlig avgränsning, inte ett belagt utfall. |
+| Kandidat · DESIGN-01 | Tillståndsstyrd fastighetsöversikt | Ny/tom partner får startväg först; öppna ärenden ger uppmärksamhet/status först. Baslinje och 320/390/1440 px, tangentbord, omladdning och sparfel krävs före kodförslag. |
 | Vid underlag · PILOT-00 | Uppdatera fakta/beslut från faktisk återkoppling | D-01–D-04 besvaras med källa, inte antaganden. |
 | Förberedelse · PILOT-02 | Liten fiktiv import-/avstämningsmall | Service, avtal, års-MWh och kickback har separata källor/händelser. |
 | Senare · PILOT-04 | Gemensam ärendelagring/behörighet | D-02/D-03 och uttryckligt genomförandemandat. |
