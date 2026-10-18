@@ -4,6 +4,45 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad v40 · 18 oktober 2026
+
+Mobilfiltren publicerades via
+[PR #62](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/62).
+Verifierad PR-HEAD: a9514af50e5f5b62cf168849be782b212694142c.
+GitHub-main och publicerad Sites-källa:
+**0f7d8d4c98665c6d527156f215f240365f2a114f**.
+
+Rapportfiltren är hopfällbara vid högst 600 px. Period, datadatum och aktivt
+urval är fortsatt synliga; desktop är oförändrad. CI-underlaget för kandidaten
+visade att kontrollhöjden minskade från 410 till 47 px och att första resultatet
+kom 363 px tidigare vid 320/390 px. Det är verifierad layoutgeometri, inte en
+användarstudie eller belagd effekt på uppgiftsframgång.
+
+Ren källcheckout verifierades med `npm ci`, samtliga 14 Node-/DOM-sviter,
+Python-syntax och `git diff --check`. Native Sites-version:
+appgprj_6ac600ecf7d48191923687550810c1d4~appgver_329b37c7544c8191bfa1743651820733.
+Deployment-ID: appgdep_6ad4e9f0356c8191abdb0c002e3e0150.
+Native status **succeeded** 2026-10-18T15:47:11.016420+00:00:
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Custom-delning/policyrevision 4 bevarades. Ingen åtkomst, backend, migration,
+resultatregel eller sparad domändata ändrades.
+
+## 18 oktober 2026 · Designprinciper och nästa avgränsade hypotes
+
+Efter publiceringen sammanställdes ett källbelagt designunderlag i
+[docs/DESIGN-PRINCIPLES.md](docs/DESIGN-PRINCIPLES.md). Det omsätter etablerade
+mönster för progressiv visning, tydlig systemstatus, mänsklig kontroll och
+transparent underlag till sex konkreta regler för Partnerlabb. Ingen AI-funktion,
+ny tjänst eller appändring ingår.
+
+Nästa kandidat DESIGN-01 är en testbar hypotes: låt fastighetsöversiktens första
+block styras av partnerns faktiska lokala tillstånd. En ny/tom partner ser start
+och registrering först; en partner med öppna ärenden ser uppmärksamhetsbehov och
+ärendestatus först. Alla befintliga vägar och data ska bevaras. Baslinje,
+320/390/1440 px, tangentbord, omladdning och sparfel ska verifieras innan ett
+eventuellt kodförslag. Verklig intuitivitet kräver senare observation med
+fastighetsbolag och handläggare; dokumentet påstår inte sådan evidens.
+
 ## 17 oktober 2026 · Mobilfilter, fortsättning av PR #62
 
 Baslinje c61cc22 verifierad med grön CI 39023266108: samtliga 14 Node-/DOM-
