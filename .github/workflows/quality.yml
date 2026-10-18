@@ -56,6 +56,15 @@ jobs:
           PARTNERLABB_QA_SHOTS: ${{ runner.temp }}/partnerlabb-shots
         run: python qa/run-browser.py
       - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: report-mobile-evidence
+          path: |
+            ${{ runner.temp }}/partnerlabb-shots/report-*.png
+            ${{ runner.temp }}/partnerlabb-shots/report-layout.json
+          if-no-files-found: ignore
+          retention-days: 7
+      - uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: chromium-failure-evidence

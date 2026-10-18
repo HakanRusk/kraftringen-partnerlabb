@@ -4,6 +4,60 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 17 oktober 2026 · Mobilfilter, fortsättning av PR #62
+
+Baslinje c61cc22 verifierad med grön CI 39023266108: samtliga 14 Node-/DOM-
+sviter, befintliga Chromiumflöden och tolv rapportkombinationer passerade.
+Sparat domänunderlag var oförändrat. Artifact 12096654545 innehåller geometri
+och skärmbilder. Savera Kunder & avtal 390 px, Face2face Insikter 320 px och
+Savera 1440 px granskade. Filtren var 410 px höga på mobil; första resultatet
+började 987–1034 px ned. Desktop: 192 / 672 px. Detta är layoutbelägg,
+inte en användarstudie eller skärmläsarkvittens.
+
+Fortsätter på samma agent/report-mobile-verification, ingen konkurrerande PR.
+Kandidaten fäller ihop rapportkontrollerna vid högst 600 px med Visa/Dölj filter,
+aria-controls/expanded och bibehållet knappfokus. Period/datadatum/aktivt urval
+ligger utanför. Desktopkontrollerna är alltid synliga. Öppningen sparas inte:
+omladdning/partnerbyte stänger mobilkontroller utan att rensa rapportfiltren.
+Samma urval/mått/fixtures och befintliga extrafilter återanvänds.
+
+DOM-regression täcker toggle/fokus, aktivt säljarurval, sidbyte, partnerisolering,
+återställning och oförändrade nyckeltal/domändata. Browsersekvensen utökad med
+tangentbord, mobil→desktop-breddbyte och före/efter-geometri. Ny CI krävs för
+den ändrade kandidaten; tidigare grön CI gäller endast baslinjen. Ingen merge,
+publicering, backend, migrering, åtkomst eller ändrade verksamhetsbeslut.
+Lokalt passerar alla 14 Node-/DOM-sviter inklusive nya rapportfallen, Python-
+syntax och git diff --check. Lokal browser är fortsatt otillgänglig.
+
+## 17 oktober 2026 · Riktad rapportverifiering för MOBILE-01
+
+Uppföljning av första CI-försöket 39019844112 på c719afc: Node/DOM samt
+befintliga Chromiumflöden passerade. Rapportsekvensens fyra 1440 px-flöden
+passerade, men slutkontrollen av hela state stoppade före mobilbredderna.
+Testet hade inte sparat den initiala översiktens lazily initierade exempeldata
+före omladdning; appens readState läser då ett nytt seed. Testfixturen sparas
+nu uttryckligt i sin isolerade browserkontext före baslinjen. Djupjämförelse
+anger ändrade toppnycklar och en separat kontroll kräver oförändrat sparat
+domänunderlag. Ingen appändring eller försvagad domänkontroll. Ny CI krävs;
+320/390 px är ännu inte verifierade. Första körningens artifact finns sparat.
+
+Eget agentarbete från main 0876eaeedc5e8f69a3b18403c1d3d9748fa5b830,
+gren agent/report-mobile-verification. Inga öppna PR:er vid start.
+Ingen ändring i dist/, affärsregler, data, åtkomst eller publicering.
+
+Lokal installation av Playwright 1.63.0 lyckades, men Chromium v1243 gav
+åter oläsbart 0 MiB-arkiv (ZIP central directory saknas); browserflödet är
+inte lokalt kört. För att få belägg i befintlig CI tillkommer en avgränsad
+rapportsekvens: Savera/Face2face, båda rapportsidorna, 320/390/1440 px,
+filter/fokus/omladdning/återställning och oförändrade domändata.
+Skärmbilder och geometri sparas som CI-artifact även vid lyckad körning.
+Filterhöjd/första resultatets position registreras utan att påstå uppmätt
+användarnytta eller redan reproducerad mobilbrist. Ingen designändring föreslås nu.
+
+Python-syntax, git diff --check och alla 14 Node-/DOM-sviter passerar lokalt.
+Faktisk CI-status kvitteras i PR efter körning. Nästa steg: granska rapportbilder och
+geometri från aktuell PR-HEAD, åtgärda bara belagd friktion. D-01–D-04 ändras inte.
+
 ## Publicerad v39 · 15 oktober 2026
 
 Alla åtta punkter i uppdrag 2 (**Ludwig via Claude, 15 oktober**) levererade

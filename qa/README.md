@@ -18,7 +18,8 @@ PARTNERLABB_QA_URL=http://127.0.0.1:8000/ python qa/run-browser.py
 ```
 
 Runnern kör movein-drafts.py, movein-service.py (båda använder property-intake.py)
-samt partner-types.py, crm-identifiers-browser.py och crm-workflow-browser.py. De provar riktig Excel, bilagor, handläggning, sparfel,
+samt partner-types.py, crm-identifiers-browser.py, crm-workflow-browser.py och
+report-mobile-browser.py. De provar riktig Excel, bilagor, handläggning, sparfel,
 isolering och nya partnertyper med fiktiva data. Vid CI-fel sparas tillgängliga
 skärmbilder och serverlogg i sju dagar. Det är inte visuell granskning av hela portalen.
 
@@ -44,3 +45,17 @@ CRM-finputs verifierar grupperad heltalsinmatning, exakta äldre decimalvärden,
 datum med årsskifte/tidszon, överblick, öppna volymer och B2B-katalog. Den
 befintliga CRM-browsersekvensen kontrollerar också dialogavstånd, stjärnans rad,
 svensk formattering, fokus utan huvudram och sammanfattning vid tre bredder.
+
+Rapportkontrollen provar Savera och Face2face, Kunder & avtal och Insikter vid
+320/390/1440 px: sidbredd, filter inom sidan, tangentbordsöppning av extrafilter,
+fokus efter filterbyte/återställning, aktivt säljarurval även när kontrollerna
+fälls ihop, omladdning och periodbyte. Domändata ska vara oförändrade.
+`report-mobile-evidence` sparar skärmbilder och `report-layout.json` i sju dagar
+även vid lyckad CI. JSON/loggen visar filterhöjd och första resultatets position
+som underlag för MOBILE-01, utan godtycklig godkäntgräns för skärmhöjd.
+Mobilsekvensen öppnar/stänger primärfilter med tangentbord, kontrollerar
+aria-expanded/fokus, synligt urval, återöppning efter omladdning och synliga
+desktopkontroller efter breddbyte. Filterhöjden ska minska minst 250 px mot
+den dokumenterade 410 px-baslinjen; det är ett geometriskt regressionskrav,
+inte en gräns för verklig användarnytta. DOM-fallen ingår i commercial-periods.
+Detta ersätter inte manuell visuell granskning, skärmläsare eller verklig användarrespons.
