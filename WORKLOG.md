@@ -4,6 +4,25 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 20 oktober 2026 · DESIGN-01 baslinjekandidat
+
+Eget oberoende agentarbete från main
+`b09d2c8c6e608bb85f35d80e8ab2c2da53bb2787`. Kandidaten ändrar ingen
+produktfunktion. En ny underhållen Chromiumsekvens samlar före-geometri och
+skärmbilder för fastighetsöversikten i två tillstånd: ny lokal partner utan
+ärenden och `estate2` med fiktivt kompletteringsärende. Den kontrollerar
+320/390/1440 px, sidbredd, tangentbordsöppning och avbrott för både manuell och
+Excel, omladdning samt oförändrad domändata. Ny partner ska ha tom egen ärendelista.
+
+`property-overview-evidence` bevarar skärmbilder och layout-JSON från CI i sju
+dagar. Geometrin är ett kod-/layoutunderlag inför DESIGN-01, inte användarbevis.
+Ingen omordning, backend, verklig data, publicering eller Sites-ändring ingår.
+Fullständigt sparfelstest och eventuellt före/efter-förslag återstår. Lokal
+verifiering: Python-syntax och `git diff --check` passerar; `npm test` passerar
+samtliga 14 Node-/DOM-sviter. Lokal Chromiumkörning blockerades eftersom
+Pythonpaketet Playwright saknas i körmiljön. Faktisk CI kvitteras först efter
+körning.
+
 ## Publicerad v40 · 18 oktober 2026
 
 Mobilfiltren publicerades via
