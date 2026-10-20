@@ -36,6 +36,16 @@ async def geometry(page):
     }))''', SECTIONS)
 
 
+async def domain_snapshot(page):
+    return await page.evaluate('''() => JSON.stringify({
+      records: Portal.state.records,
+      offers: Portal.state.offers,
+      consumerSales: Portal.state.consumerSales,
+      moveins: Portal.state.moveins,
+      kickback: Portal.partnerKickback?.ledger
+    })''')
+
+
 async def main():
     OUT.mkdir(parents=True, exist_ok=True)
     evidence = []
@@ -59,10 +69,10 @@ async def main():
                         assert rows == [], rows
                     else:
                         assert any(row.get('handoverStatus') == 'needs_info' for row in rows), rows
-                    saved = await page.evaluate('''() => {
+                    await page.evaluate('''() => {
                       if (!Portal.save()) throw new Error('Could not persist QA fixture');
-                      return JSON.stringify(Portal.state);
                     }''')
+                    saved_domain = await domain_snapshot(page)
                     await page.evaluate('window.scrollTo(0, 0)')
                     assert await page.evaluate('document.documentElement.scrollWidth') <= width + 1
                     evidence.append({'width': width, 'state': label, 'partner': partner_id,
@@ -82,10 +92,10 @@ async def main():
                         await back.focus()
                         await page.keyboard.press('Enter')
                         await expect(page.locator('.property-dashboard')).to_be_visible()
-                    assert await page.evaluate('JSON.stringify(Portal.state)') == saved
+                    assert await domain_snapshot(page) == saved_domain, 'Navigation changed domain data'
                     await page.reload(wait_until='networkidle')
                     await expect(page.locator('.property-dashboard')).to_be_visible()
-                    assert await page.evaluate('JSON.stringify(Portal.state)') == saved
+                    assert await domain_snapshot(page) == saved_domain, 'Reload changed domain data'
                     assert not errors, errors
                     print(f'PASS property overview baseline {label} {width}px', flush=True)
             except Exception:

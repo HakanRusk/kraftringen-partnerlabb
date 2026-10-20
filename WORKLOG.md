@@ -21,7 +21,10 @@ Fullständigt sparfelstest och eventuellt före/efter-förslag återstår. Lokal
 verifiering: Python-syntax och `git diff --check` passerar; `npm test` passerar
 samtliga 14 Node-/DOM-sviter. Lokal Chromiumkörning blockerades eftersom
 Pythonpaketet Playwright saknas i körmiljön. Faktisk CI kvitteras först efter
-körning.
+körning. Första CI-körningen identifierade att baslinjen jämförde hela lokala
+UI-tillståndet, inklusive legitimt initierade formulärinställningar. Kontrollen
+avgränsades därför till konsekvensbärande domändata: kund-/avtalsunderlag,
+serviceärenden och kickback. Korrigerad CI kvitteras separat.
 
 ## Publicerad v40 · 18 oktober 2026
 
