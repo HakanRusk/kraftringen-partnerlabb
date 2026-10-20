@@ -75,9 +75,26 @@ async def main():
                     saved_domain = await domain_snapshot(page)
                     await page.evaluate('window.scrollTo(0, 0)')
                     assert await page.evaluate('document.documentElement.scrollWidth') <= width + 1
+                    sections = await geometry(page)
+                    if label == 'empty':
+                        assert sections['.property-intake-options']['top'] < sections['.property-next-step']['top']
+                    else:
+                        assert sections['.property-next-step']['top'] < sections['.property-service-kpis']['top'] < sections['.property-intake-options']['top']
                     evidence.append({'width': width, 'state': label, 'partner': partner_id,
-                                     'sections': await geometry(page)})
+                                     'sections': sections})
                     await page.screenshot(path=str(OUT / f'property-overview-{label}-{width}.png'), full_page=True)
+                    await page.evaluate('''() => {
+                      window.qaOriginalSave = Portal.save;
+                      Portal.save = () => false;
+                      Portal.render();
+                    }''')
+                    assert await domain_snapshot(page) == saved_domain, 'Failed storage changed domain data'
+                    failed_sections = await geometry(page)
+                    if label == 'empty':
+                        assert failed_sections['.property-intake-options']['top'] < failed_sections['.property-next-step']['top']
+                    else:
+                        assert failed_sections['.property-next-step']['top'] < failed_sections['.property-service-kpis']['top'] < failed_sections['.property-intake-options']['top']
+                    await page.evaluate('Portal.save = window.qaOriginalSave; delete window.qaOriginalSave')
                     for mode in ('manual', 'import'):
                         button = page.locator(f'[data-property-intake="{mode}"]').first
                         await button.focus()

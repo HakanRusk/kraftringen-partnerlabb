@@ -41,7 +41,18 @@
   const incomplete = row => row.handoverStatus === 'draft' && !P.moveinService?.canForward(row);
   const stats = rows => ({ ready: rows.filter(ready).length, underway: rows.filter(row => ['submitted', 'handling'].includes(row.handoverStatus)).length, needs: rows.filter(row => row.handoverStatus === 'needs_info').length, done: rows.filter(row => row.handoverStatus === 'confirmed').length });
   function intake(mode = 'choice') { P.propertyIntake?.open(mode, P.partner); }
+  function prioritizeAttention() {
+    const rows = registrations();
+    if (!rows.some(row => row.handoverStatus === 'needs_info' || incomplete(row))) return;
+    const head = document.querySelector('.property-dashboard > .page-head');
+    const next = document.querySelector('.property-dashboard > .property-next-step');
+    const status = document.querySelector('.property-dashboard > .property-service-kpis');
+    if (!head || !next || !status) return;
+    head.after(next);
+    next.after(status);
+  }
   function bindDetails() {
+    prioritizeAttention();
     document.querySelectorAll('[data-movein-detail]').forEach(button => button.onclick = () => P.moveinService?.open(button.dataset.moveinDetail));
     document.querySelectorAll('[data-property-filter]').forEach(button => button.onclick = () => { filter = button.dataset.propertyFilter; P.go('property-registrations'); });
     document.querySelectorAll('[data-property-intake]').forEach(button => button.onclick = () => intake(button.dataset.propertyIntake));

@@ -26,6 +26,17 @@ UI-tillståndet, inklusive legitimt initierade formulärinställningar. Kontroll
 avgränsades därför till konsekvensbärande domändata: kund-/avtalsunderlag,
 serviceärenden och kickback. Korrigerad CI kvitteras separat.
 
+Korrigerad baslinje-CI [39498227965](https://github.com/ludros93-prog/kraftringen-partnerlabb/actions/runs/39498227965)
+passerade Node/DOM, Chromium och QA gate på HEAD
+`bdefdb8ed3838d06e2dce0f6bf59f46c4910d930`. Baslinjen visar att
+uppmärksamhetsdelen för kompletteringsärendet börjar vid 1 262 px på 1440 px,
+1 601 px på 390 px och 1 709 px på 320 px, efter registreringsval och status.
+Det stödjer ett avgränsat ordningsförslag: ny/tom partner behåller startvägen
+först; partner med kompletteringsbehov får nästa handling och status först.
+Alla befintliga block och arbetsvägar bevaras. Den nya ordningen verifieras även
+med simulerat sparfel utan ändrad domändata. Verklig intuitivitet är fortfarande
+inte belagd.
+
 ## Publicerad v40 · 18 oktober 2026
 
 Mobilfiltren publicerades via
