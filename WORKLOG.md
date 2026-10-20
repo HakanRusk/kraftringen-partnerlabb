@@ -4,6 +4,39 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 20 oktober 2026 · DESIGN-01 baslinjekandidat
+
+Eget oberoende agentarbete från main
+`b09d2c8c6e608bb85f35d80e8ab2c2da53bb2787`. Kandidaten ändrar ingen
+produktfunktion. En ny underhållen Chromiumsekvens samlar före-geometri och
+skärmbilder för fastighetsöversikten i två tillstånd: ny lokal partner utan
+ärenden och `estate2` med fiktivt kompletteringsärende. Den kontrollerar
+320/390/1440 px, sidbredd, tangentbordsöppning och avbrott för både manuell och
+Excel, omladdning samt oförändrad domändata. Ny partner ska ha tom egen ärendelista.
+
+`property-overview-evidence` bevarar skärmbilder och layout-JSON från CI i sju
+dagar. Geometrin är ett kod-/layoutunderlag inför DESIGN-01, inte användarbevis.
+Ingen omordning, backend, verklig data, publicering eller Sites-ändring ingår.
+Fullständigt sparfelstest och eventuellt före/efter-förslag återstår. Lokal
+verifiering: Python-syntax och `git diff --check` passerar; `npm test` passerar
+samtliga 14 Node-/DOM-sviter. Lokal Chromiumkörning blockerades eftersom
+Pythonpaketet Playwright saknas i körmiljön. Faktisk CI kvitteras först efter
+körning. Första CI-körningen identifierade att baslinjen jämförde hela lokala
+UI-tillståndet, inklusive legitimt initierade formulärinställningar. Kontrollen
+avgränsades därför till konsekvensbärande domändata: kund-/avtalsunderlag,
+serviceärenden och kickback. Korrigerad CI kvitteras separat.
+
+Korrigerad baslinje-CI [39498227965](https://github.com/ludros93-prog/kraftringen-partnerlabb/actions/runs/39498227965)
+passerade Node/DOM, Chromium och QA gate på HEAD
+`bdefdb8ed3838d06e2dce0f6bf59f46c4910d930`. Baslinjen visar att
+uppmärksamhetsdelen för kompletteringsärendet börjar vid 1 262 px på 1440 px,
+1 601 px på 390 px och 1 709 px på 320 px, efter registreringsval och status.
+Det stödjer ett avgränsat ordningsförslag: ny/tom partner behåller startvägen
+först; partner med kompletteringsbehov får nästa handling och status först.
+Alla befintliga block och arbetsvägar bevaras. Den nya ordningen verifieras även
+med simulerat sparfel utan ändrad domändata. Verklig intuitivitet är fortfarande
+inte belagd.
+
 ## Publicerad v40 · 18 oktober 2026
 
 Mobilfiltren publicerades via

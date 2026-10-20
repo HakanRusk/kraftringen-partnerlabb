@@ -18,10 +18,11 @@ PARTNERLABB_QA_URL=http://127.0.0.1:8000/ python qa/run-browser.py
 ```
 
 Runnern kör movein-drafts.py, movein-service.py (båda använder property-intake.py)
-samt partner-types.py, crm-identifiers-browser.py, crm-workflow-browser.py och
-report-mobile-browser.py. De provar riktig Excel, bilagor, handläggning, sparfel,
-isolering och nya partnertyper med fiktiva data. Vid CI-fel sparas tillgängliga
-skärmbilder och serverlogg i sju dagar. Det är inte visuell granskning av hela portalen.
+samt partner-types.py, crm-identifiers-browser.py, crm-workflow-browser.py,
+report-mobile-browser.py och property-overview-browser.py. De provar riktig Excel,
+bilagor, handläggning, sparfel, isolering och nya partnertyper med fiktiva data.
+Vid CI-fel sparas tillgängliga skärmbilder och serverlogg i sju dagar. Det är inte
+visuell granskning av hela portalen.
 
 Workflowen kör för varje PR utan path-filter så att en eventuell obligatorisk
 QA gate inte fastnar på dokumentations-PR:er. Båda jobben måste lyckas; misslyckade
@@ -59,3 +60,12 @@ desktopkontroller efter breddbyte. Filterhöjden ska minska minst 250 px mot
 den dokumenterade 410 px-baslinjen; det är ett geometriskt regressionskrav,
 inte en gräns för verklig användarnytta. DOM-fallen ingår i commercial-periods.
 Detta ersätter inte manuell visuell granskning, skärmläsare eller verklig användarrespons.
+
+Fastighetsöversiktens baslinje mäter ordningen och höjden för introduktion,
+registreringsval, status, uppmärksamhetslista och senaste ärenden vid 320, 390 och
+1440 px. Den kör både en ny lokal fastighetspartner utan ärenden och `estate2` med
+ett fiktivt kompletteringsärende. Tangentbord öppnar och avbryter manuell/Excel
+utan registrering; omladdning och domändata kontrolleras. Skärmbilder och
+`property-overview-layout.json` sparas i `property-overview-evidence` i sju dagar.
+Geometrin är underlag inför DESIGN-01, inte bevisad intuitivitet. Fullständigt
+sparfelstest och ett eventuellt före/efter-förslag hör till nästa revision.
