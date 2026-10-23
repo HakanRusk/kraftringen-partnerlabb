@@ -4,6 +4,50 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad i Håkans konto · 23 oktober 2026
+
+[PR #65](https://github.com/HakanRusk/kraftringen-partnerlabb/pull/65) är integrerad.
+Verifierad PR-HEAD: e5151bf17761e7303bc6237ec86215b546ca09c6.
+Publicerad GitHub-main och Sites-källrevision: **dea10e9dc0cab224ca6507b5b2b786efe188cc7c**.
+Träd: cac5a1eaad3dd43f654ad9569d7589c76a3d8dbc, identiskt med grön PR-kandidat.
+
+Ny Site: appgprj_6adb2c876a0c8191b1fa3c755a73f61a.
+Version-ID: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_00cacb06c2b481918f183d4dcc10bdc0.
+Deployment-ID: appgdep_6adb3117d1b481919d32f23aa8bcc9f0.
+Native **succeeded** 2026-10-23T10:04:24.434418+00:00 (12:04 svensk sommartid):
+https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site.
+Privat ägaråtkomst användes; Ludwigs gamla projekt har inte muterats.
+
+[GitHub Actions 39935862892](https://github.com/HakanRusk/kraftringen-partnerlabb/actions/runs/39935862892)
+passerade Node and DOM, Chromium flows och QA gate. Alla 14 Node-/DOM-sviter,
+centrala Excel-/bilage-/inflyttnings-/partnerflöden, CRM inklusive skapa/redigera/
+omladdning och rapportfilter vid **320/390/1440 px** är gröna. Två aktuella
+CI-skärmbilder granskades visuellt (Savera Kunder & avtal 390 px, Face2face
+Insikter 320 px). Detta är testmiljöbelägg, inte fysiska mobiltester eller
+bevis på användarinloggning i den publicerade portalen.
+
+Lokal browser provspelade introduktion och första kapitel och bevarade
+kursklarmarkering efter omladdning. Manifest/ikoner/installationsguide testade;
+verklig installation på användarens enheter återstår. Ny adress kräver ny appikon.
+Gamla lokala framsteg, bilagor och ärenden flyttas inte automatiskt.
+
+Teknisk HTTPS-kontroll efter publicering: samtliga **99 filer** hämtades från
+nya privata Siten med auktoriserad teknisk åtkomst och matchade källfilerna
+byte för byte (SHA-256). Detta omfattar alla fem PDF:er, PowerPoint-filen,
+textningar, manifest, ikoner, HTML, CSS och JavaScript. property-defaults.js
+gav först timeout men passerade ett riktat återförsök. Oinloggad hämtning gav
+HTTP 403. Ingen delningsinställning ändrades. Detta verifierar leverans och
+åtkomstgräns, inte den interaktiva Sites-inloggningen på användarens enhet.
+
+Externa medier: 63 resurser svarade 200; mediernas kontoägande följer inte GitHub.
+Sju publika källänkar kunde inte verifieras (403 från kontrollmiljön).
+Ingen Partnerlabb-agent/schemaläggning eller annan tjänst aktiverades.
+Fullständig redovisning: docs/HANDOVER-2026-10-23.md.
+
+Denna efterhandskvittens ändrar endast dokumentation. dist/, hostingmanifest,
+tester och workflow är oförändrade från den publicerade revisionen. En
+senare dokumentations-main innebär därför inte en ny frontendpublicering.
+
 ## 23 oktober 2026 · Håkans separata övertagande, kandidat
 
 Uttryckligt användaruppdrag från Håkan Rusk: senaste main till ny privat Site,

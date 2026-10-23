@@ -11,10 +11,14 @@ https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
 Sites bekräftar Håkan Rusk som ägare och endast ägaren i åtkomstlistan
 (policyrevision 1). Ludwigs tidigare Site lämnas orörd.
 
-- Exakt publiceringskvittens: WORKLOG.md. Registrerad Site är inte i sig publicerad.
+- Publicerad och native succeeded 23 oktober 2026 kl. 12:04 svensk tid.
+  Källa dea10e9dc0cab224ca6507b5b2b786efe188cc7c, integrerad via PR #65.
+  Exakt version/deployment och verifiering: WORKLOG.md.
+- Alla 99 publicerade filer hämtade via HTTPS och SHA-256-matchade mot källan.
+  Oinloggad hämtning gav 403; interaktiv enhetsinloggning/installering återstår.
 - Detaljer, testbegränsningar och återstående kontosteg: docs/HANDOVER-2026-10-23.md.
-- Baslinje main b09d2c8c6e608bb85f35d80e8ab2c2da53bb2787 hade grön CI
-  39142634577. Nya revisioner kräver egna verifierade resultat.
+- Övertagandets CI 39935862892 passerade Node/DOM, Chromium och QA gate
+  för e5151bf17761e7303bc6237ec86215b546ca09c6. Publicerad main har samma träd.
 - `.github/workflows/quality.yml` kör Node/DOM, Chromium och QA gate. Den är
   aktiv, använder inga secrets och publicerar inte. Automatisk GitHub→Sites-synk finns inte.
 - CODEOWNERS uppdateras till @HakanRusk. Main returnerade protected=false,
