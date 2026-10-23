@@ -10,7 +10,7 @@ fullmaktsbilagor eller fyller i manuellt. Hyresgästen har inga aktiva
 portalsteg. Fråga inte på nytt om direkt hyresgästlänk eller QR.
 Nödvändiga produktionsuppgifter och dokumentkrav återstår däremot.
 
-| ID | Beslut / underlag från Ludwig eller utsedd verksamhetsansvarig | Agentens förberedelse | Öppnar för |
+| ID | Beslut / underlag från Håkan eller utsedd verksamhetsansvarig | Agentens förberedelse | Öppnar för |
 | --- | --- | --- | --- |
 | D-01 | Vilket fastighetsbolag och vilken Kraftringen-handläggare deltar? Lämna ett representativt anonymiserat fall via godkänd kanal. | Sammanhängande fiktivt testscenario och kort observation: var uppstår dubbelarbete, väntan och oklarhet? | Förankrat flöde och verklig användaråterkoppling. |
 | D-02 | Vilka uppgifter och Excelkolumner behövs faktiskt? Vilken godkänd befintlig fullmakt, dokumentkontroll och identifierings-/signeringsprocess gäller? Hur verifieras partnerns uppdrag och hur hanteras saknade eller felaktiga bilagor? | Förbered liten fiktiv Excelmall, manuell motsvarighet, radfel/dubblettkontroll och dokumentkoppling. Skilj bifogad fil, verifierat uppdrag och elhandelsavtal. | Godkänd kravspecifikation, formulär och återkoppling. |

@@ -1,4 +1,4 @@
-# Ludwig granskar Daniels ändringar. GitHubs branch protection behöver
-# kräva kodägarens granskning för att detta ska bli ett tekniskt spärrkrav.
-* @ludros93-prog
-/.github/ @ludros93-prog
+# Håkan granskar externa ändringar enligt AGENTS.md.
+# CODEOWNERS kräver separat grenskydd för att vara en teknisk spärr.
+* @HakanRusk
+/.github/ @HakanRusk

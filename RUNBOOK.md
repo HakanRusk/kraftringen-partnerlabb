@@ -1,10 +1,11 @@
 # Utveckling och publicering
 
-GitHub är huvudkälla: https://github.com/ludros93-prog/kraftringen-partnerlabb.
-Sites-mål: appgprj_6ac600ecf7d48191923687550810c1d4,
-https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+GitHub är huvudkälla: https://github.com/HakanRusk/kraftringen-partnerlabb.
+Sites-mål: appgprj_6adb2c876a0c8191b1fa3c755a73f61a,
+https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site.
 Regler/mandat och särskilt godkännande för Daniels arbete finns i AGENTS.md.
-RUNBOOK-SITES.md är äldre referens, inte aktuell utvecklingsrutin.
+RUNBOOK-SITES.md hänvisar till denna aktuella rutin.
+Övertagandet och verifieringsgränser dokumenteras i docs/HANDOVER-2026-10-23.md.
 
 ## Utvecklingspass
 
@@ -21,15 +22,16 @@ RUNBOOK-SITES.md är äldre referens, inte aktuell utvecklingsrutin.
    öppna PR med problem, ändring, verifiering och kvarstående begränsningar.
    Kontrollera CI på aktuell HEAD; antag inte att workflowfil betyder grön körning.
 
-Schemalagda pass följer samma rutin och rapportering i PILOT-MISSION.md.
+Eventuella framtida schemalagda pass följer denna rutin och PILOT-MISSION.md.
+Ingen Partnerlabb-automation är aktiverad i Håkans konto vid övertagandet.
 Ingen körning ändrar sitt schema eller publicerar vid sidan av samordnaren.
 
 ## Samordnarens integration och publicering
 
 1. Kontrollera aktuella PR-HEAD, nödvändigt användargodkännande enligt AGENTS
    och gröna kontroller. Integrera endast verifierat, auktoriserat arbete i main.
-2. Läs aktuell Sites-skill, metadata, publicering och fjärrkälla. Bevara Site
-   och publik/custom-delning; kontrollera att ingen separat ändring/publicering pågår.
+2. Läs aktuell Sites-skill, metadata, publicering och fjärrkälla. Bevara den nya Site-identiteten
+   och privata ägaråtkomsten; kontrollera att ingen separat ändring/publicering pågår.
 3. Överför verifierad GitHub-main till Sites-källan med bibehållen historik och
    fast-forward. Om Sites har ny oimporterad ändring: ta in via GitHub-gren/PR
    och verifiera innan publicering. Ingen force-push.

@@ -4,6 +4,28 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 23 oktober 2026 · Håkans separata övertagande, kandidat
+
+Uttryckligt användaruppdrag från Håkan Rusk: senaste main till ny privat Site,
+eget projekt-ID/URL, bevara prototyp/material och ersätt aktuella gamla mål.
+GitHub-överföring och HakanRusk-anslutning verifierade. Baslinje
+b09d2c8c6e608bb85f35d80e8ab2c2da53bb2787; PR #64 ingår inte.
+
+Ny Site appgprj_6adb2c876a0c8191b1fa3c755a73f61a är registrerad för Håkan,
+med endast ägaren i åtkomstlistan. Ingen mutation mot Ludwigs Site.
+Aktiva instruktioner/CODEOWNERS pekar på Håkan; historiska original kvar.
+Runtimeändringen är enbart academyUrl till den redan inbyggda Elakademin.
+Design, arbetsflöden, exempeldata och material bevaras.
+
+14 Node-/DOM-sviter passerade. Lokal browser verifierade navigation,
+Academy, två filmstarter och sparad klarmarkering efter omladdning; partner-
+registrering blockerades av HTTP-previewens saknade crypto.randomUUID.
+63 externa medieresurser svarade 200. Sju publika källänkar gav 403 och
+räknas som ej verifierade. Fysisk appinstallation och live-inloggning återstår.
+Detaljer: docs/HANDOVER-2026-10-23.md. Ingen automation eller annan tjänst aktiverad.
+
+Publiceringskvittens och kandidatens CI läggs till efter faktisk körning.
+
 ## Publicerad v40 · 18 oktober 2026
 
 Mobilfiltren publicerades via
