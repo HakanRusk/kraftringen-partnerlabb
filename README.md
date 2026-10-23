@@ -1,8 +1,15 @@
 # Partnerlabb – B2B-prototyp
 
 Kraftringens interna resultatöversikt och arbetsytor för säljpartners,
-fastighetsbolag och personalavtal. [Öppna portalen](https://kraftringen-partnerlabb.rosen123.chatgpt.site).
+fastighetsbolag och personalavtal. [Öppna portalen](https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site).
 Privat Sites-inloggning gäller; källkoden är publik.
+
+Ägare och samordnare: **Håkan Rusk (HakanRusk)**. Huvudkälla:
+[HakanRusk/kraftringen-partnerlabb](https://github.com/HakanRusk/kraftringen-partnerlabb).
+Övertagandet använder en ny, separat privat Site. Endast projekt-ID i
+`.openai/hosting.json` är publiceringsmål; Ludwigs tidigare Site ska inte ändras.
+Verifierad publiceringsstatus och kvarstående kontroller finns i WORKLOG.md
+och GITHUB-STATUS.md. Utvecklingsagent och schemaläggning aktiveras separat.
 
 ## Skapa partner och välj CRM
 
@@ -71,6 +78,13 @@ fullständig backup. Testa inte med verkliga kunduppgifter.
 Dela → Lägg till på hemskärmen. Chrome/Edge kan erbjuda direkt installation.
 Internet och Sites-inloggning behövs. App/webbläsare kan ha separat lokal data;
 installation synkroniserar inget. Ingen service worker/offlinekopia finns.
+
+Den nya webbadressen har egen webbläsarlagring. Exempeldata följer med koden;
+personliga utkast, bilagor, samtalsljud och utbildningsframsteg från den gamla
+adressen flyttas inte automatiskt. En gammal appikon öppnar fortfarande den
+gamla portalen: lägg till appen från den nya adressen. Den inbyggda fullständiga
+Elakademin och lokala materialfiler följer med. Filmer strömmas fortfarande
+från sina befintliga externa medieadresser; ingen ny medietjänst har aktiverats.
 
 ## Kör och testa
 

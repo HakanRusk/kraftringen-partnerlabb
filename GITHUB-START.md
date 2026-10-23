@@ -1,22 +1,21 @@
 # GitHub för Codex och Claude Code
 
-Destination: https://github.com/ludros93-prog/kraftringen-partnerlabb
+Destination: https://github.com/HakanRusk/kraftringen-partnerlabb
 
 Användaren skapade repot och valde uttryckligen att låta det vara publikt
 den 8 oktober 2026. Källkod och hela Git-historiken är uppladdade. GITHUB-STATUS.md
 beskriver det aktiva arbetssättet och verifierade övergångsfakta.
 
-GitHub nekade anslutningen att bjuda in `daniel-smail` med HTTP 403.
-Repoägaren behöver ge Daniel utvecklaråtkomst under Settings → Collaborators.
-Publik läsning innebär inte att Daniel får skicka grenar till repot.
-Hans Sites-visningsåtkomst är separat.
+GitHub-överföringen och HakanRusks läs/skriv/admin-åtkomst är verifierade.
+Medarbetares aktuella åtkomst är separat och har inte ändrats. Se GITHUB-ACCESS.md.
+Sites-visning innebär inte GitHub-skrivåtkomst. Ingen agent har aktiverats här.
 
 ## Börja utveckla
 
 Klona den gemensamma källan:
 
 ```sh
-git clone https://github.com/ludros93-prog/kraftringen-partnerlabb.git
+git clone https://github.com/HakanRusk/kraftringen-partnerlabb.git
 cd kraftringen-partnerlabb
 ```
 
@@ -25,10 +24,10 @@ som Codex: AGENTS.md, MISSION.md, RUNBOOK.md, COLLABORATION.md och arbetsminnet.
 Använd varsitt GitHub-konto och godkänd verktygsanslutning.
 
 Arbeta i egna `claude/`, `codex/` eller `agent/`-grenar och lämna en pull
-request till `main`. Ludwig/Codex samordnar integration och publicering.
+request till `main`. Håkan/Codex samordnar integration och publicering.
 Se COLLABORATION.md och RUNBOOK.md för hela arbetsgången.
 
-Ludwig ska godkänna Daniels konkreta PR och aktuella revision före integration
+Håkan ska godkänna Daniels konkreta PR och aktuella revision före integration
 och publicering. Daniel kan fortsätta utveckla i egen gren medan förslaget
 väntar på godkännande. Se GITHUB-ACCESS.md för åtkomst och GitHubs granskningsregel.
 
@@ -43,13 +42,14 @@ kräver Python Playwright och Chromium enbart för verifieringen.
 
 ## Kod, testdata och publicering
 
-Git-historiken bevaras, så koden kan föras till samma Sites-projekt med
-fast-forward. Ingen automatisk publicering, CI eller gemensam databas
-antas. GitHub Actions-mallen i templates/ är ännu inaktiv.
+Git-historiken bevaras, så koden kan föras till det nya Sites-projektet med
+fast-forward. Ingen automatisk publicering eller gemensam databas finns. Aktiv QA-workflow
+finns i .github/workflows/quality.yml; den kräver inga secrets och publicerar inte.
+Äldre mall i templates/ är inte workflowens aktuella källa.
 
 Testärenden lagras i varje webbläsare. GitHub delar koden, inte lokala
 testärenden. Lägg aldrig tokens, webbläsarexporter eller riktiga
 kunduppgifter i repot och dela inte verktygens credentials med varandra.
 
-Den publicerade testportalen finns fortsatt på
-https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Det nya privata portalens mål är (publiceringskvittens i WORKLOG.md):
+https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site.

@@ -1,35 +1,36 @@
-# Daniel utvecklar, Ludwig godkänner
+# Daniel utvecklar, Håkan godkänner
 
-Användarens beslut: Daniel får utveckla Partnerlabb, men Ludwig måste godkänna
+Efter övertagandet samordnar Håkan utvecklingen. För Daniels arbete ska Håkan godkänna
 hans konkreta ändringar före integration till main och publicering på Sites.
 Arbetsgren och pull request är förslag; de gör ingen ändring live.
 
-## Faktiskt sparat och återstående inställningar
+## Verifierat 23 oktober 2026
 
-- Gemensamma instruktioner och PR-mall kräver uttryckligt godkännande av PR
-  och aktuell HEAD-SHA. Nya kodcommits kräver förnyat godkännande.
-- .github/CODEOWNERS anger @ludros93-prog som kodägare för alla filer, inklusive
-  granskning av ändringar i .github/.
-- Daniel har senast verifierad read-behörighet. Inbjudan med skrivåtkomst
-  nekades med HTTP403. Ingen skickad eller accepterad inbjudan påstås.
-- GitHub-anslutningen nekades att läsa och ändra branch protection med HTTP403.
-  Tekniskt skydd är inte verifierat. Instruktioner och CODEOWNERS ensamma
-  stoppar inte GitHub-pushar; ägaren behöver aktivera granskningsregeln.
-- Sites-projektets custom-åtkomst och publicerad frontend ändras inte.
+- Repoägare och anslutning: HakanRusk, läs/skriv/admin. Repo-ID 1410943706.
+- CODEOWNERS anger @HakanRusk; det är i sig inget tekniskt skydd.
+- GitHubs main-endpoint returnerade protected=false, protection.enabled=false
+  och inga required status checks. Rulesets-listan var tom. Tekniskt grenskydd
+  är alltså inte aktiverat enligt dessa läsningar. Inga inställningar ändrades.
+- Daniels och andra medarbetares aktuella åtkomst har inte verifierats eller
+  ändrats. Historiska 403/inbjudningsförsök säger inte vad som gäller nu.
+- Nya Sites-projektet är privat endast för Håkan. GitHub-källan förblir publik.
+
+Nedanstående steg är förberedda instruktioner, inte ett aktiveringsuppdrag.
+Ge utvecklaråtkomst eller inför grenskydd först efter Håkans beslut.
 
 ## Ge Daniel utvecklaråtkomst
 
 Repoägaren öppnar:
-https://github.com/ludros93-prog/kraftringen-partnerlabb/settings/access
+https://github.com/HakanRusk/kraftringen-partnerlabb/settings/access
 
 Välj Add people, sök daniel-smail och skicka en inbjudan till skrivåtkomst.
 Daniel behöver acceptera inbjudan. Skrivåtkomst ger utveckling i arbetsgrenar
 och PR; godkännandekravet för huvudgrenen hanteras separat nedan.
 
-## Kräv Ludwigs granskning i GitHub
+## Kräv Håkans granskning i GitHub
 
 Öppna repots Settings → Branches:
-https://github.com/ludros93-prog/kraftringen-partnerlabb/settings/branches
+https://github.com/HakanRusk/kraftringen-partnerlabb/settings/branches
 
 Skapa en branch protection-regel för main, eller uppdatera den befintliga
 utan att ta bort andra skydd. Om GitHub visar regler under Rules gäller samma
@@ -43,11 +44,11 @@ granskningskrav för main. Slå på:
 Tillåt inte force push eller radering av main. Bevara övriga befintliga
 kontroller. Inställningen Require approval of the most recent reviewable
 push behövs inte här: återkallade gamla godkännanden och kodägarens granskning
-kräver en aktuell granskning utan att Ludwigs egna korrigeringar kräver en
+kräver en aktuell granskning utan att Håkans egna korrigeringar kräver en
 andra kodägare.
 
 Behåll ägarens möjlighet att integrera egna behöriga ändringar. Agentens PR
-kan vara skapad med Ludwigs konto och GitHub tillåter inte granskning av egen
+kan vara skapad med Håkans konto och GitHub tillåter inte granskning av egen
 PR. För Daniels arbete får varken agenten eller samordnaren använda ägarens
 rättigheter för att ersätta hans uttryckliga godkännande. Kontrollera aktuellt
 godkännande även vid vidarebearbetning på en annan gren.

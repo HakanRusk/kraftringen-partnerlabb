@@ -16,6 +16,10 @@ befintliga data och fungerande flöden; mät faktisk nytta först när användar
 - Öppna verksamhets-/driftbeslut: PILOT-DECISIONS.md.
 - Senaste verifierade leverans: WORKLOG.md.
 
-Ludwig Rosenberg är teamchef för B2B-sälj på Kraftringen Kundcenter sedan juni
+Håkan Rusk (HakanRusk) äger och samordnar projektet från övertagandet
+23 oktober 2026. Nya privata Site-identiteten finns i .openai/hosting.json.
+Ludwigs tidigare Site är inte ett publiceringsmål.
+
+Historisk verksamhetskontext: Ludwig Rosenberg är teamchef för B2B-sälj på Kraftringen Kundcenter sedan juni
 2026. Håkan Rusk är hans chef; ytterligare titel är inte angiven. Äldre beslut
 och kvittenser finns oförändrade i docs/archive/2026-10-14/ och Git-historiken.

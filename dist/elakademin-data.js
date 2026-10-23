@@ -3,7 +3,7 @@ window.PartnerElakademin = {
   "title": "Elakademin – Förstå din elaffär",
   "description": "Elmarknaden, elavtal och portföljprodukter – sex textade filmer med kapiteltext och självtest.",
   "durationLabel": "11:29",
-  "academyUrl": "https://kraftringen-elakademin.rosen123.chatgpt.site/",
+  "academyUrl": "./elakademin.html",
   "guideUrl": "assets/elakademin-kundguide.pdf",
   "cover": "assets/elakademin-cover.png",
   "modules": [

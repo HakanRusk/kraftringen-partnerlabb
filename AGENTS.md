@@ -37,18 +37,25 @@ meddelanden utan uttryckligt uppdrag.
 
 ## Samarbete och publicering
 
-GitHub (ludros93-prog/kraftringen-partnerlabb) är huvudkälla. Arbeta på egen
+GitHub (HakanRusk/kraftringen-partnerlabb) är huvudkälla. Arbeta på egen
 codex/, claude/ eller agent/-gren och lämna PR; ingen direkt push till main
 eller Sites från utvecklingspass. Bevara historik, använd inte force-push.
-Högst två färdiga pilotförslag får samtidigt vänta på granskning. Ludwig/Codex
+Högst två färdiga pilotförslag får samtidigt vänta på granskning. Håkan/Codex
 samordnar integration och publicering från verifierad main enligt RUNBOOK.md.
-Befintlig Sites-identitet och privata custom-delning ska bevaras.
+Aktuellt Sites-mål är `appgprj_6adb2c876a0c8191b1fa3c755a73f61a` med privat ägaråtkomst.
+Publicera aldrig till tidigare ägares Site. Historiska ID:n är endast belägg.
 
-**Daniels ändringar:** Ludwig måste uttryckligen godkänna konkret PR och aktuell
+**Övertagandet 23 oktober 2026:** Håkan har uttryckligen beställt kontroll av
+senaste main, nya publiceringsinställningar och publicering i sin nya privata
+Site. Detta avgränsade arbete får integreras efter verifiering och publiceras
+till det nya målet. Det ger inget mandat att aktivera en agent, ett schema eller
+framtida automatisk publicering. Övriga utvecklingspass följer PR-rutinen.
+
+**Daniels ändringar:** Håkan måste uttryckligen godkänna konkret PR och aktuell
 HEAD-SHA före GitHub-APPROVE, merge eller Sites-publicering. Dokumentera PR,
 SHA och faktiskt godkännande i WORKLOG. Nya commits eller integrationsrättningar
 kräver nytt godkännande. Kravet följer Daniels arbete mellan grenar; teknisk
-användning av Ludwigs konto är inte mänskligt samtycke. Fabricera inga godkännanden
+användning av Håkans konto är inte mänskligt samtycke. Fabricera inga godkännanden
 och kringgå inte skydd. Oberoende, redan auktoriserat agentarbete behåller sitt mandat.
 
 CODEOWNERS är ingen verifierad teknisk spärr utan grenskydd. Faktisk åtkomst-

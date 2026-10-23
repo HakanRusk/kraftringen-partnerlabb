@@ -1,11 +1,11 @@
 # Arbeta tillsammans
 
-GitHub är gemensam kodkälla för Ludwig/Codex och Daniel/Claude Code:
-https://github.com/ludros93-prog/kraftringen-partnerlabb.
+GitHub är gemensam kodkälla för Håkan/Codex och Daniel/Claude Code:
+https://github.com/HakanRusk/kraftringen-partnerlabb.
 
 Använd en egen gren och checkout per uppgift, kontrollera öppna PR:er och lämna
-färdigt arbete som PR. Ludwig/Codex samordnar integration och publicering.
-**Bindande regler, inklusive Ludwigs godkännande av Daniels exakta PR/HEAD,
+färdigt arbete som PR. Håkan/Codex samordnar integration och publicering.
+**Bindande regler, inklusive Håkans godkännande av Daniels exakta PR/HEAD,
 finns i AGENTS.md.** Arbetsgången finns i RUNBOOK.md; teknisk åtkomststatus i
 GITHUB-STATUS.md. Kopiera inte godkännanderegeln hit när den uppdateras.
 
