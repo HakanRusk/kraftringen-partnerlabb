@@ -1,6 +1,9 @@
 # Partnerflöde – förslag 26 oktober 2026
 
-Öppna den ordinarie privata portalen och välj **Prova nya partnerflödet**.
+Öppna den ordinarie privata portalen, välj **Partner · förhandsvisning** och
+Face2face/Savera. Orderstatusrutorna visas direkt utan särskild aktivering.
+Från intern partnerprofil fungerar **Visa ordrar & status** också.
+För att spara en demoidentitet: välj **Prova nya partnerflödet**.
 Välj Face2face eller Savera som demoidentitet. Appen öppnar automatiskt
 **Partner · förhandsvisning** med vald partnerdomän. Valet kan ändras med
 **Byt demoinloggning**. Inga verkliga partners eller åtkomster skapas.

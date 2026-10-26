@@ -39,5 +39,18 @@ const broken=JSON.parse(saved);broken.orderWorkspace={version:1,customers:'unrea
 test('damaged order data is preserved rather than reseeded',()=>{assert.equal(bad.P.orderWorkspace.healthy(),false);assert.equal(bad.P.orderWorkspace.saveCustomer(customer).ok,false);assert.equal(bad.P.state.orderWorkspace.customers,'unreadable');});
 const demo=await boot('https://portal.example/?demo=inflyttning&proposal=orders&workspace=vast',saved);
 test('separate customer demo does not read normal orders',()=>{assert.equal(demo.P.orderWorkspace.orders().some(o=>o.id===oid),false);});
+const standard=await boot('https://portal.example/');
+test('ordinary existing partner selection defaults to status cards without opt-in',()=>{
+ assert.equal(standard.P.role,'internal');assert.equal(standard.doc.querySelector('#ow-login'),null);
+ for(const id of ['syd','vast']){standard.P.previewPartner(id);assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,7);assert.ok(standard.doc.querySelector('#ow-order-list'));}
+ standard.P.returnInternal();standard.P.commercial.selectPartner('syd','partner-detail');
+ standard.doc.querySelector('[data-ow-partner]').click();assert.equal(standard.P.partner,'syd');assert.equal(standard.P.role,'partner');
+ assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,7);
+});
+const direct=await boot('https://portal.example/?workspace=vast');
+test('existing workspace deep link opens orders; explicit legacy URL still restores previous view',()=>{assert.equal(direct.doc.querySelectorAll('[data-ow-status]').length,7);});
+const legacy=await boot('https://portal.example/?proposal=legacy&workspace=vast');
+test('explicit legacy link retains rollback and data',()=>{assert.equal(legacy.doc.querySelectorAll('.partner-start-choice').length,4);});
+standard.dom.window.close();direct.dom.window.close();legacy.dom.window.close();
 for(const ctx of [dom,reload.dom,bad.dom,demo.dom])ctx.window.close();
 console.log(`${checks} order proposal checks passed.`);

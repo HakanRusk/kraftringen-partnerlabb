@@ -13,8 +13,9 @@ och GITHUB-STATUS.md. Utvecklingsagent och schemaläggning aktiveras separat.
 
 ## Nytt orderförslag att prova
 
-Välj **Prova nya partnerflödet** i demobandet. Välj partneridentitet så öppnas
-partnerns orderöversikt med statusrutor, år/månad/vecka, kunder, flera anläggningar
+Välj **Partner · förhandsvisning** och partner (t.ex. Face2face eller Savera),
+så öppnas orderöversikten direkt. Från intern partnerprofil: **Visa ordrar & status**.
+**Prova nya partnerflödet** väljer också demoidentitet. Översikten visas med statusrutor, år/månad/vecka, kunder, flera anläggningar
 per order och illustrativ provisionsstatistik. **Återgå till tidigare vy**
 bevarar alla testdata. [Testväg, begränsningar och full återgång](docs/ORDER-PROPOSAL.md).
 Detta är lokal demoinloggning, inte nya partnerbehörigheter. Exempelregler för

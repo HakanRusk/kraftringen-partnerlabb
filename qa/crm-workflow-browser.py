@@ -59,6 +59,7 @@ async def main():
                 await expect(page.locator('#view')).to_be_focused()
                 assert await page.locator('#view').evaluate('el => getComputedStyle(el).outlineStyle') == 'none'
                 await page.locator('#partner').select_option(partner_id)
+                await page.evaluate("window.Portal.go('crm')")
                 await expect(page.locator('.crm-tabs')).to_have_count(0)
                 headings = page.locator('.crm-page > .card > h2, .crm-page > .card > .panel-heading h2')
                 assert await headings.first.evaluate('el => getComputedStyle(el).textTransform') == 'none'
@@ -88,7 +89,7 @@ async def main():
                     const P=window.Portal;
                     P.crm.save({name:'Annan fiktiv kund',segment:'consumer',stage:'lead',nextAction:'Stäm av',nextDate:'2026-10-16',annualConsumptionKwh:'1000',contractEndDate:'2026-11-01'});
                     P.crm.save({name:'Utan förbrukning',segment:'business',stage:'lead',nextAction:'Ring',nextDate:'2026-10-23'});
-                    P.go('overview');
+                    P.go('crm');
                 }''')
                 await expect(page.locator('#crm-upcoming .crm-activity')).to_have_count(2)
                 assert await page.locator('#crm-expiring .crm-due').all_text_contents() == ['1 nov.', '31 jan. 2027']
