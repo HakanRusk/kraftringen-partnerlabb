@@ -250,8 +250,22 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
   aktiv/startbortfall; aktiv till bortfall efter start. Ingen datumstyrd automation.
   Verkliga partners ska inte själva godkänna ordrar. Inga avtal skickas.
 - Perioden baseras på registreringsdatum, utkast på skapandedatum. ISO-veckor
-  måndag–söndag med veckoår. Statusrutorna är ömsesidigt uteslutande och summerar
-  till periodens alla ordrar; detaljlistan har separat status- och sökfilter.
+  måndag–söndag med veckoår. Flödet visar kumulativt hur många som nått
+  registrerad → godkänd → bekräftad → väntar på avtalsstart → aktivt avtal.
+  Stegen ska inte summeras. Senare kända steg räknas även till tidigare steg,
+  utan att datum fabriceras. Just nu och bortfall filtrerar aktuell status;
+  dessa tio exakta statusar är ömsesidigt uteslutande. Historiska perioder visar
+  dagens läge för periodens registrerade ordrar, inte ett rekonstruerat månadsslut.
+- Ordrar & resultat ersätter tre överlappande ingångar. Provision är separat
+  för ersättning/avräkning. Äldre rapportdata nås från utfälld resultatutveckling
+  och blandas inte med den nya orderstatistiken. order-list-länkar fungerar fortsatt.
+- Orderklick visar strukturerad statushistorik med datum (och tid när sparad).
+  Endast uttryckliga datum visas; saknade äldre statusdatum markeras. Nya
+  statusbyten loggas i statusHistory och sparfel återställer mutationen.
+- Exempelpaket flow2026 lägger till 90 fiktiva Face2face-ordrar additivt och
+  endast en gång: 30 godkända per månad juli–september med senare bekräftelser.
+  Separat provisionsurval ger juli 36 000, augusti 36 000, september 40 500 och
+  oktober 4 500 kr. Gamla ordrar ändras inte; normalyta och kunddemo hålls isär.
 - Face2faces modell är bekräftad av Håkan: 1 500 kr per avtal, garanterat
   förskott 80 % av varje godkännandemånads avtal. Bekräftelser räknas mot
   ursprunglig godkännandemånad även när de kommer senare. Månadens nya tillägg

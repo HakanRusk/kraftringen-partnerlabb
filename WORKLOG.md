@@ -4,6 +4,19 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Kompakt orderflöde och gemensam resultatvy · 26 oktober 2026
+
+Eget auktoriserat arbete på codex/compact-order-flow från main 3e20264.
+Ordrar & resultat samlar tidigare överlappande ingångar; Provision har eget
+syfte. Kumulativt klickbart flöde med separata aktuella statusar/bortfall,
+statusdefinitioner, daterad orderhistorik och 90 additiva Face2face-exempel.
+Äldre rapporter och sparade ordrar bevaras. Inga tjänster eller betalningar aktiveras.
+
+Lokalt passerar 16 Node-/DOM-sviter, inklusive 28 orderfall. Kontroller omfattar
+monotont flöde, filter, kronologi, sena provisionstillägg och idempotent migration.
+Desktopvyn har granskats i Chromium. Utökad Chromium-CI för 320/390/1440 px
+körs på PR före integration. Publicering kvitteras separat när den lyckats.
+
 ## Publicerad provisionsöversikt · 26 oktober 2026
 
 PR #71 integrerad efter grön CI 40316314457 för HEAD
