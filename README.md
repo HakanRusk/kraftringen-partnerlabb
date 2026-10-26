@@ -11,6 +11,15 @@ Privat Sites-inloggning gäller; källkoden är publik.
 Verifierad publiceringsstatus och kvarstående kontroller finns i WORKLOG.md
 och GITHUB-STATUS.md. Utvecklingsagent och schemaläggning aktiveras separat.
 
+## Nytt orderförslag att prova
+
+Välj **Prova nya partnerflödet** i demobandet. Välj partneridentitet så öppnas
+partnerns orderöversikt med statusrutor, år/månad/vecka, kunder, flera anläggningar
+per order och illustrativ provisionsstatistik. **Återgå till tidigare vy**
+bevarar alla testdata. [Testväg, begränsningar och full återgång](docs/ORDER-PROPOSAL.md).
+Detta är lokal demoinloggning, inte nya partnerbehörigheter. Exempelregler för
+provision är uttryckligen påhittade; verkliga regler återstår.
+
 ## Skapa partner och välj CRM
 
 I Kraftringens interna demovy: **Partners → Ny partner**. Välj partnertyp;
@@ -101,7 +110,7 @@ npm ci
 npm test
 ```
 
-14 underhållna Node-/DOM-sviter plus JavaScript-syntaxkontroll. Browsermiljö och
+15 underhållna Node-/DOM-sviter plus JavaScript-syntaxkontroll. Browsermiljö och
 kommandon: [qa/README.md](qa/README.md). GitHub Actions kör Node/DOM och centrala
 Chromiumflöden på PR, push till main och manuell start. **QA gate** kräver båda
 jobben. Workflowen använder inga secrets och publicerar inte. Grenskydd måste

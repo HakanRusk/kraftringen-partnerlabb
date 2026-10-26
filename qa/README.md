@@ -59,3 +59,10 @@ desktopkontroller efter breddbyte. Filterhöjden ska minska minst 250 px mot
 den dokumenterade 410 px-baslinjen; det är ett geometriskt regressionskrav,
 inte en gräns för verklig användarnytta. DOM-fallen ingår i commercial-periods.
 Detta ersätter inte manuell visuell granskning, skärmläsare eller verklig användarrespons.
+
+Orderförslaget: `qa/partner-orders.mjs` provar kohortdatum/ISO-årsskifte,
+statusflöde, kundfält, segment, flera anläggningar, månadsprofil, partnerisolering,
+sparfel/flikkonflikt, omladdning, skadad data och återgång. Chromiumsekvensen
+`partner-orders-browser.py` provar demoinloggning, skapa/registrera/bekräfta,
+periodfilter, partnerbyte, formulärbredd och återgång vid 320/390/1440 px.
+Skärmbilder med prefix report-orders ingår i befintlig CI-artefakt.

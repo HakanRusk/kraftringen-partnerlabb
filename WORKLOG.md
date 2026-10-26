@@ -4,6 +4,20 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 26 oktober 2026 · Återställningsbart orderförslag, kandidat
+
+Håkans direkta nio-punktsuppdrag; eget Codex-arbete från main
+`e10aa76b1d7ca0fa9583c497b1a7ceecf810009f`, gren
+`codex/partner-orders-proposal-20261026`. Öppen PR #64 är separat och ingår inte.
+Ny valbar orderarbetsyta, demoinloggning, period/status-lista, orderkundregister,
+flera anläggningar, produktstyrd profil och illustrativ partnerspecifik provision.
+Tidigare vy kan väljas utan dataradering. P-10 definierar antaganden och gränser.
+
+Lokal verifiering: 15 Node-/DOM-sviter passerar, inklusive 16 nya orderscenarier.
+Desktoppreview visar rätt Face2face-domän och orderstart efter demoinloggning.
+Full Chromiumkontroll och publicering kvitteras först efter faktisk körning.
+Ingen riktig inloggning, delning, backend, verkliga villkor eller integration aktiverad.
+
 ## Publicerad i Håkans konto · 23 oktober 2026
 
 [PR #65](https://github.com/HakanRusk/kraftringen-partnerlabb/pull/65) är integrerad.
