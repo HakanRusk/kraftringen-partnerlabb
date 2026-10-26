@@ -1,7 +1,7 @@
 # Partnerflöde – förslag 26 oktober 2026
 
 Öppna den ordinarie privata portalen, välj **Partner · förhandsvisning** och
-Face2face/Savera. Orderstatusrutorna visas direkt utan särskild aktivering.
+Face2face/Savera. Ordrar & resultat visas direkt utan särskild aktivering.
 Från intern partnerprofil fungerar **Visa ordrar & status** också.
 För att spara en demoidentitet: välj **Prova nya partnerflödet**.
 Välj Face2face eller Savera som demoidentitet. Appen öppnar automatiskt
@@ -11,15 +11,19 @@ Välj Face2face eller Savera som demoidentitet. Appen öppnar automatiskt
 ## Prova de nio önskemålen
 
 1. Välj Face2face i demoinloggningen och kontrollera partnerfältet.
-2. Startsidan visar samtliga tio statusar och en total. Exempelordrar finns i
-   september/oktober 2026; välj dessa perioder om dagens månad är en annan.
+2. Startsidan samlar orderflöde, resultat och lista. Välj år 2026 för att se
+   alla exempel, eller juli–oktober för olika månadsgrupper.
 3. Växla År/Månad/Vecka, välj period. Vecka är ISO-vecka och veckoår.
-4. Klicka en statusruta: listan får samma period och vald status. Byt status
-   i listan eller sök kund/produkt/order-ID.
+4. Klicka ett flödessteg för alla som nått det, eller **just nu** för aktuell
+   status. Bortfall är separata filter. Stegen är kumulativa och ska inte
+   summeras. Klicka på en order för statusdatum; äldre saknade datum markeras.
+   Resultatutveckling och äldre rapporter finns i en utfällbar sektion.
 5. Öppna Face2faces Provision: välj månad och kontrollera godkända, bekräftade
    och berättigad provision. Öppna Så här har vi räknat för gruppavräkning.
    Räkneexemplet januari–april visar 120 000 / 60 000 / 15 000 / 7 500 kr.
-   Växeln ändrar inga orderdata. Savera har fortfarande illustrativa villkor.
+   Välj **90 nya Face2face-exempel** för månadsutfallen juli 36 000, augusti
+   36 000, september 40 500 och oktober 4 500 kr. Dessa ordrar läggs till en
+   gång utan att ändra tidigare sparade ordrar. Savera har illustrativa villkor.
 6. **Ny kund** och **Ny order** finns på startsidan och de nya arbetsvyerna.
 7. Skapa en fiktiv kund; öppna Kunder för att komplettera samtliga kontaktfält.
 8. Skapa order och välj kundtyp: privatperson, företag eller enskild firma.
@@ -48,7 +52,8 @@ Sites-ID: appgprj_6adb2c876a0c8191b1fa3c755a73f61a. Ingen återgång riktas mot 
 ## Gränser
 
 Prototyp med lokal lagring. Riktig partnerinloggning och serverbehörighet,
-verkliga provisionsregler och avtalshantering ingår inte. Nya ordrar är ett
+verkliga avtal, fakturor och betalningar ingår inte. Face2faces beräkningsmodell
+är bekräftad av Håkan men underlaget är fortfarande fiktiva exempel. Nya ordrar är ett
 separat underlag; äldre resultat/CRM läggs inte automatiskt ihop med dem.
 Exporten tar med sparade orderkunder/ordrar per demovy men är ingen komplett
 backup av bilagor/ljud. Gamla sparade uppgifter bevaras.
@@ -58,3 +63,7 @@ Produktdefinitioner/antaganden finns samlat i DECISIONS.md P-10.
 Nya statusar efter Bekräftad: Väntar på avtalsstart, Bortfall före start,
 Aktivt avtal, Bortfall efter start. Äldre sparade ordrar får inga automatiska
 statusändringar; nya rutor kan därför visa 0. Simulera i orderns detaljer.
+
+Kompakt ordervy publicerad som version 5 via PR #73. Föregående version är 4.
+För återgång av just denna ändring används revert av PR #73 och ny publicering.
+Sparade exempelordrar och historik raderas inte av kodåtergång.
