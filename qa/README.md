@@ -66,3 +66,7 @@ sparfel/flikkonflikt, omladdning, skadad data och återgång. Chromiumsekvensen
 `partner-orders-browser.py` provar demoinloggning, skapa/registrera/bekräfta,
 periodfilter, partnerbyte, formulärbredd och återgång vid 320/390/1440 px.
 Skärmbilder med prefix report-orders ingår i befintlig CI-artefakt.
+
+Face2face: `node qa/partner-commission.mjs` kontrollerar den bekräftade
+80 %-förskottsmodellen per godkännandemånad, sena bekräftelser och månadsdelta.
+Chromiumflödet öppnar Så här har vi räknat och april-räkneexemplet.

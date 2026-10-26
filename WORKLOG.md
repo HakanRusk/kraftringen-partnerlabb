@@ -4,6 +4,32 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Lokal kandidat · provisionsöversikt och orderflöde · 26 oktober 2026
+
+Arbetsgren codex/order-lifecycle-navigation från main
+55f9de57ae627aa72da14f5329884fe8f727a818. Ingen ny GitHub-PR, merge eller
+Sites-publicering har gjorts: create_branch returnerade user rejected MCP tool call.
+Den nekade grenskapningen har inte upprepats eller kringgåtts.
+
+Håkans bekräftade Face2face-modell visualiseras i tre primära kort: månadens
+nya godkännanden, nya bekräftelser oavsett godkännandemånad och berättigad
+provision. Så här har vi räknat innehåller gruppavräkning, månadsutfall,
+order-ID och ett separat januari–april-exempel. Godkännande-/bekräftelsedatum
+sparas uttryckligen för nya händelser; gamla datum fabriceras inte.
+
+Kandidaten omfattar också tidigare begärda fyra livscykelstatusar, gemensam
+områdesnavigation, kundtyp/produktval och årsvolym/avtalstid. Sparade data
+bevaras. Övriga beställda tillägg (PDF-bilagor, dokumentmallar/prislistor,
+fakturaunderlag med betalningsstatus, meddelanden och radering av utkast)
+är inte implementerade eller publicerade i denna kandidat.
+
+Verifiering: 16 Node-/DOM-sviter passerade, inklusive 24 orderfall och fem
+provisionsgrupper: sena bekräftelser, korrekt månad, 80 %-golv, ingen dubbel
+ersättning, saknade datum och bevarad historik. Syntax/diff/Python-kompilering
+passerade. Lokal Chromium visade de tre korten, aprilutfallet 7 500 kr och
+korrekta januari–april-detaljer; Avtalsfakta behåller områdesväljaren.
+Utökad Chromium-CI för 320/390/1440 är förberedd men ännu inte körd.
+
 ## Publicerad rättning för befintliga partners · 26 oktober 2026
 
 PR #69 integrerad; verifierad HEAD bcb2c587dec2d10c582c6e49007c6319cef466da.
