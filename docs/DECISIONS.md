@@ -224,3 +224,48 @@ Normal-/demoisolering och sparfel skyddar lokal användning. App på hemskärmen
 använder samma manifest och vanlig portalrot utan partner-/demoparametrar.
 Internet och befintlig inloggning behövs; ingen service worker/offlinesynk finns.
 Appen och webbläsaren kan ha separat data. Installerad app ger ingen synkronisering.
+
+## P-10 · Återställningsbart orderförslag · 26 oktober 2026
+
+Källa: Håkans direkta nio-punktsuppdrag. Ny säljpartnerstart med orderstatus,
+perioder, kund/orderregistrering och partnerspecifik provisionsstatistik.
+Förslaget aktiveras med **Prova nya partnerflödet** eller `?proposal=orders`.
+**Återgå till tidigare vy** stänger av förslaget utan att radera data. Tidigare
+arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
+
+- Demoidentiteten väljer partnerdomän och startvy, sparas lokalt och återanvänds
+  när förslaget är aktivt. URL:ens uttryckliga workspace har företräde. Detta är
+  inte autentisering/behörighet; riktig koppling mellan inloggad person och
+  partnerorganisation kräver separat backend-/identitetsarbete. Sites-åtkomst oförändrad.
+- Statusar är Utkast, Registrerad, Godkänd, Ej godkänd, Ångrad, Bekräftad.
+  Registrerade ordrar går till godkänd/ej godkänd/ångrad, godkända till bekräftad
+  eller ångrad; bekräftad/ej godkänd kan ångras. Statusbyte är uttrycklig demosimulering.
+  Verkliga partners ska inte själva godkänna ordrar. Inga avtal skickas.
+- Perioden baseras på registreringsdatum, utkast på skapandedatum. ISO-veckor
+  måndag–söndag med veckoår. Statusrutorna är ömsesidigt uteslutande och summerar
+  till periodens alla ordrar; detaljlistan har separat status- och sökfilter.
+- Provisionsvyn räknar nu godkända inklusive bekräftade respektive bekräftade i
+  registreringskohorten, inte händelser under bekräftelsemånaden. Ingen historisk
+  bokslutsbild. Ångrade/ej godkända ger inget exempelbelopp. Illustrativa, ej avtalade
+  regler: Face2face 250 kr/bekräftad order; Savera 30 kr/uppskattad års-MWh på
+  bekräftade ordrar. Annan partner visar saknat regelunderlag och inget belopp.
+- Kundens typ är Företag, Enskild firma eller Privatperson; kundnamn, nummer,
+  post-/besöksadress, e-post och telefon. Namn/typ krävs; övriga kan kompletteras.
+  Privatperson kopplas till Elhandel privat, övriga till Elhandel företag.
+- Orderkatalogen i detta förslag ersätter P-07 för **ny orderinmatning**:
+  privat: Rörligt månadspris, Rörligt kvartspris, Kraftringen Opti.
+  företag: Rörligt månadspris, Rörligt kvartspris, Individuell indexportfölj,
+  Kraftringen Stabil, Kraftringen Direkt, Poolportfölj – offensiv, Poolportfölj – trygg.
+  Äldre utbildnings-/produktmaterial och historiska produktnamn skrivs inte om.
+- Order har flera anläggningar med text-ID (18 siffror), uppskattad års-kWh och
+  elområde; företag har dessutom nätområdeskod (3 bokstäver) och bindningstid i
+  månader. Förslagets 0–120 månader är formulärgräns, inte ett produktvillkor.
+  Individuell indexportfölj/Stabil/Direkt kräver tolv månaders kWh-profil per
+  anläggning med summa lika års-kWh. Profilen avser januari–december i ett normalår.
+  Önskat startdatum är ordergemensamt. Inga register- eller villkorskontroller.
+- Additiv `state.orderWorkspace` med version, kunder, ordrar och statushistorik.
+  Befintlig CRM/resultatdata migreras inte till orderstatus utan ett beslutat samband.
+  Nya kunder här är orderkunder, inte automatiskt nya CRM-affärer. Sparfel/flikkonflikt
+  återställer mutation. Normal-/inflyttningsdemoisolering och JSON-export bevaras.
+
+Testinstruktion och återställning: [ORDER-PROPOSAL.md](ORDER-PROPOSAL.md).
