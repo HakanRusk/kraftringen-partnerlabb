@@ -4,6 +4,24 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad provisionsöversikt · 26 oktober 2026
+
+PR #71 integrerad efter grön CI 40316314457 för HEAD
+0c8c6ae2a4ec58aebc76f715c8d0631063b8c4e4. Publicerad main
+8852ebddc4e9f63b3c6056d15bf40ad522d94dfa har samma verifierade träd
+12867bc2de014cd5d708c93d8001ff2dfc136ea4.
+16 Node-/DOM-sviter och hela Chromium-paketet passerar. Nya order- och
+provisionsflöden samt navigation verifierade vid 320/390/1440 px.
+
+Native succeeded 2026-10-26T11:40:19.841652+00:00, kl. 12:40 svensk normaltid.
+Privat URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_70ae1d2e5900819186c6093da5410704
+Deployment: appgdep_6adf3c14bf9c8191880c580b3b4f80a1
+Ägaråtkomst och env revision 0 bevarade. Inga fakturor eller betalningar skapas.
+Tidigare versioner och Git-historik finns kvar för återgång. Ingen publicering
+har gjorts till Ludwigs projekt. Denna kvittens ändrar bara dokumentation;
+dist/ är oförändrad och ingen ytterligare deployment behövs.
+
 ## Godkänd GitHub-uppdatering · 26 oktober 2026
 
 Håkan gav klartecken att åter försöka skapa arbetsgrenen och därefter publicera
