@@ -4,6 +4,39 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad v2 i Håkans Site · 26 oktober 2026
+
+PR #67 integrerad efter gröna kontroller för HEAD
+`6edffe56deb1db6849fd3942d4cc42b6979fa1e8`. Main/publicerad källa:
+`d794db7d5cf40374a80c5a92c4d23150908bb223`; testat och publicerat träd
+`ad57b1f77b9f40121ed5d755ba2920bbaa699ff1`.
+
+Sites version 2, owner-private, native **succeeded** 26 oktober 2026 kl. 09:11
+svensk normaltid (2026-10-26T08:11:38.027573+00:00).
+URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_49b0d3f958cc81919943538516e96b81
+Deployment: appgdep_6adf0b2df66081918610b2427f895053
+Env revision 0. Privat ägaråtkomst bevarad; Ludwigs Site är orörd.
+
+[GitHub Actions 40289903555](https://github.com/HakanRusk/kraftringen-partnerlabb/actions/runs/40289903555)
+passerade Node and DOM, Chromium flows och QA gate. 15 Node-/DOM-sviter,
+inklusive 16 nya orderfall. Ny Chromiumsekvens passerade vid 1440, 390 och
+320 px: demoinloggning, period/status, kundskapande, flera anläggningar,
+registrering/godkänd/bekräftad, omladdning, partnerbyte, produktstyrd årsprofil
+samt återgång till tidigare vy. Befintliga browserflöden passerade också.
+CI-artefakt 12635526444 innehåller nio nya orderbilder; startsida 390 px och
+företagsdialog 320 px granskade visuellt. Lokal preview verifierade dessutom
+återinträde från portalroten med sparad Face2face-demoidentitet.
+
+Ingen riktig partnerautentisering, faktisk provisionsregel, registerkontroll,
+avtalssändning eller enhetsinstallation har införts/verifierats. Ny portalvy är
+valbar via Prova nya partnerflödet. Återgå till tidigare vy bevarar data.
+Full kodåtergång: revert-PR och ny publicering; föregående Sites version 1
+verifierades finnas kvar. Instruktioner: docs/ORDER-PROPOSAL.md.
+
+Denna kvittens ändrar bara WORKLOG och GITHUB-STATUS. App, tester och manifest
+är oförändrade från publicerad v2; dokumentationsrevisionen behöver ingen ny deployment.
+
 ## 26 oktober 2026 · Återställningsbart orderförslag, kandidat
 
 Håkans direkta nio-punktsuppdrag; eget Codex-arbete från main
