@@ -229,7 +229,12 @@ Appen och webbläsaren kan ha separat data. Installerad app ger ingen synkronise
 
 Källa: Håkans direkta nio-punktsuppdrag. Ny säljpartnerstart med orderstatus,
 perioder, kund/orderregistrering och partnerspecifik provisionsstatistik.
-Förslaget aktiveras med **Prova nya partnerflödet** eller `?proposal=orders`.
+Korrigering efter Håkans återkoppling 26 oktober: orderöversikten är standard
+för säljpartners även via befintliga partnerval och workspace-länkar, utan opt-in.
+Intern partnerprofil har **Visa ordrar & status**. Portal-CRM nås via **CRM-översikt**.
+**Prova nya partnerflödet** väljer demoidentitet eller återaktiverar efter återgång.
+Ett uttryckligt sparat av-val eller `?proposal=legacy` respekteras; vanlig intern
+portalrot öppnar ingen demoinloggningsdialog om ingen identitet är vald.
 **Återgå till tidigare vy** stänger av förslaget utan att radera data. Tidigare
 arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
 

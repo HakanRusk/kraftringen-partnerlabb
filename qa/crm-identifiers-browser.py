@@ -22,7 +22,7 @@ async def main():
                 await page.evaluate('''() => {
                     const P=window.Portal;
                     const id=P.partnerSetup.saveProfile({name:'Fiktiv CRM-testpartner',salesAudiences:['business','consumer'],crmMode:'portal'}).id;
-                    P.previewPartner(id);
+                    P.previewPartner(id); P.go('crm');
                 }''')
                 await page.locator('[data-crm-new]').first.click()
                 form = page.locator('#crm-customer-form')

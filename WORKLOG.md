@@ -4,6 +4,19 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## 26 oktober 2026 · Statusrutor på befintliga partners
+
+Håkan rapporterade att statusrutorna saknades på befintliga partners. Orsak:
+orderförslaget krävde separat opt-in och vanlig partnerförhandsvisning behöll
+äldre startsida. Eget arbete från main 1a6fa236caf75c0c20016667398dc244b697c139;
+PR #64 är separat. Orderstart är nu standard utan opt-in för säljpartners.
+Intern partnerprofil får Visa ordrar & status; CRM behåller egen ingång.
+Uttrycklig återgång respekteras. Intern startsida öppnar ingen oombedd demodialog.
+Regressioner provar vanliga roll-/partnerval, direkt workspace-länk, intern
+partnerprofil, omladdning och återgång. Inga domändata eller behörigheter migreras.
+Lokalt passerar 15 Node-/DOM-sviter, inklusive 19 orderscenarier.
+Chromium och lyckad publicering kvitteras efter faktisk kontroll.
+
 ## Publicerad v2 i Håkans Site · 26 oktober 2026
 
 PR #67 integrerad efter gröna kontroller för HEAD

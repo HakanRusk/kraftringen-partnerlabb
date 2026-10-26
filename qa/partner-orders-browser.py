@@ -17,9 +17,11 @@ async def main():
             page.on('pageerror',lambda error: errors.append(str(error)))
             page.on('dialog',lambda dialog: dialog.accept())
             try:
-                await page.goto(BASE+'?proposal=orders')
-                await page.locator('#ow-login select').select_option('vast')
-                await page.get_by_role('button',name='Öppna partnerns startsida').click()
+                # Ordinary existing-partner entry: no opt-in URL or stored preference.
+                await page.goto(BASE)
+                await expect(page.locator('#ow-login')).to_have_count(0)
+                await page.locator('#role').select_option('partner')
+                await page.locator('#partner').select_option('vast')
                 await expect(page.locator('#role')).to_have_value('partner')
                 await expect(page.locator('#partner')).to_have_value('vast')
                 await expect(page.locator('.ow-head h1')).to_have_text('Din orderöversikt')
@@ -93,8 +95,13 @@ async def main():
                 await form.locator('[data-ow-cancel]').click()
                 await page.locator('[data-ow-legacy]').click()
                 await expect(page.locator('.partner-start-choice')).to_have_count(4)
-                await page.goto(BASE)
+                await page.goto(BASE+'?partner=syd#partner-sales')
                 await expect(page.locator('#role')).to_have_value('internal')
+                await page.get_by_role('button',name='Visa ordrar & status',exact=True).click()
+                await expect(page.locator('#partner')).to_have_value('syd')
+                await expect(page.locator('[data-ow-status]')).to_have_count(7)
+                await page.reload()
+                await expect(page.locator('[data-ow-status]')).to_have_count(7)
                 assert not errors, errors
                 print(f'PASS order proposal at {width}px: login, cohort, create, multi-site, confirm, reload, partner, profile, rollback',flush=True)
             except Exception:

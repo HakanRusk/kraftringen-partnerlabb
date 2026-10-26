@@ -20,8 +20,9 @@
   const date = value => dateOK(value) ? new Intl.DateTimeFormat('sv-SE',{dateStyle:'medium',timeZone:'UTC'}).format(new Date(value)) : '—';
   const sales = id => ['sales','field'].includes(P.getPartner(id)?.type);
   const inScope = id => P.role === 'partner' && sales(P.partner) && id === P.partner;
-  let enabled = new URLSearchParams(location.search).get('proposal') === 'orders';
-  try { if (!new URLSearchParams(location.search).has('proposal')) enabled = localStorage.getItem('partnerlabb.orders.enabled') === 'true'; } catch {}
+  // Default to orders for ordinary partner links; only an explicit rollback opts out.
+  let enabled = new URLSearchParams(location.search).get('proposal') !== 'legacy';
+  try { if (!new URLSearchParams(location.search).has('proposal')) enabled = localStorage.getItem('partnerlabb.orders.enabled') !== 'false'; } catch {}
   const filters = new Map();
   function filter() { if (!filters.has(P.partner)) filters.set(P.partner,{mode:'month',year:today().slice(0,4),month:today().slice(5,7),week:isoWeek(today()).slice(6),status:'all',query:''}); return filters.get(P.partner); }
   function isoWeek(day) { const d = new Date(day+'T12:00:00Z'); d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7)); const year=d.getUTCFullYear(); const start=new Date(Date.UTC(year,0,1)); return `${year}-W${String(Math.ceil((((d-start)/86400000)+1)/7)).padStart(2,'0')}`; }
@@ -174,12 +175,15 @@
   P.register('order-customers',{render:()=>inScope(P.partner)?renderCustomers():'<p>Öppna en säljpartners demovy.</p>',bind});
   P.register('order-commission',{render:()=>inScope(P.partner)?renderCommission():'<p>Öppna en säljpartners demovy.</p>',bind});
   const previousAfter=P.afterRender;
-  P.afterRender=()=>{previousAfter?.();if(!document.querySelector('[data-ow-entry]')){const button=document.createElement('button');button.className='text-button';button.dataset.owEntry='';button.textContent='Prova nya partnerflödet';document.querySelector('.demo-banner')?.append(button);}if(!enabled||!inScope(P.partner))return;
+  P.afterRender=()=>{previousAfter?.();if(!document.querySelector('[data-ow-entry]')){const button=document.createElement('button');button.className='text-button';button.dataset.owEntry='';button.textContent='Prova nya partnerflödet';document.querySelector('.demo-banner')?.append(button);}if(P.role==='internal'&&['partner-detail','partner-sales','partner-insights'].includes(P.page)&&sales(P.selectedPartnerId)){const button=document.createElement('button');button.className='btn btn-primary';button.dataset.owPartner=P.selectedPartnerId;button.textContent='Visa ordrar & status';document.querySelector('.commercial-head, .sr-heading')?.append(button);}
+    if(!enabled||!inScope(P.partner))return;
     const nav=document.querySelector('#nav');const links=[['overview','Start','home'],['order-list','Ordrar','file'],['order-customers','Kunder','users'],['order-commission','Provision','money']];
+    if(P.getPartner()?.crmMode==='portal')links.push(['crm','CRM-översikt','users']);
     nav.innerHTML=links.map(([id,label,icon])=>`<button class="nav-button ${P.page===id?'active':''}" data-go="${id}" aria-current="${P.page===id?'page':'false'}">${P.icon(icon)}<span>${label}</span></button>`).join('')+nav.innerHTML.replace(/<button\b[^>]*data-go="(?:overview|commission)"[\s\S]*?<\/button>/g,'');
   };
   document.addEventListener('click',ev=>{
-    const b=ev.target.closest('[data-ow-entry],[data-ow-login],[data-ow-legacy],[data-ow-customer],[data-ow-order],[data-ow-cancel],[data-ow-status],[data-ow-open],[data-ow-transition]');if(!b)return;
+    const b=ev.target.closest('[data-ow-partner],[data-ow-entry],[data-ow-login],[data-ow-legacy],[data-ow-customer],[data-ow-order],[data-ow-cancel],[data-ow-status],[data-ow-open],[data-ow-transition]');if(!b)return;
+    if(b.hasAttribute('data-ow-partner')){if(sales(b.dataset.owPartner)){enable(true);P.previewPartner(b.dataset.owPartner);}return;}
     if(b.hasAttribute('data-ow-entry')||b.hasAttribute('data-ow-login'))return login();
     if(b.hasAttribute('data-ow-legacy')){enable(false);P.go('overview');P.toast('Tidigare vy återställd. Dina testordrar och kunder är kvar till nästa gång du provar förslaget.');return;}
     if(b.hasAttribute('data-ow-cancel'))return P.closeDialog();
@@ -190,6 +194,6 @@
     if(b.hasAttribute('data-ow-open'))return detail(b.dataset.owOpen);
     if(b.hasAttribute('data-ow-transition')){if(!confirm(`Simulera ${statuses[b.dataset.owTransition]} för denna exempelorder?`))return;const result=setStatus(b.dataset.order,b.dataset.owTransition);if(!result.ok)return P.toast(result.message);P.render();detail(b.dataset.order);}
   });
-  document.addEventListener('DOMContentLoaded',()=>{if(!enabled||P.demoMode)return;const params=new URLSearchParams(location.search);if(params.has('workspace')||params.has('partner')||params.has('movein'))return;let id;try{id=localStorage.getItem('partnerlabb.orders.identity');}catch{}if(sales(id))P.previewPartner(id);else login();});
+  document.addEventListener('DOMContentLoaded',()=>{if(!enabled||P.demoMode)return;const params=new URLSearchParams(location.search);if(params.has('workspace')||params.has('partner')||params.has('movein'))return;let id;try{id=localStorage.getItem('partnerlabb.orders.identity');}catch{}if(sales(id))P.previewPartner(id);else if(params.get('proposal')==='orders')login();});
   P.orderWorkspace={statuses,products,customers,orders,saveCustomer,saveOrder,setStatus,matchPeriod,isoWeek,commission,enable,login,healthy};
 })();
