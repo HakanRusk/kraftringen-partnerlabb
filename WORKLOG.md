@@ -4,6 +4,14 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Godkänd GitHub-uppdatering · 26 oktober 2026
+
+Håkan gav klartecken att åter försöka skapa arbetsgrenen och därefter publicera
+verifierad main. PR #71 skapad. CI 40315280098 passerade Node/DOM och de nya
+order-/provisionsflödena vid 320/390/1440 px. Inflyttningsregressionen pekade
+på borttagna .sr-partner-tabs; testet uppdateras till gemensamma .ow-tabs.
+Inga appändringar krävs för detta testfel. Full CI körs igen före merge.
+
 ## Lokal kandidat · provisionsöversikt och orderflöde · 26 oktober 2026
 
 Arbetsgren codex/order-lifecycle-navigation från main
