@@ -4,6 +4,23 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad rättning för befintliga partners · 26 oktober 2026
+
+PR #69 integrerad; verifierad HEAD bcb2c587dec2d10c582c6e49007c6319cef466da.
+Publicerad main 0411c3e53570fc8d394823766314415e582a197d har samma gröna träd
+8ffe93d5bf87bda7caf3e3953703cfbf98e2bbf1.
+[CI 40294466130](https://github.com/HakanRusk/kraftringen-partnerlabb/actions/runs/40294466130)
+passerade Node/DOM, Chromium och QA gate. 15 sviter inklusive 19 orderfall;
+vanliga partnerval och intern orderingång testade vid 320/390/1440 px.
+Lokal browser visade de sju statusrutorna via Saveras interna Kunder & avtal.
+
+Native succeeded 2026-10-26T08:49:44.616296+00:00 (09:49 svensk tid), privat:
+https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_2a191c0a6554819180f83a4d5e43a312
+Deployment: appgdep_6adf141cb4b08191807a33cfc76bcf14
+Ingen åtkomst-/domändataändring. Återgång och gamla testdata bevaras.
+Denna kvittens ändrar enbart dokumentation; ingen ny deployment behövs.
+
 ## 26 oktober 2026 · Statusrutor på befintliga partners
 
 Håkan rapporterade att statusrutorna saknades på befintliga partners. Orsak:

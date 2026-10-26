@@ -12,13 +12,14 @@ https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
 Sites bekräftar Håkan Rusk som ägare och endast ägaren i åtkomstlistan
 (policyrevision 1). Ludwigs tidigare Site lämnas orörd.
 
-- Senast publicerad **v2**, native succeeded 26 oktober 2026 kl. 09:11 svensk tid.
-  Källa d794db7d5cf40374a80c5a92c4d23150908bb223, integrerad via PR #67.
+- Senaste rättning: native succeeded 26 oktober 2026 kl. 09:49 svensk tid.
+  Källa 0411c3e53570fc8d394823766314415e582a197d, integrerad via PR #69.
+  Orderstatus visas som standard för befintliga säljpartners; intern orderingång finns.
   Exakt version/deployment och verifiering: WORKLOG.md.
 - Valbart orderförslag med återgång: docs/ORDER-PROPOSAL.md. Tidigare v1 finns kvar.
   Ingen riktig partnerautentisering eller verklig provisionsregel aktiverad.
-- Kandidatens CI 40289903555 passerade Node/DOM, Chromium och QA gate
-  för 6edffe56deb1db6849fd3942d4cc42b6979fa1e8. Publicerad main har samma träd.
+- Senaste kandidatens CI 40294466130 passerade Node/DOM, Chromium och QA gate
+  för bcb2c587dec2d10c582c6e49007c6319cef466da. Publicerad main har samma träd.
 - Övertagandet: samtliga dåvarande 99 filer verifierades via HTTPS 23 oktober.
   Detta är historiskt belägg, inte en ny bytekontroll av v2. Enhetsinstallation
   och interaktiv live-inloggning återstår. Detaljer: docs/HANDOVER-2026-10-23.md.
