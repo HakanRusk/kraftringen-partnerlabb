@@ -319,7 +319,7 @@ async def service_checks(test):
     for partner, name, legacy_route in [('syd', 'Savera', 'business-brief'), ('vast', 'Face2face', 'consumer-sales')]:
         await test.view(partner, 'partner-sales')
         test.good(f'{name} kan fortsatt följa sina egna kunder och avtal efter inflyttningskedjan', await page.locator('h1').inner_text() == name and await page.locator('[data-sr-record]').count() > 0 and await page.evaluate('Portal.selectedPartnerId') == partner)
-        await page.locator('.sr-partner-tabs [data-go="partner-insights"]').click()
+        await page.locator('.ow-tabs [data-go="partner-insights"]').click()
         test.good(f'{name} kan fortsatt nå egna Insikter och kundtid', await page.locator('h1').inner_text() == name and await page.locator('.savera-insights .sr-tenure').count() == 1 and await page.evaluate('Portal.selectedPartnerId') == partner)
         await page.evaluate('(route)=>Portal.go(route)', legacy_route)
         test.good(f'{name} återinför inte äldre aktiv säljregistrering', await page.evaluate('Portal.page') == 'overview' and await page.locator('[data-business-offer],[data-consumer-new],#consumer-record-form').count() == 0)

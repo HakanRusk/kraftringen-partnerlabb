@@ -245,15 +245,30 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
 - Statusar är Utkast, Registrerad, Godkänd, Ej godkänd, Ångrad, Bekräftad.
   Registrerade ordrar går till godkänd/ej godkänd/ångrad, godkända till bekräftad
   eller ångrad; bekräftad/ej godkänd kan ångras. Statusbyte är uttrycklig demosimulering.
+  Efter dessa följer Väntar på avtalsstart, Bortfall före start, Aktivt avtal och
+  Bortfall efter start. Bekräftad kan gå till väntar/startbortfall; väntar till
+  aktiv/startbortfall; aktiv till bortfall efter start. Ingen datumstyrd automation.
   Verkliga partners ska inte själva godkänna ordrar. Inga avtal skickas.
 - Perioden baseras på registreringsdatum, utkast på skapandedatum. ISO-veckor
   måndag–söndag med veckoår. Statusrutorna är ömsesidigt uteslutande och summerar
   till periodens alla ordrar; detaljlistan har separat status- och sökfilter.
-- Provisionsvyn räknar nu godkända inklusive bekräftade respektive bekräftade i
-  registreringskohorten, inte händelser under bekräftelsemånaden. Ingen historisk
-  bokslutsbild. Ångrade/ej godkända ger inget exempelbelopp. Illustrativa, ej avtalade
-  regler: Face2face 250 kr/bekräftad order; Savera 30 kr/uppskattad års-MWh på
-  bekräftade ordrar. Annan partner visar saknat regelunderlag och inget belopp.
+- Face2faces modell är bekräftad av Håkan: 1 500 kr per avtal, garanterat
+  förskott 80 % av varje godkännandemånads avtal. Bekräftelser räknas mot
+  ursprunglig godkännandemånad även när de kommer senare. Månadens nya tillägg
+  är ökningen av max(0, ackumulerad bekräftelseprovision − gruppens förskott).
+  Tidigare beräknade tillägg får inte räknas igen. Ingen kvittning mellan grupper.
+  Förskott under 80 % slutlig bekräftelsegrad efterskänks vid uttrycklig
+  slutavräkning; inget automatiskt månadsavslut eller återkrav. Modellen är
+  ersättningsunderlag, inte en faktura-/betalningsreskontra. Ingen momsmodell antas.
+- Face2faces provisionsvy visar godkännanden och bekräftelser under vald månad,
+  samt månadens nya förskott + tillägg. Så här har vi räknat är en initialt
+  stängd, tangentbordstillgänglig detaljvy med grupper, månadsutfall och order-ID.
+  Ett separat januari–april-räkneexempel ändrar inga ordrar. Nya statussteg
+  sparar approvedAt/confirmedAt en gång. Äldre ordrar utan händelsedatum bevaras
+  och flaggas som ofullständigt underlag; registreringsdatum får inte ersätta dem.
+- Savera behåller sin tydligt illustrativa regel 30 kr/uppskattad års-MWh på
+  bekräftade ordrar. Regeln är inte ett bekräftat affärsvillkor. Andra partners
+  visar saknat regelunderlag. Ingen verklig utbetalning eller integration.
 - Kundens typ är Företag, Enskild firma eller Privatperson; kundnamn, nummer,
   post-/besöksadress, e-post och telefon. Namn/typ krävs; övriga kan kompletteras.
   Privatperson kopplas till Elhandel privat, övriga till Elhandel företag.
@@ -261,13 +276,21 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
   privat: Rörligt månadspris, Rörligt kvartspris, Kraftringen Opti.
   företag: Rörligt månadspris, Rörligt kvartspris, Individuell indexportfölj,
   Kraftringen Stabil, Kraftringen Direkt, Poolportfölj – offensiv, Poolportfölj – trygg.
+  Alla säljpartnerdomäner kan prova båda kategorierna via kundtyp. Detta ändrar
+  inte partnerns segment i äldre rapporter eller avtalsfakta. Kund kan skapas
+  direkt i orderdialogen utan att påbörjad order försvinner.
   Äldre utbildnings-/produktmaterial och historiska produktnamn skrivs inte om.
 - Order har flera anläggningar med text-ID (18 siffror), uppskattad års-kWh och
-  elområde; företag har dessutom nätområdeskod (3 bokstäver) och bindningstid i
-  månader. Förslagets 0–120 månader är formulärgräns, inte ett produktvillkor.
+  elområde; företag har dessutom nätområdeskod (3 bokstäver). Avtalstid är
+  Rörlig eller ett positivt heltal månader, separat från produktnamnet. Det är
+  ett inmatningsförslag, inte verifierade produktvillkor. Ordertabellen visar
+  summerad års-kWh och avtalstid; ofullständig volym visas som Underlag saknas,
+  äldre företagsorder utan avtalstid som Ej angiven.
   Individuell indexportfölj/Stabil/Direkt kräver tolv månaders kWh-profil per
   anläggning med summa lika års-kWh. Profilen avser januari–december i ett normalår.
   Önskat startdatum är ordergemensamt. Inga register- eller villkorskontroller.
+- Samma områdesväljare ligger överst i partnerns arbetsyta även på Avtalsfakta,
+  Utbildning och Hjälp & support. Intern partnerkontext bevaras på dessa sidor.
 - Additiv `state.orderWorkspace` med version, kunder, ordrar och statushistorik.
   Befintlig CRM/resultatdata migreras inte till orderstatus utan ett beslutat samband.
   Nya kunder här är orderkunder, inte automatiskt nya CRM-affärer. Sparfel/flikkonflikt

@@ -8,7 +8,7 @@ async function boot(url='https://portal.example/?proposal=orders&workspace=vast'
  w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.matchMedia=()=>({matches:false,addEventListener(){}});w.confirm=()=>true;
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;};
  if(saved)w.localStorage.setItem('partnerlabb.portal.v2',saved);
- for(const module of ['partner-setup','app','partner-crm','commercial','partner-orders'])w.eval(fs.readFileSync(`dist/${module}.js`,'utf8'));
+ for(const module of ['partner-setup','app','partner-crm','commercial','product-facts','partner','partner-commission','partner-orders'])w.eval(fs.readFileSync(`dist/${module}.js`,'utf8'));
  w.document.dispatchEvent(new w.Event('DOMContentLoaded'));return {dom,w,P:w.Portal,doc:w.document};
 }
 let checks=0;const test=(name,fn)=>{fn();checks++;console.log('PASS '+name);};
@@ -18,17 +18,63 @@ let cid,oid;
 const customer={name:'Fiktiv <img src=x> Kund',type:'private',identifier:'',postalAddress:'Exempelgatan 5',visitAddress:'Exempelvägen 2',email:'test@kund.example',phone:'0700000000'};
 const facility={installationId:'735999999999999998',annualKwh:'12000',area:'SE4',network:'DEM',profile:Array(12).fill('1000')};
 let draft;
-test('proposal workspace and period cards are partner scoped',()=>{assert.equal(P.role,'partner');assert.equal(P.partner,'vast');assert.equal(doc.querySelectorAll('[data-ow-status]').length,7);assert.ok(doc.querySelector('#nav [data-go="order-commission"]'));assert.equal(api.orders().length,12);assert.ok(api.orders().every(r=>r.partner==='vast'));});
+test('proposal workspace and period cards are partner scoped',()=>{assert.equal(P.role,'partner');assert.equal(P.partner,'vast');assert.equal(doc.querySelectorAll('[data-ow-status]').length,11);assert.ok(doc.querySelector('#nav [data-go="order-commission"]'));assert.equal(api.orders().length,20);assert.ok(api.orders().every(r=>r.partner==='vast'));});
 test('ISO week boundaries and cohort date use registration, not confirmation',()=>{assert.equal(api.isoWeek('2027-01-01'),'2026-W53');assert.equal(api.isoWeek('2026-01-01'),'2026-W01');assert.equal(api.matchPeriod({registeredAt:'2026-12-31',createdAt:'2026-10-01'},{mode:'week',year:'2026',week:'53'}),true);assert.equal(api.matchPeriod({registeredAt:'2026-09-30',createdAt:'2026-10-01'},{mode:'month',year:'2026',month:'10'}),false);});
 test('customer fields round trip and XSS stays text',()=>{const r=api.saveCustomer(customer);assert.equal(r.ok,true);cid=r.id;assert.equal(api.customers().find(c=>c.id===cid).visitAddress,customer.visitAddress);P.go('order-customers');assert.equal(doc.querySelector('#view img'),null);assert.match(doc.querySelector('#view').textContent,/Fiktiv <img/);});
 test('draft is separate from registration; consumer strips business fields',()=>{draft={customerId:cid,category:'consumer',product:'Kraftringen Opti',startDate:'',termMonths:'12',facilities:[{...facility,installationId:'',annualKwh:''}]};const r=api.saveOrder(draft);assert.equal(r.ok,true);oid=r.id;const row=api.orders().find(o=>o.id===oid);assert.equal(row.status,'draft');assert.equal(row.registeredAt,'');assert.equal(row.facilities[0].network,'');assert.equal(row.termMonths,'');assert.equal(api.saveOrder(draft,oid,true).ok,false);});
 test('registration validates duplicates and calendar before committing',()=>{draft={...draft,startDate:'2026-02-30',facilities:[facility]};assert.equal(api.saveOrder(draft,oid,true).ok,false);draft.startDate='2026-12-01';draft.facilities=[facility,facility];assert.equal(api.saveOrder(draft,oid,true).ok,false);draft.facilities=[facility,{...facility,installationId:'735999999999999997'}];assert.equal(api.saveOrder(draft,oid,true).ok,true);assert.equal(api.orders().find(o=>o.id===oid).facilities.length,2);assert.equal(api.saveOrder(draft,oid).ok,false);});
-test('status flow, confirmation and withdrawal update commission without changing cohort',()=>{const date=api.orders().find(o=>o.id===oid).registeredAt;assert.equal(api.setStatus(oid,'confirmed').ok,false);assert.equal(api.setStatus(oid,'approved').ok,true);let c=api.commission([api.orders().find(o=>o.id===oid)]);assert.equal(c.eligible.length,1);assert.equal(c.amount,0);assert.equal(api.setStatus(oid,'confirmed').ok,true);c=api.commission([api.orders().find(o=>o.id===oid)]);assert.equal(c.amount,250);assert.equal(api.setStatus(oid,'withdrawn').ok,true);assert.equal(api.commission([api.orders().find(o=>o.id===oid)]).amount,0);assert.equal(api.orders().find(o=>o.id===oid).registeredAt,date);assert.equal(api.orders().find(o=>o.id===oid).events.length,5);});
+test('status flow, confirmation and withdrawal update commission without changing cohort',()=>{const date=api.orders().find(o=>o.id===oid).registeredAt;assert.equal(api.setStatus(oid,'confirmed').ok,false);assert.equal(api.setStatus(oid,'approved').ok,true);let c=api.commission([api.orders().find(o=>o.id===oid)]);assert.equal(c.eligible.length,1);assert.equal(c.amount,1200);assert.equal(api.setStatus(oid,'confirmed').ok,true);c=api.commission([api.orders().find(o=>o.id===oid)]);assert.equal(c.amount,1500);assert.equal(api.setStatus(oid,'withdrawn').ok,true);assert.equal(api.commission([api.orders().find(o=>o.id===oid)]).amount,1500);assert.equal(api.orders().find(o=>o.id===oid).registeredAt,date);assert.equal(api.orders().find(o=>o.id===oid).events.length,5);});
 test('cross-partner reads and writes rejected',()=>{P.previewPartner('syd');assert.ok(!api.customers().some(c=>c.id===cid));assert.equal(api.saveCustomer(customer,cid).ok,false);assert.equal(api.setStatus(oid,'approved').ok,false);assert.equal(api.saveOrder(draft).ok,false);});
 let businessId,businessOrder;
 test('sole trader is a business customer; profile required for the three named products',()=>{const r=api.saveCustomer({...customer,name:'Fiktiv Firma',type:'sole',identifier:'999999-9999'});assert.equal(r.ok,true);businessId=r.id;const input={customerId:businessId,category:'business',product:'Kraftringen Direkt',startDate:'2026-12-01',termMonths:'12',facilities:[{...facility,profile:Array(12).fill('')}]};assert.equal(api.saveOrder(input,undefined,true).ok,false);input.facilities[0].profile=Array(12).fill('999');assert.equal(api.saveOrder(input,undefined,true).ok,false);input.facilities[0].profile=Array(12).fill('1000');const saved=api.saveOrder(input,undefined,true);assert.equal(saved.ok,true);businessOrder=saved.id;assert.equal(api.setStatus(businessOrder,'approved').ok,true);assert.equal(api.setStatus(businessOrder,'confirmed').ok,true);assert.equal(api.commission([api.orders().find(o=>o.id===businessOrder)]).amount,360);});
 test('status-card drilldown and search show the same scoped period',()=>{P.go('overview');doc.querySelector('[data-ow-status="confirmed"]').click();assert.equal(doc.querySelector('[data-ow-filter="status"]').value,'confirmed');const search=doc.querySelector('[data-ow-search]');search.value='Fiktiv Firma';search.dispatchEvent(new w.Event('input'));assert.equal(doc.querySelectorAll('#ow-order-list tbody tr').length,1);assert.match(doc.querySelector('#ow-order-list').textContent,/Fiktiv Firma/);});
-test('customer and order forms conditional fields, cancel makes no writes',()=>{const before=JSON.stringify(P.state);doc.querySelector('[data-ow-order]').click();const form=doc.querySelector('#ow-order-form');assert.ok(form.querySelector('[name="termMonths"]'));form.querySelector('[name="product"]').value='Kraftringen Stabil';form.querySelector('[name="product"]').dispatchEvent(new w.Event('change',{bubbles:true}));assert.equal(doc.querySelectorAll('[data-month]').length,12);doc.querySelector('[data-ow-add]').click();assert.equal(doc.querySelectorAll('[data-facility]').length,2);doc.querySelector('[data-ow-cancel]').click();assert.equal(JSON.stringify(P.state),before);});
+test('customer and order forms conditional fields, cancel makes no writes',()=>{const before=JSON.stringify(P.state);doc.querySelector('[data-ow-order]').click();const form=doc.querySelector('#ow-order-form');assert.equal(form.querySelector('[name="termMonths"]'),null);form.querySelector('[name="termType"]').value='fixed';form.querySelector('[name="termType"]').dispatchEvent(new w.Event('change',{bubbles:true}));assert.ok(doc.querySelector('[name="termMonths"]'));doc.querySelector('[name="product"]').value='Kraftringen Stabil';doc.querySelector('[name="product"]').dispatchEvent(new w.Event('change',{bubbles:true}));assert.equal(doc.querySelectorAll('[data-month]').length,12);doc.querySelector('[data-ow-add]').click();assert.equal(doc.querySelectorAll('[data-facility]').length,2);doc.querySelector('[data-ow-cancel]').click();assert.equal(JSON.stringify(P.state),before);});
+test('appended lifecycle states preserve cohort and demo commission',()=>{
+ const row=api.orders().find(o=>o.id===businessOrder),date=row.registeredAt;
+ assert.deepEqual(Array.from(Object.values(api.statuses).slice(-4)),['Väntar på avtalsstart','Bortfall före start','Aktivt avtal','Bortfall efter start']);
+ assert.equal(api.setStatus(businessOrder,'active').ok,false);
+ assert.equal(api.setStatus(businessOrder,'awaiting_start').ok,true);
+ assert.equal(api.commission([api.orders().find(o=>o.id===businessOrder)]).amount,360);
+ assert.equal(api.setStatus(businessOrder,'active').ok,true);
+ assert.equal(api.commission([api.orders().find(o=>o.id===businessOrder)]).amount,360);
+ assert.equal(api.setStatus(businessOrder,'lost_after_start').ok,true);
+ assert.equal(api.commission([api.orders().find(o=>o.id===businessOrder)]).amount,0);
+ assert.equal(api.orders().find(o=>o.id===businessOrder).registeredAt,date);
+ const before=api.orders().find(o=>o.status==='awaiting_start');assert.equal(api.setStatus(before.id,'lost_before_start').ok,true);
+ P.go('overview');doc.querySelector('[data-ow-status="lost_before_start"]').click();assert.equal(doc.querySelector('[data-ow-filter="status"]').value,'lost_before_start');
+});
+test('volume and duration distinguish missing inputs from real zero or rolling',()=>{
+ assert.equal(api.annualVolume({facilities:[{annualKwh:'12000'},{annualKwh:'6000'}]}),18000);
+ assert.equal(api.annualVolume({facilities:[{annualKwh:'12000'},{annualKwh:''}]}),null);
+ assert.equal(api.annualVolume({facilities:[{annualKwh:'0'}]}),0);
+ assert.equal(api.termLabel({category:'business',termMonths:''}),'Ej angiven');
+ assert.equal(api.termLabel({termType:'rolling',termMonths:'12'}),'Rörlig');
+ assert.equal(api.termLabel({termType:'fixed',termMonths:'24'}),'24 månader');
+ assert.match(doc.querySelector('#ow-order-list').textContent,/Total årsvolym/);
+});
+test('all requested products, customer types and duration options can be saved',()=>{
+ for(const type of ['company','sole','private']){
+  const c=api.saveCustomer({...customer,type});assert.equal(c.ok,true);
+  const category=type==='private'?'consumer':'business';
+  for(const product of api.products[category]){
+   const input={customerId:c.id,category,product,startDate:'2026-12-01',termType:'fixed',termMonths:'24',facilities:[facility]};
+   const r=api.saveOrder(input,undefined,true);assert.equal(r.ok,true,product);assert.equal(api.termLabel(api.orders().find(o=>o.id===r.id)),'24 månader');
+   assert.equal(api.saveOrder({...input,termMonths:'0'},undefined,true).ok,false);
+   assert.equal(api.saveOrder({...input,termType:'rolling',termMonths:''},undefined,true).ok,true);
+  }
+ }
+});
+test('inline customer creation and cancel preserve unsaved order',()=>{
+ P.go('order-list');doc.querySelector('[data-ow-order]').click();
+ doc.querySelector('[name="startDate"]').value='2027-02-01';doc.querySelector('[data-field="annualKwh"]').value='54321';
+ doc.querySelector('[data-ow-create-inline]').click();doc.querySelector('[data-ow-cancel]').click();
+ assert.equal(doc.querySelector('[name="startDate"]').value,'2027-02-01');assert.equal(doc.querySelector('[data-field="annualKwh"]').value,'54321');
+ doc.querySelector('[data-ow-create-inline]').click();const f=doc.querySelector('#ow-customer-form');f.elements.name.value='Fiktiv ny kund i order';f.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+ assert.equal(doc.querySelector('[name="customerId"] option:checked').textContent,'Fiktiv ny kund i order');assert.equal(doc.querySelector('[data-field="annualKwh"]').value,'54321');doc.querySelector('[data-ow-cancel]').click();
+});
+test('same area navigation remains first on reference pages and preserves partner',()=>{
+ for(const route of ['overview','product-facts','support','order-list']){P.go(route);const nav=doc.querySelector('#view').firstElementChild;assert.ok(nav.classList.contains('ow-tabs'));assert.equal(nav.querySelector('[aria-current="page"]').dataset.go,route);assert.equal(P.partner,'syd');}
+});
 test('save failure rolls back only new mutation and keeps typed dialog',()=>{const before=JSON.stringify(P.state);const save=P.save;P.save=()=>false;assert.equal(api.saveCustomer({...customer,type:'company'}).ok,false);assert.equal(api.setStatus(businessOrder,'withdrawn').ok,false);assert.equal(JSON.stringify(P.state),before);P.save=save;});
 const saved=w.localStorage.getItem('partnerlabb.portal.v2');
 test('legacy switch preserves data and old home; proposal can be restored',()=>{doc.querySelector('[data-ow-legacy]').click();assert.equal(doc.querySelectorAll('.partner-start-choice').length,4);assert.equal(w.localStorage.getItem('partnerlabb.portal.v2'),saved);api.enable(true);P.previewPartner('vast');assert.ok(api.orders().some(o=>o.id===oid));assert.equal(JSON.stringify({records:P.state.records,training:P.state.training,commercial:P.state.commercial,crm:P.state.crmRecords}),original);});
@@ -42,13 +88,13 @@ test('separate customer demo does not read normal orders',()=>{assert.equal(demo
 const standard=await boot('https://portal.example/');
 test('ordinary existing partner selection defaults to status cards without opt-in',()=>{
  assert.equal(standard.P.role,'internal');assert.equal(standard.doc.querySelector('#ow-login'),null);
- for(const id of ['syd','vast']){standard.P.previewPartner(id);assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,7);assert.ok(standard.doc.querySelector('#ow-order-list'));}
+ for(const id of ['syd','vast']){standard.P.previewPartner(id);assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,11);assert.ok(standard.doc.querySelector('#ow-order-list'));}
  standard.P.returnInternal();standard.P.commercial.selectPartner('syd','partner-detail');
  standard.doc.querySelector('[data-ow-partner]').click();assert.equal(standard.P.partner,'syd');assert.equal(standard.P.role,'partner');
- assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,7);
+ assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,11);
 });
 const direct=await boot('https://portal.example/?workspace=vast');
-test('existing workspace deep link opens orders; explicit legacy URL still restores previous view',()=>{assert.equal(direct.doc.querySelectorAll('[data-ow-status]').length,7);});
+test('existing workspace deep link opens orders; explicit legacy URL still restores previous view',()=>{assert.equal(direct.doc.querySelectorAll('[data-ow-status]').length,11);});
 const legacy=await boot('https://portal.example/?proposal=legacy&workspace=vast');
 test('explicit legacy link retains rollback and data',()=>{assert.equal(legacy.doc.querySelectorAll('.partner-start-choice').length,4);});
 standard.dom.window.close();direct.dom.window.close();legacy.dom.window.close();
