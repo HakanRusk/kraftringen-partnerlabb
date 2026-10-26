@@ -1,6 +1,7 @@
 # Verifierad käll- och driftstatus
 
-Övertagande kontrollerat 23 oktober 2026. Huvudkälla:
+Senaste publicering kontrollerad 26 oktober 2026; övertagandets åtkomstkontroller
+är från 23 oktober. Huvudkälla:
 https://github.com/HakanRusk/kraftringen-partnerlabb.
 GitHub-anslutningen identifierar HakanRusk och bekräftar läs-, skriv- och
 administratörsbehörighet. Repo-ID 1410943706 är överfört till HakanRusk;
@@ -11,14 +12,16 @@ https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
 Sites bekräftar Håkan Rusk som ägare och endast ägaren i åtkomstlistan
 (policyrevision 1). Ludwigs tidigare Site lämnas orörd.
 
-- Publicerad och native succeeded 23 oktober 2026 kl. 12:04 svensk tid.
-  Källa dea10e9dc0cab224ca6507b5b2b786efe188cc7c, integrerad via PR #65.
+- Senast publicerad **v2**, native succeeded 26 oktober 2026 kl. 09:11 svensk tid.
+  Källa d794db7d5cf40374a80c5a92c4d23150908bb223, integrerad via PR #67.
   Exakt version/deployment och verifiering: WORKLOG.md.
-- Alla 99 publicerade filer hämtade via HTTPS och SHA-256-matchade mot källan.
-  Oinloggad hämtning gav 403; interaktiv enhetsinloggning/installering återstår.
-- Detaljer, testbegränsningar och återstående kontosteg: docs/HANDOVER-2026-10-23.md.
-- Övertagandets CI 39935862892 passerade Node/DOM, Chromium och QA gate
-  för e5151bf17761e7303bc6237ec86215b546ca09c6. Publicerad main har samma träd.
+- Valbart orderförslag med återgång: docs/ORDER-PROPOSAL.md. Tidigare v1 finns kvar.
+  Ingen riktig partnerautentisering eller verklig provisionsregel aktiverad.
+- Kandidatens CI 40289903555 passerade Node/DOM, Chromium och QA gate
+  för 6edffe56deb1db6849fd3942d4cc42b6979fa1e8. Publicerad main har samma träd.
+- Övertagandet: samtliga dåvarande 99 filer verifierades via HTTPS 23 oktober.
+  Detta är historiskt belägg, inte en ny bytekontroll av v2. Enhetsinstallation
+  och interaktiv live-inloggning återstår. Detaljer: docs/HANDOVER-2026-10-23.md.
 - `.github/workflows/quality.yml` kör Node/DOM, Chromium och QA gate. Den är
   aktiv, använder inga secrets och publicerar inte. Automatisk GitHub→Sites-synk finns inte.
 - CODEOWNERS uppdateras till @HakanRusk. Main returnerade protected=false,
