@@ -197,7 +197,7 @@
   P.register('order-list',{render:()=>inScope(P.partner)?`<div class="ow-page">${heading('Dina ordrar')}${periodControls()}${cards()}${table()}</div>`:'<p>Öppna en säljpartners demovy.</p>',bind});
   P.register('order-customers',{render:()=>inScope(P.partner)?renderCustomers():'<p>Öppna en säljpartners demovy.</p>',bind});
   P.register('order-commission',{render:()=>inScope(P.partner)?renderCommission():'<p>Öppna en säljpartners demovy.</p>',bind});
-  const areaLinks=[['overview','Översikt'],['order-list','Ordrar'],['order-customers','Kunder'],['order-commission','Provision'],['product-facts','Avtalsfakta'],['academy','Utbildning'],['support','Hjälp & support']];
+  const areaLinks=[['overview','Översikt'],['order-list','Ordrar'],['order-customers','Kunder'],['order-commission','Provision'],['partner-sales','Mina resultat'],['partner-insights','Insikter'],['product-facts','Avtalsfakta'],['academy','Utbildning'],['support','Hjälp & support']];
   function areaNavigation() {
     const internal=P.role==='internal';const partner=internal?P.selectedPartnerId:P.partner;
     if(!enabled||!sales(partner))return;

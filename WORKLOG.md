@@ -10,7 +10,10 @@ Håkan gav klartecken att åter försöka skapa arbetsgrenen och därefter publi
 verifierad main. PR #71 skapad. CI 40315280098 passerade Node/DOM och de nya
 order-/provisionsflödena vid 320/390/1440 px. Inflyttningsregressionen pekade
 på borttagna .sr-partner-tabs; testet uppdateras till gemensamma .ow-tabs.
-Inga appändringar krävs för detta testfel. Full CI körs igen före merge.
+Omkörning 40315787252 visade att den gemensamma partnernavigationen också
+saknade Mina resultat/Insikter efter att den äldre listen tagits bort. Dessa
+två ingångar läggs tillbaka i den gemensamma listen på alla partnersidor.
+Full CI körs igen före merge.
 
 ## Lokal kandidat · provisionsöversikt och orderflöde · 26 oktober 2026
 
