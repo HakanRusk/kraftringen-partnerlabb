@@ -15,8 +15,10 @@ och GITHUB-STATUS.md. Utvecklingsagent och schemaläggning aktiveras separat.
 
 Välj **Partner · förhandsvisning** och partner (t.ex. Face2face eller Savera),
 så öppnas orderöversikten direkt. Från intern partnerprofil: **Visa ordrar & status**.
-**Prova nya partnerflödet** väljer också demoidentitet. Översikten visas med statusrutor, år/månad/vecka, kunder, flera anläggningar
-per order och illustrativ provisionsstatistik. Tio statusar följer ordern fram
+**Prova nya partnerflödet** väljer också demoidentitet. **Ordrar & resultat** samlar översikt, orderlista och resultatutveckling med
+år/månad/vecka. Ett kompakt flöde visar hur många som nått varje steg;
+**just nu** filtrerar på aktuell status. Bortfall visas separat. Klicka på en
+order för daterad statushistorik. Saknade äldre datum markeras utan att fyllas i. Tio statusar följer ordern fram
 till aktivt avtal och eventuellt bortfall. Samma områdesväljare finns även på
 Avtalsfakta, Utbildning och Hjälp & support. Kundtyp styr produktkatalogen;
 ordertabellen visar total årsvolym och rörlig eller tidsbestämd avtalstid. **Återgå till tidigare vy**
@@ -24,6 +26,10 @@ bevarar alla testdata. [Testväg, begränsningar och full återgång](docs/ORDER
 Detta är lokal demoinloggning, inte nya partnerbehörigheter. Face2faces provisionsvy använder den bekräftade modellen med 1 500 kr per avtal
 och 80 % garanterat förskott per godkännandemånad. Månadssammanfattningen har
 fördjupning under **Så här har vi räknat** och ett separat räkneexempel.
+90 nya fiktiva Face2face-ordrar (juli–september, sena bekräftelser till oktober)
+läggs till en gång utan att ändra gamla ordrar. Välj dessa i provisionsvyn för
+ett komplett daterat underlag. Äldre resultatrapporter finns under den
+utfällbara resultatutvecklingen och blandas inte med orderstatistiken.
 Savera har fortsatt illustrativa villkor. Alla orderdata är exempel; inga betalningar görs.
 
 ## Skapa partner och välj CRM
