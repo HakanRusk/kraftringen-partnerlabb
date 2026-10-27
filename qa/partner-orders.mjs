@@ -8,7 +8,7 @@ async function boot(url='https://portal.example/?proposal=orders&workspace=vast'
  w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.matchMedia=()=>({matches:false,addEventListener(){}});w.confirm=()=>true;
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;};
  if(saved)w.localStorage.setItem('partnerlabb.portal.v2',saved);
- for(const module of ['partner-setup','app','partner-crm','commercial','product-facts','partner','partner-commission','partner-orders'])w.eval(fs.readFileSync(`dist/${module}.js`,'utf8'));
+ for(const module of ['partner-setup','app','partner-crm','commercial','product-facts','partner','partner-commission','product-catalog','partner-orders'])w.eval(fs.readFileSync(`dist/${module}.js`,'utf8'));
  w.document.dispatchEvent(new w.Event('DOMContentLoaded'));return {dom,w,P:w.Portal,doc:w.document};
 }
 let checks=0;const test=(name,fn)=>{fn();checks++;console.log('PASS '+name);};
@@ -19,6 +19,25 @@ const customer={name:'Fiktiv <img src=x> Kund',type:'private',identifier:'',post
 const facility={installationId:'735999999999999998',annualKwh:'12000',area:'SE4',network:'DEM',profile:Array(12).fill('1000')};
 let draft;
 test('proposal workspace and period cards are partner scoped',()=>{assert.equal(P.role,'partner');assert.equal(P.partner,'vast');assert.equal(doc.querySelectorAll('[data-ow-status]').length,11);assert.ok(doc.querySelector('#nav [data-go="order-commission"]'));assert.equal(api.orders().length,110);assert.ok(api.orders().every(r=>r.partner==='vast'));});
+test('catalog categories, scoped price lists and old facts links converge',()=>{
+ const catalog=P.productCatalog;assert.equal(catalog.items.length,10);assert.deepEqual(Object.values(catalog.products).map(v=>v.length),[3,7]);
+ assert.deepEqual(Array.from(catalog.lists('vast'),l=>l.id),['standard-demo-v1','face2face-demo-v1']);
+ assert.equal(catalog.select('savera-demo-v1','vast'),false);
+ P.go('product-facts');assert.equal(doc.querySelector('h1').textContent,'Produkter');assert.ok(doc.querySelector('[href*="elakademin.html"]'));assert.equal(doc.querySelectorAll('#nav [data-go="product-facts"]').length,0);
+ assert.equal(doc.querySelectorAll('[data-pc-order]').length,3);doc.querySelector('[data-pc-category="business"]').click();assert.equal(doc.querySelectorAll('[data-pc-order]').length,7);assert.match(doc.querySelector('.pc-grid').textContent,/Kraftringen Direkt/);doc.querySelector('[data-pc-category="consumer"]').click();P.go('overview');
+});
+test('product CTA carries category, product and selected price through inline customer and save',()=>{
+ const before=JSON.stringify(P.state.orderWorkspace);P.go('products');const c=P.productCatalog;c.select('face2face-demo-v1');P.render();
+ doc.querySelector('[data-pc-order="Kraftringen Opti"]').click();let form=doc.querySelector('#ow-order-form');assert.equal(form.elements.product.value,'Kraftringen Opti');assert.equal(form.elements.priceListId.value,'face2face-demo-v1');assert.equal(form.elements.category.value,'consumer');
+ form.elements.startDate.value='2026-12-01';doc.querySelector('[data-ow-create-inline]').click();doc.querySelector('[data-ow-cancel]').click();form=doc.querySelector('#ow-order-form');assert.equal(form.elements.startDate.value,'2026-12-01');assert.equal(form.elements.priceListId.value,'face2face-demo-v1');assert.equal(form.elements.product.value,'Kraftringen Opti');P.closeDialog();assert.equal(JSON.stringify(P.state.orderWorkspace),before);
+ const input={customerId:api.customers()[0].id,category:'consumer',product:'Kraftringen Opti',priceListId:'face2face-demo-v1',startDate:'2026-12-01',facilities:[facility]};
+ const result=api.saveOrder(input,undefined,true);assert.equal(result.ok,true);const row=api.orders().find(r=>r.id===result.id);assert.equal(row.priceSnapshot.monthly,99);const frozen=JSON.stringify(row.priceSnapshot);c.select('standard-demo-v1');P.go('products');assert.equal(JSON.stringify(row.priceSnapshot),frozen);
+ assert.equal(api.saveOrder({...input,priceListId:'savera-demo-v1'}).ok,false);const originalSave=P.save;P.save=()=>false;const previous=JSON.stringify(P.state.orderWorkspace);assert.equal(api.saveOrder(input).ok,false);assert.equal(JSON.stringify(P.state.orderWorkspace),previous);P.save=originalSave;
+ if(before===undefined)delete P.state.orderWorkspace;else P.state.orderWorkspace=JSON.parse(before);P.save();P.go('overview');
+});
+test('business CTA with no matching customer keeps product and price list; missing price is never zero',()=>{
+ P.go('products');doc.querySelector('[data-pc-category="business"]').click();doc.querySelector('[data-pc-order="Kraftringen Direkt"]').click();const f=doc.querySelector('#ow-order-form');assert.equal(f.elements.customerId.value,'');assert.equal(f.elements.customerType.value,'company');assert.equal(f.elements.product.value,'Kraftringen Direkt');assert.match(f.textContent,/Prisunderlag saknas/);assert.equal(P.productCatalog.snapshot('standard-demo-v1','business','Kraftringen Direkt').monthly,null);P.closeDialog();P.go('products');doc.querySelector('[data-pc-category="consumer"]').click();P.go('overview');
+});
 test('compact funnel is monotone, current statuses partition the same cohort and click filters',()=>{
  const rows=api.orders().filter(r=>r.registeredAt?.startsWith('2026-10')||(!r.registeredAt&&r.createdAt.startsWith('2026-10'))),stages=['registered','approved','confirmed','awaiting_start','active'];
  const counts=stages.map(key=>rows.filter(r=>api.reached(r,key)).length);assert.ok(counts.every((n,i)=>i===0||n<=counts[i-1]));
@@ -90,7 +109,7 @@ test('inline customer creation and cancel preserve unsaved order',()=>{
  assert.equal(doc.querySelector('[name="customerId"] option:checked').textContent,'Fiktiv ny kund i order');assert.equal(doc.querySelector('[data-field="annualKwh"]').value,'54321');doc.querySelector('[data-ow-cancel]').click();
 });
 test('same area navigation remains first on reference pages and preserves partner',()=>{
- for(const route of ['overview','product-facts','support','order-list']){P.go(route);const nav=doc.querySelector('#view').firstElementChild;assert.ok(nav.classList.contains('ow-tabs'));assert.equal(nav.querySelector('[aria-current="page"]').dataset.go,route==='order-list'?'overview':route);assert.equal(P.partner,'syd');}
+ for(const route of ['overview','product-facts','support','order-list']){P.go(route);const nav=doc.querySelector('#view').firstElementChild;assert.ok(nav.classList.contains('ow-tabs'));assert.equal(nav.querySelector('[aria-current="page"]').dataset.go,route==='order-list'?'overview':route==='product-facts'?'products':route);assert.equal(P.partner,'syd');}
 });
 test('save failure rolls back only new mutation and keeps typed dialog',()=>{const before=JSON.stringify(P.state);const save=P.save;P.save=()=>false;assert.equal(api.saveCustomer({...customer,type:'company'}).ok,false);assert.equal(api.setStatus(businessOrder,'withdrawn').ok,false);assert.equal(JSON.stringify(P.state),before);P.save=save;});
 const saved=w.localStorage.getItem('partnerlabb.portal.v2');
