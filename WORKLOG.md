@@ -4,6 +4,16 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Sammanslagen bindandestatus · kandidat · 27 oktober 2026
+
+Gren codex/compact-order-branches från main ee042bda68d03c5875fed4447aed5602ac27decc.
+Håkan har uttryckligen valt att slå ihop Bindande avtal och Väntar på avtalsstart.
+Fem flödessteg med fyra bortfallsfilter under respektive steg. Äldre väntestatus
+normaliseras enbart vid läsning; rådata, historik, datum och provision bevaras.
+Node/DOM: övriga 15 sviter passerade; ordertestets historikförväntan korrigerad
+och alla 37 orderkontroller passerade därefter. Desktop visuellt kontrollerad.
+CI/mobil och publicering återstår vid denna kandidatkvittens.
+
 ## Publicerat orderflöde · version 8 · 27 oktober 2026
 
 PR #79 integrerad efter grön CI 40485942838 för exakt HEAD
