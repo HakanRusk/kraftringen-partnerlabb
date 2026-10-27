@@ -4,6 +4,22 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Orderbekräftelse och bindande avtal · kandidat · 27 oktober 2026
+
+Egen gren codex/order-binding-flow från main
+6ce3728e5897c110e2d8f90a00e3e278c32bf941. Håkans uppdrag: nytt utskickssteg,
+Bekräftad byter namn till Bindande avtal, ånger endast däremellan.
+Flödesvisualisering, filter, historik, statusdefinitioner och provisionsförklaring
+uppdaterade. Lagringsnycklar confirmed/confirmedAt behålls för kompatibilitet;
+confirmation_sent/confirmationSentAt är separat och påverkar inte avräkningen.
+Gamla sparade ordrar eller händelsetexter migreras inte. Nya exempel visar utskick.
+Lokal npm test: 16 sviter godkända. 35 orderkontroller och separata
+provisionskontroller omfattar förbjudna genvägar/ånger efter bindande, sparfel,
+historik och provision över månadsgränser. Desktop visuellt granskad.
+Chromiumflödet testar utskick → bindande och ångerknappens tillgänglighet
+vid 320/390/1440 px. CI/publiceringskvittens följer.
+Inga riktiga utskick, kunddata, integrationer eller förändrade provisionssatser.
+
 ## Publicerad produktjämförelse och partnerurval · version 7 · 27 oktober 2026
 
 PR #77 integrerad efter grön CI 40476158456 på exakt HEAD
