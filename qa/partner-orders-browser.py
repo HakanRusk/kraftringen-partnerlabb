@@ -95,6 +95,7 @@ async def main():
                 await page.locator('[data-ow-customer]').first.click()
                 form=page.locator('#ow-customer-form')
                 await form.locator('[name=name]').fill('Fiktiv Testkund')
+                await form.locator('[name=type]').select_option('private')
                 await form.locator('[name=postalAddress]').fill('Exempelgatan 4')
                 await form.locator('[name=visitAddress]').fill('Exempelvägen 7')
                 await form.locator('[name=email]').fill('test@kund.example')
