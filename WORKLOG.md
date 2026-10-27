@@ -4,6 +4,31 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerat orderflöde · version 8 · 27 oktober 2026
+
+PR #79 integrerad efter grön CI 40485942838 för exakt HEAD
+cf9ea204831faedf106446469f97028d8b2a488a. Publicerad main
+dd5117c841110bdf2b7e2a5a9692a4ad3bc13f78 har samma verifierade träd
+7300d9df36b17f1627459da940f452d0862d4c4a. Node/DOM (16 sviter), Chromium
+vid 320/390/1440 px och QA gate passerade. Tidigare körning ersattes vid
+kompletterad dokumentation efter långsam nedladdning av testmiljöns beroenden.
+
+Native succeeded 2026-10-27T10:12:02.765207+00:00, kl. 11:12 svensk tid.
+URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_13bb0c2791a88191a569aae53e7348ef
+Deployment: appgdep_6ae078e56bec81918b668285e84cf99e
+Privat ägaråtkomst och env revision 0 bevarade. Ludwigs Site orörd.
+
+Godkänd → Orderbekräftelse skickad → Bindande avtal. Ånger endast från
+utskickssteget. Flödesbild/filter, definitioner, datumhistorik och provisionsvyer
+följer detta. Utskick räknas inte som bindande; förskott, avräkning per ursprunglig
+godkännandemånad och satser är oförändrade. Äldre data och datum bevaras.
+Desktop visuellt granskad; interaktiv live-inloggning och fysisk appinstallation
+har inte omtestats. Inga verkliga utskick, avtal eller betalningar sker.
+Vid återgång måste confirmation_sent fortfarande stödjas så att nya ordrar inte
+döljs; se docs/ORDER-PROPOSAL.md. Denna kvittens ändrar bara dokumentation,
+inte dist/, och behöver ingen extra deployment.
+
 ## Orderbekräftelse och bindande avtal · kandidat · 27 oktober 2026
 
 Egen gren codex/order-binding-flow från main
