@@ -17,7 +17,7 @@ Välj **Partner · förhandsvisning** och partner (t.ex. Face2face eller Savera)
 så öppnas orderöversikten direkt. Från intern partnerprofil: **Visa ordrar & status**.
 **Prova nya partnerflödet** väljer också demoidentitet. **Ordrar & resultat** samlar översikt, orderlista och resultatutveckling med
 år/månad/vecka. Ett kompakt flöde visar hur många som nått varje steg;
-**Kvar här** filtrerar på aktuell fas, inklusive kompletteringar efter Godkänd. Lodrätt flöde visar bortfall och uppsägningar mellan varje steg. Klicka på en
+**Kvar här** filtrerar på aktuell fas, inklusive kompletteringar efter Godkänd. Vattenfall på bred skärm visar uppnådda steg med gemensam nollinje, gula väntande ordrar och rosa bortfall. **Steg för steg** växlar till lodrätt vy; mobil använder den automatiskt. Bortfall och uppsägningar kan filtreras vid varje steg. Klicka på en
 order för daterad statushistorik. Saknade äldre datum markeras utan att fyllas i. Tolv statusar följer ordern fram
 till aktivt avtal och eventuellt bortfall. Samma områdesväljare finns även på
 Avtalsfakta, Utbildning och Hjälp & support. Kundtyp styr produktkatalogen;
@@ -142,7 +142,7 @@ npm ci
 npm test
 ```
 
-15 underhållna Node-/DOM-sviter plus JavaScript-syntaxkontroll. Browsermiljö och
+16 underhållna Node-/DOM-sviter plus JavaScript-syntaxkontroll. Browsermiljö och
 kommandon: [qa/README.md](qa/README.md). GitHub Actions kör Node/DOM och centrala
 Chromiumflöden på PR, push till main och manuell start. **QA gate** kräver båda
 jobben. Workflowen använder inga secrets och publicerar inte. Grenskydd måste
@@ -188,3 +188,12 @@ ett separat vänteläge med sparad orsak, utan att räknas som slutligt bortfall
 
 **Så stämmer siffrorna** visar avstämningen för varje fas. Äldre ordrar med
 okänd bortfallsfas finns kvar i totalen men redovisas utanför det avstämda flödet.
+
+## Gemensam Kundrum-stil
+
+Marinblå navigation, gul aktiv huvudmeny, rosa primärknappar och ljusblå
+informationsytor följer Håkans bildreferens från 27 oktober. Samma tema används
+i partner- och internvyer, formulär, produktguide och fristående utbildning.
+Befintlig lokalt levererad Inter-font och material är bevarade.
+Stilen och diagramvisningen kan återställas via Git-revert och ny publicering
+utan att kund-/orderdata, historik eller provisionsvillkor ändras.
