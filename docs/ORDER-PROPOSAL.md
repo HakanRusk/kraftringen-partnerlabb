@@ -18,7 +18,7 @@ Välj Face2face eller Savera som demoidentitet. Appen öppnar automatiskt
    status. Bortfall är separata filter. Stegen är kumulativa och ska inte
    summeras. Klicka på en order för statusdatum; äldre saknade datum markeras.
    Resultatutveckling och äldre rapporter finns i en utfällbar sektion.
-5. Öppna Face2faces Provision: välj månad och kontrollera godkända, bekräftade
+5. Öppna Face2faces Provision: välj månad och kontrollera godkända, bindande avtal
    och berättigad provision. Öppna Så här har vi räknat för gruppavräkning.
    Räkneexemplet januari–april visar 120 000 / 60 000 / 15 000 / 7 500 kr.
    Välj **90 nya Face2face-exempel** för månadsutfallen juli 36 000, augusti
@@ -60,10 +60,22 @@ backup av bilagor/ljud. Gamla sparade uppgifter bevaras.
 
 Produktdefinitioner/antaganden finns samlat i DECISIONS.md P-10.
 
-Nya statusar efter Bekräftad: Väntar på avtalsstart, Bortfall före start,
+Statusar efter Bindande avtal (tidigare Bekräftad): Väntar på avtalsstart, Bortfall före start,
 Aktivt avtal, Bortfall efter start. Äldre sparade ordrar får inga automatiska
 statusändringar; nya rutor kan därför visa 0. Simulera i orderns detaljer.
 
 Kompakt ordervy publicerad som version 5 via PR #73. Föregående version är 4.
 För återgång av just denna ändring används revert av PR #73 och ny publicering.
 Sparade exempelordrar och historik raderas inte av kodåtergång.
+
+
+## Orderbekräftelse och bindande avtal · 27 oktober 2026
+
+Godkänd → Orderbekräftelse skickad → Bindande avtal. Ångrad är en avgrening
+från utskickssteget, före bindande avtal. Därefter används Bortfall före/efter
+start. Utskick är en uttrycklig demosimulering, inget dokument skickas.
+
+Provisionen använder fortfarande godkännandedatum och datum då avtalet blev
+bindande, även över månadsgränser. Utskicksdatum skapar ingen extra provision.
+Tidigare Bekräftad visas som Bindande avtal med samma datum och belopp.
+Äldre ångerhistorik bevaras; saknade utskicksdatum rekonstrueras inte.

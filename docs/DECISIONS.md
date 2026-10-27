@@ -242,19 +242,21 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
   när förslaget är aktivt. URL:ens uttryckliga workspace har företräde. Detta är
   inte autentisering/behörighet; riktig koppling mellan inloggad person och
   partnerorganisation kräver separat backend-/identitetsarbete. Sites-åtkomst oförändrad.
-- Statusar är Utkast, Registrerad, Godkänd, Ej godkänd, Ångrad, Bekräftad.
-  Registrerade ordrar går till godkänd/ej godkänd/ångrad, godkända till bekräftad
-  eller ångrad; bekräftad/ej godkänd kan ångras. Statusbyte är uttrycklig demosimulering.
-  Efter dessa följer Väntar på avtalsstart, Bortfall före start, Aktivt avtal och
-  Bortfall efter start. Bekräftad kan gå till väntar/startbortfall; väntar till
-  aktiv/startbortfall; aktiv till bortfall efter start. Ingen datumstyrd automation.
-  Verkliga partners ska inte själva godkänna ordrar. Inga avtal skickas.
+- Statusflödet enligt Håkans ändring 27 oktober: Registrerad → Godkänd →
+  Orderbekräftelse skickad → Bindande avtal → Väntar på avtalsstart → Aktivt avtal.
+  Ej godkänd är avslag från Registrerad. Ångrad kan endast väljas från
+  Orderbekräftelse skickad, före Bindande avtal. Bindande avtal ersätter namnet
+  Bekräftad. Bindande/väntande kan gå till Bortfall före start; aktiv till
+  Bortfall efter start. Ingen datumstyrd automation eller verkligt utskick.
+  Statusbyte är uttrycklig demosimulering; verkliga partners ska inte själva
+  godkänna ordrar. Äldre statusar, datum och händelsetexter skrivs inte om.
 - Perioden baseras på registreringsdatum, utkast på skapandedatum. ISO-veckor
   måndag–söndag med veckoår. Flödet visar kumulativt hur många som nått
-  registrerad → godkänd → bekräftad → väntar på avtalsstart → aktivt avtal.
+  registrerad → godkänd → orderbekräftelse skickad → bindande avtal →
+  väntar på avtalsstart → aktivt avtal.
   Stegen ska inte summeras. Senare kända steg räknas även till tidigare steg,
   utan att datum fabriceras. Just nu och bortfall filtrerar aktuell status;
-  dessa tio exakta statusar är ömsesidigt uteslutande. Historiska perioder visar
+  dessa elva exakta statusar är ömsesidigt uteslutande. Historiska perioder visar
   dagens läge för periodens registrerade ordrar, inte ett rekonstruerat månadsslut.
 - Ordrar & resultat ersätter tre överlappande ingångar. Provision är separat
   för ersättning/avräkning. Äldre rapportdata nås från utfälld resultatutveckling
@@ -267,21 +269,24 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
   Separat provisionsurval ger juli 36 000, augusti 36 000, september 40 500 och
   oktober 4 500 kr. Gamla ordrar ändras inte; normalyta och kunddemo hålls isär.
 - Face2faces modell är bekräftad av Håkan: 1 500 kr per avtal, garanterat
-  förskott 80 % av varje godkännandemånads avtal. Bekräftelser räknas mot
-  ursprunglig godkännandemånad även när de kommer senare. Månadens nya tillägg
-  är ökningen av max(0, ackumulerad bekräftelseprovision − gruppens förskott).
+  förskott 80 % av varje godkännandemånads avtal. Bindande avtal räknas mot
+  ursprunglig godkännandemånad även när de blir bindande senare. Månadens nya tillägg
+  är ökningen av max(0, ackumulerad provision för bindande avtal − gruppens förskott).
   Tidigare beräknade tillägg får inte räknas igen. Ingen kvittning mellan grupper.
-  Förskott under 80 % slutlig bekräftelsegrad efterskänks vid uttrycklig
+  Förskott under 80 % slutlig andel bindande avtal efterskänks vid uttrycklig
   slutavräkning; inget automatiskt månadsavslut eller återkrav. Modellen är
   ersättningsunderlag, inte en faktura-/betalningsreskontra. Ingen momsmodell antas.
-- Face2faces provisionsvy visar godkännanden och bekräftelser under vald månad,
+- Face2faces provisionsvy visar godkännanden och nya bindande avtal under vald månad,
   samt månadens nya förskott + tillägg. Så här har vi räknat är en initialt
   stängd, tangentbordstillgänglig detaljvy med grupper, månadsutfall och order-ID.
   Ett separat januari–april-räkneexempel ändrar inga ordrar. Nya statussteg
-  sparar approvedAt/confirmedAt en gång. Äldre ordrar utan händelsedatum bevaras
+  sparar approvedAt/confirmedAt en gång. confirmed/confirmedAt behålls som
+  lagringsnycklar för Bindande avtal så att äldre provision är oförändrad.
+  Utskick sparar confirmationSentAt separat och ger ingen bindande provision.
+  Ånger före bindande avtal tar inte tillbaka det garanterade förskottet. Äldre ordrar utan händelsedatum bevaras
   och flaggas som ofullständigt underlag; registreringsdatum får inte ersätta dem.
 - Savera behåller sin tydligt illustrativa regel 30 kr/uppskattad års-MWh på
-  bekräftade ordrar. Regeln är inte ett bekräftat affärsvillkor. Andra partners
+  bindande ordrar. Regeln är inte ett bekräftat affärsvillkor. Andra partners
   visar saknat regelunderlag. Ingen verklig utbetalning eller integration.
 - Kundens typ är Företag, Enskild firma eller Privatperson; kundnamn, nummer,
   post-/besöksadress, e-post och telefon. Namn/typ krävs; övriga kan kompletteras.

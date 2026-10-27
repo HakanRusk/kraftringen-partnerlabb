@@ -173,3 +173,9 @@ Ett äldre utkast med borttaget val måste ändras uttryckligen innan det kan sp
 Inställningarna är lokala demodata, inte serverbehörighet eller delad lagring.
 Utan tilldelade produkter/prislistor spärras nya ordrar. Standard utan sparad
 konfiguration följer partnerprofilens kundkategorier och tidigare prislisturval.
+
+Orderflödet använder nu **Godkänd → Orderbekräftelse skickad → Bindande avtal**.
+Ånger visas som en avgrening efter utskicket och är bara valbar före bindande
+avtal. Provisionsförskott/avräkning utgår fortsatt från Godkänd respektive
+Bindande avtal (tidigare Bekräftad); utskicket i sig ger ingen ytterligare
+provision. Äldre orderdatum, priser och historik bevaras. Inga verkliga utskick.

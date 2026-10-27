@@ -19,3 +19,10 @@ console.log('PASS missing legacy dates and impossible chronology never use regis
 const before=JSON.stringify(rows);calculate(rows,'2026-03');assert.equal(JSON.stringify(rows),before);
 const churned=rows.map(r=>({...r,status:'lost_after_start'}));assert.equal(calculate(churned,'2026-04').amount,7500);
 console.log('PASS read-only calculation and preserved event history after status changes');
+
+const sent=[{id:'sent',status:'confirmation_sent',approvedAt:'2026-01-10',confirmationSentAt:'2026-02-12',confirmedAt:''}];
+assert.equal(calculate(sent,'2026-01').amount,1200);assert.equal(calculate(sent,'2026-02').amount,0);assert.equal(calculate(sent,'2026-02').confirmed,0);
+const withdrawn=sent.map(r=>({...r,status:'withdrawn'}));assert.equal(calculate(withdrawn,'2026-01').amount,1200);assert.equal(calculate(withdrawn,'2026-02').confirmed,0);
+const binding=sent.map(r=>({...r,status:'confirmed',confirmedAt:'2026-03-20'}));assert.equal(calculate(binding,'2026-03').extra,300);assert.equal(calculate(binding,'2026-03').confirmed,1);assert.equal(calculate(binding,'2026-04').extra,0);
+assert.equal(calculate([{status:'confirmation_sent',confirmationSentAt:'2026-02-12'}],'2026-02').missing.length,1);
+console.log('PASS sending and withdrawal do not count as binding; later binding stays in approval cohort');
