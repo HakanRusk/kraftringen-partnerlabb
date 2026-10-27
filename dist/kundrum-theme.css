@@ -181,3 +181,8 @@ dialog { border-color: var(--line); }
 .ow-metrics > .card > strong { color: var(--navy); }
 .ow-metrics > .card.oc-total { background: var(--navy); }
 .ow-metrics > .card.oc-total > strong { color: var(--kundrum-yellow); }
+.ac-button { background: #fff; border-color: #b8ceda; color: var(--navy); }
+.ac-button:hover { background: var(--kundrum-blue); border-color: #8baebe; color: var(--navy); }
+.ac-button.primary { background: var(--kundrum-pink); border-color: var(--kundrum-pink); color: var(--navy); }
+.ac-button.primary:hover { background: #f5adb5; border-color: #f5adb5; color: var(--navy); }
+.kundrum-course .hero-journey li > span { color: var(--kundrum-yellow); }

@@ -241,6 +241,12 @@ async def main():
                 await page.reload()
                 await expect(page.locator('[data-ow-status]')).to_have_count(17)
                 await expect(page.locator('.ow-withdrawal-branch [data-ow-status="flow:loss:confirmation_sent:withdrawn"]')).to_have_count(1)
+                for course in ('elakademin.html','utbildning-preview.html'):
+                    await page.goto(BASE+course)
+                    await expect(page.locator('.site-header')).to_be_visible()
+                    await expect(page.locator('.hero h1')).to_be_visible()
+                    assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (course,width)
+                    await page.screenshot(path=str(OUT/f'report-{course}-{width}.png'),full_page=False)
                 assert not errors, errors
                 print(f'PASS order proposal at {width}px: login, cohort, create, multi-site, confirm, reload, partner, profile, rollback',flush=True)
             except Exception:
