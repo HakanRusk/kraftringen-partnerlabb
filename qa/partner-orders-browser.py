@@ -38,7 +38,31 @@ async def main():
                 stage3=await page.locator('[data-ow-column=confirmation_sent]').bounding_box()
                 gap=await page.locator('[data-ow-between="3–4"]').bounding_box()
                 stage4=await page.locator('[data-ow-column=confirmed]').bounding_box()
-                assert stage3['y']+stage3['height']<=gap['y']+1 and gap['y']+gap['height']<=stage4['y']+1
+                if width >= 1100:
+                    assert stage3['x'] < stage4['x'] and abs(stage3['y']-stage4['y'])<1
+                    # Common baseline, actual proportions and floating segments reach the next total.
+                    geometry=await page.locator('.ow-w-plot').evaluate_all('''plots=>plots.map(p=>{
+                      const box=p.getBoundingClientRect(),bar=p.querySelector('.ow-w-total').getBoundingClientRect(),pending=p.querySelector('.ow-w-pending')?.getBoundingClientRect(),loss=p.querySelector('.ow-w-loss').getBoundingClientRect();
+                      return {base:bar.bottom,height:bar.height,scale:box.height-1,pending:pending?.height||0,loss:loss.height,lossBottom:loss.bottom};
+                    })''')
+                    counts=[(8,1,1),(6,1,0),(5,0,0),(5,2,1),(2,0,1)]
+                    for i,(entered,pending,lost) in enumerate(counts):
+                        g=geometry[i]
+                        assert abs(g['base']-geometry[0]['base'])<1
+                        assert abs(g['height']/g['scale']-entered/8)<.015
+                        assert abs(g['pending']/g['scale']-pending/8)<.015
+                        assert abs(g['loss']/g['scale']-lost/8)<.015
+                        if i<4: assert abs(g['lossBottom']-(geometry[i+1]['base']-geometry[i+1]['height']))<1
+                    await page.locator('[data-ow-view=steps]').click()
+                    await expect(page.locator('.ow-w-plot').first).to_be_hidden()
+                    await expect(page.locator('[data-ow-view=steps]')).to_be_focused()
+                    stage3=await page.locator('[data-ow-column=confirmation_sent]').bounding_box()
+                    stage4=await page.locator('[data-ow-column=confirmed]').bounding_box()
+                    assert stage3['y'] < stage4['y']
+                    await page.locator('[data-ow-view=waterfall]').click()
+                else:
+                    assert stage3['y']+stage3['height']<=gap['y']+1 and gap['y']+gap['height']<=stage4['y']+1
+                    await expect(page.locator('.ow-w-switch')).to_be_hidden()
                 assert await page.locator('[data-ow-balance]').evaluate_all("els=>els.every(el=>el.dataset.difference==='0')")
                 await page.locator('[data-ow-status=\"flow:unknown\"]').click()
                 await expect(page.locator('#ow-order-list tbody tr')).to_have_count(1)

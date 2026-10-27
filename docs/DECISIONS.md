@@ -361,3 +361,14 @@ order direkt från produkt och slå ihop med Avtalsfakta, behåll fördjupningen
   sekretess/behörighet; inga känsliga partnerprislistor får läggas i frontend.
 - Faktiska partnerprislistor, giltighet/avgränsning och produktblad behöver
   lämnas/bekräftas av Håkan innan skarpa villkor kan användas.
+
+## P-12 · Kundrum-stil och vattenfall · 27 oktober 2026
+
+Källa: Håkans bildreferens och begäran att samordna hela appens uttryck.
+Marinblått, vitt, ljusblått, gult och rosa används gemensamt; befintlig navigation
+och material bevaras. Implementationsval: vattenfall på bred skärm med lika
+skala, nollinje och sammanbindande linjer. Gult är kvarvarande arbete (inte
+bortfall), rosa är avslutade bortfall. Sista stegets rosa segment är uppsägning
+efter start. Klickbara antal, fasvis uppsägning, separat okänd bortfallsfas och
+avstämning följer P-10 utan ändrad beräkning. Lodrät vy är valbar på dator och
+automatisk under 1100 px. Ingen ny status, datamigrering eller provisionsregel.

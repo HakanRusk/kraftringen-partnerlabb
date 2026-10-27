@@ -105,3 +105,11 @@ uppladdningsadresser eller credentials läggs i Git. Slutliga video-URL:er
 är leveransresurser, inte en garanti för separat kundbehörighet på CDN.
 Portalens befintliga Sites-åtkomst bevaras. Inga riktiga kundsamtal eller
 kunduppgifter producerades eller publicerades i denna kurs.
+
+## Kundrum-riktning · 27 oktober 2026
+
+Färgpalett och komponentutseende i `dist/kundrum-theme.css` utgår främst från
+Håkans bifogade Kundrum-bild. Bilden har inte kopierats in i källan. Befintlig
+prototyp-logotyp och lokala Inter-font används; inga nya externa typsnitt,
+bildanrop eller spårning har lagts till. Vattenfallet ritas med CSS från samma
+avstämda orderdata som filter och tabell.

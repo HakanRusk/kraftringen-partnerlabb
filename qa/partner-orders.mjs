@@ -278,4 +278,13 @@ test('real fixture reconciles, every displayed count opens precisely its matchin
  }
  assert.equal(JSON.stringify(audit.P.state),before);assert.equal(audit.P.face2faceCommission.calculate(rows,'2026-10').amount,amount);
 });
+test('waterfall view switch preserves filters, cohort and stored data; empty period has finite zero bars',()=>{
+ const before=JSON.stringify(audit.P.state),selected=audit.doc.querySelector('[data-ow-filter=status]').value;
+ audit.doc.querySelector('[data-ow-view=steps]').click();assert.equal(audit.doc.querySelector('.ow-flow').dataset.flowView,'steps');
+ assert.equal(audit.doc.querySelector('[data-ow-filter=status]').value,selected);
+ audit.doc.querySelector('[data-ow-view=waterfall]').click();assert.equal(audit.doc.querySelector('.ow-flow').dataset.flowView,'waterfall');
+ const month=audit.doc.querySelector('[data-ow-filter=month]');month.value='01';month.dispatchEvent(new audit.w.Event('change'));
+ assert.ok([...audit.doc.querySelectorAll('.ow-w-plot')].every(p=>p.style.getPropertyValue('--entered')==='0.0000%'&&!/NaN|Infinity/.test(p.getAttribute('style'))));
+ assert.equal(JSON.stringify(audit.P.state),before);
+});
 audit.dom.window.close();

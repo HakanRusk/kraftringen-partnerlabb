@@ -4,6 +4,18 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Kundrum-stil och vattenfall · kandidat · 27 oktober 2026
+
+Egen gren codex/kundrum-style-waterfall från main f10f38c74af79265312f574a2862bd808698e940.
+Gemensamt tema efter Håkans bildreferens i portal, formulär, produkter, rapporter
+och fristående utbildning. Vattenfall med gemensam skala och nollinje, väntande
+gult och bortfall rosa. Samma filter och avstämning; lodrät vy valbar på dator
+och automatisk på mobil. Ingen ändrad status-, data- eller provisionsmodell.
+Alla 16 Node/DOM-sviter passerar; 44 orderkontroller inklusive tom period och
+vybyte utan data-/filterändring. Desktop visuellt granskat för orderflöde,
+produktguide och orderdialog. Chromium-geometri, mobil och publicering
+kvitteras efter CI. Vattenfallsgeometrin jämförs med verkliga fixturetal.
+
 ## Publicerat lodrätt avstämt flöde · version 11 · 27 oktober 2026
 
 PR #85 integrerad efter grön CI 40516542370 för exakt HEAD
