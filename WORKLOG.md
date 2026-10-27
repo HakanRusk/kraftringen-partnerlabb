@@ -4,6 +4,26 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerat bortfallsflöde · version 10 · 27 oktober 2026
+
+PR #83 integrerad efter grön CI 40513239625 för exakt HEAD
+2782629b682d359c0911dc6def89aaaf45f00106. Publicerad main
+96930445dc65c41df17f58ec7f5ba1d85c525b31 har samma verifierade träd
+866fe5d0ab164308cef57853ce723589c051ccbb. Alla 16 Node/DOM-sviter,
+Chromium 320/390/1440 px och QA gate passerade. Desktop visuellt granskad.
+Bortfall mellan stegen, tidiga/sena uppsägningar, komplettering och orsaker
+verifierade inklusive historik, omladdning, sparfel och bevarad provisionsmodell.
+
+Native succeeded 2026-10-27T13:38:59.888116+00:00 (14:38 svensk tid).
+URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_5591818ed7748191a31b0043e840d014
+Deployment: appgdep_6ae0a96644108191895a188f281b1584
+Privat ägaråtkomst och env revision 0 bevarade. Ludwigs Site orörd.
+Live-inloggning och fysisk appinstallation omtestades inte. Inga verkliga
+kunduppgifter, kontroller, utskick eller betalningar införda. Vid återgång,
+behåll läsningen av nya statusar och cancellationFrom enligt ORDER-PROPOSAL.
+Denna separata kvittens ändrar inte dist/ och behöver ingen ny publicering.
+
 ## Bortfall mellan orderstegen · kandidat · 27 oktober 2026
 
 Egen gren codex/order-loss-transitions från main d021e08f43d7003bc4de611c6943de64ce43c342.
