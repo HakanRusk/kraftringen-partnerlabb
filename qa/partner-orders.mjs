@@ -27,7 +27,7 @@ test('partner catalog defaults, atomic configuration, restricted saves and prese
  assert.equal(P.partnerSetup.saveProfile(config,'vast').ok,false);P.go('product-access');assert.notEqual(P.page,'product-access');
  const history=JSON.stringify(P.state.orderWorkspace);P.role='internal';
  const oldSave=P.save,before=JSON.stringify(P.state.partnerProfiles);P.save=()=>false;assert.equal(P.partnerSetup.saveProfile(config,'vast').ok,false);assert.equal(JSON.stringify(P.state.partnerProfiles),before);P.save=oldSave;
- assert.equal(P.partnerSetup.saveProfile(config,'vast').ok,true);assert.equal(JSON.stringify(P.state.orderWorkspace),history);
+ assert.equal(P.partnerSetup.saveProfile(config,'vast').ok,true);P.selectedPartnerId='vast';P.go('product-access');assert.equal(new URL(w.location.href).searchParams.get('partner'),'vast');assert.equal(doc.querySelector('#pc-access-partner').value,'vast');assert.equal(JSON.stringify(P.state.orderWorkspace),history);
  P.previewPartner('vast');P.go('products');assert.equal(doc.querySelectorAll('.pc-comparison tbody tr').length,1);assert.equal(doc.querySelectorAll('[data-pc-order]').length,1);
  assert.equal(c.snapshot('standard-demo-v1','consumer','Kraftringen Opti'),null);assert.equal(c.snapshot('face2face-demo-v1','consumer','Rörligt månadspris'),null);
  assert.equal(api.saveOrder({customerId:api.customers()[0].id,category:'consumer',product:'Rörligt månadspris',priceListId:'face2face-demo-v1',facilities:[facility]}).ok,false);
