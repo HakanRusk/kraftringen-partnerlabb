@@ -4,6 +4,32 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad produktjämförelse och partnerurval · version 7 · 27 oktober 2026
+
+PR #77 integrerad efter grön CI 40476158456 på exakt HEAD
+3db069a0781ce413cf64a698596b1d3805dae92e. Publicerad main
+43d7b47fd90177f0373d0140fad02b87edc0b6f9 har samma verifierade träd
+ccbf5320c36e67ec922d472e84a0210b5252a0b3. Node/DOM (16 sviter), Chromium
+(inklusive konfiguration/orderflöden vid 320/390/1440 px) och QA gate godkända.
+Tidigare browserkörning stoppade på testets antagande om förvald kundtyp efter
+att båda kategorier aktiverats; testet väljer nu privatkund uttryckligen.
+
+Native succeeded 2026-10-27T08:53:45.263294+00:00, kl. 09:53 svensk tid.
+URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_deb9e1f261b881919fbf4c55c7243ff3
+Deployment: appgdep_6ae0668d5694819185d97e144e3983fa
+get_site_version bekräftar version 7 och samma käll-SHA. Privat ägaråtkomst och
+env revision 0 bevarade; Ludwigs Site orörd. Ingen interaktiv live-inloggning
+eller fysisk appinstallation har omtestats i detta pass.
+
+Kraftringen: Produkter → Partnerns produktsortiment; även fliken Sortiment &
+prislistor på partnerprofilen. Inställningar är lokal demostyrning, inte verklig
+behörighet. Äldre orderhistorik och sparade priser bevaras. Skarpa prislistor,
+saknade produktblad och eventuell serverbehörighet återstår som separata arbeten.
+Återgång: revert av PR #77 och verifierad publicering, alternativt tidigare sparad
+Sites-version 6; behåll orderdata. Denna kvittens ändrar bara dokumentation,
+inte dist/, och orsakar ingen extra publicering.
+
 ## Produktjämförelse och partnerurval · kandidat · 27 oktober 2026
 
 Arbete på codex/product-comparison-access från main
