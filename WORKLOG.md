@@ -4,6 +4,33 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad Kundrum-stil och vattenfall · version 12 · 27 oktober 2026
+
+PR #87 integrerad efter grön CI 40528809087 för exakt HEAD
+e3337c2939729bca6ff517d1a596482df4599094. Publicerad main
+06b671fe08559b9729b08891345062c62153941d har samma verifierade träd
+ebac7a1fed80656cad1f9d6f76a6422016e5238e. Alla 16 Node/DOM-sviter,
+Chromium 320/390/1440 px och QA gate passerade. De 44 orderkontrollerna
+omfattar bevarad data, tom period och byte av visning. Browserkontrollerna
+verifierar gemensam nollinje, verkliga proportioner, flytande avdrag, filter,
+formulär, historik, provision och fristående utbildningssidors mobilbredd.
+Desktop visuellt granskat: vattenfall, produkter, provision, orderdialog,
+utbildning/Elakademin och intern resultatöversikt. Bildreferensen är inte inlagd
+bland publika källfiler. Befintlig lokal font och material bevarade.
+
+Native succeeded 2026-10-27T15:19:18.730749+00:00 (16:19 svensk tid).
+URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_d648f83702b881918b5d907e5381d767
+Deployment: appgdep_6ae0c0e9b85081919f4b23c7bb6d736b
+Efterkontroll bekräftar version 12, ägarroll och privat policyrevision 1.
+Env revision 0 bevarad; Ludwigs Site orörd. Ingen automation aktiverad.
+Live-inloggning, fysisk appinstallation och extern filmuppspelning omtestades
+inte i detta stilpass. Materialfiler/medieadresser och provisionsmodell ändras
+inte. Återställning: revert av PR #87 och publicering av verifierad main;
+ingen datamigrering eller radering av lokal historik behövs.
+Denna separata dokumentationskvittens ändrar inte dist/ och behöver ingen
+ny publicering.
+
 ## Kundrum-stil och vattenfall · kandidat · 27 oktober 2026
 
 Egen gren codex/kundrum-style-waterfall från main f10f38c74af79265312f574a2862bd808698e940.
