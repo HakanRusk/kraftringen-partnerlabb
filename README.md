@@ -17,7 +17,7 @@ Välj **Partner · förhandsvisning** och partner (t.ex. Face2face eller Savera)
 så öppnas orderöversikten direkt. Från intern partnerprofil: **Visa ordrar & status**.
 **Prova nya partnerflödet** väljer också demoidentitet. **Ordrar & resultat** samlar översikt, orderlista och resultatutveckling med
 år/månad/vecka. Ett kompakt flöde visar hur många som nått varje steg;
-**just nu** filtrerar på aktuell status. Bortfall visas mellan stegen, med uppsägningar före start i ett gemensamt band. Klicka på en
+**Kvar här** filtrerar på aktuell fas, inklusive kompletteringar efter Godkänd. Lodrätt flöde visar bortfall och uppsägningar mellan varje steg. Klicka på en
 order för daterad statushistorik. Saknade äldre datum markeras utan att fyllas i. Tolv statusar följer ordern fram
 till aktivt avtal och eventuellt bortfall. Samma områdesväljare finns även på
 Avtalsfakta, Utbildning och Hjälp & support. Kundtyp styr produktkatalogen;
@@ -185,3 +185,6 @@ Bindande avtal omfattar även väntan på avtalsstart; nästa steg är Aktivt av
 
 Kan inte bekräftas är slutligt bortfall före utskick. Behöver kompletteras är
 ett separat vänteläge med sparad orsak, utan att räknas som slutligt bortfall.
+
+**Så stämmer siffrorna** visar avstämningen för varje fas. Äldre ordrar med
+okänd bortfallsfas finns kvar i totalen men redovisas utanför det avstämda flödet.
