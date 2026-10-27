@@ -4,6 +4,26 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerat sammanslaget statusflöde · 27 oktober 2026
+
+PR #81 integrerad efter grön CI 40505437114 för exakt HEAD
+1c88dec7c86cd10e267b291d8ab2990becd6a065. Publicerad main
+18efd4230a493fdfbbf82ab4fd31d657469f3a67 har samma verifierade träd
+aa44d78ee23b5cc3944fc8218cf9bf33578259c5. Alla 16 Node/DOM-sviter,
+Chromium 320/390/1440 px och QA gate passerade. Desktop visuellt granskat.
+Bindande avtal omfattar väntan på avtalsstart; fem steg och fyra bortfallsfilter.
+Legacy-rader, datum, historik och provisionsbelopp bevaras. Återgång via revert
+av PR #81 och ny publicering; ingen destruktiv datamigrering gjordes.
+
+Native succeeded 2026-10-27T12:43:33.066591+00:00.
+URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_ee06bb2af6748191b0240c71c0a2f34c
+Deployment: appgdep_6ae09c693a088191bada868a1b43bffb
+Privat ägaråtkomst och env revision 0 bevarade. Ludwigs Site orörd.
+Live-inloggning och fysisk appinstallation omtestades inte. Inga riktiga
+kunduppgifter, utskick, integrationer eller betalningar tillkom.
+Denna separata kvittens ändrar inte dist/ och behöver ingen ny publicering.
+
 ## Sammanslagen bindandestatus · kandidat · 27 oktober 2026
 
 Gren codex/compact-order-branches från main ee042bda68d03c5875fed4447aed5602ac27decc.
