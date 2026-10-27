@@ -79,3 +79,8 @@ Provisionen använder fortfarande godkännandedatum och datum då avtalet blev
 bindande, även över månadsgränser. Utskicksdatum skapar ingen extra provision.
 Tidigare Bekräftad visas som Bindande avtal med samma datum och belopp.
 Äldre ångerhistorik bevaras; saknade utskicksdatum rekonstrueras inte.
+
+Vid kodåtergång efter denna ändring måste nya confirmation_sent-ordrar bevaras
+och fortsatt kunna visas. Publicera därför en verifierad återgång med stöd för
+lagrade statusar; återställ inte blint version 7 som saknar det nya statusvärdet.
+Byt inte nya utskicksstatusar till bindande avtal och radera inte deras datum.

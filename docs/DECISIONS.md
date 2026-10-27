@@ -265,7 +265,9 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
   Endast uttryckliga datum visas; saknade äldre statusdatum markeras. Nya
   statusbyten loggas i statusHistory och sparfel återställer mutationen.
 - Exempelpaket flow2026 lägger till 90 fiktiva Face2face-ordrar additivt och
-  endast en gång: 30 godkända per månad juli–september med senare bekräftelser.
+  endast en gång: 30 godkända per månad juli–september med avtal som blir
+  bindande senare. Nygenererade exempel har ett separat utskickssteg; redan
+  sparade exempelpaket fylls inte på med antagna datum.
   Separat provisionsurval ger juli 36 000, augusti 36 000, september 40 500 och
   oktober 4 500 kr. Gamla ordrar ändras inte; normalyta och kunddemo hålls isär.
 - Face2faces modell är bekräftad av Håkan: 1 500 kr per avtal, garanterat
