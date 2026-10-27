@@ -60,9 +60,12 @@ backup av bilagor/ljud. Gamla sparade uppgifter bevaras.
 
 Produktdefinitioner/antaganden finns samlat i DECISIONS.md P-10.
 
-Statusar efter Bindande avtal (tidigare Bekräftad): Väntar på avtalsstart, Bortfall före start,
-Aktivt avtal, Bortfall efter start. Äldre sparade ordrar får inga automatiska
-statusändringar; nya rutor kan därför visa 0. Simulera i orderns detaljer.
+Bindande avtal omfattar nu väntan på avtalsstart. Nästa steg är Aktivt avtal,
+med Bortfall före start respektive Bortfall efter start som avgreningar.
+Äldre awaiting_start visas som Bindande avtal men lagrade rader och datum
+bevaras. Historiken märker väntesteget som tidigare status. Provisionen
+använder fortsatt ursprungligt confirmedAt; inga nya datum antas.
+Återgång via revert av sammanslagningsändringen återställer föregående vy.
 
 Kompakt ordervy publicerad som version 5 via PR #73. Föregående version är 4.
 För återgång av just denna ändring används revert av PR #73 och ny publicering.

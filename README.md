@@ -17,7 +17,7 @@ Välj **Partner · förhandsvisning** och partner (t.ex. Face2face eller Savera)
 så öppnas orderöversikten direkt. Från intern partnerprofil: **Visa ordrar & status**.
 **Prova nya partnerflödet** väljer också demoidentitet. **Ordrar & resultat** samlar översikt, orderlista och resultatutveckling med
 år/månad/vecka. Ett kompakt flöde visar hur många som nått varje steg;
-**just nu** filtrerar på aktuell status. Bortfall visas separat. Klicka på en
+**just nu** filtrerar på aktuell status. Bortfall visas under respektive steg. Klicka på en
 order för daterad statushistorik. Saknade äldre datum markeras utan att fyllas i. Tio statusar följer ordern fram
 till aktivt avtal och eventuellt bortfall. Samma områdesväljare finns även på
 Avtalsfakta, Utbildning och Hjälp & support. Kundtyp styr produktkatalogen;
@@ -179,3 +179,6 @@ Orderflödet använder nu **Godkänd → Orderbekräftelse skickad → Bindande 
 avtal. Provisionsförskott/avräkning utgår fortsatt från Godkänd respektive
 Bindande avtal (tidigare Bekräftad); utskicket i sig ger ingen ytterligare
 provision. Äldre orderdatum, priser och historik bevaras. Inga verkliga utskick.
+
+Bindande avtal omfattar även väntan på avtalsstart; nästa steg är Aktivt avtal.
+Äldre väntestatus visas sammanslagen utan att ändra sparad historik eller provision.

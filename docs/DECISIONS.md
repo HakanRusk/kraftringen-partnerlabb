@@ -243,21 +243,25 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
   inte autentisering/behörighet; riktig koppling mellan inloggad person och
   partnerorganisation kräver separat backend-/identitetsarbete. Sites-åtkomst oförändrad.
 - Statusflödet enligt Håkans ändring 27 oktober: Registrerad → Godkänd →
-  Orderbekräftelse skickad → Bindande avtal → Väntar på avtalsstart → Aktivt avtal.
+  Orderbekräftelse skickad → Bindande avtal → Aktivt avtal.
   Ej godkänd är avslag från Registrerad. Ångrad kan endast väljas från
   Orderbekräftelse skickad, före Bindande avtal. Bindande avtal ersätter namnet
-  Bekräftad. Bindande/väntande kan gå till Bortfall före start; aktiv till
+  Bekräftad och omfattar väntan på avtalsstart. Bindande kan gå till Bortfall före start; aktiv till
   Bortfall efter start. Ingen datumstyrd automation eller verkligt utskick.
   Statusbyte är uttrycklig demosimulering; verkliga partners ska inte själva
   godkänna ordrar. Äldre statusar, datum och händelsetexter skrivs inte om.
 - Perioden baseras på registreringsdatum, utkast på skapandedatum. ISO-veckor
   måndag–söndag med veckoår. Flödet visar kumulativt hur många som nått
-  registrerad → godkänd → orderbekräftelse skickad → bindande avtal →
-  väntar på avtalsstart → aktivt avtal.
+  registrerad → godkänd → orderbekräftelse skickad → bindande avtal → aktivt avtal.
   Stegen ska inte summeras. Senare kända steg räknas även till tidigare steg,
   utan att datum fabriceras. Just nu och bortfall filtrerar aktuell status;
-  dessa elva exakta statusar är ömsesidigt uteslutande. Historiska perioder visar
+  dessa tio exakta statusar är ömsesidigt uteslutande. Historiska perioder visar
   dagens läge för periodens registrerade ordrar, inte ett rekonstruerat månadsslut.
+- Bortfallsfilter ligger under respektive steg: Ej godkänd under Godkänd,
+  Ångrad under Orderbekräftelse skickad, Bortfall före start under Bindande avtal
+  och Bortfall efter start under Aktivt avtal. Äldre awaiting_start visas som
+  confirmed utan omskrivning av lagrade rader eller historiska datum. Gamla
+  väntesteg visas i historiken som tidigare status; provisionen ändras inte.
 - Ordrar & resultat ersätter tre överlappande ingångar. Provision är separat
   för ersättning/avräkning. Äldre rapportdata nås från utfälld resultatutveckling
   och blandas inte med den nya orderstatistiken. order-list-länkar fungerar fortsatt.
