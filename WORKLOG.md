@@ -4,6 +4,24 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Produktjämförelse och partnerurval · kandidat · 27 oktober 2026
+
+Arbete på codex/product-comparison-access från main
+b93b8931c3f528300bf53b77315e57d7156c6774 (PR #76 integrerad efter grön CI).
+Kompakta jämförelsetabeller och lokala SVG-ikoner i produktguiden. Kraftringens
+vy har partnerurval för kundkategorier, produkter och prislistor via befintlig
+atomisk profilsparning. Produktguide och orderval följer samma konfiguration.
+Gamla registrerade prisreferenser/historik behålls; borttagna val i utkast markeras.
+
+Lokal npm test: 16 sviter godkända. Utökad orderkontroll: 33 scenarier inklusive
+sparfel, partnerisolering, tomt urval, omladdning och bevarad historik. Desktop
+visuellt granskad: hela företagstabellen ryms i den använda 1350×926-vyn.
+Chromiumflödet har utökats med intern konfiguration, omladdning, produktgenvägar
+samt kontroll att tabellen ryms vid 1440×900. CI och publiceringskvittens följer.
+Endast fiktiva priser och lokal demostyrning; inget serverbehörighetssystem.
+Ingen ändring av scheman, tjänster eller Ludwigs Site. Återgång: revert av denna
+ändrings-PR följt av verifierad publicering; sparade orderdata behöver inte raderas.
+
 ## Publicerad produktguide · version 6 · 27 oktober 2026
 
 PR #75 integrerad efter grön CI 40468702361 för HEAD

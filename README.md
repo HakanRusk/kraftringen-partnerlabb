@@ -163,3 +163,13 @@ aktiveras separat för att tekniskt kräva kontrollen; status finns i GITHUB-STA
 
 Historik arkiveras; nya beslut skrivs en gång i beslutsdokumentet och länkas
 från övrigt arbetsminne. Arkivets gamla instruktioner gäller inte framför aktuella regler.
+
+Produktguiden har en kompakt jämförelsetabell med ikoner och genvägar till
+produktkorten. I Kraftringens vy: **Produkter → Partnerns produktsortiment**
+(även **Sortiment & prislistor** på partnerns flikrad) väljs kundkategorier,
+produkter och prislistor per säljpartner. Valen styr produktguiden och nya
+order/utkast; äldre registrerade ordrar och prisögonblicksbilder behålls.
+Ett äldre utkast med borttaget val måste ändras uttryckligen innan det kan sparas.
+Inställningarna är lokala demodata, inte serverbehörighet eller delad lagring.
+Utan tilldelade produkter/prislistor spärras nya ordrar. Standard utan sparad
+konfiguration följer partnerprofilens kundkategorier och tidigare prislisturval.

@@ -137,7 +137,9 @@
       if (selectedType === 'sales' && !salesAudiences.length) return { ok: false, field: 'salesAudience', error: 'Välj vilka kunder partnern säljer till.' };
       const mode = payload?.crmMode ?? crmMode(existing);
       if (selectedType === 'sales' && !crmModes.includes(mode)) return { ok: false, field: 'crmMode', error: 'Välj eget CRM eller Partnerportalen som CRM.' };
-      return { ok: true, profile: { name, type: existing?.type || selectedType, salesAudiences, ...(selectedType === 'sales' ? { crmMode: mode } : {}) } };
+      const catalog = Object.prototype.hasOwnProperty.call(payload||{},'catalogAccess') ? P.productCatalog?.validateAccess(payload.catalogAccess) : null;
+      if (catalog && !catalog.ok) return catalog;
+      return { ok: true, profile: { ...(catalog?.ok ? {catalogAccess:catalog.value} : {}), name, type: existing?.type || selectedType, salesAudiences, ...(selectedType === 'sales' ? { crmMode: mode } : {}) } };
     }
 
     function saveProfile(payload, id) {
