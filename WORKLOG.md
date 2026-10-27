@@ -4,6 +4,27 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad kompakt ordervy · version 5 · 26 oktober 2026
+
+PR #73 integrerad efter grön CI 40356031861 för HEAD
+1bb3bb7c29199ef4ce75ed9f222a06ae1578adbf. Publicerad main
+0546d9741eddc9b976110c93ae2bec796d746417 har samma verifierade träd
+f81a14baee487ea3f76198524eea7bed26f25e2e.
+16 Node-/DOM-sviter och hela Chromium-paketet passerar, inklusive de nya
+order-/provisionsflödena vid 320/390/1440 px. Lokal visuell kontroll av
+flöde och daterad historik genomförd. Livepublicering verifierad av Sites;
+interaktiv live-inloggning och fysisk appinstallation inte omtestade.
+
+Native succeeded 2026-10-26T16:14:08.652855+00:00, kl. 17:14 svensk tid.
+URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_c0fdef7837388191bb9a82beae400084
+Deployment: appgdep_6adf7c3e91f08191bab0f7afa19acf61
+Privat ägaråtkomst, policyrevision 1 och env revision 0 bevarade.
+Inga ändringar till Ludwigs Site. Föregående Sites-version 4 och Git-historik
+finns kvar. Kodåtergång sker genom revert-PR, verifiering och ny publicering;
+den raderar inte redan sparade exempelordrar. Denna kvittens ändrar bara
+anvisningar/dokumentation; dist/ är oförändrad och ingen extra deployment görs.
+
 ## Kompakt orderflöde och gemensam resultatvy · 26 oktober 2026
 
 Eget auktoriserat arbete på codex/compact-order-flow från main 3e20264.
