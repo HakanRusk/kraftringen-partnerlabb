@@ -41,3 +41,22 @@ registrera komplett fiktiv order. Orderdetaljen visar den sparade prisreferensen
 Välj Företag och Direkt: offertunderlag saknas och inga nollpriser visas.
 Byt till Savera: Face2faces lista ska inte visas. Gamla Avtalsfakta-länkar ska
 öppna guiden med bevarade fördjupningslänkar. Fastighetspartner bevarar sin vy.
+
+## Jämförelse och partnerurval · 27 oktober 2026
+
+Jämförelsetabellerna sammanfattar samma källunderlag som produktkorten: prismodell,
+lämplig kund, påverkansmöjlighet, risk och avgift/påslag enligt vald exempelprislista.
+Direkt och offertpriser markeras fortfarande som saknat underlag. Ikonerna är
+lokala dekorativa SVG:er; produktnamnet är alltid utskrivet. Tabellen har egen
+sidledsrullning på små skärmar och klickbara genvägar till detaljerna.
+
+`salesAudiences` förblir enda källan för kundkategorier. `partnerProfiles[id].catalogAccess`
+innehåller produktnycklar (`kategori:namn`) och prislist-ID:n. Saknad konfiguration
+använder tidigare standardurval; explicit tom eller skadad konfiguration ger inget
+urval. Alla listor är fiktiva, och internrollen kan uttryckligen tilldela valfri
+exempellista. Publik frontend/rollväljare är inte säker åtkomstkontroll.
+
+Sparning använder partnerprofilens befintliga atomiska lagring och konfliktspärr.
+Orderns sparfunktion validerar kategori, produkt och prislista tillsammans;
+historik och registrerade prisreferenser skrivs inte om. Borttagna val i äldre
+utkast visas som inte tillgängliga i stället för att bytas tyst.

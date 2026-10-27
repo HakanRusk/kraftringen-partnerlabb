@@ -19,6 +19,24 @@ const customer={name:'Fiktiv <img src=x> Kund',type:'private',identifier:'',post
 const facility={installationId:'735999999999999998',annualKwh:'12000',area:'SE4',network:'DEM',profile:Array(12).fill('1000')};
 let draft;
 test('proposal workspace and period cards are partner scoped',()=>{assert.equal(P.role,'partner');assert.equal(P.partner,'vast');assert.equal(doc.querySelectorAll('[data-ow-status]').length,11);assert.ok(doc.querySelector('#nav [data-go="order-commission"]'));assert.equal(api.orders().length,110);assert.ok(api.orders().every(r=>r.partner==='vast'));});
+test('partner catalog defaults, atomic configuration, restricted saves and preserved history',()=>{
+ const c=P.productCatalog;
+ assert.deepEqual(Array.from(c.allowedCategories('vast')),['consumer']);assert.deepEqual(Array.from(c.allowedCategories('syd')),['business']);
+ P.go('products');assert.equal(doc.querySelectorAll('.pc-comparison tbody tr').length,3);assert.equal(doc.querySelectorAll('.pc-comparison .pc-icon').length,3);assert.equal(doc.querySelector('[data-pc-category="business"]'),null);
+ const config={name:P.getPartner('vast').name,partnerType:'sales',salesAudiences:['consumer'],crmMode:P.getPartner('vast').crmMode,catalogAccess:{products:[c.key('consumer','Kraftringen Opti')],priceLists:['face2face-demo-v1']}};
+ assert.equal(P.partnerSetup.saveProfile(config,'vast').ok,false);P.go('product-access');assert.notEqual(P.page,'product-access');
+ const history=JSON.stringify(P.state.orderWorkspace);P.role='internal';
+ const oldSave=P.save,before=JSON.stringify(P.state.partnerProfiles);P.save=()=>false;assert.equal(P.partnerSetup.saveProfile(config,'vast').ok,false);assert.equal(JSON.stringify(P.state.partnerProfiles),before);P.save=oldSave;
+ assert.equal(P.partnerSetup.saveProfile(config,'vast').ok,true);P.selectedPartnerId='vast';P.go('product-access');assert.equal(new URL(w.location.href).searchParams.get('partner'),'vast');assert.equal(doc.querySelector('#pc-access-partner').value,'vast');assert.equal(JSON.stringify(P.state.orderWorkspace),history);
+ P.previewPartner('vast');P.go('products');assert.equal(doc.querySelectorAll('.pc-comparison tbody tr').length,1);assert.equal(doc.querySelectorAll('[data-pc-order]').length,1);
+ assert.equal(c.snapshot('standard-demo-v1','consumer','Kraftringen Opti'),null);assert.equal(c.snapshot('face2face-demo-v1','consumer','Rörligt månadspris'),null);
+ assert.equal(api.saveOrder({customerId:api.customers()[0].id,category:'consumer',product:'Rörligt månadspris',priceListId:'face2face-demo-v1',facilities:[facility]}).ok,false);
+ assert.equal(c.lists('syd').length,2);P.role='internal';
+ assert.equal(P.partnerSetup.saveProfile({...config,catalogAccess:{products:[],priceLists:[]}},'vast').ok,true);P.previewPartner('vast');P.go('products');assert.equal(c.selected(),'');assert.equal(doc.querySelectorAll('[data-pc-order]').length,0);api.startProductOrder({category:'consumer',product:'Kraftringen Opti',priceListId:'face2face-demo-v1'});assert.equal(doc.querySelector('#ow-order-form'),null);
+ // Explicitly enable both audiences for the existing all-product regression scenarios.
+ P.role='internal';for(const id of ['vast','syd']){const partner=P.getPartner(id);assert.equal(P.partnerSetup.saveProfile({name:partner.name,partnerType:'sales',crmMode:partner.crmMode,salesAudiences:['consumer','business'],catalogAccess:{products:c.items.map(p=>c.key(p.category,p.name)),priceLists:['standard-demo-v1',id==='vast'?'face2face-demo-v1':'savera-demo-v1']}},id).ok,true);}
+ P.previewPartner('vast');
+});
 test('catalog categories, scoped price lists and old facts links converge',()=>{
  const catalog=P.productCatalog;assert.equal(catalog.items.length,10);assert.deepEqual(Object.values(catalog.products).map(v=>v.length),[3,7]);
  assert.deepEqual(Array.from(catalog.lists('vast'),l=>l.id),['standard-demo-v1','face2face-demo-v1']);
@@ -140,3 +158,21 @@ test('explicit legacy link retains rollback and data',()=>{assert.equal(legacy.d
 standard.dom.window.close();direct.dom.window.close();legacy.dom.window.close();
 for(const ctx of [dom,reload.dom,bad.dom,demo.dom])ctx.window.close();
 console.log(`${checks} order proposal checks passed.`);
+
+const restricted=await boot();
+const r=restricted.P,rc=r.productCatalog,ra=r.orderWorkspace,rd=restricted.doc;
+const lockedDraft=ra.saveOrder({customerId:ra.customers()[0].id,category:'consumer',product:'Rörligt månadspris',priceListId:'standard-demo-v1',facilities:[facility]});
+assert.equal(lockedDraft.ok,true);
+const lockedHistory=JSON.stringify(r.state.orderWorkspace);r.role='internal';
+assert.equal(r.partnerSetup.saveProfile({name:r.getPartner('vast').name,partnerType:'sales',crmMode:r.getPartner('vast').crmMode,salesAudiences:['consumer'],catalogAccess:{products:[rc.key('consumer','Kraftringen Opti')],priceLists:['face2face-demo-v1']}},'vast').ok,true);
+const restrictedSaved=restricted.w.localStorage.getItem('partnerlabb.portal.v2');
+r.previewPartner('vast');r.go('overview');
+const reloadedAccess=await boot(undefined,restrictedSaved);
+test('catalog configuration reloads; revoked draft and historical prices stay unchanged',()=>{
+ assert.equal(JSON.stringify(r.state.orderWorkspace),lockedHistory);
+ assert.deepEqual(Array.from(reloadedAccess.P.productCatalog.availableProducts('consumer')),['Kraftringen Opti']);
+ assert.deepEqual(Array.from(reloadedAccess.P.productCatalog.lists(),l=>l.id),['face2face-demo-v1']);
+ const row=ra.orders().find(o=>o.id===lockedDraft.id);assert.equal(ra.saveOrder(row,row.id).ok,false);assert.equal(JSON.stringify(r.state.orderWorkspace),lockedHistory);
+ r.state.partnerProfiles.vast.catalogAccess={};assert.equal(rc.availableProducts('consumer').length,0);assert.equal(rc.lists().length,0);
+});
+restricted.dom.window.close();reloadedAccess.dom.window.close();
