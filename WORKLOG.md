@@ -4,6 +4,20 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Produkter, prislistor och direkt orderstart · 27 oktober 2026
+
+Eget auktoriserat arbete på codex/products-price-lists från main 4fb9534.
+Föregående dokumentations-PR #74 integrerad efter grön CI 40357377145.
+Produkter samlar orderkatalog och säljpartnerns Avtalsfakta. Källor,
+redaktionella förslag och saknade produktblad anges. Filmer/material bevaras.
+Prislistval på sida och order, förifylld produktstart, versionerad prisreferens
+på nya ordrar. Alla belopp är märkta fiktiva; konfidentiella priser införs inte.
+
+31 riktade order-/katalogkontroller passerar lokalt. Full Node-/DOM-körning
+samt Chromium-CI för 320/390/1440 px genomförs före integration. Lokal
+Chromium visar samlad flik, kategorier och markerade exempelpriser.
+Ingen ny publicering kvitteras före native succeeded.
+
 ## Publicerad kompakt ordervy · version 5 · 26 oktober 2026
 
 PR #73 integrerad efter grön CI 40356031861 för HEAD

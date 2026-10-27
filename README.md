@@ -32,6 +32,26 @@ ett komplett daterat underlag. Äldre resultatrapporter finns under den
 utfällbara resultatutvecklingen och blandas inte med orderstatistiken.
 Savera har fortsatt illustrativa villkor. Alla orderdata är exempel; inga betalningar görs.
 
+## Produkter och prislistor
+
+**Produkter** samlar produktguiden och säljpartnerns tidigare Avtalsfakta.
+Välj Konsumenter/Företag och prislista. Varje produkt visar beskrivning,
+passande kund, kundvärden, säljargument och länkar till befintliga filmer,
+produktspecifikationer och villkor. **Skapa order** förifyller produkt,
+kategori och prislista; kund kan skapas i samma flöde. Äldre Avtalsfakta-länkar
+fungerar; fastighetspartnerns avgränsade avtalsfakta bevaras.
+
+Alla belopp är tydligt märkta fiktiva exempel, inte webbplatsens skarpa priser.
+Standard visas för alla; Face2face/Savera har varsin separat exempelprislista.
+Urvalet är en demofunktion, inte serverbaserad behörighet. Individuella
+företagsprodukter visar Prisunderlag saknas. Nya ordrar sparar list-ID,
+version, datum och priskomponenter; registrerade ordrar ändras inte när
+prislistvalet ändras. Äldre ordrar får inga påhittade prisreferenser.
+
+Komplettera med godkända prislistor, giltighet, omfattning, moms och fulla
+prisformler samt produktblad för framför allt Kraftringen Direkt och
+företagens kvartspris. Källor och avgränsningar: docs/PRODUCT-CATALOG.md.
+
 ## Skapa partner och välj CRM
 
 I Kraftringens interna demovy: **Partners → Ny partner**. Välj partnertyp;

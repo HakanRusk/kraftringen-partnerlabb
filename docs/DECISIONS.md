@@ -311,3 +311,30 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
   återställer mutation. Normal-/inflyttningsdemoisolering och JSON-export bevaras.
 
 Testinstruktion och återställning: [ORDER-PROPOSAL.md](ORDER-PROPOSAL.md).
+
+## P-11 · Gemensam produktguide och prislistor · 27 oktober 2026
+
+Håkan beställde Produkter med de tio produkterna från P-10, kategorierna
+Konsumenter/Företag, målgrupp, kundvärden och säljargument. Tillägg: skapa
+order direkt från produkt och slå ihop med Avtalsfakta, behåll fördjupningen.
+
+- Samma katalog driver produktvyn och orderformuläret. Äldre Avtalsfakta-länkar
+  blir alias, förutom fastighetspartnerns avgränsade befintliga material.
+  Äldre Fastpris/Vintersäkrat nås som utbildningsfördjupning, inte nya orderval.
+- Beskrivning skiljs från redaktionellt förslag till målgrupp/argument. Befintligt
+  bekräftat utbildningsunderlag används där webben bara har allmän beskrivning.
+  Direkt saknar produktdefinition och markeras; inga egenskaper antas av namnet.
+- Prislistorna är uttryckligen fiktiva. Standard för alla och varsitt separat
+  Face2face-/Savera-exempel. Inga riktiga affärsvillkor införs. Individuella
+  företagsprodukter saknar belopp och visar offertbehov, aldrig påhittad nolla.
+- Priskomponenter: månadsavgift per anläggning, fast påslag, momsmarkering,
+  tillkommande energidel/rörliga kostnader och exkluderat elnät/energiskatt.
+  Inget historiskt spotpris görs om till bindande pris eller totalkostnad.
+- Ny order tar vald produkt/kategori/lista. Kunder skapas i befintlig dialog
+  utan att produktvalet förloras. Prisreferens (ID/version/datum/komponenter)
+  sparas som kopia; senare listbyte påverkar inte registrerad order. Utkast
+  kan uttryckligen ändras. Äldre ordrar kompletteras inte automatiskt.
+- Partnerurval valideras även vid sparning. Det är lokal demologik, inte
+  sekretess/behörighet; inga känsliga partnerprislistor får läggas i frontend.
+- Faktiska partnerprislistor, giltighet/avgränsning och produktblad behöver
+  lämnas/bekräftas av Håkan innan skarpa villkor kan användas.

@@ -49,7 +49,7 @@
       return `<article class="card"><span class="eyebrow">${segment==='business'?'FÖRETAG':'KONSUMENT'}</span><h2>${e(name)}</h2><p>${e(body)}</p>${gap?`<p class="product-facts-gap"><strong>Underlag behövs:</strong> ${e(gap)}.</p>`:''}<details><summary>Fakta, villkor & film</summary><p><a href="${root+url}" target="_blank" rel="noopener">Kraftringens källa ↗</a></p><p><a href="${root+(segment==='business'?'foretag':'privat')+'/el/vara-elavtal/avtalsvillkor/'}" target="_blank" rel="noopener">Aktuella avtalsvillkor ↗</a></p><p><a href="utbildning-preview/produktspecifikationer.pdf#page=${page}" target="_blank" rel="noopener">Säljarens produktspecifikation · sida ${page} ↗</a></p><p><a href="${e(lessonHref(lesson,segment))}">Se film: ${e(name)} · hela produktlektionen →</a></p><small>Filmen och övningarna förklarar produktmodellen. Aktuell offert, prisbilaga och avtal styr villkoren.</small></details></article>`;
     }).join('')}</div></div>`;
   }
-  P.productFacts={rows,segments};
+  P.productFacts={rows,segments,lessons,lessonHref};
   P.register('product-facts',{render,bind:()=>document.querySelectorAll('[data-fact-segment]').forEach(button=>button.addEventListener('click',()=>{
     if(segments().includes(button.dataset.factSegment))selected=button.dataset.factSegment;
     P.render();document.querySelector('[data-fact-segment][aria-pressed="true"]')?.focus();
