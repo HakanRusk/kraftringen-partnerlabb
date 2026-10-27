@@ -61,7 +61,7 @@ backup av bilagor/ljud. Gamla sparade uppgifter bevaras.
 Produktdefinitioner/antaganden finns samlat i DECISIONS.md P-10.
 
 Bindande avtal omfattar nu väntan på avtalsstart. Nästa steg är Aktivt avtal,
-med Bortfall före start respektive Bortfall efter start som avgreningar.
+med Uppsagd före start respektive Uppsagd efter start som avgreningar.
 Äldre awaiting_start visas som Bindande avtal men lagrade rader och datum
 bevaras. Historiken märker väntesteget som tidigare status. Provisionen
 använder fortsatt ursprungligt confirmedAt; inga nya datum antas.
@@ -87,3 +87,13 @@ Vid kodåtergång efter denna ändring måste nya confirmation_sent-ordrar bevar
 och fortsatt kunna visas. Publicera därför en verifierad återgång med stöd för
 lagrade statusar; återställ inte blint version 7 som saknar det nya statusvärdet.
 Byt inte nya utskicksstatusar till bindande avtal och radera inte deras datum.
+
+## Bortfall mellan stegen · 27 oktober 2026
+
+Ej godkänd 1–2, Kan inte bekräftas 2–3, Ångrad 3–4 och Uppsagd efter start
+visas efter 5. Uppsagd före start spänner över 1–4 och kan väljas från alla
+pågående statusar före aktivering. Behöver kompletteras är ett eget vänteläge.
+Orsaker sparas i historiken; återgång till Godkänd behåller godkännandedatum.
+Äldre data ändras inte. Vid återgång måste cannot_confirm, needs_completion och
+cancellationFrom fortfarande läsas så att nya ordrar inte försvinner eller räknas
+som bindande av misstag. Återställ i första hand layouten, inte datastödet.

@@ -246,8 +246,9 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
   Orderbekräftelse skickad → Bindande avtal → Aktivt avtal.
   Ej godkänd är avslag från Registrerad. Ångrad kan endast väljas från
   Orderbekräftelse skickad, före Bindande avtal. Bindande avtal ersätter namnet
-  Bekräftad och omfattar väntan på avtalsstart. Bindande kan gå till Bortfall före start; aktiv till
-  Bortfall efter start. Ingen datumstyrd automation eller verkligt utskick.
+  Bekräftad och omfattar väntan på avtalsstart. Uppsagd före start kan väljas från Registrerad, Godkänd,
+  Behöver kompletteras, Orderbekräftelse skickad och Bindande avtal.
+  Aktivt avtal kan endast gå till Uppsagd efter start. Ingen datumstyrd automation eller verkligt utskick.
   Statusbyte är uttrycklig demosimulering; verkliga partners ska inte själva
   godkänna ordrar. Äldre statusar, datum och händelsetexter skrivs inte om.
 - Perioden baseras på registreringsdatum, utkast på skapandedatum. ISO-veckor
@@ -255,13 +256,20 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
   registrerad → godkänd → orderbekräftelse skickad → bindande avtal → aktivt avtal.
   Stegen ska inte summeras. Senare kända steg räknas även till tidigare steg,
   utan att datum fabriceras. Just nu och bortfall filtrerar aktuell status;
-  dessa tio exakta statusar är ömsesidigt uteslutande. Historiska perioder visar
+  dessa tolv exakta statusar är ömsesidigt uteslutande. Historiska perioder visar
   dagens läge för periodens registrerade ordrar, inte ett rekonstruerat månadsslut.
-- Bortfallsfilter ligger under respektive steg: Ej godkänd under Godkänd,
-  Ångrad under Orderbekräftelse skickad, Bortfall före start under Bindande avtal
-  och Bortfall efter start under Aktivt avtal. Äldre awaiting_start visas som
-  confirmed utan omskrivning av lagrade rader eller historiska datum. Gamla
-  väntesteg visas i historiken som tidigare status; provisionen ändras inte.
+- Bortfallsfilter visas mellan stegen: Ej godkänd 1–2, Kan inte bekräftas 2–3,
+  Ångrad 3–4, Uppsagd efter start efter 5. Uppsagd före start visas i ett band
+  över steg 1–4. Nya uppsägningar sparar cancellationFrom, så att tidig
+  uppsägning inte räknas som bindande. Legacy-bortfall behåller tidigare tolkning.
+- Behöver kompletteras är ett vänteläge efter Godkänd, inget slutligt bortfall.
+  Orsak krävs för komplettering/ej bekräftbar order och sparas i daterad historik:
+  nätavtal saknas, felaktig adress, kreditbedömning eller annat. Komplettering
+  kan återgå till Godkänd med samma approvedAt; Kan inte bekräftas är terminal.
+  Ingen verklig kreditkontroll eller utskick sker. Provisionsformeln ändras inte;
+  saknat bindandedatum för en tidig uppsägning är inte ett datakvalitetsfel.
+- Äldre awaiting_start visas som confirmed utan omskrivning av lagrade rader
+  eller historiska datum. Gamla väntesteg visas som tidigare status i historiken.
 - Ordrar & resultat ersätter tre överlappande ingångar. Provision är separat
   för ersättning/avräkning. Äldre rapportdata nås från utfälld resultatutveckling
   och blandas inte med den nya orderstatistiken. order-list-länkar fungerar fortsatt.

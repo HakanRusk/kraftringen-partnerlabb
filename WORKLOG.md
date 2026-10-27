@@ -4,6 +4,18 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Bortfall mellan orderstegen · kandidat · 27 oktober 2026
+
+Egen gren codex/order-loss-transitions från main d021e08f43d7003bc4de611c6943de64ce43c342.
+Håkan godkände förslaget med bortfall mellan stegen, uppsägningar före start
+över steg 1–4 samt separat kompletteringsläge. Nya orsaker i daterad historik,
+tidig uppsägning bevarar faktiskt uppnått steg, godkännande/bindandedatum och
+provisionsformel oförändrade. Ingen destruktiv migrering eller verklig kontroll.
+Alla 16 Node/DOM-sviter passerade, inklusive 40 orderkontroller. Testat tidig
+uppsägning från varje tillåtet steg, komplettering/återgång, orsakskrav, sparfel,
+omladdning och oförändrad provision. Desktop visuellt granskad. Chromium/CI
+och publicering återstår vid denna kandidatkvittens.
+
 ## Publicerat sammanslaget statusflöde · 27 oktober 2026
 
 PR #81 integrerad efter grön CI 40505437114 för exakt HEAD

@@ -13,7 +13,8 @@
   function calculate(rows,month){
     if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(month))throw new Error('Ogiltig månad');
     const end=endOfMonth(month),previousEnd=endOfMonth(priorMonth(month));
-    const missing=rows.filter(r=>(['approved','confirmation_sent','confirmed','awaiting_start','active','lost_before_start','lost_after_start'].includes(r.status)&&!validDate(r.approvedAt))||(['confirmed','awaiting_start','active','lost_before_start','lost_after_start'].includes(r.status)&&!validDate(r.confirmedAt))||(r.confirmedAt&&(!validDate(r.approvedAt)||!validDate(r.confirmedAt)||r.confirmedAt<r.approvedAt)));
+    const earlyCancellation=r=>r.status==='lost_before_start'&&['registered','approved','needs_completion','confirmation_sent'].includes(r.cancellationFrom);
+    const missing=rows.filter(r=>(['approved','needs_completion','cannot_confirm','confirmation_sent','confirmed','awaiting_start','active','lost_before_start','lost_after_start'].includes(r.status)&&!(earlyCancellation(r)&&r.cancellationFrom==='registered')&&!validDate(r.approvedAt))||(['confirmed','awaiting_start','active','lost_before_start','lost_after_start'].includes(r.status)&&!earlyCancellation(r)&&!validDate(r.confirmedAt))||(r.confirmedAt&&(!validDate(r.approvedAt)||!validDate(r.confirmedAt)||r.confirmedAt<r.approvedAt)));
     const approved=rows.filter(r=>validDate(r.approvedAt)&&r.approvedAt<=end);
     const confirmed=r=>validDate(r.confirmedAt)&&r.confirmedAt>=r.approvedAt;
     const keys=[...new Set(approved.map(r=>r.approvedAt.slice(0,7)))].sort();
