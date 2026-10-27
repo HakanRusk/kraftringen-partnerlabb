@@ -18,7 +18,7 @@ let cid,oid;
 const customer={name:'Fiktiv <img src=x> Kund',type:'private',identifier:'',postalAddress:'Exempelgatan 5',visitAddress:'Exempelvägen 2',email:'test@kund.example',phone:'0700000000'};
 const facility={installationId:'735999999999999998',annualKwh:'12000',area:'SE4',network:'DEM',profile:Array(12).fill('1000')};
 let draft;
-test('proposal workspace and period cards are partner scoped',()=>{assert.equal(P.role,'partner');assert.equal(P.partner,'vast');assert.equal(doc.querySelectorAll('[data-ow-status]').length,13);assert.ok(doc.querySelector('#nav [data-go="order-commission"]'));assert.equal(api.orders().length,110);assert.ok(api.orders().every(r=>r.partner==='vast'));});
+test('proposal workspace and period cards are partner scoped',()=>{assert.equal(P.role,'partner');assert.equal(P.partner,'vast');assert.equal(doc.querySelectorAll('[data-ow-status]').length,17);assert.ok(doc.querySelector('#nav [data-go="order-commission"]'));assert.equal(api.orders().length,110);assert.ok(api.orders().every(r=>r.partner==='vast'));});
 test('partner catalog defaults, atomic configuration, restricted saves and preserved history',()=>{
  const c=P.productCatalog;
  assert.deepEqual(Array.from(c.allowedCategories('vast')),['consumer']);assert.deepEqual(Array.from(c.allowedCategories('syd')),['business']);
@@ -92,8 +92,8 @@ test('withdrawal branches only after sending and never creates a binding event',
  const before=JSON.stringify(P.state.orderWorkspace);const result=api.saveOrder(draft,undefined,true);assert.equal(result.ok,true);
  assert.equal(api.setStatus(result.id,'approved').ok,true);assert.equal(api.setStatus(result.id,'confirmation_sent').ok,true);assert.equal(api.setStatus(result.id,'withdrawn').ok,true);
  const row=api.orders().find(o=>o.id===result.id);assert.ok(row.confirmationSentAt);assert.ok(!row.confirmedAt);assert.equal(api.reached(row,'confirmation_sent'),true);assert.equal(api.reached(row,'confirmed'),false);assert.equal(api.commission([row]).amount,1200);assert.equal(api.setStatus(result.id,'confirmed').ok,false);
- P.go('overview');assert.ok(doc.querySelector('.ow-withdrawal-branch [data-ow-status="withdrawn"]'));assert.equal(doc.querySelectorAll('[data-ow-stage]').length,5);assert.match(doc.querySelector('[data-ow-stage=confirmation_sent]').title,/ännu inte/);assert.match(doc.querySelector('[data-ow-stage=confirmed]').title,/blivit bindande/);
- doc.querySelector('[data-ow-status="confirmation_sent"]').click();assert.equal(doc.querySelector('[data-ow-filter="status"]').value,'confirmation_sent');doc.querySelector('[data-ow-status="all"]').click();
+ P.go('overview');assert.ok(doc.querySelector('.ow-withdrawal-branch [data-ow-status="flow:loss:confirmation_sent:withdrawn"]'));assert.equal(doc.querySelectorAll('[data-ow-stage]').length,5);assert.match(doc.querySelector('[data-ow-stage=confirmation_sent]').title,/ännu inte/);assert.match(doc.querySelector('[data-ow-stage=confirmed]').title,/blivit bindande/);
+ doc.querySelector('[data-ow-status="flow:remaining:confirmation_sent"]').click();assert.equal(doc.querySelector('[data-ow-filter="status"]').value,'flow:remaining:confirmation_sent');doc.querySelector('[data-ow-status="all"]').click();
  P.state.orderWorkspace=JSON.parse(before);P.save();
 });
 test('legacy binding and withdrawn histories are read without invented send dates',()=>{
@@ -105,7 +105,7 @@ test('legacy binding and withdrawn histories are read without invented send date
 test('cross-partner reads and writes rejected',()=>{P.previewPartner('syd');assert.ok(!api.customers().some(c=>c.id===cid));assert.equal(api.saveCustomer(customer,cid).ok,false);assert.equal(api.setStatus(oid,'approved').ok,false);assert.equal(api.saveOrder(draft).ok,false);});
 let businessId,businessOrder;
 test('sole trader is a business customer; profile required for the three named products',()=>{const r=api.saveCustomer({...customer,name:'Fiktiv Firma',type:'sole',identifier:'999999-9999'});assert.equal(r.ok,true);businessId=r.id;const input={customerId:businessId,category:'business',product:'Kraftringen Direkt',startDate:'2026-12-01',termMonths:'12',facilities:[{...facility,profile:Array(12).fill('')}]};assert.equal(api.saveOrder(input,undefined,true).ok,false);input.facilities[0].profile=Array(12).fill('999');assert.equal(api.saveOrder(input,undefined,true).ok,false);input.facilities[0].profile=Array(12).fill('1000');const saved=api.saveOrder(input,undefined,true);assert.equal(saved.ok,true);businessOrder=saved.id;assert.equal(api.setStatus(businessOrder,'approved').ok,true);assert.equal(api.setStatus(businessOrder,'confirmation_sent').ok,true);assert.equal(api.setStatus(businessOrder,'confirmed').ok,true);assert.equal(api.commission([api.orders().find(o=>o.id===businessOrder)]).amount,360);});
-test('status-card drilldown and search show the same scoped period',()=>{P.go('overview');doc.querySelector('[data-ow-status="confirmed"]').click();assert.equal(doc.querySelector('[data-ow-filter="status"]').value,'confirmed');const search=doc.querySelector('[data-ow-search]');search.value='Fiktiv Firma';search.dispatchEvent(new w.Event('input'));assert.equal(doc.querySelectorAll('#ow-order-list tbody tr').length,1);assert.match(doc.querySelector('#ow-order-list').textContent,/Fiktiv Firma/);});
+test('status-card drilldown and search show the same scoped period',()=>{P.go('overview');doc.querySelector('[data-ow-status="flow:remaining:confirmed"]').click();assert.equal(doc.querySelector('[data-ow-filter="status"]').value,'flow:remaining:confirmed');const search=doc.querySelector('[data-ow-search]');search.value='Fiktiv Firma';search.dispatchEvent(new w.Event('input'));assert.equal(doc.querySelectorAll('#ow-order-list tbody tr').length,1);assert.match(doc.querySelector('#ow-order-list').textContent,/Fiktiv Firma/);});
 test('customer and order forms conditional fields, cancel makes no writes',()=>{const before=JSON.stringify(P.state);doc.querySelector('[data-ow-order]').click();const form=doc.querySelector('#ow-order-form');assert.equal(form.querySelector('[name="termMonths"]'),null);form.querySelector('[name="termType"]').value='fixed';form.querySelector('[name="termType"]').dispatchEvent(new w.Event('change',{bubbles:true}));assert.ok(doc.querySelector('[name="termMonths"]'));doc.querySelector('[name="product"]').value='Kraftringen Stabil';doc.querySelector('[name="product"]').dispatchEvent(new w.Event('change',{bubbles:true}));assert.equal(doc.querySelectorAll('[data-month]').length,12);doc.querySelector('[data-ow-add]').click();assert.equal(doc.querySelectorAll('[data-facility]').length,2);doc.querySelector('[data-ow-cancel]').click();assert.equal(JSON.stringify(P.state),before);});
 test('appended lifecycle states preserve cohort and demo commission',()=>{
  const row=api.orders().find(o=>o.id===businessOrder),date=row.registeredAt;
@@ -118,7 +118,7 @@ test('appended lifecycle states preserve cohort and demo commission',()=>{
  assert.equal(api.commission([api.orders().find(o=>o.id===businessOrder)]).amount,0);
  assert.equal(api.orders().find(o=>o.id===businessOrder).registeredAt,date);
  const before=api.orders().find(o=>o.status==='confirmed');assert.equal(api.setStatus(before.id,'lost_before_start').ok,true);
- P.go('overview');doc.querySelector('[data-ow-status="lost_before_start"]').click();assert.equal(doc.querySelector('[data-ow-filter="status"]').value,'lost_before_start');
+ P.go('overview');doc.querySelector('[data-ow-status="flow:loss:confirmed:lost_before_start"]').click();assert.equal(doc.querySelector('[data-ow-filter="status"]').value,'flow:loss:confirmed:lost_before_start');
 });
 test('volume and duration distinguish missing inputs from real zero or rolling',()=>{
  assert.equal(api.annualVolume({facilities:[{annualKwh:'12000'},{annualKwh:'6000'}]}),18000);
@@ -169,13 +169,13 @@ test('separate customer demo does not read normal orders',()=>{assert.equal(demo
 const standard=await boot('https://portal.example/');
 test('ordinary existing partner selection defaults to status cards without opt-in',()=>{
  assert.equal(standard.P.role,'internal');assert.equal(standard.doc.querySelector('#ow-login'),null);
- for(const id of ['syd','vast']){standard.P.previewPartner(id);assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,13);assert.ok(standard.doc.querySelector('#ow-order-list'));}
+ for(const id of ['syd','vast']){standard.P.previewPartner(id);assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,17);assert.ok(standard.doc.querySelector('#ow-order-list'));}
  standard.P.returnInternal();standard.P.commercial.selectPartner('syd','partner-detail');
  standard.doc.querySelector('[data-ow-partner]').click();assert.equal(standard.P.partner,'syd');assert.equal(standard.P.role,'partner');
- assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,13);
+ assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,17);
 });
 const direct=await boot('https://portal.example/?workspace=vast');
-test('existing workspace deep link opens orders; explicit legacy URL still restores previous view',()=>{assert.equal(direct.doc.querySelectorAll('[data-ow-status]').length,13);});
+test('existing workspace deep link opens orders; explicit legacy URL still restores previous view',()=>{assert.equal(direct.doc.querySelectorAll('[data-ow-status]').length,17);});
 const legacy=await boot('https://portal.example/?proposal=legacy&workspace=vast');
 test('explicit legacy link retains rollback and data',()=>{assert.equal(legacy.doc.querySelectorAll('.partner-start-choice').length,4);});
 standard.dom.window.close();direct.dom.window.close();legacy.dom.window.close();
@@ -213,12 +213,12 @@ test('merged binding/waiting state preserves legacy rows, dates, commission and 
  assert.equal(ca.setStatus(r.id,'awaiting_start').ok,false);const save=cp.save;cp.save=()=>false;assert.equal(ca.setStatus(r.id,'active').ok,false);assert.equal(JSON.stringify(cp.state.orderWorkspace),before);cp.save=save;
  assert.equal(ca.setStatus(r.id,'active').ok,true);const after=ca.orders().find(o=>o.id===r.id);assert.equal(after.confirmedAt,'2026-09-15');assert.ok(ca.historyFor(after).some(h=>h.status==='awaiting_start'&&h.at==='2026-09-16'));
 });
-test('loss filters sit between stages and cancellation spans pre-start stages',()=>{
- cp.go('overview');for(const [gap,status] of [['1–2','rejected'],['2–3','cannot_confirm'],['3–4','withdrawn'],['Efter 5','lost_after_start']]){
-  const button=compat.doc.querySelector(`[data-ow-between="${gap}"] [data-ow-status="${status}"]`);assert.ok(button);button.click();assert.equal(compat.doc.querySelector('[data-ow-filter="status"]').value,status);
+test('phase-specific loss filters and remaining groups use the displayed cohort',()=>{
+ cp.go('overview');for(const [gap,key,status] of [['1–2','registered','rejected'],['2–3','approved','cannot_confirm'],['3–4','confirmation_sent','withdrawn'],['Efter 5','active','lost_after_start']]){
+  const value=`flow:loss:${key}:${status}`,button=compat.doc.querySelector(`[data-ow-between="${gap}"] [data-ow-status="${value}"]`);assert.ok(button);button.click();assert.equal(compat.doc.querySelector('[data-ow-filter="status"]').value,value);
  }
- assert.ok(compat.doc.querySelector('.ow-cancel-band [data-ow-status="lost_before_start"]'));assert.ok(compat.doc.querySelector('.ow-completion [data-ow-status="needs_completion"]'));
- assert.equal(compat.doc.querySelectorAll('[data-ow-status]').length,13);assert.equal(compat.doc.querySelectorAll('[data-ow-stage="awaiting_start"]').length,0);
+ assert.equal(compat.doc.querySelectorAll('[data-ow-status$=":lost_before_start"]').length,4);assert.ok(compat.doc.querySelector('.ow-v-completion [data-ow-status="needs_completion"]'));
+ assert.equal(compat.doc.querySelectorAll('[data-ow-status]').length,17);assert.equal(compat.doc.querySelectorAll('[data-ow-stage="awaiting_start"]').length,0);
 });
 compat.dom.window.close();legacyReload.dom.window.close();
 
@@ -247,8 +247,35 @@ test('completion is recoverable; failure reasons are required, escaped, dated an
  assert.ok(la.setStatus(id,'needs_completion','address').ok);assert.equal(la.reached(la.orders().find(r=>r.id===id),'confirmation_sent'),false);assert.equal(la.setStatus(id,'confirmation_sent').ok,false);
  const approvedAt=la.orders().find(r=>r.id===id).approvedAt;assert.ok(la.setStatus(id,'approved').ok);assert.equal(la.orders().find(r=>r.id===id).approvedAt,approvedAt);
  assert.ok(la.setStatus(id,'cannot_confirm','network').ok);const row=la.orders().find(r=>r.id===id);assert.equal(row.statusHistory.at(-1).reason,'network');assert.ok(row.statusHistory.at(-1).at);assert.equal(la.reached(row,'approved'),true);assert.equal(la.reached(row,'confirmation_sent'),false);assert.equal(la.setStatus(id,'confirmation_sent').ok,false);assert.equal(lp.face2faceCommission.calculate([row],'2026-10').amount,1200);
- lp.go('overview');losses.doc.querySelector('[data-ow-status="cannot_confirm"]').click();losses.doc.querySelector(`[data-ow-open="${id}"]`).click();assert.match(losses.doc.querySelector('.ow-status-history').textContent,/Nätavtal saknas/);
+ lp.go('overview');losses.doc.querySelector('[data-ow-status="flow:loss:approved:cannot_confirm"]').click();losses.doc.querySelector(`[data-ow-open="${id}"]`).click();assert.match(losses.doc.querySelector('.ow-status-history').textContent,/Nätavtal saknas/);
 });
 const lossSaved=losses.w.localStorage.getItem('partnerlabb.portal.v2'),lossReload=await boot(undefined,lossSaved);
 test('new losses and reasons survive reload without changing legacy data',()=>{assert.equal(JSON.stringify(lossReload.P.state.orderWorkspace),JSON.stringify(lp.state.orderWorkspace));assert.ok(lossReload.P.orderWorkspace.orders().some(r=>r.status==='cannot_confirm'&&r.statusHistory.at(-1).reason==='network'));});
 losses.dom.window.close();lossReload.dom.window.close();
+
+const audit=await boot(),aa=audit.P.orderWorkspace;
+test('illustrated 100-order cohort balances at all five phases without double-counting completion',()=>{
+ const rows=[];const add=(n,status,extra={})=>{for(let i=0;i<n;i++)rows.push({id:String(rows.length),status,registeredAt:'2026-10-01',...extra});};
+ add(5,'registered');add(4,'rejected');add(3,'lost_before_start',{cancellationFrom:'registered'});
+ add(4,'approved');add(2,'needs_completion');add(4,'cannot_confirm');add(2,'lost_before_start',{cancellationFrom:'approved'});
+ add(4,'confirmation_sent');add(5,'withdrawn',{confirmationSentAt:'2026-10-02'});add(2,'lost_before_start',{cancellationFrom:'confirmation_sent'});
+ add(10,'confirmed');add(3,'lost_before_start',{cancellationFrom:'confirmed'});add(47,'active');add(5,'lost_after_start');
+ const report=aa.flowSummary(rows);assert.equal(rows.length,100);assert.deepEqual(Array.from(report.stages,s=>s.entered),[100,88,76,65,52]);assert.ok(report.stages.every(s=>s.difference===0));assert.equal(report.stages[1].remaining,6);assert.equal(rows.filter(r=>aa.matchesFlow(r,'needs_completion')).length,2);
+ assert.equal(report.stages.reduce((n,s)=>n+s.remaining+s.lost,0),100);
+ for(const [key,n] of [['registered',3],['approved',2],['confirmation_sent',2],['confirmed',3]])assert.equal(rows.filter(r=>aa.matchesFlow(r,`flow:loss:${key}:lost_before_start`)).length,n);
+});
+test('unknown and contradictory legacy losses stay separate; known history determines exit phase read-only',()=>{
+ const rows=[{status:'withdrawn',registeredAt:'2026-10-01'},{status:'lost_before_start',registeredAt:'2026-10-01',approvedAt:'2026-10-02'},{status:'lost_before_start',cancellationFrom:'registered',confirmedAt:'2026-10-03'}];
+ const before=JSON.stringify(rows);assert.equal(aa.flowSummary(rows).unknown.length,3);assert.ok(rows.every(r=>aa.flowPosition(r)===null));assert.ok(aa.flowSummary(rows).stages.every(s=>s.entered===0&&s.difference===0));assert.equal(JSON.stringify(rows),before);
+ const history={status:'lost_before_start',statusHistory:[{status:'registered',at:'2026-10-01'},{status:'approved',at:'2026-10-02'},{status:'lost_before_start',at:'2026-10-03'}]};assert.equal(aa.flowPosition(history),1);assert.equal(aa.flowPosition({status:'lost_before_start',confirmedAt:'2026-10-02'}),3);
+});
+test('real fixture reconciles, every displayed count opens precisely its matching scoped orders',()=>{
+ const rows=aa.orders().filter(r=>r.registeredAt?.startsWith('2026-10')||(!r.registeredAt&&r.createdAt?.startsWith('2026-10'))),report=aa.flowSummary(rows);
+ assert.equal(report.unknown.length,1);assert.equal(report.unknown[0].id,'order-demo-vast-5');assert.deepEqual(Array.from(report.stages,s=>s.entered),[8,6,5,5,2]);assert.equal(rows.length,report.stages[0].entered+report.unknown.length+report.drafts);assert.ok(report.stages.every(s=>s.difference===0));
+ const before=JSON.stringify(audit.P.state),amount=audit.P.face2faceCommission.calculate(rows,'2026-10').amount;
+ for(const value of Array.from(audit.doc.querySelectorAll('[data-ow-status]'),b=>b.dataset.owStatus)){
+  const count=rows.filter(r=>aa.matchesFlow(r,value)).length;const b=audit.doc.querySelector(`[data-ow-status="${value}"]`);assert.equal(Number(b.querySelector('strong').textContent),count);b.click();assert.equal(audit.doc.querySelector('[data-ow-filter=status]').value,value);assert.equal(audit.doc.querySelectorAll('#ow-order-list [data-ow-row]').length,count);
+ }
+ assert.equal(JSON.stringify(audit.P.state),before);assert.equal(audit.P.face2faceCommission.calculate(rows,'2026-10').amount,amount);
+});
+audit.dom.window.close();

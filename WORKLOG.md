@@ -4,6 +4,20 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Lodrätt avstämt orderflöde · kandidat · 27 oktober 2026
+
+Egen gren codex/reconciled-vertical-flow från main
+f71a1a424b1e345dd98630671be510ee31456b7f. Håkan godkände visat lodrätt förslag.
+Varje fas har Kvar här och egna bortfall; uppsägningar delas mellan fyra
+övergångar. Komplettering ingår som varav, okänd bortfallsfas avskiljs utan
+omskrivning av historik eller provisionsdatum. Klick öppnar exakt samma grupp.
+Reproducerad grundexempelavvikelse: 9 registrerade i oktober omfattar 8 med
+känd fas samt 1 äldre ånger utan utskickshistorik. Avstämt flöde: 8/6/5/5/2.
+Alla 16 Node/DOM-sviter passerade, inklusive 43 orderkontroller: syntetisk
+100-ordergrupp, verkliga fixturetal, varje filters urval, okänd/motsägande fas,
+komplettering, omladdning, sparfel och provision. Desktop visuellt granskad.
+Chromium/CI och publicering återstår vid denna kandidatkvittens.
+
 ## Publicerat bortfallsflöde · version 10 · 27 oktober 2026
 
 PR #83 integrerad efter grön CI 40513239625 för exakt HEAD

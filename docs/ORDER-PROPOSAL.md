@@ -88,12 +88,15 @@ och fortsatt kunna visas. Publicera därför en verifierad återgång med stöd 
 lagrade statusar; återställ inte blint version 7 som saknar det nya statusvärdet.
 Byt inte nya utskicksstatusar till bindande avtal och radera inte deras datum.
 
-## Bortfall mellan stegen · 27 oktober 2026
+## Lodrätt avstämt flöde · 27 oktober 2026
 
-Ej godkänd 1–2, Kan inte bekräftas 2–3, Ångrad 3–4 och Uppsagd efter start
-visas efter 5. Uppsagd före start spänner över 1–4 och kan väljas från alla
-pågående statusar före aktivering. Behöver kompletteras är ett eget vänteläge.
-Orsaker sparas i historiken; återgång till Godkänd behåller godkännandedatum.
-Äldre data ändras inte. Vid återgång måste cannot_confirm, needs_completion och
-cancellationFrom fortfarande läsas så att nya ordrar inte försvinner eller räknas
-som bindande av misstag. Återställ i första hand layouten, inte datastödet.
+Fem steg med Kvar här och bortfall mellan varje steg. Uppsagd före start delas
+upp efter fas. Komplettering ingår i Kvar här efter Godkänd, som ett varav.
+Så stämmer siffrorna visar varje stegs inflöde = vidare + kvar + bortfall.
+Klick på ett antal filtrerar till samma period, partner, status och fas.
+Okänd bortfallsfas ligger utanför det avstämda flödet men ingår i totalen.
+Äldre ånger utan utskickshistorik placeras där. Inga datum eller data skrivs om;
+provisionsmodellen använder samma oförändrade händelsedatum.
+Vid återgång måste cannot_confirm, needs_completion och cancellationFrom
+fortfarande läsas så att nya ordrar inte försvinner eller räknas som bindande
+av misstag. Återställ i första hand layouten, inte datastödet.

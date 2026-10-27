@@ -252,16 +252,20 @@ arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
   Statusbyte är uttrycklig demosimulering; verkliga partners ska inte själva
   godkänna ordrar. Äldre statusar, datum och händelsetexter skrivs inte om.
 - Perioden baseras på registreringsdatum, utkast på skapandedatum. ISO-veckor
-  måndag–söndag med veckoår. Flödet visar kumulativt hur många som nått
-  registrerad → godkänd → orderbekräftelse skickad → bindande avtal → aktivt avtal.
-  Stegen ska inte summeras. Senare kända steg räknas även till tidigare steg,
-  utan att datum fabriceras. Just nu och bortfall filtrerar aktuell status;
-  dessa tolv exakta statusar är ömsesidigt uteslutande. Historiska perioder visar
-  dagens läge för periodens registrerade ordrar, inte ett rekonstruerat månadsslut.
-- Bortfallsfilter visas mellan stegen: Ej godkänd 1–2, Kan inte bekräftas 2–3,
-  Ångrad 3–4, Uppsagd efter start efter 5. Uppsagd före start visas i ett band
-  över steg 1–4. Nya uppsägningar sparar cancellationFrom, så att tidig
-  uppsägning inte räknas som bindande. Legacy-bortfall behåller tidigare tolkning.
+  måndag–söndag med veckoår. Lodrätt flöde visar dagens läge för samma grupp,
+  inte ett rekonstruerat månadsslut. Stegantal är kumulativa och summeras inte.
+- Varje steg stäms av: har nått = vidare + kvar + bortfall i just denna fas.
+  Behöver kompletteras ingår i Kvar här efter Godkänd och visas som ett varav.
+  Uppsagd före start visas separat mellan 1–2, 2–3, 3–4 och 4–5. Klick filtrerar
+  både status och fas, med en tydlig rubrik i orderlistan. Så stämmer siffrorna
+  visar ekvationerna med aktuella tal. Efter steg 5: aktiva nu + uppsagda efter start.
+- Fas för uppsägning bestäms från cancellationFrom, direkt föregående sparat
+  historiksteg eller känt bindandedatum före start. Ånger kräver känt utskickssteg
+  utan senare bindandesteg. Okänd/motsägande bortfallsfas avskiljs från hela
+  det avstämda flödet, men finns kvar i total, statusfilter och orderhistorik.
+  Total = flöde med känd fas + okänd bortfallsfas + utkast. Inga datum antas,
+  rådata skrivs inte om. Grundexemplets äldre ånger utan utskickshistorik hamnar
+  i Okänd bortfallsfas, inte som ett bortfall efter steg 3 utan motsvarande inflöde.
 - Behöver kompletteras är ett vänteläge efter Godkänd, inget slutligt bortfall.
   Orsak krävs för komplettering/ej bekräftbar order och sparas i daterad historik:
   nätavtal saknas, felaktig adress, kreditbedömning eller annat. Komplettering
