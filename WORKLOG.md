@@ -4,6 +4,28 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerat lodrätt avstämt flöde · version 11 · 27 oktober 2026
+
+PR #85 integrerad efter grön CI 40516542370 för exakt HEAD
+ab2e23f66f52f41524aebe0b009ada52d35c5ab8. Publicerad main
+7cd05d0ee1194c9b2d3019d5e92e13652bd2352b har samma verifierade träd
+e906ff4017d3ff08fa63fbfd298fdd6137d9ad95. Alla 16 Node/DOM-sviter,
+Chromium 320/390/1440 px och QA gate passerade. Kö/slutstatus i GitHub
+fördröjde publiceringen; inga kontroller kringgicks. Desktop visuellt granskat.
+Lodrätt flöde med fasvisa uppsägningar, Kvar här inklusive komplettering,
+okänd bortfallsfas separat och ekvationer med verkliga tal. Historik och
+provisionsunderlag oförändrade. Varje klickbart antal har verifierat urval.
+
+Native succeeded 2026-10-27T14:06:43.094311+00:00 (15:06 svensk tid).
+URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_eb4c3eb4451081918929b6770f56f3b6
+Deployment: appgdep_6ae0afe6ba4881919b0b2a24453f7053
+Privat ägaråtkomst och env revision 0 bevarade. Ludwigs Site orörd.
+Live-inloggning och fysisk appinstallation omtestades inte. Inga verkliga
+kunduppgifter, kontroller, utskick eller betalningar införda. Återgång kan göras
+via revert av PR #85 och ny publicering; ingen datamigrering har gjorts.
+Denna separata kvittens ändrar inte dist/ och behöver ingen ny publicering.
+
 ## Lodrätt avstämt orderflöde · kandidat · 27 oktober 2026
 
 Egen gren codex/reconciled-vertical-flow från main
