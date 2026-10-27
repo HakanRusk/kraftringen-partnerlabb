@@ -4,6 +4,26 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad produktguide · version 6 · 27 oktober 2026
+
+PR #75 integrerad efter grön CI 40468702361 för HEAD
+346b333826306ce47ff80cfd7caecc851388ebc8. Publicerad main
+0eaea64ad5bc2154f079f02bd6b575b1d259b9f7 har samma verifierade träd
+f403df0569e01d64c230bb1b4a0abeccda4f18ac. 16 Node-/DOM-sviter och hela
+Chromium-paketet passerar. Produktsida, prisväxling, förifylld orderstart och
+övriga orderflöden kontrollerade vid 320/390/1440 px. Desktop visuellt granskad.
+
+Native succeeded 2026-10-27T07:46:40.039059+00:00, kl. 08:46 svensk tid.
+URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_43238392b5848191a1cf4d13373c7913
+Deployment: appgdep_6ae056d498fc8191964183e8c46b6001
+Privat ägaråtkomst och env revision 0 bevarade. Ludwigs Site orörd.
+Detta är exempelpriser och lokal orderlagring. Godkända prislistor och saknade
+produktblad återstår. Ingen interaktiv live-inloggning eller fysisk appinstallation
+har omtestats. Föregående version 5 finns kvar; revert av PR #75 och ny
+verifierad publicering återställer koden utan att radera sparade data.
+Denna kvittens är enbart dokumentation; dist/ oförändrad och ingen extra deployment.
+
 ## Produkter, prislistor och direkt orderstart · 27 oktober 2026
 
 Eget auktoriserat arbete på codex/products-price-lists från main 4fb9534.
