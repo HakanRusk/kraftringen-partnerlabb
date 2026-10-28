@@ -1,23 +1,22 @@
-"""Rasterize the portal's existing two-circle favicon for home-screen use."""
-from pathlib import Path
-from PIL import Image, ImageDraw
+"""Use the supplied approved symbol for app/favicons (manual 2022, pp 7–8).
 
-assets = Path(__file__).resolve().parents[1] / "dist" / "assets"
-for size in (180, 192, 512):
-    scale = size * 4 / 64
-    image = Image.new("RGB", (size * 4, size * 4), "#071b30")
-    draw = ImageDraw.Draw(image)
-    # Centered strokes matching index.html's existing SVG. Both circles fit
-    # inside the central 80% maskable safe area, with an opaque background.
-    for cx, cy, radius, width, color in (
-        (32, 32, 20, 5, "#099b98"),
-        (34, 28, 11, 4, "#ffffff"),
-    ):
-        radius += width / 2
-        box = tuple(round(value * scale) for value in (
-            cx - radius, cy - radius, cx + radius, cy + radius
-        ))
-        draw.ellipse(box, outline=color, width=round(width * scale))
-    image.resize((size, size), Image.Resampling.LANCZOS).save(
-        assets / f"app-icon-{size}.png", optimize=True
-    )
+The wordmark PNG stays byte-identical. Extracting the unchanged symbol is
+expressly permitted for an app. No redrawing, recoloring or distortion.
+A 44% symbol width reserves >= the scaled f-height around all sides and
+fits inside the central maskable safe circle.
+"""
+from pathlib import Path
+from PIL import Image
+
+assets = Path(__file__).resolve().parents[1] / 'dist' / 'assets'
+source = Image.open(assets / 'brand' / 'logo-white.png').convert('RGBA')
+assert source.size == (1170, 199)
+symbol = source.crop((0, 0, 230, 184))
+for size in (32, 180, 192, 512):
+    width = round(size * .44)
+    height = round(width * 184 / 230)
+    mark = symbol.resize((width, height), Image.Resampling.LANCZOS)
+    image = Image.new('RGBA', (size, size), '#013c57')
+    image.alpha_composite(mark, ((size-width)//2, (size-height)//2))
+    target = assets / 'brand' / 'favicon-32.png' if size == 32 else assets / f'app-icon-{size}.png'
+    image.convert('RGB').save(target, optimize=True)

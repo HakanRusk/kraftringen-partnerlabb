@@ -368,7 +368,17 @@ Källa: Håkans bildreferens och begäran att samordna hela appens uttryck.
 Marinblått, vitt, ljusblått, gult och rosa används gemensamt; befintlig navigation
 och material bevaras. Implementationsval: vattenfall på bred skärm med lika
 skala, nollinje och sammanbindande linjer. Gult är kvarvarande arbete (inte
-bortfall), rosa är avslutade bortfall. Sista stegets rosa segment är uppsägning
+bortfall), korall är avslutade bortfall (uppdaterat enligt manualen 28 oktober).
+Sista stegets korallsegment är uppsägning
 efter start. Klickbara antal, fasvis uppsägning, separat okänd bortfallsfas och
 avstämning följer P-10 utan ändrad beräkning. Lodrät vy är valbar på dator och
 automatisk under 1100 px. Ingen ny status, datamigrering eller provisionsregel.
+
+### Profilmanual och godkända original · 28 oktober 2026
+
+Håkans grafiska riktlinjer 2022 och logo-ZIP styr framför tidigare uppskattade
+färger, Inter-font och prototyplogotyp. Hela UI:t använder lokal Poppins,
+gemensam officiell palett, oförändrade originallogotyper med friyta och exakt
+symbolutsnitt för appikoner. Regler och avgränsning finns i BRAND-PROFILE.md.
+Utbildningsinnehåll bevaras; dess inbyggda media är inte omproducerad eller
+fullständigt profilgranskad. Ingen kunddata, behörighet eller affärslogik ändras.

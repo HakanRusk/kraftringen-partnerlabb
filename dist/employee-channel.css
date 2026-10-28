@@ -1,27 +1,27 @@
 .employee-channel {max-width:1200px;margin-inline:auto}
 .employee-channel .page-head {gap:24px}
 .employee-actions {display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.employee-hero {position:relative;display:flex;align-items:center;justify-content:space-between;gap:32px;padding:36px;border-radius:18px;background:linear-gradient(115deg,#073d4b,#007d81);color:white;overflow:hidden}
+.employee-hero {position:relative;display:flex;align-items:center;justify-content:space-between;gap:32px;padding:36px;border-radius:18px;background:linear-gradient(115deg,var(--kf-navy),var(--kf-blue));color:white;overflow:hidden}
 .employee-hero h2 {font-size:clamp(24px,3vw,34px);line-height:1.2;margin:18px 0 12px;color:white;max-width:600px}
-.employee-hero p {max-width:620px;line-height:1.7;margin:0;color:#d5eff0}
-.employee-badge {display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.08em;font-weight:700;background:#ffffff18;padding:9px 12px;border-radius:99px}
+.employee-hero p {max-width:620px;line-height:1.7;margin:0;color:var(--kf-cyan-20)}
+.employee-badge {display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.08em;font-weight: 700;background:rgb(255 255 255 / 0.0941);padding:9px 12px;border-radius:99px}
 .employee-badge svg {width:17px;height:17px}
-.employee-hero-icon {display:flex;align-items:center;justify-content:center;flex:none;width:130px;height:130px;background:#ffffff10;border:1px solid #ffffff24;border-radius:36px}
+.employee-hero-icon {display:flex;align-items:center;justify-content:center;flex:none;width:130px;height:130px;background:rgb(255 255 255 / 0.0627);border:1px solid rgb(255 255 255 / 0.1412);border-radius:36px}
 .employee-hero-icon svg {width:65px;height:65px;opacity:.8}
 .employee-metrics {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:24px 0}
 .employee-metric {position:relative;display:flex;flex-direction:column;gap:12px;min-width:0;padding:24px}
-.employee-metric>span:not(.employee-metric-icon) {font-weight:600;color:#526a72}
-.employee-metric strong {font-size:32px;color:#173944}
-.employee-metric small {color:#657b82}
-.employee-metric-icon {position:absolute;right:24px;top:24px;display:flex;padding:9px;border-radius:12px;color:#087b7e;background:#edf8f7}
+.employee-metric>span:not(.employee-metric-icon) {font-weight: 700;color:var(--kf-black-60)}
+.employee-metric strong {font-size:32px;color:var(--kf-navy)}
+.employee-metric small {color:var(--kf-navy-80)}
+.employee-metric-icon {position:absolute;right:24px;top:24px;display:flex;padding:9px;border-radius:12px;color:var(--kf-blue);background:var(--kf-pink-20)}
 .employee-metric-icon svg {width:19px;height:19px}
 .employee-readiness {padding:28px}
-.employee-readiness>p {color:#60757d;line-height:1.7}
+.employee-readiness>p {color:var(--kf-black-60);line-height:1.7}
 .employee-readiness .detail-actions .btn,.employee-readiness .detail-actions .text-button {font-size:13px}
 .employee-next {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:28px 0}
 .employee-next>div {display:flex;align-items:flex-start;gap:12px;min-width:0}
-.employee-next>div>span {flex:none;display:flex;align-items:center;justify-content:center;background:#edf8f7;color:#087b7e;border-radius:10px;width:35px;height:35px;font-size:12px;font-weight:700}
-.employee-next strong {font-size:14px;color:#183d48}
-.employee-next p {font-size:13px;line-height:1.65;color:#60757d;margin:9px 0 0}
+.employee-next>div>span {flex:none;display:flex;align-items:center;justify-content:center;background:var(--kf-pink-20);color:var(--kf-blue);border-radius:10px;width:35px;height:35px;font-size:12px;font-weight: 700}
+.employee-next strong {font-size:14px;color:var(--kf-navy)}
+.employee-next p {font-size:13px;line-height:1.65;color:var(--kf-black-60);margin:9px 0 0}
 @media(max-width:900px) {.employee-next {grid-template-columns:1fr}.employee-hero-icon {width:90px;height:90px}.employee-hero-icon svg {width:45px;height:45px}}
 @media(max-width:600px) {.employee-channel .page-head {align-items:stretch}.employee-actions {width:100%}.employee-actions .btn {width:100%;justify-content:center}.employee-hero {padding:24px}.employee-hero-icon {display:none}.employee-metrics {grid-template-columns:1fr;gap:12px;margin:18px 0}.employee-metric {padding:20px}.employee-readiness {padding:20px}.employee-readiness .panel-heading {align-items:flex-start;gap:12px}.employee-readiness .detail-actions .btn {width:100%;justify-content:center}}

@@ -1,0 +1,103 @@
+/* Kraftringen graphic guidelines 2022, pp 7–15. Web uses the printed HEX values. */
+@font-face { font-family: Poppins; src: url('assets/fonts/Poppins-Regular.woff2') format('woff2'); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: Poppins; src: url('assets/fonts/Poppins-Medium.woff2') format('woff2'); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: Poppins; src: url('assets/fonts/Poppins-Bold.woff2') format('woff2'); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: Poppins; src: url('assets/fonts/Poppins-Light.woff2') format('woff2'); font-style: normal; font-weight: 300; font-display: swap; }
+@font-face { font-family: Poppins; src: url('assets/fonts/Poppins-MediumItalic.woff2') format('woff2'); font-style: italic; font-weight: 500; font-display: swap; }
+@font-face { font-family: Poppins; src: url('assets/fonts/Poppins-LightItalic.woff2') format('woff2'); font-style: italic; font-weight: 300; font-display: swap; }
+:root {
+  --kf-navy: #013c57;
+  --kf-navy-80: #346379;
+  --kf-navy-60: #678a9a;
+  --kf-navy-40: #99b1bc;
+  --kf-navy-20: #ccd8dd;
+  --kf-pink: #f8c3c6;
+  --kf-pink-80: #f9cfd1;
+  --kf-pink-60: #fbdbdd;
+  --kf-pink-40: #fce7e8;
+  --kf-pink-20: #fef3f4;
+  --kf-orange: #fbc34e;
+  --kf-orange-80: #fccf71;
+  --kf-orange-60: #fddb95;
+  --kf-orange-40: #fde7b8;
+  --kf-orange-20: #fef3dc;
+  --kf-coral: #eb5f4b;
+  --kf-amber: #f6a924;
+  --kf-amber-80: #f8ba50;
+  --kf-amber-60: #facb7c;
+  --kf-amber-40: #fbdda7;
+  --kf-amber-20: #fdeed3;
+  --kf-deep-orange: #ee7d11;
+  --kf-deep-orange-80: #f19741;
+  --kf-deep-orange-60: #f5b170;
+  --kf-deep-orange-40: #f8cba0;
+  --kf-deep-orange-20: #fce5cf;
+  --kf-cyan: #00acd6;
+  --kf-cyan-80: #33bdde;
+  --kf-cyan-60: #66cde6;
+  --kf-cyan-40: #99deef;
+  --kf-cyan-20: #cceef7;
+  --kf-blue: #007da8;
+  --kf-blue-80: #3397b9;
+  --kf-blue-60: #66b1cb;
+  --kf-blue-40: #99cbdc;
+  --kf-blue-20: #cce5ee;
+  --kf-black: #000000;
+  --kf-black-80: #333333;
+  --kf-black-60: #666666;
+  --kf-black-40: #999999;
+  --kf-black-20: #cccccc;
+  --kf-white: #ffffff;
+  font-family: Poppins, Arial, sans-serif;
+  font-synthesis: none;
+}
+/* Shared web interpretation: type scale adapts to dense dashboards; official
+   weights, colors, clear space and logo geometry are retained at every size. */
+:root { --ink: var(--kf-navy); --navy: var(--kf-navy); --teal: var(--kf-blue); --green: var(--kf-blue); --muted: var(--kf-navy-80); --line: var(--kf-navy-20); --kundrum-blue: var(--kf-cyan-20); --kundrum-yellow: var(--kf-orange); --kundrum-pink: var(--kf-pink); --radius: 18px; }
+body { font-family: Poppins, Arial, sans-serif; font-weight: 400; line-height: 1.4; }
+button, input, select, textarea { font-family: inherit; }
+h1, h2, h3, h4, strong, b { font-weight: 700; }
+h1, h2, h3, h4 { letter-spacing: -.025em; }
+button, .btn, .ac-button, .button { font-weight: 500; }
+blockquote { font-style: italic; font-weight: 500; }
+figcaption { font-style: italic; font-weight: 300; }
+.btn, .ac-button, .button { border-radius: 12px; }
+.card { border-radius: 18px; }
+.btn-primary, .sidebar-support .btn-primary, .ac-button.primary, .kundrum-course .button.primary { background: var(--kf-pink); border-color: var(--kf-pink); color: var(--kf-navy); }
+.btn-primary:hover, .sidebar-support .btn-primary:hover, .ac-button.primary:hover, .kundrum-course .button.primary:hover { background: var(--kf-pink-80); border-color: var(--kf-pink-80); color: var(--kf-navy); }
+.ow-tabs button[aria-current=page], .pc-categories .btn-primary { background: var(--kf-navy); color: var(--kf-white); border-color: var(--kf-navy); }
+/* Original approved wordmark is never reconstructed as text or shapes.
+   f-height/source width = 145/1170; 1/8 padding is a conservative clear zone. */
+.brand .brand-logo-space { --brand-width: 192px; display: block; box-sizing: content-box; width: var(--brand-width); padding: calc(var(--brand-width) / 8); flex: none; line-height: 0; }
+.brand .brand-logo { display: block; width: 100%; max-width: none; height: auto; object-fit: contain; }
+.sidebar .brand { display: block; width: max-content; max-width: 100%; padding: 0; }
+.sidebar .brand .brand-logo-space { --brand-width: 160px; }
+.sidebar .nav-list { margin-top: 18px; }
+.kundrum-course .brand { display: flex; flex-direction: row; gap: 0; padding: 0; font-size: 14px; }
+.kundrum-course .brand-label { font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; border-left: 1px solid var(--kf-navy-60); padding-left: 18px; margin-left: 8px; color: var(--kf-white); }
+.kundrum-course .header-inner { min-height: 88px; height: auto; }
+/* Signal coral is always solid, never a light pink tint. Keep it to concise
+   loss/error markers, with dark text outside the mark for readable contrast. */
+.ow-w-key.loss, .ow-w-loss { background: var(--kf-coral); border-color: var(--kf-coral); }
+.ow-w-key.pending, .ow-w-pending { background: var(--kf-orange); border-color: var(--kf-orange); }
+.ow-v-outcomes > .ow-chip { color: var(--kf-navy); background: var(--kf-orange-20); border-color: var(--kf-orange-60); }
+.ow-v-outcomes > .ow-chip.ow-v-loss { color: var(--kf-navy); background: var(--kf-white); border-color: var(--kf-navy-20); border-left: 3px solid var(--kf-coral); }
+.ow-v-outcomes > .ow-chip[aria-pressed=true] { background: var(--kf-navy); color: var(--kf-white); border-color: var(--kf-navy); }
+.ow-rejected, .ow-cannot_confirm, .ow-withdrawn, .ow-lost_before_start, .ow-lost_after_start { background: var(--kf-white); color: var(--kf-navy); box-shadow: inset 3px 0 var(--kf-coral); padding-left: 10px; }
+.ow-confirmed, .ow-active, .ow-approved { background: var(--kf-cyan-20); color: var(--kf-navy); }
+.ow-needs_completion { background: var(--kf-orange-20); color: var(--kf-navy); }
+.ow-summary, .ow-metrics > .card, .ow-period, .pc-toolbar, .ow-results, .pc-fit, .pc-price, .ow-tabs, .demo-banner { background: var(--kf-white); border-color: var(--kf-navy-20); }
+.ow-period, .pc-toolbar, .ow-results { border-left: 4px solid var(--kf-navy); }
+.ow-metrics > .card.oc-total { background: var(--kf-navy); }
+.ow-metrics > .card.oc-total > strong { color: var(--kf-orange); }
+.ow-metrics > .card.oc-total > span, .ow-metrics > .card.oc-total > small { color: var(--kf-white); }
+/* Functional line icons remain interface controls, not replacements for the
+   official logo or a claim that a brand icon library has been supplied. */
+.icon svg, .pc-icon { stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 600px) {
+  .kundrum-course .brand .brand-logo-space { --brand-width: 144px; }
+  .kundrum-course .brand-label { display: none; }
+  .kundrum-course .header-inner { gap: 6px; }
+  .kundrum-course .back-link { max-width: 86px; font-size: 10px; }
+  .ow-flow { padding: 14px; }
+}
