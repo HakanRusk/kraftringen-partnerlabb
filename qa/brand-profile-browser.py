@@ -16,6 +16,9 @@ async def main():
             page = await context.new_page()
             for route in ('', 'elakademin.html', 'utbildning-preview.html'):
                 await page.goto(BASE + route)
+                # A weight hidden at a mobile breakpoint is not requested by layout;
+                # explicitly test that each supplied face can actually be loaded.
+                await page.evaluate("Promise.all([400,500,700].map(w=>document.fonts.load(w+' 16px Poppins')))")
                 await page.evaluate('document.fonts.ready')
                 if not route and width < 1000:
                     await page.locator('#menu-toggle').click()
@@ -42,6 +45,18 @@ async def main():
                 assert not result['overflow'], (width, route, result)
                 assert all(x['ratio'] >= 4.5 for x in result['contrast']), (width, route, result['contrast'])
                 await page.screenshot(path=str(OUT/f'report-brand-{route or "portal"}-{width}.png'),full_page=True)
+                if not route:
+                    if width < 1000:
+                        await page.locator('#menu-toggle').click()
+                    await page.locator('#role').select_option('partner')
+                    await page.locator('#partner').select_option('vast')
+                    await page.locator('.ow-tabs').get_by_role('button',name='Provision',exact=True).click()
+                    # Small explanatory metric text needs normal-text contrast on white.
+                    ratios = await page.locator('.ow-metrics > .card:not(.oc-total) small').evaluate_all('''els=>els.map(el=>{
+                      const values=getComputedStyle(el).color.match(/[\\d.]+/g).slice(0,3).map(Number).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
+                      return 1.05/(values.reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0)+.05);
+                    })''')
+                    assert ratios and all(ratio >= 4.5 for ratio in ratios), ratios
             await context.close()
         await browser.close()
     print('PASS Poppins, approved-logo geometry/clear space, CTA contrast and page widths: 3 entries × 3 sizes')

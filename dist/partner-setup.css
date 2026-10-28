@@ -30,7 +30,7 @@
 .partner-setup-error[hidden] { display: none; }
 .partner-setup-form .modal-actions { margin: 0; }
 .partner-setup-form .modal-actions .btn { min-height: 46px; }
-.partner-setup-local { color: var(--kf-navy-60); font-size: 12px; text-align: right; margin: -9px 0 0; }
+.partner-setup-local { color: var(--kf-navy-80); font-size: 12px; text-align: right; margin: -9px 0 0; }
 @media (max-width: 560px) {
   .partner-setup-form { gap: 17px; }
   .partner-setup-choice { padding: 13px 11px; gap: 9px; }

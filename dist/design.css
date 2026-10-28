@@ -81,7 +81,7 @@ td { padding-top: 17px; padding-bottom: 17px; }
 .activity-row strong { font-size: 13px; }
 .activity-row > span > span { font-size: 12px; }
 .empty { font-size: 14px; padding: 32px 20px; }
-.footer { font-size: 11px; padding: 25px 32px; color: var(--kf-navy-60); }
+.footer { font-size: 11px; padding: 25px 32px; color: var(--kf-navy-80); }
 .toast { font-size: 13px; max-width: min(560px, calc(100vw - 32px)); padding: 15px 19px; border-radius: 12px; }
 .workbench { margin-top: 28px; }
 .workbench h2 { font-size: 23px; }
