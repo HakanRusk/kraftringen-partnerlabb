@@ -1,9 +1,9 @@
 # Underhållna QA-ingångar
 
-`npm ci && npm test` (Node 24) kör syntaxkontroll för dist-JavaScript och 14
+`npm ci && npm test` (Node 24) kör syntaxkontroll för dist-JavaScript och 16
 utvalda sviter: partnerregister, resultat utan CRM, partnersjälvservice,
 rapportdata, importdubbletter, nästa handling, kvittoåteröppning,
-fastighetsperiod, appmanifest, portal-CRM, kund-/anläggningsidentifierare, CRM-arbetsflöden, CRM-finputs och kommersiella periodval.
+fastighetsperiod, appmanifest, portal-CRM, kund-/anläggningsidentifierare, CRM-arbetsflöden, CRM-finputs, kommersiella periodval, orderförslaget och provisionsmodellen.
 jsdom verifierar DOM-händelser/data, inte riktig rendering eller layout.
 
 Browserflöden körs i GitHub Actions med Python 3.12 och Chromium. I en miljö
@@ -19,7 +19,7 @@ PARTNERLABB_QA_URL=http://127.0.0.1:8000/ python qa/run-browser.py
 
 Runnern kör movein-drafts.py, movein-service.py (båda använder property-intake.py)
 samt partner-types.py, crm-identifiers-browser.py, crm-workflow-browser.py och
-report-mobile-browser.py. De provar riktig Excel, bilagor, handläggning, sparfel,
+report-mobile-browser.py, partner-orders-browser.py och brand-profile-browser.py. De provar riktig Excel, bilagor, handläggning, sparfel,
 isolering och nya partnertyper med fiktiva data. Vid CI-fel sparas tillgängliga
 skärmbilder och serverlogg i sju dagar. Det är inte visuell granskning av hela portalen.
 
@@ -70,3 +70,11 @@ Skärmbilder med prefix report-orders ingår i befintlig CI-artefakt.
 Face2face: `node qa/partner-commission.mjs` kontrollerar den bekräftade
 80 %-förskottsmodellen per godkännandemånad, sena bekräftelser och månadsdelta.
 Chromiumflödet öppnar Så här har vi räknat och april-räkneexemplet.
+
+Profilkontrollen `brand-profile-browser.py` verifierar faktisk laddning av
+Poppins Regular/Medium/Bold, godkänd originallogotyp 1170×199 med oförändrad
+proportion och minst f-höjd i friyta, synlighet efter mobilmenyns animation,
+primärknappskontrast och sidbredd på alla tre HTML-ingångar vid 320/390/1440 px.
+Små förklaringstexter i provisionsöversikten ska nå minst 4,5:1 på vitt.
+Detta är mätbara UI-kontroller, inte en fullständig grafisk certifiering av
+befintliga filmer, PDF:er, foton eller samtliga möjliga skärmläsarsituationer.

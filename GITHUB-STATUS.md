@@ -1,6 +1,6 @@
 # Verifierad käll- och driftstatus
 
-Senaste publicering kontrollerad 27 oktober 2026; övertagandets åtkomstkontroller
+Senaste publicering kontrollerad 28 oktober 2026; övertagandets åtkomstkontroller
 är från 23 oktober. Huvudkälla:
 https://github.com/HakanRusk/kraftringen-partnerlabb.
 GitHub-anslutningen identifierar HakanRusk och bekräftar läs-, skriv- och
@@ -12,16 +12,18 @@ https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
 Sites bekräftar Håkan Rusk som ägare och endast ägaren i åtkomstlistan
 (policyrevision 1). Ludwigs tidigare Site lämnas orörd.
 
-- Senaste publicering: native succeeded 27 oktober 2026 kl. 16:19 svensk tid.
-  Källa 06b671fe08559b9729b08891345062c62153941d, integrerad via PR #87.
-  Version 12 har gemensam Kundrum-stil och avstämt vattenfall; mobil visar
-  lodrätt flöde. Statusar, provisionsmodell, material och orderdata bevaras.
-  Exakt version/deployment och verifiering: WORKLOG.md.
+- Senaste publicering: native succeeded 28 oktober 2026 kl. 11:28 svensk tid.
+  Källa 231c08c4350c21c9c0cb51baee38cdce3c0e8b9d, integrerad via PR #89.
+  Version 13 följer bifogad profilmanual med lokal Poppins, gemensamma färger
+  och godkända originallogotyper i UI/appikoner. Statusar, provisionsmodell,
+  material och orderdata bevaras. Inbyggd mediegrafik är inte fullständigt
+  profilgranskad. Exakt kvittens: WORKLOG.md; profil: docs/BRAND-PROFILE.md.
 - Valbart orderförslag med återgång: docs/ORDER-PROPOSAL.md. Tidigare versioner kvar.
   Face2faces modell är bekräftad; alla orderdata är exempel. Inga verkliga
   fakturor, betalningar eller partnerbehörigheter skapas.
-- CI 40528809087 passerade Node/DOM, Chromium 320/390/1440 px och QA gate
-  för e3337c2939729bca6ff517d1a596482df4599094. Publicerad main har samma träd.
+- CI 40671611507 passerade 16 Node/DOM-sviter, åtta Chromium-sviter vid
+  320/390/1440 px och QA gate för f8f6271c47313fb7f21a9c90428de920869b395f.
+  Publicerad main har samma verifierade träd.
 - Övertagandet: samtliga dåvarande 99 filer verifierades via HTTPS 23 oktober.
   Detta är historiskt belägg, inte en ny bytekontroll av v2. Enhetsinstallation
   och interaktiv live-inloggning återstår. Detaljer: docs/HANDOVER-2026-10-23.md.

@@ -4,6 +4,42 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Publicerad grafisk profil · version 13 · 28 oktober 2026
+
+PR #89 integrerad efter grön CI 40671611507 för exakt HEAD
+f8f6271c47313fb7f21a9c90428de920869b395f. Publicerad GitHub-main
+231c08c4350c21c9c0cb51baee38cdce3c0e8b9d har samma verifierade träd
+98c8153495ab57d6ac1ed85b71249ce7be74476e. Ren checkout verifierad före
+Sites-paketering. Inga andra PR:er eller Daniels ändringar integrerades.
+
+Alla 16 Node/DOM-sviter och åtta Chromium-sviter passerade, inklusive order,
+provision, CRM, olika partnertyper, rapporter och utbildningssidornas bredd.
+Profilkontrollen verifierar Poppins-laddning, originalbildens proportion,
+föreskriven friyta, synlig mobil-logotyp efter öppnad meny, primärknappskontrast
+och sidbredd på tre HTML-ingångar × 320/390/1440 px. Små sekundärtexter
+mörkades till marinblå 80 procent; provisionsförklaringarna passerar 4,5:1.
+De tre logotypfilerna jämfördes byte för byte med ZIP-originalen. CSS har
+inga odefinierade profiltokens eller färgkonverterade ID-selektorer.
+Desktop visuellt granskat: intern översikt, vattenfall, produkter, provision
+samt Elakademin. Befintliga materialfiler och order-/provisionsmodell är oförändrade.
+
+Native succeeded 2026-10-28T10:28:46.881257+00:00 (11:28 svensk tid).
+URL: https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_4ea67a2c7bf08191887d99b82971d2ee
+Deployment: appgdep_6ae1ce5122688191bada38436b989cc7
+Efterkontroll bekräftar version 13, ägarroll och samma privata policyrevision 1.
+Env revision 0; endast Håkan i åtkomstlistan, inga automationer. Ludwigs Site orörd.
+
+Avgränsning: gränssnittet och appikonerna är anpassade till den bifogade
+manualen. Befintliga demoillustrationer är inte verifierat godkända foton;
+inbyggd grafik i filmer, PDF:er och presentationer är bevarad och inte
+fullständigt profilgranskad. Fysisk enhetsinstallation, interaktiv live-inloggning
+och extern filmuppspelning omtestades inte i detta profilpass.
+Källor och fortsatt underhåll: docs/BRAND-PROFILE.md.
+Återställ med revert av PR #89 och publicering av verifierad main; ingen
+radering eller datamigrering behövs. Denna kvittens ändrar enbart dokumentation,
+inte dist/, och kräver ingen ny Sites-publicering.
+
 ## Grafisk profil och godkända logotyper · kandidat · 28 oktober 2026
 
 Håkans uttryckliga uppdrag med bifogad manual och logo-ZIP. Eget arbete på
