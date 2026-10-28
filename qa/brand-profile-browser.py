@@ -2,7 +2,7 @@
 import asyncio
 import os
 from pathlib import Path
-from playwright.async_api import async_playwright
+from playwright.async_api import async_playwright, expect
 
 BASE = os.environ.get('PARTNERLABB_QA_URL', 'http://127.0.0.1:8000/').rstrip('/') + '/'
 OUT = Path(os.environ.get('PARTNERLABB_QA_SHOTS', '/tmp/partnerlabb-shots'))
@@ -22,6 +22,7 @@ async def main():
                 await page.evaluate('document.fonts.ready')
                 if not route and width < 1000:
                     await page.locator('#menu-toggle').click()
+                    await expect(page.locator('#sidebar')).to_have_css('transform', 'matrix(1, 0, 0, 1, 0, 0)')
                 result = await page.evaluate('''() => {
                   const img = document.querySelector('.brand-logo'), box = img.getBoundingClientRect(), style = getComputedStyle(img.parentElement);
                   const rgb = value => value.match(/[\\d.]+/g).slice(0,3).map(Number);
@@ -34,12 +35,14 @@ async def main():
                   };
                   return {font: getComputedStyle(document.body).fontFamily, fonts: [400,500,700].every(w => document.fonts.check(w+' 16px Poppins')),
                     natural: [img.naturalWidth,img.naturalHeight], width: box.width, height: box.height,
+                    inside: box.left >= 0 && box.right <= innerWidth,
                     padding: ['Top','Right','Bottom','Left'].map(k => parseFloat(style['padding'+k])),
                     overflow: document.documentElement.scrollWidth > innerWidth,
                     contrast: [...document.querySelectorAll('.btn-primary, .button.primary, .nav-button.active')].filter(el => el.getBoundingClientRect().width && !el.disabled).map(contrast)};
                 }''')
                 assert result['font'].startswith('Poppins') and result['fonts'], (width, route, result)
                 assert result['natural'] == [1170,199], result
+                assert result['inside'], (width, route, result)
                 assert abs(result['width']/result['height'] - 1170/199) < .02, result
                 assert min(result['padding']) >= result['width'] * 145/1170, result
                 assert not result['overflow'], (width, route, result)
@@ -47,7 +50,7 @@ async def main():
                 await page.screenshot(path=str(OUT/f'report-brand-{route or "portal"}-{width}.png'),full_page=True)
                 if not route:
                     if width < 1000:
-                        await page.locator('#menu-toggle').click()
+                        await page.keyboard.press('Escape')
                     await page.locator('#role').select_option('partner')
                     await page.locator('#partner').select_option('vast')
                     await page.locator('.ow-tabs').get_by_role('button',name='Provision',exact=True).click()
