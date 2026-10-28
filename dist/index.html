@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Kraftringens partneröversikt – kommersiellt resultat, företagsförsäljning, konsumentförsäljning och inflyttningsservice. Enbart exempeldata.">
-  <meta name="theme-color" content="#043f56">
+  <meta name="theme-color" content="#013c57">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Partnerlabb">
   <link rel="manifest" href="./manifest.webmanifest" crossorigin="use-credentials">
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/app-icon-180.png">
   <title>Kraftringen · Partnerportal</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071b30'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23099b98' stroke-width='5'/%3E%3Ccircle cx='34' cy='28' r='11' fill='none' stroke='white' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/brand/favicon-32.png">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="studio.css">
   <link rel="stylesheet" href="academy.css">
@@ -39,6 +39,8 @@
   <link rel="stylesheet" href="partner-orders.css">
   <link rel="stylesheet" href="product-catalog.css">
   <link rel="stylesheet" href="kundrum-theme.css">
+  <link rel="stylesheet" href="./brand-profile.css">
+  <link rel="preload" href="./assets/fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <script src="partner-setup.js" defer></script>
   <script src="app.js" defer></script>
   <script src="partner-crm.js" defer></script>
@@ -75,7 +77,7 @@
 <body>
   <a class="skip-link" href="#view">Hoppa till innehållet</a>
   <aside class="sidebar" id="sidebar">
-    <a href="#overview" class="brand" aria-label="Kraftringen Partnerportal, översikt"><svg viewBox="0 0 44 40" width="35" height="33" aria-hidden="true" fill="none" stroke="currentColor"><ellipse cx="21" cy="20" rx="18" ry="15" stroke-width="2.2" transform="rotate(20 21 20)"/><ellipse cx="23" cy="17" rx="12" ry="11" stroke-width="2.2"/><ellipse cx="26" cy="14" rx="6" ry="6" stroke-width="2.2"/></svg><span>kraftringen<small>PARTNERPORTAL</small></span></a>
+    <a href="#overview" class="brand" aria-label="Kraftringen Partnerportal, översikt"><span class="brand-logo-space"><img class="brand-logo" src="assets/brand/logo-white.png" width="1170" height="199" alt="Kraftringen"></span></a>
     <nav id="nav" class="nav-list" aria-label="Huvudmeny"></nav>
     <button type="button" class="nav-button install-app-entry" id="install-app" hidden><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4M12 6v7m-3-3 3 3 3-3"/></svg>Lägg till som app</button>
     <div class="sidebar-support"><span id="support-icon"></span><strong>Vi hjälper dig vidare.</strong><p>Samla dina frågor till partnerteamet.</p><button class="btn btn-primary btn-small" data-go="support">Hjälp & support <span aria-hidden="true">→</span></button></div>

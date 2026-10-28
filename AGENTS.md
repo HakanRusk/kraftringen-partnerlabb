@@ -17,7 +17,8 @@ meddelanden utan uttryckligt uppdrag.
 
 ## Kod, data och produkt
 
-- Skriv svenska. Bevara marinblå/petrolfärgad design, responsivitet,
+- Skriv svenska. Följ docs/BRAND-PROFILE.md och den bifogade profilmanualen;
+  använd godkända originallogotyper, Poppins och gemensamma färgtokens. Bevara responsivitet,
   tangentbord, etiketter och tydliga spar-/felbesked. Bildkällor hör till ASSETS.md.
 - Servera dist/ utan installation eller byggsteg. package.json är enbart QA.
   Använd befintligt window.Portal, gemensam datamodell och modulregistrering.

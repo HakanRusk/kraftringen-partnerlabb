@@ -1,12 +1,17 @@
 # Bildkällor
 
-## Appikon
+## Godkända logotyper och appikoner
 
-`dist/assets/app-icon-180.png`, `app-icon-192.png` och `app-icon-512.png`
-bygger på portalens befintliga SVG-favicon: två cirklar i petrol/vitt på
-marinblå bakgrund. Det är samma prototypillustration, inte en ny officiell
-Kraftringen-logotyp. Återskapa med `python tools/build-app-icons.py` (Pillow).
-Bakgrunden är ogenomskinlig och motivet ryms inom maskable-ikonens säkra yta.
+Från 28 oktober 2026 används Håkans tre bifogade originalfiler i
+`dist/assets/brand/`: vit, blå och svart. De är byte-identiska med ZIP-originalen.
+Källor, SHA-256, friyta och tillåtna användningar finns i
+[BRAND-PROFILE.md](docs/BRAND-PROFILE.md).
+
+`dist/assets/app-icon-180.png`, `app-icon-192.png`, `app-icon-512.png` och
+`dist/assets/brand/favicon-32.png` använder exakt symbolutsnitt ur den vita
+originallogotypen på marinblå bakgrund. Återskapa med
+`python tools/build-app-icons.py` (Pillow). Friyta, oförändrad proportion och
+maskable-marginal bevaras. Den tidigare ritade prototypsymbolen används inte.
 
 ## Excel-import
 
@@ -23,11 +28,11 @@ Dokumentet är ingen föreslagen eller godkänd fullmaktsmall.
 
 ## Typografi
 
-`dist/assets/inter-variable.woff2` är Inter Variable från projektets officiella
-källa: https://github.com/rsms/inter/tree/master/docs/font-files.
-Den hämtades den 10 oktober 2026 och serveras lokalt utan extern fontförfrågan.
-SIL Open Font License finns i `dist/assets/inter-license.txt` och originalet på
-https://github.com/rsms/inter/blob/master/LICENSE.txt.
+Poppins från Google Fonts officiella katalog `ofl/poppins` används lokalt i
+hela gränssnittet. Sex fullständiga WOFF2-filer och OFL-licensen ligger i
+`dist/assets/fonts/`. Se BRAND-PROFILE.md för vikter, källa och konvertering.
+Äldre `dist/assets/inter-variable.woff2` och `inter-license.txt` är bevarade
+historiska resurser; gränssnittet laddar dem inte längre.
 
 Prototypen använder följande bilder från Unsplash. Filerna är sparade lokalt under `dist/assets/`.
 
@@ -106,10 +111,11 @@ uppladdningsadresser eller credentials läggs i Git. Slutliga video-URL:er
 Portalens befintliga Sites-åtkomst bevaras. Inga riktiga kundsamtal eller
 kunduppgifter producerades eller publicerades i denna kurs.
 
-## Kundrum-riktning · 27 oktober 2026
+## Kundrum-riktning och verifierad profil · 28 oktober 2026
 
-Färgpalett och komponentutseende i `dist/kundrum-theme.css` utgår främst från
-Håkans bifogade Kundrum-bild. Bilden har inte kopierats in i källan. Befintlig
-prototyp-logotyp och lokala Inter-font används; inga nya externa typsnitt,
-bildanrop eller spårning har lagts till. Vattenfallet ritas med CSS från samma
-avstämda orderdata som filter och tabell.
+Kundrum-bilden styr komponenternas övergripande uttryck. Profilmanualens exakta
+färger, Poppins och Håkans godkända logotyper ersätter tidigare uppskattningar.
+`dist/brand-profile.css` är gemensam profilkälla; alla modulstilar använder
+paletten. Inga nya externa bild-/fontanrop eller spårning har tillkommit.
+Vattenfallet ritas med CSS från samma avstämda orderdata som filter och tabell.
+Befintliga foton och utbildningsmedia är bevarade enligt avgränsningen ovan.

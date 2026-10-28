@@ -194,6 +194,11 @@ okänd bortfallsfas finns kvar i totalen men redovisas utanför det avstämda fl
 Marinblå navigation, gul aktiv huvudmeny, rosa primärknappar och ljusblå
 informationsytor följer Håkans bildreferens från 27 oktober. Samma tema används
 i partner- och internvyer, formulär, produktguide och fristående utbildning.
-Befintlig lokalt levererad Inter-font och material är bevarade.
+Från 28 oktober följer gränssnittet den bifogade grafiska manualen: lokal
+Poppins, exakta profilfärger och godkända originallogotyper med friyta även
+i utbildningssidor och appikoner. Korall visar bortfall, orange väntande arbete.
+Se [grafisk profil](docs/BRAND-PROFILE.md) för regler, källor och avgränsningar.
+Befintliga filmer, dokument och demoillustrationer är bevarade; deras inbyggda
+grafik är inte därmed fullständigt profilgranskad.
 Stilen och diagramvisningen kan återställas via Git-revert och ny publicering
 utan att kund-/orderdata, historik eller provisionsvillkor ändras.

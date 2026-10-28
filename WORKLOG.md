@@ -4,6 +4,27 @@
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
 
+## Grafisk profil och godkända logotyper · kandidat · 28 oktober 2026
+
+Håkans uttryckliga uppdrag med bifogad manual och logo-ZIP. Eget arbete på
+codex/official-brand-profile från main 8751e7f0e1e4396faa68682bf91944fcf061624c.
+PR #88:s dokumentationskvittens integrerades först efter grön CI 40530058815
+för exakt HEAD 46d21a3565e8f39bbbbea7316d68d4ee11659b99. Daniels PR #64 lämnas orörd.
+
+Alla UI-stilmallar använder officiell palett; Poppins laddas lokalt, original-
+logotyper bevaras exakt och får föreskriven friyta. Appikoner/favicon använder
+oförvrängt symbolutsnitt. Manualens HEX-värden används i CSS; originalens
+inbyggda pixelvärden ändras inte. Källor/avgränsning i docs/BRAND-PROFILE.md.
+Ingen data-, provisions-, behörighets- eller automationsändring.
+
+Lokal npm test: 16 sviter passerade, inklusive 44 orderkontroller.
+Desktop visar originalbild 1170×199, renderad 160 px bred med 20 px friyta,
+Poppins faktiskt laddad och inget sidöverflöde. Vattenfall och intern översikt
+visuellt granskade. Nya Chromium-kontroller för 3 ingångar × 3 skärmbredder
+mäter font, logotyp, friyta och kontrast. CI/merge/publicering kvitteras först
+efter faktiskt resultat. Filmer, dokument och demoillustrationer bevaras;
+inbyggda mediegrafiken har inte fullständigt profilgranskats.
+
 ## Publicerad Kundrum-stil och vattenfall · version 12 · 27 oktober 2026
 
 PR #87 integrerad efter grön CI 40528809087 för exakt HEAD
