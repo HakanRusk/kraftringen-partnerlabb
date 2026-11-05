@@ -1,5 +1,16 @@
 # Senaste arbete och kvittenser
 
+## Browserkontroll för roller · 5 november 2026
+
+PR #91:s första CI-körning 42027252282 klarade Node/DOM, nya rollflöden i
+1440/390/320 px, CRM, rapporter, profil och inflyttnings-/partnerflöden.
+Ordertestets separata geometriläsningar fångade däremot olika scrollpositioner
+efter fokusåterställning på den högre resultatsidan. Manuell DOM-mätning visar
+vattenfallets fem kolumner på samma höjd. Testet läser nu relaterade koordinater
+i samma bildruta och med dokumentrelativa höjder; geometri- och proportionstoleranser
+är oförändrade. Hela CI körs om innan integration/publicering. Appkoden ändras inte.
+
+
 Äldre logg (2 278 rader) bevaras oförändrad i
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.

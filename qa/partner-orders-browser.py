@@ -37,11 +37,15 @@ async def main():
                 await expect(page.locator('[data-ow-status$=":lost_before_start"]')).to_have_count(4)
                 await expect(page.locator('[data-ow-between="Efter 5"] [data-ow-status="flow:loss:active:lost_after_start"]')).to_have_count(1)
                 await expect(page.locator('[data-ow-stage]')).to_have_count(5)
-                stage3=await page.locator('[data-ow-column=confirmation_sent]').bounding_box()
-                gap=await page.locator('[data-ow-between="3–4"]').bounding_box()
-                stage4=await page.locator('[data-ow-column=confirmed]').bounding_box()
+                # Read related geometry in one frame. Focus restoration can still be
+                # smoothly scrolling after the now-taller result summary above it.
+                stage3,gap,stage4=await page.evaluate('''() => [
+                  '[data-ow-column=confirmation_sent]', '[data-ow-between="3–4"]',
+                  '[data-ow-column=confirmed]'
+                ].map(selector=>{const r=document.querySelector(selector).getBoundingClientRect();
+                  return {x:r.x,y:r.y+scrollY,height:r.height};})''')
                 if width >= 1100:
-                    assert stage3['x'] < stage4['x'] and abs(stage3['y']-stage4['y'])<1
+                    assert stage3['x'] < stage4['x'] and abs(stage3['y']-stage4['y'])<1, (stage3,stage4)
                     # Common baseline, actual proportions and floating segments reach the next total.
                     geometry=await page.locator('.ow-w-plot').evaluate_all('''plots=>plots.map(p=>{
                       const box=p.getBoundingClientRect(),bar=p.querySelector('.ow-w-total').getBoundingClientRect(),pending=p.querySelector('.ow-w-pending')?.getBoundingClientRect(),loss=p.querySelector('.ow-w-loss').getBoundingClientRect();
@@ -58,8 +62,10 @@ async def main():
                     await page.locator('[data-ow-view=steps]').click()
                     await expect(page.locator('.ow-w-plot').first).to_be_hidden()
                     await expect(page.locator('[data-ow-view=steps]')).to_be_focused()
-                    stage3=await page.locator('[data-ow-column=confirmation_sent]').bounding_box()
-                    stage4=await page.locator('[data-ow-column=confirmed]').bounding_box()
+                    stage3,stage4=await page.evaluate('''() => [
+                      '[data-ow-column=confirmation_sent]', '[data-ow-column=confirmed]'
+                    ].map(selector=>{const r=document.querySelector(selector).getBoundingClientRect();
+                      return {x:r.x,y:r.y+scrollY,height:r.height};})''')
                     assert stage3['y'] < stage4['y']
                     await page.locator('[data-ow-view=waterfall]').click()
                 else:
