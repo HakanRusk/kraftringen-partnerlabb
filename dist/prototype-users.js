@@ -1,0 +1,122 @@
+(() => {
+  'use strict';
+  const P=window.Portal;
+  if(!P||P.demoMode)return; // The separate resident demo keeps its own isolated state.
+  const e=P.e, sessionKey='partnerlabb.demo-user.v1';
+  const roles={admin:'Kraftringen · administratör',internal:'Kraftringen · handläggare',manager:'Partner · säljledare',seller:'Partner · säljare'};
+  const seed=[{id:'demo-admin',name:'Kim Admin',email:'admin@kraftringen.example',role:'admin',partner:'',active:true},{id:'demo-internal',name:'Robin Handläggare',email:'handlaggare@kraftringen.example',role:'internal',partner:'',active:true},...['vast','syd'].flatMap(partner=>[
+    {id:`demo-${partner}-manager`,name:partner==='vast'?'Alex Säljledare':'Sam Säljledare',email:`ledare@${partner}.example`,role:'manager',partner,active:true},
+    ...['1','2','3'].map((n,i)=>({id:`demo-${partner}-seller-${n}`,name:['Charlie Exempel','Dani Exempel','Elli Exempel'][i],email:`saljare${n}@${partner}.example`,role:'seller',partner,active:true}))])];
+  const users=()=>P.state.prototypeAccess===undefined?seed:Array.isArray(P.state.prototypeAccess?.users)?P.state.prototypeAccess.users:[];
+  let externalUserChange=false;
+  let userId='';try{userId=sessionStorage.getItem(sessionKey)||'';}catch{}
+  const current=()=>externalUserChange?undefined:users().find(u=>u.id===userId&&u.active===true&&roles[u.role]&&(['admin','internal'].includes(u.role)||P.getPartner(u.partner)));
+  const internal=()=>['admin','internal'].includes(current()?.role);
+  const admin=()=>current()?.role==='admin';
+  const canManage=()=>internal()||current()?.role==='manager';
+  const commission=()=>!!current()&&current().role!=='seller';
+  const scope=partner=>!!current()&&(internal()||current().partner===partner);
+  const staff=partner=>users().filter(u=>u.partner===partner&&['seller','manager'].includes(u.role));
+  // Only the two known, explicitly fictional fixture packs have inferred demo owners.
+  // All other historical orders remain unassigned until an authorised user assigns them.
+  function owner(row){
+    if(Object.hasOwn(row,'sellerId'))return row.sellerId||'';
+    const n=row.examplePack==='flow2026'&&/^flow-2026-\d\d-\d\d$/.test(row.id)?Number(row.id.slice(-2)):
+      row.events?.some(v=>v.text==='Fiktivt exempel för det nya orderförslaget.')&&new RegExp(`^order-demo-${row.partner}-\\d+$`).test(row.id)?Number(row.id.split('-').at(-1)):0;
+    return n&&['vast','syd'].includes(row.partner)?`demo-${row.partner}-seller-${(n-1)%3+1}`:'';
+  }
+  const ownerName=row=>users().find(u=>u.id===owner(row))?.name||'Ej tilldelad';
+  const canRead=row=>scope(row.partner)&&(current()?.role!=='seller'||owner(row)===current().id);
+  const selections=new Map();
+  const selected=row=>!selections.get(row.partner)?.length||selections.get(row.partner).includes(owner(row));
+  const choices=(rows,value)=>rows.map(([id,label])=>`<option value="${e(id)}" ${id===value?'selected':''}>${e(label)}</option>`).join('');
+  const error=message=>({ok:false,message});
+  function saveUser(input,id){
+    if(!admin())return error('Endast Kraftringens administratör får ändra användare.');
+    if(P.state.prototypeAccess!==undefined&&!Array.isArray(P.state.prototypeAccess?.users))return error('Användarunderlaget kan inte läsas. Inget har skrivits över.');
+    const before=users().find(u=>u.id===id);
+    if(id&&!before)return error('Användaren saknas.');
+    const name=String(input.name||'').trim(),email=String(input.email||'').trim().toLowerCase(),role=input.role;
+    const partner=['manager','seller'].includes(role)?String(input.partner||''):'';
+    if(!name||name.length>90||!roles[role])return error('Ange namn och välj roll.');
+    if(!/^[^\s@]+@[^\s@]+\.example$/.test(email))return error('Använd en fiktiv e-postadress som slutar med .example i prototypen.');
+    if(users().some(u=>u.id!==id&&u.email.toLowerCase()===email))return error('E-postadressen används redan.');
+    if(partner&&!P.getPartner(partner)||['manager','seller'].includes(role)&&!partner)return error('Välj en partner.');
+    const active=input.active!==false;
+    if(before?.role==='admin'&&before.active&&(!active||role!=='admin')&&!users().some(u=>u.id!==id&&u.role==='admin'&&u.active))return error('Minst en aktiv administratör måste finnas kvar.');
+    if(before&&before.partner!==partner&&P.orderWorkspace?.allOrders().some(r=>owner(r)===id))return error('Omfördela användarens ordrar innan du byter partner eller till en intern roll.');
+    const value={id:before?.id||'user-'+P.newId(),name,email,role,partner,active};
+    const previous=P.state.prototypeAccess;
+    P.state.prototypeAccess={version:1,users:users().filter(u=>u.id!==id).map(u=>({...u})).concat(value),audit:[{at:new Date().toISOString(),actor:current().id,userId:value.id,before:before?{...before}:null,after:{...value}},...(previous?.audit||[])]};
+    if(!P.save()){if(previous===undefined)delete P.state.prototypeAccess;else P.state.prototypeAccess=previous;return error('Användaren kunde inte sparas. Tidigare uppgifter är kvar.');}
+    return {ok:true,id:value.id};
+  }
+  function signIn(id){
+    if(externalUserChange)return error('Användare har ändrats i en annan flik. Ladda om sidan innan du väljer konto.');
+    const next=users().find(u=>u.id===id&&u.active);
+    if(!next||!roles[next.role]||(['seller','manager'].includes(next.role)&&!P.getPartner(next.partner)))return error('Demokontot är inaktivt eller saknar partner.');
+    userId=id;selections.clear();try{sessionStorage.setItem(sessionKey,id);}catch{P.toast('Demoinloggningen gäller tills sidan laddas om.');}
+    P.closeDialog();P.orderWorkspace?.enable(true);P.role=internal()?'internal':'partner';P.partner=next.partner||P.partner;delete P.selectedPartnerId;P.go('overview');return {ok:true};
+  }
+  function signOut(){userId='';selections.clear();try{sessionStorage.removeItem(sessionKey);}catch{}P.closeDialog();P.go('demo-login');}
+  const partnerPages=new Set(['overview','sales-partner-overview','order-list','order-customers','products','product-facts','academy','support']);
+  function allowed(page){
+    if(!current())return page==='demo-login';
+    if(page==='demo-login')return true;
+    if(['user-admin','product-access','settings'].includes(page))return admin();
+    if(internal())return true;
+    if(partnerPages.has(page))return true;
+    if(current().role==='manager'&&['order-commission','crm','crm-customers','crm-pipeline','crm-activities'].includes(page))return true;
+    // Non-sales partners retain their own existing workflows, never other partners' views.
+    return current().role==='manager'&&P.getPartner(current().partner)?.type==='property'&&['property-partnership','property-default','property-overview','movein','property-registrations','property-intake','property-manual','property-import','property-results'].includes(page);
+  }
+  function enforce(){if(!current()){P.page='demo-login';return;}if(!internal()){P.role='partner';P.partner=current().partner;delete P.selectedPartnerId;}if(!allowed(P.page))P.page='overview';}
+  const originalGo=P.go,originalRender=P.render,originalPreview=P.previewPartner,originalReturn=P.returnInternal;
+  P.go=P.navigate=(page,options)=>{enforce();return originalGo(!current()?'demo-login':allowed(page)?page:'overview',options);};
+  P.render=()=>{enforce();originalRender();decorate();};
+  P.previewPartner=id=>{if(scope(id))originalPreview(id);};
+  P.returnInternal=()=>{if(internal())originalReturn();};
+  const oldReset=P.resetScope;P.resetScope=(...args)=>admin()?oldReset(...args):Promise.resolve(false);
+  const oldSetupOpen=P.partnerSetup.open;P.partnerSetup.open=(...args)=>{if(admin())oldSetupOpen(...args);else P.toast('Endast administratören får ändra partners.');};
+  function decorate(){
+    const u=current();document.body.classList.toggle('pu-logged-out',!u);
+    document.querySelector('.role-picker').hidden=!internal();
+    document.querySelectorAll('[data-ow-legacy],[data-ow-entry],[data-ow-login]').forEach(n=>n.hidden=true);
+    document.querySelector('#return-internal').hidden=!internal()||P.role==='internal';
+    document.querySelectorAll('.profile strong,.sidebar-user strong').forEach(n=>n.textContent=u?.name||'Välj demokonto');
+    document.querySelector('#profile-role').textContent=u?roles[u.role]:'Lokal prototyp';
+    document.querySelector('#sidebar-view-label').textContent=u?roles[u.role]:'Inte demoinloggad';
+    document.querySelectorAll('[data-go]').forEach(n=>{if(!allowed(n.dataset.go))n.hidden=true;});
+    document.querySelector('#notifications').hidden=!internal();
+    document.querySelectorAll('[data-partner-create],[data-partner-edit],#new-partner,[data-partner-setup],#partner-settings,#partner-setup-new').forEach(n=>n.hidden=!admin());
+    let button=document.querySelector('#pu-account');if(!button){button=document.createElement('button');button.id='pu-account';button.className='btn btn-secondary';document.querySelector('.top-actions').prepend(button);}
+    button.textContent=u?'Byt demokonto':'Demoinloggning';button.onclick=signOut;
+    const banner=document.querySelector('.demo-badge');if(banner)banner.textContent='PROTOTYP · LOKAL DEMOINLOGGNING';
+    if(admin()){const n=document.createElement('button');n.className='nav-button'+(P.page==='user-admin'?' active':'');n.dataset.go='user-admin';n.setAttribute('aria-current',P.page==='user-admin'?'page':'false');n.innerHTML=P.icon('users')+'<span>Användare & roller</span>';document.querySelector('#nav').append(n);}
+    if(!u){document.querySelector('#nav').innerHTML='';document.querySelectorAll('.ow-tabs').forEach(n=>n.remove());}
+    if(P.page==='user-admin')document.querySelector('#current-page').textContent='Användare & roller';
+    document.querySelectorAll('.profile .avatar,.sidebar-user .avatar').forEach(n=>n.textContent=u?u.name.split(/\s+/).slice(0,2).map(x=>x[0]).join(''):'DE');
+  }
+  function loginView(){if(externalUserChange)return '<div class="pu-login"><h1>Demokonton har uppdaterats.</h1><p>En annan flik har ändrat användare eller roller. Ladda om sidan för att använda aktuella konton.</p><button class="btn btn-primary" data-pu-reload>Ladda om</button></div>';return `<div class="pu-login"><span class="eyebrow">KRAFTRINGEN PARTNERLABB / PROTOTYP</span><h1>Välj ditt demokonto.</h1><p>Prova portalen som handläggare, administratör, säljledare eller säljare. Ingen anslutning till Microsoft eller e-post görs.</p><div class="pu-login-grid">${users().filter(u=>u.active).map(u=>`<button type="button" class="card pu-login-card" data-pu-login="${e(u.id)}"><span class="pill">${e(roles[u.role])}</span><strong>${e(u.name)}</strong><span>${e(P.getPartner(u.partner)?.name||'Kraftringen')}</span><small>${e(u.email)}</small><span class="pu-enter">Öppna demokonto →</span></button>`).join('')}</div><p class="ow-notice">Enbart fiktiva testuppgifter. Konton och ändringar sparas i denna webbläsare. Kontoväljaren simulerar roller och är ingen säker inloggning. Portalens privata åtkomst ligger kvar separat.</p></div>`;}
+  function adminView(){return `<div class="ow-page"><span class="eyebrow">KRAFTRINGEN / ADMINISTRATION</span><div class="page-head"><h1>Användare & roller</h1><div class="ow-actions"><button class="btn btn-primary" data-pu-new>Ny användare</button><button class="btn btn-secondary" data-pu-partner>Ny partner</button></div></div><p>Fiktiva demokonton i denna webbläsare. Inaktivering behåller ordrar och historik. Inga inbjudningar eller e-postmeddelanden skickas.</p><section class="card table-wrap"><table><thead><tr><th>Användare</th><th>Roll</th><th>Partner</th><th>Status</th><th>Åtgärd</th></tr></thead><tbody>${users().map(u=>`<tr><td><strong>${e(u.name)}</strong><small class="ow-id">${e(u.email)}</small></td><td>${e(roles[u.role]||'Okänd roll')}</td><td>${e(P.getPartner(u.partner)?.name||'Kraftringen')}</td><td>${u.active?'Aktiv':'Inaktiv'}</td><td><button class="text-button" data-pu-edit="${e(u.id)}">Redigera</button></td></tr>`).join('')}</tbody></table></section><details class="card ow-rule"><summary>Ändringshistorik för användare</summary><ul>${(P.state.prototypeAccess?.audit||[]).map(a=>`<li>${e(a.at)} · ${e(a.after?.name)} · ${e(roles[a.after?.role])} · ${a.after?.active?'aktiv':'inaktiv'} · av ${e(users().find(u=>u.id===a.actor)?.name||a.actor)}</li>`).join('')||'<li>Inga lokala ändringar ännu.</li>'}</ul></details></div>`;}
+  function editUser(id){if(!admin())return;const u=users().find(x=>x.id===id)||{active:true,role:'seller',partner:'vast'};
+    P.openDialog(id?'Redigera demokonto':'Nytt demokonto',`<form id="pu-user-form" class="ow-form"><div role="alert" tabindex="-1"></div><div class="ow-grid"><label class="ow-field">Namn<input name="name" required maxlength="90" value="${e(u.name||'')}"></label><label class="ow-field">Fiktiv e-postadress<input name="email" type="email" required value="${e(u.email||'')}" placeholder="namn@partner.example"></label><label class="ow-field">Roll<select name="role">${choices(Object.entries(roles),u.role)}</select></label><label class="ow-field" id="pu-partner-field">Partner<select name="partner">${choices(P.partnerRegistry.map(p=>[p.id,p.name]),u.partner)}</select></label></div><label><input type="checkbox" name="active" ${u.active?'checked':''}> Aktivt demokonto</label><p>Inaktivering tar inte bort tilldelade ordrar. Endast aktiv säljare eller säljledare hos samma partner kan få en ny tilldelning.</p><div class="ow-actions"><button class="btn btn-primary">Spara lokalt</button><button type="button" class="btn btn-secondary" data-ow-cancel>Avbryt</button></div></form>`,()=>{const form=document.querySelector('#pu-user-form');const update=()=>document.querySelector('#pu-partner-field').hidden=['admin','internal'].includes(form.elements.role.value);form.elements.role.onchange=update;update();form.onsubmit=ev=>{ev.preventDefault();const result=saveUser({...Object.fromEntries(new FormData(form)),active:form.elements.active.checked},id);if(!result.ok){const alert=form.querySelector('[role="alert"]');alert.textContent=result.message;alert.focus();return;}P.closeDialog();P.go('user-admin');P.toast('Demokontot har sparats lokalt.');};});
+  }
+  function sellerFilter(){if(!canManage())return '';const values=selections.get(P.partner)||[];return `<fieldset class="pu-seller-filter"><legend>Visa resultat och ordrar för</legend><button class="text-button" type="button" data-pu-all>Alla säljare</button>${[...staff(P.partner).map(u=>[u.id,u.name+(u.active?'':' (inaktiv)')]),['','Ej tilldelade']].map(([id,name])=>`<label><input type="checkbox" data-pu-seller="${e(id)}" ${values.includes(id)?'checked':''}> ${e(name)}</label>`).join('')}<small>${values.length?values.length+' valda':'Alla säljare, även inaktiva och ej tilldelade'}. Urvalet påverkar inte partnerns provisionsavräkning.</small></fieldset>`;}
+  const today=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Stockholm'}).format(new Date());
+  const dateOK=d=>/^\d{4}-\d{2}-\d{2}$/.test(d||'')&&Number.isFinite(Date.parse(d))&&new Date(d).toISOString().slice(0,10)===d;
+  function bindingDate(r){const dates=[r.confirmedAt,...(r.statusHistory||[]).filter(h=>h.status==='confirmed').map(h=>h.at?.slice(0,10))].filter(dateOK);return dates.sort()[0]||'';}
+  const resultPeriods=new Map();
+  function resultPeriod(){if(!resultPeriods.has(P.partner))resultPeriods.set(P.partner,{mode:'month',day:today()});return resultPeriods.get(P.partner);}
+  function bounds(f){const start=new Date(f.day+'T12:00:00Z'),end=new Date(start);if(!dateOK(f.day))return null;if(f.mode==='week'){start.setUTCDate(start.getUTCDate()-(start.getUTCDay()+6)%7);end.setTime(start.getTime());end.setUTCDate(end.getUTCDate()+6);}if(f.mode==='month'){start.setUTCDate(1);end.setUTCMonth(end.getUTCMonth()+1,0);}if(f.mode==='year'){start.setUTCMonth(0,1);end.setUTCMonth(11,31);}return [start.toISOString().slice(0,10),end.toISOString().slice(0,10)];}
+  function salesStats(rows,f){const range=bounds(f);if(!range)return {points:[],count:0,unknown:0,range:[]};const [start,end]=range,points=[];const d=new Date(start+'T12:00:00Z');while(d.toISOString().slice(0,10)<=end){const key=d.toISOString().slice(0,f.mode==='year'?7:10);points.push({key,count:0});if(f.mode==='year')d.setUTCMonth(d.getUTCMonth()+1);else d.setUTCDate(d.getUTCDate()+1);}let count=0;for(const row of rows){const date=bindingDate(row);if(date>=start&&date<=end){points.find(p=>p.key===date.slice(0,f.mode==='year'?7:10)).count++;count++;}}return {points,count,range,unknown:rows.filter(r=>P.orderWorkspace.reached(r,'confirmed')&&!bindingDate(r)).length};}
+  function results(rows){const f=resultPeriod(),s=salesStats(rows,f),max=Math.max(1,...s.points.map(p=>p.count));const x=i=>30+i*(640/Math.max(1,s.points.length-1)),y=n=>150-n/max*115;return `<section class="card pu-results"><span class="eyebrow">${current()?.role==='seller'?'MIN FÖRSÄLJNING':'PARTNERNS FÖRSÄLJNING'}</span><div class="pu-result-head"><div><h2>Tecknade avtal</h2><strong class="pu-total">${s.count}</strong><span> bindande avtal under perioden</span></div><div class="pu-period"><label>Period<select data-pu-period="mode">${choices([['day','Dag'],['week','Vecka'],['month','Månad'],['year','År']],f.mode)}</select></label><label>Datum i perioden<input type="date" data-pu-period="day" value="${e(f.day)}" required></label></div></div><p>${s.range.join(' – ')} · Räknat på dagen avtalet blev bindande. Ordrarnas registreringsperiod väljs separat nedan.</p><svg viewBox="0 0 700 200" role="img" aria-label="Antal bindande avtal över vald period. Exakta tal finns i tabellen nedan."><path d="M30 25V150H680" fill="none" stroke="var(--kf-navy-20)"/><text x="4" y="40">${max}</text><text x="12" y="155">0</text><polyline points="${s.points.map((p,i)=>`${x(i)},${y(p.count)}`).join(' ')}" fill="none" stroke="var(--kf-navy)" stroke-width="3"/>${s.points.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.count)}" r="4" fill="var(--kf-orange)"><title>${p.key}: ${p.count} avtal</title></circle>`).join('')}<text x="30" y="183">${s.points[0]?.key||''}</text><text x="670" y="183" text-anchor="end">${s.points.length>1?s.points.at(-1).key:''}</text></svg>${s.count?'':'<p>Inga bindande avtal med känt datum i valt urval. Face2face har exempelutfall juli–oktober 2026.</p>'}${s.unknown?`<p>${s.unknown} bindande avtal saknar bindandedatum och kan inte placeras i kurvan.</p>`:''}<details><summary>Så räknas resultatet och exakta tal</summary><p>Varje order räknas en gång på sitt första sparade bindandedatum, även om avtalet senare avslutas. Saknade datum gissas inte. Resultatet följer nuvarande ansvarig säljare; en omfördelning flyttar därför också försäljningsresultatet. Partnerns totala provision ändras inte av säljarurvalet.</p><div class="table-wrap"><table><thead><tr><th>Datum / månad</th><th>Bindande avtal</th></tr></thead><tbody>${s.points.map(p=>`<tr><td>${p.key}</td><td>${p.count}</td></tr>`).join('')}</tbody></table></div></details></section>`;}
+  function assignment(row){if(!canManage()||!canRead(row))return;P.openDialog('Omfördela order',`<form id="pu-assign" class="ow-form"><p>${e(row.id)} · Nuvarande ansvarig: ${e(ownerName(row))}. Orderns resultat följer den nya ansvariga säljaren. Status och provisionsunderlag bevaras.</p><label class="ow-field">Ny ansvarig<select name="sellerId" required><option value="">Välj säljare</option>${choices(staff(row.partner).filter(u=>u.active).map(u=>[u.id,u.name]),owner(row))}</select></label><label class="ow-field">Orsak<textarea name="reason" required maxlength="500"></textarea></label><p role="alert" tabindex="-1"></p><button class="btn btn-primary">Spara tilldelning</button></form>`,()=>{const form=document.querySelector('#pu-assign');form.onsubmit=ev=>{ev.preventDefault();const result=P.orderWorkspace.assignOrder(row.id,form.elements.sellerId.value,form.elements.reason.value);if(!result.ok){form.querySelector('[role="alert"]').textContent=result.message;return;}P.closeDialog();P.render();P.toast('Ordern har omfördelats och ändringen loggats.');};});}
+  P.prototypeUsers={current,users,roles,admin,internal,canManage,commission,scope,owner,ownerName,canRead,selected,staff,saveUser,signIn,signOut,allowed,results,salesStats,bindingDate,sellerFilter,login:signOut,assignment};
+  P.register('demo-login',{render:loginView});P.register('user-admin',{render:()=>admin()?adminView():''});
+  document.addEventListener('click',ev=>{const b=ev.target.closest('[data-pu-login],[data-pu-new],[data-pu-edit],[data-pu-partner],[data-pu-assign],[data-pu-all],[data-pu-reload]');if(!b)return;if(b.hasAttribute('data-pu-reload')){location.reload();return;}if(b.hasAttribute('data-pu-login')){const r=signIn(b.dataset.puLogin);if(!r.ok)P.toast(r.message);}if(b.hasAttribute('data-pu-new'))editUser();if(b.hasAttribute('data-pu-edit'))editUser(b.dataset.puEdit);if(b.hasAttribute('data-pu-partner')&&admin()){P.returnInternal();P.partnerSetup.open();}if(b.hasAttribute('data-pu-all')){selections.delete(P.partner);P.render();document.querySelector('[data-pu-all]')?.focus();}if(b.hasAttribute('data-pu-assign')){const row=P.orderWorkspace.orders().find(r=>r.id===b.dataset.puAssign);if(row)assignment(row);}});
+  document.addEventListener('change',ev=>{const el=ev.target;if(el.matches('[data-pu-seller]')){selections.set(P.partner,[...document.querySelectorAll('[data-pu-seller]:checked')].map(n=>n.dataset.puSeller));const id=el.dataset.puSeller;P.render();[...document.querySelectorAll('[data-pu-seller]')].find(n=>n.dataset.puSeller===id)?.focus();}if(el.matches('[data-pu-period]')){if(el.dataset.puPeriod==='day'&&!dateOK(el.value))return;resultPeriod()[el.dataset.puPeriod]=el.value;P.render();document.querySelector(`[data-pu-period="${el.dataset.puPeriod}"]`)?.focus();}});
+  window.addEventListener('storage',ev=>{if(ev.key!=='partnerlabb.portal.v2')return;try{const next=JSON.parse(ev.newValue);if(JSON.stringify(next?.prototypeAccess)!==JSON.stringify(P.state.prototypeAccess)){externalUserChange=true;P.closeDialog();P.go('demo-login');}}catch{}});
+  P.orderWorkspace?.enable(true);
+  document.addEventListener('DOMContentLoaded',()=>{enforce();P.render();});
+})();

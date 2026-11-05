@@ -12,6 +12,8 @@ async def main():
         browser = await pw.chromium.launch()
         for width in (1440, 390, 320):
             context = await browser.new_context(viewport={'width':width,'height':900})
+            await context.add_init_script("sessionStorage.setItem('partnerlabb.demo-user.v1','demo-admin')")
+            await context.add_init_script('''const NativeDate=Date;window.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:['2026-10-15T12:00:00Z']));}static now(){return NativeDate.parse('2026-10-15T12:00:00Z');}};''')
             page = await context.new_page()
             errors=[]
             page.on('pageerror',lambda error: errors.append(str(error)))
@@ -35,11 +37,15 @@ async def main():
                 await expect(page.locator('[data-ow-status$=":lost_before_start"]')).to_have_count(4)
                 await expect(page.locator('[data-ow-between="Efter 5"] [data-ow-status="flow:loss:active:lost_after_start"]')).to_have_count(1)
                 await expect(page.locator('[data-ow-stage]')).to_have_count(5)
-                stage3=await page.locator('[data-ow-column=confirmation_sent]').bounding_box()
-                gap=await page.locator('[data-ow-between="3–4"]').bounding_box()
-                stage4=await page.locator('[data-ow-column=confirmed]').bounding_box()
+                # Read related geometry in one frame. Focus restoration can still be
+                # smoothly scrolling after the now-taller result summary above it.
+                stage3,gap,stage4=await page.evaluate('''() => [
+                  '[data-ow-column=confirmation_sent]', '[data-ow-between="3–4"]',
+                  '[data-ow-column=confirmed]'
+                ].map(selector=>{const r=document.querySelector(selector).getBoundingClientRect();
+                  return {x:r.x,y:r.y+scrollY,height:r.height};})''')
                 if width >= 1100:
-                    assert stage3['x'] < stage4['x'] and abs(stage3['y']-stage4['y'])<1
+                    assert stage3['x'] < stage4['x'] and abs(stage3['y']-stage4['y'])<1, (stage3,stage4)
                     # Common baseline, actual proportions and floating segments reach the next total.
                     geometry=await page.locator('.ow-w-plot').evaluate_all('''plots=>plots.map(p=>{
                       const box=p.getBoundingClientRect(),bar=p.querySelector('.ow-w-total').getBoundingClientRect(),pending=p.querySelector('.ow-w-pending')?.getBoundingClientRect(),loss=p.querySelector('.ow-w-loss').getBoundingClientRect();
@@ -56,8 +62,10 @@ async def main():
                     await page.locator('[data-ow-view=steps]').click()
                     await expect(page.locator('.ow-w-plot').first).to_be_hidden()
                     await expect(page.locator('[data-ow-view=steps]')).to_be_focused()
-                    stage3=await page.locator('[data-ow-column=confirmation_sent]').bounding_box()
-                    stage4=await page.locator('[data-ow-column=confirmed]').bounding_box()
+                    stage3,stage4=await page.evaluate('''() => [
+                      '[data-ow-column=confirmation_sent]', '[data-ow-column=confirmed]'
+                    ].map(selector=>{const r=document.querySelector(selector).getBoundingClientRect();
+                      return {x:r.x,y:r.y+scrollY,height:r.height};})''')
                     assert stage3['y'] < stage4['y']
                     await page.locator('[data-ow-view=waterfall]').click()
                 else:
@@ -199,7 +207,7 @@ async def main():
                 await page.reload()
                 await page.locator('[data-ow-search]').fill('Fiktiv Testkund')
                 await expect(page.locator('#ow-order-list tbody')).to_contain_text('Aktivt avtal')
-                await page.get_by_role('button',name='Visa provisionsstatistik →').click()
+                await page.locator('.ow-tabs [data-go="order-commission"]').click()
                 await expect(page.locator('.ow-metrics')).to_contain_text('Berättigad provision')
                 await expect(page.locator('.ow-metrics')).to_contain_text('Bindande avtal')
                 await expect(page.locator('.oc-calculation')).not_to_have_attribute('open','')
@@ -214,9 +222,7 @@ async def main():
                 await expect(page.locator('.oc-calculation')).to_contain_text('ännu inte avräknat')
                 assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
                 await page.screenshot(path=str(OUT/f'report-orders-commission-{width}.png'),full_page=True)
-                await page.get_by_role('button',name='Byt demoinloggning',exact=True).click()
-                await page.locator('#ow-login select').select_option('syd')
-                await page.get_by_role('button',name='Öppna partnerns startsida').click()
+                await page.locator('#partner').select_option('syd')
                 await expect(page.locator('#view')).not_to_contain_text('Fiktiv Testkund')
                 await page.locator('[data-ow-order]').click()
                 form=page.locator('#ow-order-form')
@@ -230,8 +236,7 @@ async def main():
                     assert box and box['x']>=0 and box['x']+box['width']<=width+1,(width,box)
                 await page.screenshot(path=str(OUT/f'report-orders-business-{width}.png'),full_page=True)
                 await form.locator('[data-ow-cancel]').click()
-                await page.locator('[data-ow-legacy]').click()
-                await expect(page.locator('.partner-start-choice')).to_have_count(4)
+                await expect(page.locator('[data-ow-legacy]')).to_be_hidden()
                 await page.goto(BASE+'?partner=syd#partner-sales')
                 await expect(page.locator('#role')).to_have_value('internal')
                 await page.get_by_role('button',name='Visa ordrar & status',exact=True).click()
@@ -248,7 +253,7 @@ async def main():
                     assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (course,width)
                     await page.screenshot(path=str(OUT/f'report-{course}-{width}.png'),full_page=False)
                 assert not errors, errors
-                print(f'PASS order proposal at {width}px: login, cohort, create, multi-site, confirm, reload, partner, profile, rollback',flush=True)
+                print(f'PASS order proposal at {width}px: login, cohort, create, multi-site, confirm, reload, partner, profile, role navigation',flush=True)
             except Exception:
                 await page.screenshot(path=str(OUT/f'orders-failure-{width}.png'),full_page=True)
                 raise

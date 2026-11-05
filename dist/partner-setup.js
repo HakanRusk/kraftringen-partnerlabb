@@ -124,6 +124,7 @@
     const sync = () => typeof P.syncPartnerRegistry === 'function' ? P.syncPartnerRegistry() : apply(P.partnerRegistry, P.partners, P.state.partnerProfiles);
 
     function validateProfile(payload, id) {
+      if(P.prototypeUsers&&!P.prototypeUsers.admin())return {ok:false,error:'Endast Kraftringens administratör får ändra partners.'};
       if (P.role !== 'internal') return { ok: false, error: 'Partnerinställningar ändras i Kraftringens interna vy.' };
       const existing = id ? getPartner(id) : null;
       if (id && (!existing || !supportedType(existing.type))) return { ok: false, error: 'Öppna en partner för att ändra inställningarna.' };
@@ -145,7 +146,7 @@
     function saveProfile(payload, id) {
       const result = validateProfile(payload, id);
       if (!result.ok) return result;
-      const profileId = id || `partner-${crypto.randomUUID()}`;
+      const profileId = id || `partner-${P.newId?.()||crypto.randomUUID()}`;
       const previous = P.state.partnerProfiles;
       const hadProfiles = own(P.state, 'partnerProfiles');
       const previousProfile = previous && own(previous, profileId) && previous[profileId] && typeof previous[profileId] === 'object' && !Array.isArray(previous[profileId]) ? previous[profileId] : {};

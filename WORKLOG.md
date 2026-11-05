@@ -1,8 +1,69 @@
 # Senaste arbete och kvittenser
 
+## Browserkontroll för roller · 5 november 2026
+
+PR #91:s första CI-körning 42027252282 klarade Node/DOM, nya rollflöden i
+1440/390/320 px, CRM, rapporter, profil och inflyttnings-/partnerflöden.
+Ordertestets separata geometriläsningar fångade däremot olika scrollpositioner
+efter fokusåterställning på den högre resultatsidan. Manuell DOM-mätning visar
+vattenfallets fem kolumner på samma höjd. Testet läser nu relaterade koordinater
+i samma bildruta och med dokumentrelativa höjder; geometri- och proportionstoleranser
+är oförändrade. Samma test går nu till provision via den kvarvarande områdesfliken
+i stället för knappen i den ersatta resultatsammanfattningen. Hela CI körs om
+innan integration/publicering. Appkoden ändras inte.
+
+
 Äldre logg (2 278 rader) bevaras oförändrad i
 [docs/archive/2026-10-14/WORKLOG.md](docs/archive/2026-10-14/WORKLOG.md).
 Skriv nya faktiska resultat här; kopiera inte produktbesluten från docs/DECISIONS.md.
+
+## GitHub-anslutning återställd · 5 november 2026
+
+Håkan har anslutit GitHub och meddelat klart. Kontot HakanRusk och admin-/push-
+behörighet till rätt repository är verifierade via GitHub. main är oförändrad
+på 231c08c4350c21c9c0cb51baee38cdce3c0e8b9d. Lokal kodkandidat 711371e718f51aa93f1b1ce1359dfbb90e367951
+förs nu till egen PR för fullständig CI före integration/publicering.
+Det tidigare åtkomsthindret nedan är löst. Daniels PR #64 och kvittens-PR #90
+lämnas utanför denna ändring.
+
+## Lokal demoinloggning och roller · lokal kandidat · 5 november 2026
+
+Håkan har uttryckligen godkänt att inloggningen simuleras lokalt utan AD.
+Körmiljön, som tidigare inte gick att starta, fungerar nu. Senaste GitHub-main
+hämtad och kontrollerad: `231c08c4350c21c9c0cb51baee38cdce3c0e8b9d`.
+Egen gren `codex/local-user-roles`. Öppna PR #90 (profilkvittens) och Daniels
+#64 lästes; ingen av dem har ändrats eller integrerats.
+
+Lokala demokonton med fyra roller, adminlista och användarändringar, säljarägda
+ordrar, partnergemensamma kunder, gruppurval och dag/vecka/månad/år-kurva för
+bindande avtal. Säljledare kan rätta och omfördela; status, registreringsdatum,
+godkännande/bindandedatum och prisbild bevaras. P-13 och PROTOTYPE-ROLES.md
+beskriver aktuellt beteende, tolkning av resultat och versionsåtergång.
+
+Verifiering: samtliga 17 underhållna Node-/DOM-sviter passerar efter rättning
+av partnerregistrets fristående testadapter. Nio nya rollscenarier plus
+omladdning, URL-avgränsning, ändring i annan flik och kunddemoisolering.
+En tidigare klockberoende orderkontroll har fått ett fixerat testdatum.
+`git diff --check` och syntaxkontroller godkända. Nya CI-browserfall och äldre
+browseringångar är anpassade till explicit lokalt demokonto.
+
+I riktig webbläsare på lokal preview: säljarens egna orderlista utan provision,
+oktoberkurva, säljledarens kombinerade urval (11 bindande avtal för två säljare),
+rättning av exempelorder, omfördelning, adminvy samt nytt demokonto med omladdning
+har kontrollerats. Testet hittade att `crypto.randomUUID` saknas på lokal HTTP;
+record-ID använder nu en UUID-v4-reserv med `crypto.getRandomValues` i berörda
+flöden. Detta är ID-generering, inte autentisering. Administratörsvyn finns som
+bild i `docs/evidence/local-roles-admin-2026-11-05.jpg`.
+Mobilbredderna och hela Chromium-CI är ännu inte körda för denna kandidat.
+
+Kvarstående åtkomsthinder: GitHub-plugin finns att installera men är inte
+installerad i sessionen. Git push dry-run misslyckades med saknad GitHub-
+användarautentisering (`could not read Username`, prompts avstängda).
+Läsning av det publika repot fungerar. Inga credentials efterfrågas i chatten.
+Kandidaten är lokal: ingen GitHub-PR, merge eller ny Sites-publicering påstås.
+Befintlig privat Site och version 13 lämnas orörda. Nästa steg efter anslutning:
+pusha grenen, öppna PR, verifiera CI, integrera auktoriserat eget arbete och
+publicera exakt main-SHA enligt RUNBOOK. Inga agent-/schema-/åtkomständringar.
 
 ## Grafisk profil och godkända logotyper · kandidat · 28 oktober 2026
 

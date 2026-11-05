@@ -13,23 +13,32 @@ och GITHUB-STATUS.md. Utvecklingsagent och schemaläggning aktiveras separat.
 
 ## Nytt orderförslag att prova
 
-Välj **Partner · förhandsvisning** och partner (t.ex. Face2face eller Savera),
-så öppnas orderöversikten direkt. Från intern partnerprofil: **Visa ordrar & status**.
-**Prova nya partnerflödet** väljer också demoidentitet. **Ordrar & resultat** samlar översikt, orderlista och resultatutveckling med
-år/månad/vecka. Ett kompakt flöde visar hur många som nått varje steg;
-**Kvar här** filtrerar på aktuell fas, inklusive kompletteringar efter Godkänd. Vattenfall på bred skärm visar uppnådda steg med gemensam nollinje, gula väntande ordrar och rosa bortfall. **Steg för steg** växlar till lodrätt vy; mobil använder den automatiskt. Bortfall och uppsägningar kan filtreras vid varje steg. Klicka på en
-order för daterad statushistorik. Saknade äldre datum markeras utan att fyllas i. Tolv statusar följer ordern fram
-till aktivt avtal och eventuellt bortfall. Samma områdesväljare finns även på
-Avtalsfakta, Utbildning och Hjälp & support. Kundtyp styr produktkatalogen;
-ordertabellen visar total årsvolym och rörlig eller tidsbestämd avtalstid. **Återgå till tidigare vy**
-bevarar alla testdata. [Testväg, begränsningar och full återgång](docs/ORDER-PROPOSAL.md).
-Detta är lokal demoinloggning, inte nya partnerbehörigheter. Face2faces provisionsvy använder den bekräftade modellen med 1 500 kr per avtal
+Välj ett fiktivt demokonto på startsidan. Fyra roller finns: Kraftringens
+administratör och handläggare samt partnerns säljledare och säljare.
+Säljaren ser sina egna ordrar/resultat och partnerns gemensamma kunder.
+Säljledaren väljer en, flera eller alla säljare och kan rätta/omfördela ordrar.
+Provision visas endast för säljledare och Kraftringen. **Användare & roller**
+finns för administratören; där skapas demokonton och partners och roller/aktivitet ändras.
+Kraftringenkonton har kvar **Partner · förhandsvisning** för handläggning.
+
+**Ordrar & resultat** samlar en kurva för bindande avtal per dag/vecka/månad/år
+med orderlistan och det befintliga vattenfallet. Försäljningsresultatet använder
+bindandedatum; flödet använder ett separat urval efter registreringsdatum.
+**Kvar här** och bortfallen filtrerar samma ordergrupp. Orderdialogen visar
+sparad statushistorik, ansvarig säljare och loggade rättningar/omfördelningar.
+Den registrerade orderns produkt, prisbild, status och historiska datum bevaras.
+
+Detta är lokal rollsimulering utan lösenord, AD, e-postutskick eller
+serverbehörighet. Kontoväljaren ersätter inte Sites privata åtkomst. Data delas
+inte mellan datorer. Se [roller, datamodell och återgång](docs/PROTOTYPE-ROLES.md).
+Äldre växeln **Återgå till tidigare vy** används inte i rollprototypen; en riktig
+versionsåtergång görs via GitHub och Sites. Face2faces provisionsvy använder den bekräftade modellen med 1 500 kr per avtal
 och 80 % garanterat förskott per godkännandemånad. Månadssammanfattningen har
 fördjupning under **Så här har vi räknat** och ett separat räkneexempel.
 90 nya fiktiva Face2face-ordrar (juli–september, sena bekräftelser till oktober)
 läggs till en gång utan att ändra gamla ordrar. Välj dessa i provisionsvyn för
-ett komplett daterat underlag. Äldre resultatrapporter finns under den
-utfällbara resultatutvecklingen och blandas inte med orderstatistiken.
+ett komplett daterat underlag. Äldre resultatrapporter finns kvar i Kraftringens partnerprofiler och blandas
+inte med orderstatistiken.
 Savera har fortsatt illustrativa villkor. Alla orderdata är exempel; inga betalningar görs.
 
 ## Produkter och prislistor

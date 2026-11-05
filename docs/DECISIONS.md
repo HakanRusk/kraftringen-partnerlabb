@@ -232,16 +232,11 @@ perioder, kund/orderregistrering och partnerspecifik provisionsstatistik.
 Korrigering efter Håkans återkoppling 26 oktober: orderöversikten är standard
 för säljpartners även via befintliga partnerval och workspace-länkar, utan opt-in.
 Intern partnerprofil har **Visa ordrar & status**. Portal-CRM nås via **CRM-översikt**.
-**Prova nya partnerflödet** väljer demoidentitet eller återaktiverar efter återgång.
-Ett uttryckligt sparat av-val eller `?proposal=legacy` respekteras; vanlig intern
-portalrot öppnar ingen demoinloggningsdialog om ingen identitet är vald.
-**Återgå till tidigare vy** stänger av förslaget utan att radera data. Tidigare
-arbetsytor, CRM, historiska resultat, utbildning och appinstallation bevaras.
+Den lokala demoinloggningen och rollmodellen enligt P-13 nedan ersätter det
+tidigare partneridentitetsvalet och växeln `?proposal=legacy`. Befintliga
+kunddata, äldre resultat, utbildning, installation och kunddemot bevaras.
+Rollens partner har företräde framför URL:ens workspace. Sites-åtkomst oförändrad.
 
-- Demoidentiteten väljer partnerdomän och startvy, sparas lokalt och återanvänds
-  när förslaget är aktivt. URL:ens uttryckliga workspace har företräde. Detta är
-  inte autentisering/behörighet; riktig koppling mellan inloggad person och
-  partnerorganisation kräver separat backend-/identitetsarbete. Sites-åtkomst oförändrad.
 - Statusflödet enligt Håkans ändring 27 oktober: Registrerad → Godkänd →
   Orderbekräftelse skickad → Bindande avtal → Aktivt avtal.
   Ej godkänd är avslag från Registrerad. Ångrad kan endast väljas från
@@ -382,3 +377,33 @@ gemensam officiell palett, oförändrade originallogotyper med friyta och exakt
 symbolutsnitt för appikoner. Regler och avgränsning finns i BRAND-PROFILE.md.
 Utbildningsinnehåll bevaras; dess inbyggda media är inte omproducerad eller
 fullständigt profilgranskad. Ingen kunddata, behörighet eller affärslogik ändras.
+
+## P-13 · Lokal demoinloggning och roller · 5 november 2026
+
+Källa: Håkans uttryckliga rollbeskrivning, svar på följdfrågorna och förtydligande
+att AD inte kan anslutas i prototypen. Lokal simulering är uttryckligen godkänd.
+
+- `admin`: Kraftringens alla vyer, partner- och användaradministration.
+- `internal`: Kraftringens affärsvyer och handläggning, inga användar-/partnerändringar.
+- `manager`: egna partnerns orders/resultat, individuellt/grupperat säljarurval,
+  provision, rättning och omfördelning inom samma partner.
+- `seller`: egna orders/resultat och partnerns gemensamma kundregister;
+  andra säljares ordrar och provision visas inte. Ingen egen statusgodkännande.
+- Aktivt demokonto väljs utan lösenord eller externa anrop. Registrerade lokala
+  demokonton använder fiktiva .example-adresser. Inaktivering behåller historik.
+  Sista aktiva administratören får inte tas bort genom rollbyte/inaktivering.
+- Resultatkurvan visar antal tecknade = bindande avtal på första kända bindandedag,
+  dag/ISO-vecka/månad/år. Detta är den dokumenterade implementeringstolkningen av
+  tecknade avtal; inte registreringsmånaden eller provisionsförskottets kohort.
+- Resultatet följer nuvarande orderansvarig vid omfördelning, vilket förklaras i
+  dialogen. Partnerns sammanlagda provision påverkas inte av säljarurval.
+- Rättningar kräver orsak och loggas med aktör och före/efter. På redan registrerad
+  order bevaras produkt/prisbild/status/datum. Tilldelning kräver aktiv användare
+  hos samma partner. Användare med ordrar kan inte flyttas till annan partner.
+- Endast kända fiktiva orderpaket får fördelning på fiktiva exempelsäljare.
+  Andra äldre ordrar saknar ansvarig tills säljledare/handläggare tilldelat dem.
+- Lokal simulering är inte autentisering eller säker behörighet. Före skarp data
+  krävs separat serverkontrollerad identitet, tenant-/ägarfilter och driftbeslut.
+  Ingen AD/CRM, e-post, betalning, agent eller schemaläggning aktiveras här.
+- Rollprototypen använder nya ordervyn; versionsåtergång enligt
+  docs/PROTOTYPE-ROLES.md, utan radering av sparad testdata.
