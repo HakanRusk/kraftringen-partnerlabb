@@ -1,5 +1,27 @@
 # Senaste arbete och kvittenser
 
+## Offertutskick och kundgodkännande · underlag · 5 november 2026
+
+Håkan har beställt verkliga testmejl till hakan.rusk@kraftringen.se, valt separat
+testavsändare och förtydligat Utkast → Skickad → Registrerad. Mejlet ska innehålla
+kundlänk och PDF-offert samt valfri PDF-fullmakt. Kunden kan godkänna handlingarna
+separat på länken eller returnera signerade PDF:er via mejl. Registrering kräver
+kompletta handlingar och Kraftringens mottagning; inte enbart ett skickat mejl.
+
+Aktuell main 3199fc59c2998bf61e3cf7b720e621ac616fa0ff och öppna PR #64/#90/#92
+kontrollerade. Ingen av dessa PR:er ändras. Sites saknar konfigurerade
+servermiljövariabler och portalen är statisk. Ingen mejltjänst är ansluten.
+Installerbara mejlanslutningar hittades, men ingen verifierad Sites-eligibility
+tillhandahålls i denna session; en chattanslutning är inte driftklar mejlintegration.
+
+Genomförbart flöde, informationsmodell, API-kontrakt, versionering, granskning,
+åtkomstgräns och acceptansfall finns i docs/OFFER-SIGNING-FLOW.md. Detta är
+underlag för implementation, inte levererad appfunktion. Inget mejl har skickats,
+ingen kundlänk aktiverats och ingen ny Site-version publicerats i detta arbete.
+Kontot för separat testavsändare behöver skapas/anslutas av Håkan innan riktiga
+utskick kan verifieras. Dokumentationsändringen kräver inga apptester.
+
+
 ## Browserkontroll för roller · 5 november 2026
 
 PR #91:s första CI-körning 42027252282 klarade Node/DOM, nya rollflöden i
