@@ -70,3 +70,14 @@ Skärmbilder med prefix report-orders ingår i befintlig CI-artefakt.
 Face2face: `node qa/partner-commission.mjs` kontrollerar den bekräftade
 80 %-förskottsmodellen per godkännandemånad, sena bekräftelser och månadsdelta.
 Chromiumflödet öppnar Så här har vi räknat och april-räkneexemplet.
+
+
+Lokala roller: `qa/user-roles.mjs` ingår i `npm test` (nu 17 sviter).
+Provar direktrutter, partner-/ägarurval, nya orders ägare, rättning med bibehållen
+livscykel/pris, omfördelning, grupper, bindandedatum/ISO-årsskifte, aktivflagga,
+sista admin, sparfel, okända äldre ägare, omladdning och kunddemoisolering.
+Ändrade användare i annan flik kräver omladdning. `user-roles-browser.py` är
+CI-sekvens för faktisk kontoväljare, roller, gruppfilter och adminformulär vid
+320/390/1440 px. Äldre affärssviter startar med ett explicit fiktivt adminkonto
+via sessionslagring och testar fortsatt respektive verksamhetsflöde.
+Ordertestets datum fixeras till oktober 2026 för reproducerbara exempelutfall.

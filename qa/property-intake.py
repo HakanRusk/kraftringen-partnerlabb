@@ -61,6 +61,7 @@ class Suite:
         if self.context:
             await self.context.close()
         self.context = await self.browser.new_context(viewport={'width': 1440, 'height': 1000}, locale='sv-SE', accept_downloads=True)
+        await self.context.add_init_script("sessionStorage.setItem('partnerlabb.demo-user.v1','demo-admin')")
         self.page = await self.context.new_page()
         self.page.on('pageerror', lambda error: self.errors.append(str(error)))
         self.page.set_default_timeout(10000)

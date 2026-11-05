@@ -5,6 +5,7 @@ const html=fs.readFileSync('dist/index.html','utf8');
 async function boot(url='https://portal.example/?proposal=orders&workspace=vast',saved){
  const dom=new JSDOM(html,{url,runScripts:'outside-only'});const w=dom.window;
  await new Promise(resolve=>w.addEventListener('load',resolve,{once:true}));
+ const NativeDate=w.Date;w.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:['2026-10-15T12:00:00Z']));}static now(){return NativeDate.parse('2026-10-15T12:00:00Z');}};
  w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.matchMedia=()=>({matches:false,addEventListener(){}});w.confirm=()=>true;
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;};
  if(saved)w.localStorage.setItem('partnerlabb.portal.v2',saved);

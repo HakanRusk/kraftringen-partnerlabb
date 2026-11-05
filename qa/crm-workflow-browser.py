@@ -20,6 +20,7 @@ async def main():
         browser = await pw.chromium.launch()
         for width in (1440, 390, 320):
             context = await browser.new_context(viewport={'width': width, 'height': 900})
+            await context.add_init_script("sessionStorage.setItem('partnerlabb.demo-user.v1','demo-admin')")
             page = await context.new_page()
             errors = []
             page.on('pageerror', lambda error: errors.append(str(error)))

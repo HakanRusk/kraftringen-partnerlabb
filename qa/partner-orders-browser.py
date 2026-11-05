@@ -12,6 +12,8 @@ async def main():
         browser = await pw.chromium.launch()
         for width in (1440, 390, 320):
             context = await browser.new_context(viewport={'width':width,'height':900})
+            await context.add_init_script("sessionStorage.setItem('partnerlabb.demo-user.v1','demo-admin')")
+            await context.add_init_script('''const NativeDate=Date;window.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:['2026-10-15T12:00:00Z']));}static now(){return NativeDate.parse('2026-10-15T12:00:00Z');}};''')
             page = await context.new_page()
             errors=[]
             page.on('pageerror',lambda error: errors.append(str(error)))
@@ -214,9 +216,7 @@ async def main():
                 await expect(page.locator('.oc-calculation')).to_contain_text('ännu inte avräknat')
                 assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
                 await page.screenshot(path=str(OUT/f'report-orders-commission-{width}.png'),full_page=True)
-                await page.get_by_role('button',name='Byt demoinloggning',exact=True).click()
-                await page.locator('#ow-login select').select_option('syd')
-                await page.get_by_role('button',name='Öppna partnerns startsida').click()
+                await page.locator('#partner').select_option('syd')
                 await expect(page.locator('#view')).not_to_contain_text('Fiktiv Testkund')
                 await page.locator('[data-ow-order]').click()
                 form=page.locator('#ow-order-form')
@@ -230,8 +230,7 @@ async def main():
                     assert box and box['x']>=0 and box['x']+box['width']<=width+1,(width,box)
                 await page.screenshot(path=str(OUT/f'report-orders-business-{width}.png'),full_page=True)
                 await form.locator('[data-ow-cancel]').click()
-                await page.locator('[data-ow-legacy]').click()
-                await expect(page.locator('.partner-start-choice')).to_have_count(4)
+                await expect(page.locator('[data-ow-legacy]')).to_be_hidden()
                 await page.goto(BASE+'?partner=syd#partner-sales')
                 await expect(page.locator('#role')).to_have_value('internal')
                 await page.get_by_role('button',name='Visa ordrar & status',exact=True).click()

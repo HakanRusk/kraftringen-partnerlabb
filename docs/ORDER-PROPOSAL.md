@@ -1,5 +1,9 @@
 # Partnerflöde – förslag 26 oktober 2026
 
+Aktuell komplettering 5 november 2026: lokal kontoväljare och fyra roller enligt
+[PROTOTYPE-ROLES.md](PROTOTYPE-ROLES.md) ersätter gamla partneridentitetsvalet
+och av/på-växeln nedan. Versionsåtergång sker via GitHub/Sites, utan dataradering.
+
 Öppna den ordinarie privata portalen, välj **Partner · förhandsvisning** och
 Face2face/Savera. Ordrar & resultat visas direkt utan särskild aktivering.
 Från intern partnerprofil fungerar **Visa ordrar & status** också.
