@@ -8,7 +8,9 @@ Ordertestets separata geometriläsningar fångade däremot olika scrollpositione
 efter fokusåterställning på den högre resultatsidan. Manuell DOM-mätning visar
 vattenfallets fem kolumner på samma höjd. Testet läser nu relaterade koordinater
 i samma bildruta och med dokumentrelativa höjder; geometri- och proportionstoleranser
-är oförändrade. Hela CI körs om innan integration/publicering. Appkoden ändras inte.
+är oförändrade. Samma test går nu till provision via den kvarvarande områdesfliken
+i stället för knappen i den ersatta resultatsammanfattningen. Hela CI körs om
+innan integration/publicering. Appkoden ändras inte.
 
 
 Äldre logg (2 278 rader) bevaras oförändrad i

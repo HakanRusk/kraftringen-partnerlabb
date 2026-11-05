@@ -207,7 +207,7 @@ async def main():
                 await page.reload()
                 await page.locator('[data-ow-search]').fill('Fiktiv Testkund')
                 await expect(page.locator('#ow-order-list tbody')).to_contain_text('Aktivt avtal')
-                await page.get_by_role('button',name='Visa provisionsstatistik →').click()
+                await page.locator('.ow-tabs [data-go="order-commission"]').click()
                 await expect(page.locator('.ow-metrics')).to_contain_text('Berättigad provision')
                 await expect(page.locator('.ow-metrics')).to_contain_text('Bindande avtal')
                 await expect(page.locator('.oc-calculation')).not_to_have_attribute('open','')
@@ -253,7 +253,7 @@ async def main():
                     assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (course,width)
                     await page.screenshot(path=str(OUT/f'report-{course}-{width}.png'),full_page=False)
                 assert not errors, errors
-                print(f'PASS order proposal at {width}px: login, cohort, create, multi-site, confirm, reload, partner, profile, rollback',flush=True)
+                print(f'PASS order proposal at {width}px: login, cohort, create, multi-site, confirm, reload, partner, profile, role navigation',flush=True)
             except Exception:
                 await page.screenshot(path=str(OUT/f'orders-failure-{width}.png'),full_page=True)
                 raise
