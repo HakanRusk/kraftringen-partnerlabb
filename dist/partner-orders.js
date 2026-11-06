@@ -327,6 +327,7 @@
       return `<section class="card"><h3>Skickade dokument</h3><p>Första utskicket accepterades av Resend ${e(row.sentAt)} till ${e(receipt.recipient)}.</p>
         ${receipt.files?.map(file=>`<details><summary>${e(file.filename)}</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere">${e(file.text)}</pre></details>`).join('')||`<p>${receipt.documents.map(e).join(' · ')}</p><p>Det här äldre utskicket har bara sparade filnamn.</p>`}
         <p>Meddelande-ID: ${e(receipt.providerMessageId)}</p>
+        ${receipt.approvalUrl?'<p>Kundlänk finns i utskicket.</p><button type="button" class="btn btn-secondary" data-approval-id="'+e(receipt.approvalId)+'">Hämta kundens godkännanden</button><p role="status" id="approval-status"></p>':''}
         ${receipt.files? `<button type="button" class="btn btn-secondary" data-ow-send="${e(row.id)}">${row.resendAttempt?'Återuppta återsändning':'Skicka om testmejlet'}</button><p role="status" id="ow-mail-message"></p>`:''}</section>`;
     }
     if(row.status!=='draft')return '';
@@ -340,7 +341,7 @@
     if(!row||(!resending&&row.status!=='draft')||P.demoMode)return {ok:false,message:'Öppna ett eget utkast i den vanliga portalen.'};
     if(resending&&!row.resendAttempt){
       if(!window.confirm('Skicka samma dokument igen till '+row.mailReceipt.recipient+'?'))return;
-      const attempt={...row.mailAttempt,attemptId:P.newId(),createdAt:new Date().toISOString(),resendFiles:row.mailReceipt.files};
+      const attempt={...row.mailAttempt,attemptId:P.newId(),createdAt:new Date().toISOString(),resendFiles:row.mailReceipt.files,approvalId:row.mailReceipt.approvalId||row.mailAttempt.attemptId};
       const saved=mutate(d=>{const target=d.orders.find(r=>r.id===id);target.resendAttempt=attempt;return {ok:true};});
       if(!saved.ok){P.toast(saved.message);return saved;}
       row=orders().find(r=>r.id===id);
@@ -375,6 +376,16 @@
     return result;
   }
 
+  document.addEventListener('click',async event=>{
+    const button=event.target.closest('[data-approval-id]');if(!button)return;
+    const output=document.querySelector('#approval-status');button.disabled=true;
+    try{
+      const response=await fetch('/api/order-approval?id='+encodeURIComponent(button.dataset.approvalId),{cache:'no-store'});
+      const data=await response.json();if(!response.ok)throw Error(data.error||'Godkännanden kunde inte hämtas.');
+      const describe=value=>value?(()=>{const receipt=JSON.parse(value);return 'Godkänd av '+receipt.name+' '+new Date(receipt.at).toLocaleString('sv-SE');})():'Inväntar godkännande';
+      output.textContent='Order: '+describe(data.order_signed)+' · Fullmakt: '+describe(data.poa_signed);
+    }catch(error){output.textContent=error.message;}finally{button.disabled=false;}
+  });
   function detail(id) {
     const r=orders().find(o=>o.id===id);if(!r)return;
 
