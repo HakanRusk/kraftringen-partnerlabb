@@ -216,6 +216,8 @@ utan att kund-/orderdata, historik eller provisionsvillkor ändras.
 
 Spara utkast, öppna ordern och välj **Skicka testmejl med TXT**. Fullmaktsvalet ger en separat testtext. Alla verkliga mejl går till hakan.rusk@kraftringen.se via Resend. Servernyckeln finns endast i Sites.
 
+Nya testutskick sparar bilagornas exakta text i orderns avsnitt **Skickade dokument**. Öppna filnamnet för att läsa texten eller välj **Skicka om testmejlet** för att skicka samma bilagor. Återsändningen loggas med tid och meddelande-ID. Äldre utskick visar de sparade filnamnen.
+
 Resends kvittens sätter **Skickad**, aldrig Registrerad. Filtrera på **Skickade ordrar (utskicksdatum)** för även senare registrerade utskick. Intern handläggare kan efter kontroll av kompletta handlingar uttryckligen simulera mottagning. Inga kundsigneringar eller mejlreturer är anslutna. Orderdata och utskickskvittenser sparas fortfarande i webbläsaren. Ett osäkert utskick återupptas med samma låsta underlag inom 22 timmar; därefter krävs manuell avstämning i Resend. Ingen automatisk omsändning.
 
 `dist/` är fortsatt frontendkällan för QA. `runtime/` använder Sites Vinext-starter och `POST /api/order-mail`. `npm run build` kopierar frontend till runtime och genererar ignorerade `dist/server`, `dist/client` och `dist/.openai` för publicering. Kör Sites installation i runtime vid ny checkout. Huvudportalen måste behålla ägarprivat Sites-åtkomst: API:et förlitar sig på den plattformsgränsen, inte demokontot. Ingen publik kundlänk införs i detta steg.

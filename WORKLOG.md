@@ -906,3 +906,8 @@ Deployment appgdep_6acf2dabe1b88191b5dc61231852641c bekräftade succeeded
 https://kraftringen-partnerlabb.rosen123.chatgpt.site.
 Custom-delning oförändrad. Efterhandskvittens PR #52 gav main 2fe6381;
 dist/ var oförändrad. Full historik/testbelägg i arkivets sista poster.
+
+
+## 6 november 2026 · Dokument och återsändning på ordern
+
+Utgångspunkt för ändringen var publicerad version 15 (9f20085). Nya testutskick sparar bilagornas exakta text lokalt på ordern. Återsändning återanvänder bilagorna och loggar Resends nya meddelande-ID. Befintliga kvittenser med enbart filnamn bevaras. Testet jämför återsända bilagor byte för byte med det ursprungliga utskicket.
