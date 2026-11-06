@@ -32,7 +32,7 @@ async def main():
                 await page.locator('[data-ow-filter=month]').select_option('10')
                 assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
                 await page.screenshot(path=str(OUT/f'report-orders-home-{width}.png'),full_page=True)
-                await expect(page.locator('[data-ow-status]')).to_have_count(17)
+                await expect(page.locator('[data-ow-status]')).to_have_count(18)
                 await expect(page.locator('.ow-withdrawal-branch [data-ow-status="flow:loss:confirmation_sent:withdrawn"]')).to_have_count(1)
                 await expect(page.locator('[data-ow-between="1–2"] [data-ow-status="flow:loss:registered:rejected"]')).to_have_count(1)
                 await expect(page.locator('[data-ow-status$=":lost_before_start"]')).to_have_count(4)
@@ -246,10 +246,10 @@ async def main():
                 await expect(page.locator('#role')).to_have_value('internal')
                 await page.get_by_role('button',name='Visa ordrar & status',exact=True).click()
                 await expect(page.locator('#partner')).to_have_value('syd')
-                await expect(page.locator('[data-ow-status]')).to_have_count(17)
+                await expect(page.locator('[data-ow-status]')).to_have_count(18)
                 await expect(page.locator('.ow-withdrawal-branch [data-ow-status="flow:loss:confirmation_sent:withdrawn"]')).to_have_count(1)
                 await page.reload()
-                await expect(page.locator('[data-ow-status]')).to_have_count(17)
+                await expect(page.locator('[data-ow-status]')).to_have_count(18)
                 await expect(page.locator('.ow-withdrawal-branch [data-ow-status="flow:loss:confirmation_sent:withdrawn"]')).to_have_count(1)
                 for course in ('elakademin.html','utbildning-preview.html'):
                     await page.goto(BASE+course)
