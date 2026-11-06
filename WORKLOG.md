@@ -8,6 +8,45 @@ Verifierat: 19 Node/DOM-sviter gröna; produktionsbygge godkänt. Browserpreview
 
 # Senaste arbete och kvittenser
 
+## Publicerad lokal rollprototyp · version 14 · 5 november 2026
+
+PR #91 är integrerad i GitHub-main: `3199fc59c2998bf61e3cf7b720e621ac616fa0ff`.
+PR-HEAD `3f2c6622cce1a4b13ae8dbd52c4e197e14c6e0a9` har grön CI 42028104658:
+17 Node-/DOM-sviter, samtliga nio Chromium-sviter samt QA gate. Rollvyer,
+orderflöde, CRM, profil, rapporter och kurssidor kontrollerades vid 320/390/1440 px.
+Inflyttnings- och partnertypsflöden passerade. Integrerad main har exakt samma
+träd `43e75cae59ad2c68d8b22db6f1110488a92bdaab`; checkout var ren.
+
+Sites-källan kontrollerades och uppdaterades med bibehållen historik utan
+force-push. Samma main-SHA paketerades. Native-publiceringen rapporterar
+`succeeded` med kvittenstid `2026-11-05T12:40:38.840269+00:00`:
+
+- Site: `appgprj_6adb2c876a0c8191b1fa3c755a73f61a`
+- Version 14: `appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_7b2a33e2130c8191a067aa1f2d043a0e`
+- Deployment: `appgdep_6aec793bc9f081918b20672b6d78a7e4`
+- URL från Sites: https://kraftringen-partnerlabb-hakan.hakan-rusk.chatgpt.site
+- Arkiv: 120 filer, SHA256 `4e8d1324b434b8fa7f6a0bafcb5b9fd7c3dccea9169e012901727225bf4f7953`.
+
+Sites bekräftar fortsatt enbart Håkan som ägare/användare, policyrevision 1,
+och inga scheman. Den nu returnerade adressen använder hakan-rusk; Site-ID
+är oförändrat. Aktuella länkar i README/RUNBOOK uppdateras i denna kvittens.
+Ludwigs Site, Daniels PR #64 och profilkvittens-PR #90 har inte ändrats.
+
+Prova via kontoväljaren eller Byt demokonto. Kim är admin, Robin handläggare,
+Alex Face2faces säljledare och Charlie/Dani/Elli dess säljare. Oktober 2026 har
+exempelutfall. Återgångspunkt före ändringen är version 13 och GitHub-main
+`231c08c4350c21c9c0cb51baee38cdce3c0e8b9d`; procedur i PROTOTYPE-ROLES.md.
+
+Avgränsning: lokal rollsimulering, inga riktiga lösenord, AD, mejl, CRM,
+kunduppgifter eller betalningar. Ingen agent eller tjänst aktiveras.
+Verifieringen gäller lokal förhandsvisning och CI; native-kvittensen verifierar
+publiceringen. Liveadressen öppnades men den separata molnwebbläsaren stannade
+vid Sites befintliga ChatGPT-inloggning; interaktiva liveflöden har därför inte
+kontrollerats där. Verklig Microsoft-/e-postinloggning och enhetsinstallation
+har inte testats. Denna kvittens ändrar bara dokumentation; dist/ är oförändrad
+jämfört med den publicerade main-revisionen.
+
+
 ## Browserkontroll för roller · 5 november 2026
 
 PR #91:s första CI-körning 42027252282 klarade Node/DOM, nya rollflöden i
