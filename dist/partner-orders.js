@@ -325,9 +325,9 @@
     if(row.mailReceipt){
       const receipt=row.mailReceipt;
       return `<section class="card"><h3>Skickade dokument</h3><p>Första utskicket accepterades av Resend ${e(row.sentAt)} till ${e(receipt.recipient)}.</p>
-        ${receipt.files?.map(file=>`<details><summary>${e(file.filename)}</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere">${e(file.text)}</pre></details>`).join('')||`<p>${receipt.documents.map(e).join(' · ')}</p><p>Det här äldre utskicket har bara sparade filnamn.</p>`}
+        ${receipt.files?.map((file,index)=>`<details><summary>${e(file.filename)} · ${documentStatus(row,index)}</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere">${e(file.text)}</pre></details>`).join('')||`<p>${receipt.documents.map(e).join(' · ')}</p><p>Det här äldre utskicket har bara sparade filnamn.</p>`}
         <p>Meddelande-ID: ${e(receipt.providerMessageId)}</p>
-        ${receipt.approvalUrl?'<p>Kundlänk finns i utskicket.</p><button type="button" class="btn btn-secondary" data-approval-id="'+e(receipt.approvalId)+'">Hämta kundens godkännanden</button><p role="status" id="approval-status"></p>':''}
+        ${receipt.approvalUrl?'<p>Kundlänk finns i utskicket.</p><button type="button" class="btn btn-secondary" data-approval-id="'+e(receipt.approvalId)+'" data-approval-order="'+e(row.id)+'">Uppdatera kundens godkännanden</button><p role="status" id="approval-status"></p>':''}
         ${receipt.files? `<button type="button" class="btn btn-secondary" data-ow-send="${e(row.id)}">${row.resendAttempt?'Återuppta återsändning':'Skicka om testmejlet'}</button><p role="status" id="ow-mail-message"></p>`:''}</section>`;
     }
     if(row.status!=='draft')return '';
@@ -376,22 +376,66 @@
     return result;
   }
 
-  document.addEventListener('click',async event=>{
-    const button=event.target.closest('[data-approval-id]');if(!button)return;
-    const output=document.querySelector('#approval-status');button.disabled=true;
-    try{
-      const response=await fetch('/api/order-approval?id='+encodeURIComponent(button.dataset.approvalId),{cache:'no-store'});
-      const data=await response.json();if(!response.ok)throw Error(data.error||'Godkännanden kunde inte hämtas.');
-      const describe=value=>value?(()=>{const receipt=JSON.parse(value);return 'Godkänd av '+receipt.name+' '+new Date(receipt.at).toLocaleString('sv-SE');})():'Inväntar godkännande';
-      output.textContent='Order: '+describe(data.order_signed)+' · Fullmakt: '+describe(data.poa_signed);
-    }catch(error){output.textContent=error.message;}finally{button.disabled=false;}
+  function documentStatus(row,index) {
+    const signed=row.documentApprovals?.[index?'poa':'order'];
+    if(signed)return 'Godkänd av '+e(signed.name)+' '+e(new Date(signed.at).toLocaleString('sv-SE'));
+    return row.mailReceipt?.approvalUrl?'Inväntar godkännande':'Godkännandestatus saknas för äldre utskick';
+  }
+  const approvalRequests=new Set();
+  async function refreshApprovals(id) {
+    const row=orders().find(order=>order.id===id);
+    const version=row?.mailReceipt?.approvalId;
+    if(!row?.mailReceipt?.approvalUrl||approvalRequests.has(id))return;
+    approvalRequests.add(id);
+    try {
+      const response=await fetch('/api/order-approval?id='+encodeURIComponent(version),{cache:'no-store',signal:AbortSignal.timeout(15000)});
+      const data=await response.json();
+      if(!response.ok)throw Error(data.error||'Godkännanden kunde inte hämtas.');
+      const parse=value=>{
+        if(!value)return null;
+        const receipt=JSON.parse(value);
+        if(receipt.version!==version||!Number.isFinite(Date.parse(receipt.at))||typeof receipt.name!=='string')throw Error('Godkännandets dokumentversion kunde inte verifieras.');
+        return receipt;
+      };
+      const approvals={order:parse(data.order_signed),poa:parse(data.poa_signed)};
+      const result=mutate(d=>{
+        const target=d.orders.find(order=>order.id===id);
+        if(!orders().some(order=>order.id===id)||target?.mailReceipt?.approvalId!==version)return {ok:false,message:'Ordern har ändrats. Öppna den igen.'};
+        target.documentApprovals={order:approvals.order||target.documentApprovals?.order||null,poa:approvals.poa||target.documentApprovals?.poa||null};
+        const complete=target.documentApprovals.order&&(target.mailReceipt.files.length===1||target.documentApprovals.poa);
+        if(complete&&target.status==='sent'){
+          const at=new Date(Math.max(Date.parse(target.documentApprovals.order.at),Date.parse(target.documentApprovals.poa?.at||target.documentApprovals.order.at))).toISOString();
+          target.statusHistory=[...historyFor(target),{status:'registered',at}];
+          target.status='registered';target.registeredAt=at.slice(0,10);
+          target.events=[{at,text:'Registrerad automatiskt när kunden godkänt samtliga utskickade handlingar.'},...(target.events||[])];
+        }
+        return {ok:true};
+      });
+      if(!result.ok)throw Error(result.message);
+      if(document.querySelector('[data-approval-order]')?.dataset.approvalOrder===id){P.render();detail(id,false);}
+    } catch(error) {
+      if(document.querySelector('[data-approval-order]')?.dataset.approvalOrder===id){
+        const output=document.querySelector('#approval-status');
+        if(output)output.textContent='Kunde inte uppdatera. Senast sparad status visas. '+error.message;
+      }
+    } finally {approvalRequests.delete(id);}
+  }
+  document.addEventListener('click',event=>{
+    const button=event.target.closest('[data-approval-order]');
+    if(button)refreshApprovals(button.dataset.approvalOrder);
   });
-  function detail(id) {
+  setInterval(()=>{
+    if(document.hidden)return;
+    const button=document.querySelector('[data-approval-order]');
+    if(button)refreshApprovals(button.dataset.approvalOrder);
+  },15000);
+  function detail(id,refresh=true) {
     const r=orders().find(o=>o.id===id);if(!r)return;
 
     const c=customers().find(c=>c.id===r.customerId);
     const history=historyFor(r);
     P.openDialog('Order · '+statuses[r.status],`<div class="ow-form">${mailPanel(r)}${!r.mailAttempt&&(r.status==='draft'||P.prototypeUsers?.canManage())?`<button class="btn btn-primary" data-ow-edit="${e(id)}">${r.status==='draft'?'Redigera utkast':'Rätta order'}</button>`:''}${P.prototypeUsers?`<p>Ansvarig: <strong>${e(P.prototypeUsers.ownerName(r))}</strong></p>${P.prototypeUsers.canManage()?`<button class="btn btn-secondary" data-pu-assign="${e(id)}">Omfördela order</button>`:''}`:''}<h3>${e(c?.name||'Kund saknas')}</h3><p>${e(r.product)} · ${e(r.id)}</p><dl class="ow-detail"><div><dt>Registrerad</dt><dd>${date(r.registeredAt)}</dd></div><div><dt>Önskad start</dt><dd>${date(r.startDate)}</dd></div><div><dt>Avtalstid</dt><dd>${e(termLabel(r))}</dd></div><div><dt>Total årsvolym</dt><dd>${volumeLabel(r)}</dd></div></dl>${P.productCatalog?.savedPrice(r)||''}${r.facilities.map((f,i)=>`<section class="card ow-rule"><h4>Anläggning ${i+1}</h4><p>${e(f.installationId)} · ${e(f.area)}${f.network?' · '+e(f.network):''}<br>${fmt(Number(f.annualKwh))} kWh/år</p>${profiled.has(r.product)?`<p>${months.map((m,n)=>`${m}: ${fmt(Number(f.profile[n]))} kWh`).join(' · ')}</p>`:''}</section>`).join('')}${flowPosition(r)===null?'<p class="ow-notice">Okänd bortfallsfas: underlaget räcker inte för att placera bortfallet mellan två steg. Ordern finns i totalen men utanför det avstämda flödet. Sparad historik är oförändrad.</p>':''}<section class="ow-status-history"><h3>Statushistorik</h3><ol>${history.map(h=>`<li><strong>${historyLabels[h.status]}${issueReasons[h.reason]?`<small class="ow-history-reason">Orsak: ${issueReasons[h.reason]}</small>`:''}</strong><time datetime="${e(h.at)}">${h.at.includes('T')?new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Stockholm',dateStyle:'medium',timeStyle:'short'}).format(new Date(h.at)):date(h.at)}</time></li>`).join('')||'<li>Inga daterade statussteg finns sparade.</li>'}</ol>${history.some(h=>h.status===r.status)?'':`<p>Aktuell status: ${statuses[r.status]} · Datum saknas i äldre underlag.</p>`}<p class="muted">Endast sparade datum visas. Övriga äldre mellanled, exempelvis datum för skickad orderbekräftelse, kan saknas. Tidigare Bekräftad och Väntar på avtalsstart räknas nu som Bindande avtal. Äldre steg visas med sina ursprungliga datum; saknat bindandedatum härleds inte från väntestatusen.</p></section>${!P.prototypeUsers||P.prototypeUsers.internal()?'<h3>Simulera nästa status</h3><p>Kraftringens lokala demohandläggning. Inga verkliga utskick görs.</p>':'<p>Kraftringen hanterar orderns status.</p>'}<div class="ow-actions">${(!P.prototypeUsers||P.prototypeUsers.internal()?transitions[r.status]:[]).map(s=>`<button class="btn btn-secondary" data-ow-transition="${s}" data-order="${e(id)}">${statuses[s]} · demo</button>`).join('')||'<span>Inga ytterligare statussteg.</span>'}</div><details><summary>Övrig händelselogg</summary><ul>${(r.events||[]).map(ev=>`<li>${e(ev.text)} <small>${e(ev.at.slice(0,10))}${ev.actor?' · '+e(P.prototypeUsers?.users().find(u=>u.id===ev.actor)?.name||ev.actor):''}</small>${ev.changes?`<ul>${Object.entries(ev.changes).map(([key,v])=>`<li>${e({customerId:'Kund',startDate:'Önskad start',termType:'Avtalstid',termMonths:'Antal månader',facilities:'Anläggningar'}[key]||key)}: ${e(key==='facilities'?`${v.before?.length||0} anläggningar uppdaterades till ${v.after?.length||0} anläggningar (detaljer sparade i händelseloggen)`:key==='customerId'?`${customers().find(c=>c.id===v.before)?.name||'—'} → ${customers().find(c=>c.id===v.after)?.name||'—'}`:`${v.before??'—'} → ${v.after??'—'}`)}</li>`).join('')}</ul>`:''}</li>`).join('')}</ul></details></div>`);
+    if(refresh)refreshApprovals(id);
   }
   function enable(value) {
     if(P.prototypeUsers&&!value)return;
