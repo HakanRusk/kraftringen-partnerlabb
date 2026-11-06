@@ -19,7 +19,7 @@ let cid,oid;
 const customer={name:'Fiktiv <img src=x> Kund',type:'private',identifier:'',postalAddress:'Exempelgatan 5',visitAddress:'Exempelvägen 2',email:'test@kund.example',phone:'0700000000'};
 const facility={installationId:'735999999999999998',annualKwh:'12000',area:'SE4',network:'DEM',profile:Array(12).fill('1000')};
 let draft;
-test('proposal workspace and period cards are partner scoped',()=>{assert.equal(P.role,'partner');assert.equal(P.partner,'vast');assert.equal(doc.querySelectorAll('[data-ow-status]').length,17);assert.ok(doc.querySelector('#nav [data-go="order-commission"]'));assert.equal(api.orders().length,110);assert.ok(api.orders().every(r=>r.partner==='vast'));});
+test('proposal workspace and period cards are partner scoped',()=>{assert.equal(P.role,'partner');assert.equal(P.partner,'vast');assert.equal(doc.querySelectorAll('[data-ow-status]').length,18);assert.ok(doc.querySelector('#nav [data-go="order-commission"]'));assert.equal(api.orders().length,110);assert.ok(api.orders().every(r=>r.partner==='vast'));});
 test('partner catalog defaults, atomic configuration, restricted saves and preserved history',()=>{
  const c=P.productCatalog;
  assert.deepEqual(Array.from(c.allowedCategories('vast')),['consumer']);assert.deepEqual(Array.from(c.allowedCategories('syd')),['business']);
@@ -170,13 +170,13 @@ test('separate customer demo does not read normal orders',()=>{assert.equal(demo
 const standard=await boot('https://portal.example/');
 test('ordinary existing partner selection defaults to status cards without opt-in',()=>{
  assert.equal(standard.P.role,'internal');assert.equal(standard.doc.querySelector('#ow-login'),null);
- for(const id of ['syd','vast']){standard.P.previewPartner(id);assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,17);assert.ok(standard.doc.querySelector('#ow-order-list'));}
+ for(const id of ['syd','vast']){standard.P.previewPartner(id);assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,18);assert.ok(standard.doc.querySelector('#ow-order-list'));}
  standard.P.returnInternal();standard.P.commercial.selectPartner('syd','partner-detail');
  standard.doc.querySelector('[data-ow-partner]').click();assert.equal(standard.P.partner,'syd');assert.equal(standard.P.role,'partner');
- assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,17);
+ assert.equal(standard.doc.querySelectorAll('[data-ow-status]').length,18);
 });
 const direct=await boot('https://portal.example/?workspace=vast');
-test('existing workspace deep link opens orders; explicit legacy URL still restores previous view',()=>{assert.equal(direct.doc.querySelectorAll('[data-ow-status]').length,17);});
+test('existing workspace deep link opens orders; explicit legacy URL still restores previous view',()=>{assert.equal(direct.doc.querySelectorAll('[data-ow-status]').length,18);});
 const legacy=await boot('https://portal.example/?proposal=legacy&workspace=vast');
 test('explicit legacy link retains rollback and data',()=>{assert.equal(legacy.doc.querySelectorAll('.partner-start-choice').length,4);});
 standard.dom.window.close();direct.dom.window.close();legacy.dom.window.close();
@@ -219,7 +219,7 @@ test('phase-specific loss filters and remaining groups use the displayed cohort'
   const value=`flow:loss:${key}:${status}`,button=compat.doc.querySelector(`[data-ow-between="${gap}"] [data-ow-status="${value}"]`);assert.ok(button);button.click();assert.equal(compat.doc.querySelector('[data-ow-filter="status"]').value,value);
  }
  assert.equal(compat.doc.querySelectorAll('[data-ow-status$=":lost_before_start"]').length,4);assert.ok(compat.doc.querySelector('.ow-v-completion [data-ow-status="needs_completion"]'));
- assert.equal(compat.doc.querySelectorAll('[data-ow-status]').length,17);assert.equal(compat.doc.querySelectorAll('[data-ow-stage="awaiting_start"]').length,0);
+ assert.equal(compat.doc.querySelectorAll('[data-ow-status]').length,18);assert.equal(compat.doc.querySelectorAll('[data-ow-stage="awaiting_start"]').length,0);
 });
 compat.dom.window.close();legacyReload.dom.window.close();
 
