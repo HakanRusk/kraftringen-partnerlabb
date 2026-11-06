@@ -322,7 +322,13 @@
   }
 
   function mailPanel(row) {
-    if(row.mailReceipt)return `<section class="card"><h3>Testmejl skickat</h3><p>Accepterat av Resend ${e(row.sentAt)} till hakan.rusk@kraftringen.se. Detta bevisar inte leverans eller underskrift.</p><p>${row.mailReceipt.documents.map(e).join(' · ')}</p><p>Meddelande-ID: ${e(row.mailReceipt.providerMessageId)}</p></section>`;
+    if(row.mailReceipt){
+      const receipt=row.mailReceipt;
+      return `<section class="card"><h3>Skickade dokument</h3><p>Första utskicket accepterades av Resend ${e(row.sentAt)} till ${e(receipt.recipient)}.</p>
+        ${receipt.files?.map(file=>`<details><summary>${e(file.filename)}</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere">${e(file.text)}</pre></details>`).join('')||`<p>${receipt.documents.map(e).join(' · ')}</p><p>Det här äldre utskicket har bara sparade filnamn.</p>`}
+        <p>Meddelande-ID: ${e(receipt.providerMessageId)}</p>
+        ${receipt.files? `<button type="button" class="btn btn-secondary" data-ow-send="${e(row.id)}">${row.resendAttempt?'Återuppta återsändning':'Skicka om testmejlet'}</button><p role="status" id="ow-mail-message"></p>`:''}</section>`;
+    }
     if(row.status!=='draft')return '';
     return `<section class="card"><h3>Skicka testoffert</h3><p>Riktigt mejl med orderns nyckeluppgifter i en textfil${row.requiresPowerOfAttorney?' och en separat fullmaktstext':''}. Endast fiktiva uppgifter. Mottagare: hakan.rusk@kraftringen.se.</p><button type="button" class="btn btn-primary" data-ow-send="${e(row.id)}">${row.mailAttempt?'Återuppta samma utskick':'Skicka testmejl med TXT'}</button><p role="status" id="ow-mail-message">${row.mailAttempt?'Tidigare utskicksförsök finns. Samma underlag används för att undvika dubbla mejl.':''}</p></section>`;
   }
@@ -330,14 +336,22 @@
   async function sendMail(id,button) {
     if(mailing.has(id))return {ok:false,message:'Utskicket pågår.'};
     let row=orders().find(r=>r.id===id);
-    if(!row||row.status!=='draft'||P.demoMode)return {ok:false,message:'Öppna ett eget utkast i den vanliga portalen.'};
+    const resending=!!row?.mailReceipt?.files;
+    if(!row||(!resending&&row.status!=='draft')||P.demoMode)return {ok:false,message:'Öppna ett eget utkast i den vanliga portalen.'};
+    if(resending&&!row.resendAttempt){
+      if(!window.confirm('Skicka samma dokument igen till '+row.mailReceipt.recipient+'?'))return;
+      const attempt={...row.mailAttempt,attemptId:P.newId(),createdAt:new Date().toISOString(),resendFiles:row.mailReceipt.files};
+      const saved=mutate(d=>{const target=d.orders.find(r=>r.id===id);target.resendAttempt=attempt;return {ok:true};});
+      if(!saved.ok){P.toast(saved.message);return saved;}
+      row=orders().find(r=>r.id===id);
+    }
     if(!row.mailAttempt) {
       const customer=customers().find(c=>c.id===row.customerId);
       const attempt={attemptId:P.newId(),createdAt:new Date().toISOString(),order:{id:row.id,customer:customer?.name||'',partner:P.getPartner(row.partner)?.name||row.partner,seller:P.prototypeUsers?.ownerName(row)||'',product:row.product,price:row.priceSnapshot?JSON.stringify(row.priceSnapshot):'Underlag saknas',startDate:row.startDate,term:termLabel(row),poa:row.requiresPowerOfAttorney===true,facilities:row.facilities.map(f=>({id:f.installationId,area:f.area,kwh:f.annualKwh,network:f.network}))}};
       const saved=mutate(d=>{const target=d.orders.find(r=>r.id===id);target.mailAttempt=attempt;return {ok:true};});
       if(!saved.ok){P.toast(saved.message);return saved;}row=orders().find(r=>r.id===id);
     }
-    const attempt=row.mailAttempt;mailing.add(id);if(button)button.disabled=true;
+    const attempt=resending?row.resendAttempt:row.mailAttempt;mailing.add(id);if(button)button.disabled=true;
     let result;
     try {
       const response=await fetch('/api/order-mail',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(attempt),signal:AbortSignal.timeout(25000)});
@@ -345,11 +359,18 @@
       if(!response.ok||receipt.accepted!==true)throw new Error(receipt.error||'Mejltjänsten är inte tillgänglig.');
       // A response may arrive after a demo-account switch; retain the frozen attempt,
       // but never apply it to another order or overwrite newer local state.
-      result=mutate(d=>{const target=d.orders.find(r=>r.id===id);if(!target||target.mailAttempt?.attemptId!==attempt.attemptId||target.status!=='draft')return {ok:false,message:'Mejlet accepterades, men ordern har ändrats. Kontrollera utskicket i Resend.'};target.mailReceipt=receipt;target.sentAt=receipt.acceptedAt;target.status='sent';target.statusHistory=[...historyFor(target),{status:'sent',at:receipt.acceptedAt}];target.events=[{at:receipt.acceptedAt,text:'Testmejl accepterat av Resend till '+receipt.recipient+'. ID: '+receipt.providerMessageId},...(target.events||[])];return {ok:true};});
+      result=mutate(d=>{const target=d.orders.find(r=>r.id===id);
+        if(resending){
+          if(target?.resendAttempt?.attemptId!==attempt.attemptId)return {ok:false,message:'Ordern har ändrats. Kontrollera utskicket i Resend.'};
+          target.events=[{at:receipt.acceptedAt,text:'Testmejl återsänt till '+receipt.recipient+'. ID: '+receipt.providerMessageId},...(target.events||[])];
+          delete target.resendAttempt;
+          return {ok:true};
+        }
+        if(!target||target.mailAttempt?.attemptId!==attempt.attemptId||target.status!=='draft')return {ok:false,message:'Mejlet accepterades, men ordern har ändrats. Kontrollera utskicket i Resend.'};target.mailReceipt=receipt;target.sentAt=receipt.acceptedAt;target.status='sent';target.statusHistory=[...historyFor(target),{status:'sent',at:receipt.acceptedAt}];target.events=[{at:receipt.acceptedAt,text:'Testmejl accepterat av Resend till '+receipt.recipient+'. ID: '+receipt.providerMessageId},...(target.events||[])];return {ok:true};});
       if(!result.ok)result.message='Mejlet accepterades men kvittensen kunde inte sparas lokalt. Återuppta samma utskick inom 22 timmar. '+result.message;
     }catch(error){result={ok:false,message:error.name==='AbortError'||error.name==='TimeoutError'?'Resultatet är okänt. Återuppta samma utskick inom 22 timmar; skapa inte ett nytt.':error.message};}
     finally{mailing.delete(id);if(button)button.disabled=false;}
-    P.toast(result.ok?'Testmejlet accepterades av Resend. Ordern är Skickad.':result.message);
+    P.toast(result.ok?(resending?'Återsändningen accepterades av Resend.':'Testmejlet accepterades av Resend. Ordern är Skickad.'):result.message);
     if(result.ok){P.render();detail(id);}else{const message=document.querySelector('#ow-mail-message');if(message)message.textContent=result.message;}
     return result;
   }
