@@ -1,3 +1,11 @@
+# Textutskick – lokal kandidat 6 november 2026
+
+Håkan har förenklat det beställda mejlflödet till TXT med orderns nyckeluppgifter. RESEND_API_KEY är verifierad som hemlig Site-inställning. Befintlig GitHub-main 3199fc5 och öppna PR 64/90/92/93 kontrollerade; dessa lämnas orörda.
+
+Ny serverdel via Sites Vinext-starter, låst mottagare, Resend-idempotens, UTF-8-bilagor och valfri fullmaktstext. Lokal sparad utskicksavsikt före nätanrop, samma payload vid omförsök, 22-timmarsgräns och lås av utskickad orderversion. Skickad skiljs från registreringskohort och provision. Befintliga exempel behålls. Intern demomottagning kräver explicit bekräftelse.
+
+Verifierat: 19 Node/DOM-sviter gröna; produktionsbygge godkänt. Browserpreview: sparat utkast, fullmaktsval, TXT-knapp och felbesked utan lokal servernyckel. CI/mobil, publicering och riktigt mejl återstår vid denna loggpost. Ingen mejlretur, PDF, kundsignering eller CRM ansluts.
+
 # Senaste arbete och kvittenser
 
 ## Browserkontroll för roller · 5 november 2026

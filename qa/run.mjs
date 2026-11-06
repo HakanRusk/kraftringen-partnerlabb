@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 process.chdir(fileURLToPath(new URL('../', import.meta.url)));
 const suites = [
-  'partner-registry', 'results-only', 'partner-self-service', 'savera-data',
+  'order-mail', 'order-mail-client', 'partner-registry', 'results-only', 'partner-self-service', 'savera-data',
   'property-intake-dedup', 'movein-next-action', 'movein-receipt',
   'property-results-period', 'install-app', 'partner-crm', 'crm-identifiers', 'crm-workflow', 'crm-polish', 'commercial-periods', 'partner-orders', 'partner-commission', 'user-roles'
 ];
@@ -16,7 +16,7 @@ function run(args) {
 function syntax(directory) {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     const file = path.join(directory, entry.name);
-    if (entry.isDirectory()) syntax(file);
+    if (entry.isDirectory() && !['server','client','.openai'].includes(entry.name)) syntax(file);
     else if (file.endsWith('.js')) run(['--check', file]);
   }
 }

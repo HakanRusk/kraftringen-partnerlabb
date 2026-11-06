@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {sendOrderMail,RECIPIENT} from '../runtime/server/order-mail.mjs';
+const now=Date.now();
+const body={attemptId:'11111111-1111-4111-8111-111111111111',createdAt:new Date(now).toISOString(),to:'wrong@example.org',order:{id:'test-1',customer:'Fiktiv Åsa',partner:'Face2Face',product:'Rörligt',poa:true,facilities:[{id:'735999000000000001',kwh:'5000',area:'SE4'}]}};
+const request=(input=body,origin='https://portal.example')=>new Request('https://portal.example/api/order-mail',{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify(input)});
+let count=0,last;
+const transport=async(url,init)=>{count++;last=JSON.parse(init.body);assert.equal(url,'https://api.resend.com/emails');assert.equal(init.headers['Idempotency-Key'],'partnerlabb/'+body.attemptId);return Response.json({id:'mail-test-1'});};
+assert.equal((await sendOrderMail(request(body,'https://evil.example'),{},transport,now)).status,403);assert.equal(count,0);
+assert.equal((await sendOrderMail(request(),{},transport,now)).status,503);assert.equal(count,0);
+assert.equal((await sendOrderMail(request({...body,createdAt:new Date(now-23*3600000).toISOString()}),{RESEND_API_KEY:'fake'},transport,now)).status,409);
+let response=await sendOrderMail(request(),{RESEND_API_KEY:'fake'},transport,now);
+assert.equal(response.status,200);assert.deepEqual(last.to,[RECIPIENT]);assert.equal(last.cc,undefined);assert.equal(last.attachments.length,2);assert.match(Buffer.from(last.attachments[0].content,'base64').toString(),/Fiktiv Åsa/);assert.match(last.attachments[1].filename,/fullmakt/);
+await sendOrderMail(request({...body,order:{...body.order,poa:false}}),{RESEND_API_KEY:'fake'},transport,now);assert.equal(last.attachments.length,1);
+response=await sendOrderMail(request(),{RESEND_API_KEY:'fake'},async()=>{throw new Error('secret');},now);assert.equal(response.status,504);assert.doesNotMatch(await response.text(),/secret/);
+response=await sendOrderMail(request(),{RESEND_API_KEY:'fake'},async()=>Response.json({message:'secret'},{status:403}),now);assert.equal(response.status,502);assert.doesNotMatch(await response.text(),/secret/);
+console.log('PASS mail recipient lock, UTF-8 attachments, optional fullmakt, origin, expiry, missing key, provider error and uncertain response');

@@ -1,5 +1,6 @@
 """Order proposal UI, partner scoping, forms and responsive layout in CI Chromium."""
 import asyncio
+import json
 import os
 from pathlib import Path
 from playwright.async_api import async_playwright, expect
@@ -180,12 +181,16 @@ async def main():
                 for control in await form.locator('input,select').all():
                     box=await control.bounding_box()
                     assert box and box['x']>=0 and box['x']+box['width']<=width+1,(width,box)
-                await form.get_by_role('button',name='Registrera order · demo').click()
+                await form.get_by_role('button',name='Spara utkast').click()
                 await expect(page.locator('#portal-dialog')).not_to_be_visible()
                 await page.locator('[data-ow-filter=mode]').select_option('year')
                 await page.locator('[data-ow-filter=year]').select_option('2026')
                 await page.locator('[data-ow-search]').fill('Fiktiv Testkund')
                 await page.locator('[data-ow-open]').click()
+                await page.route('**/api/order-mail', lambda route: route.fulfill(status=200, content_type='application/json', body=json.dumps({'accepted':True,'providerMessageId':'browser-test','acceptedAt':'2026-11-06T12:00:00Z','recipient':'hakan.rusk@kraftringen.se','documents':['order.txt']})))
+                await page.get_by_role('button',name='Skicka testmejl med TXT',exact=True).click()
+                await expect(page.locator('#dialog-title')).to_have_text('Order · Skickad')
+                await page.get_by_role('button',name='Registrerad · demo',exact=True).click()
                 await page.get_by_role('button',name='Godkänd · demo',exact=True).click()
                 await page.get_by_role('button',name='Behöver kompletteras · demo',exact=True).click()
                 await page.locator('#ow-issue-form [name=reason]').select_option('address')
