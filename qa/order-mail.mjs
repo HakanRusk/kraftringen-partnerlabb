@@ -10,6 +10,15 @@ assert.equal((await sendOrderMail(request(),{},transport,now)).status,503);asser
 assert.equal((await sendOrderMail(request({...body,createdAt:new Date(now-23*3600000).toISOString()}),{RESEND_API_KEY:'fake'},transport,now)).status,409);
 let response=await sendOrderMail(request(),{RESEND_API_KEY:'fake'},transport,now);
 assert.equal(response.status,200);assert.deepEqual(last.to,[RECIPIENT]);assert.equal(last.cc,undefined);assert.equal(last.attachments.length,2);assert.match(Buffer.from(last.attachments[0].content,'base64').toString(),/Fiktiv Åsa/);assert.match(last.attachments[1].filename,/fullmakt/);
+const original=last.attachments;
+const {files}=await response.json();
+const resendId='22222222-2222-4222-8222-222222222222';
+const resend=await sendOrderMail(request({...body,attemptId:resendId,order:{...body.order,product:'Ändrad efter utskick'},resendFiles:files}),{RESEND_API_KEY:'fake'},async(_url,init)=>{
+  assert.equal(init.headers['Idempotency-Key'],'partnerlabb/'+resendId);
+  assert.deepEqual(JSON.parse(init.body).attachments,original);
+  return Response.json({id:'resent'});
+},now);
+assert.equal(resend.status,200);
 await sendOrderMail(request({...body,order:{...body.order,poa:false}}),{RESEND_API_KEY:'fake'},transport,now);assert.equal(last.attachments.length,1);
 response=await sendOrderMail(request(),{RESEND_API_KEY:'fake'},async()=>{throw new Error('secret');},now);assert.equal(response.status,504);assert.doesNotMatch(await response.text(),/secret/);
 response=await sendOrderMail(request(),{RESEND_API_KEY:'fake'},async()=>Response.json({message:'secret'},{status:403}),now);assert.equal(response.status,502);assert.doesNotMatch(await response.text(),/secret/);
