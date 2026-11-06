@@ -34,12 +34,18 @@ export async function sendOrderMail(request, env, transport=fetch, now=Date.now(
     typeof file.text!=='string'||!file.text||file.text.length>12000)){
     return json({error:'Det sparade dokumentunderlaget är ogiltigt.'},400);
   }
-  const payload={from:'Partnerlabb test <onboarding@resend.dev>',to:[RECIPIENT],subject:`[Partnerlabb TEST] Order ${order.id}`,text:files[0].text,
+  let approval;
+  if(env.CUSTOMER_ORIGIN){
+    const response=await transport(env.CUSTOMER_ORIGIN+'/api/internal/approval',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+env.APPROVAL_SECRET},body:JSON.stringify({id:input.approvalId||input.attemptId,files})});
+    if(!response.ok)return json({error:'Kundlänken kunde inte sparas. Försök igen med samma utskick.'},502);
+    approval=await response.json();
+  }
+  const payload={from:'Partnerlabb test <onboarding@resend.dev>',to:[RECIPIENT],subject:`[Partnerlabb TEST] Order ${order.id}`,text:files[0].text+(approval?'\r\n\r\nGranska och godkänn handlingarna: '+approval.url:''),
     attachments:files.map(f=>({filename:f.filename,content:base64(f.text)}))};
   try {
     const response=await transport('https://api.resend.com/emails',{method:'POST',headers:{'Authorization':`Bearer ${env.RESEND_API_KEY}`,'Content-Type':'application/json','Idempotency-Key':`partnerlabb/${input.attemptId}`},body:JSON.stringify(payload),signal:AbortSignal.timeout(20000)});
     const result=await response.json();
     if(!response.ok||typeof result.id!=='string')return json({error:response.status===401?'Resend accepterar inte nyckeln. Kontrollera API-nyckeln i Site-inställningarna.':response.status===403?'Resend nekar utskicket. Kontrollera att testmottagaren är kontots egen adress och att nyckeln får skicka.':`Resend accepterade inte utskicket (HTTP ${response.status}). Försök igen med samma sparade utskick.`,providerStatus:response.status},502);
-    return json({accepted:true,providerMessageId:result.id,acceptedAt:new Date(now).toISOString(),recipient:RECIPIENT,documents:files.map(f=>f.filename),files});
+    return json({accepted:true,providerMessageId:result.id,acceptedAt:new Date(now).toISOString(),recipient:RECIPIENT,documents:files.map(f=>f.filename),files,approvalId:input.approvalId||input.attemptId,approvalUrl:approval?.url});
   }catch{return json({error:'Utskickets resultat är okänt. Kontrollera eller försök igen med samma sparade utskick inom 22 timmar; skapa inte ett nytt.'},504);}
 }
