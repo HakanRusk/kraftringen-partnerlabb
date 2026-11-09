@@ -22,7 +22,7 @@
   const admin=()=>current()?.role==='admin';
   const manageCustomerUsers=()=>current()?.role==='customer_admin';
   const canManage=()=>internal()||current()?.role==='manager';
-  const commission=()=>!!current()&&current().role!=='seller';
+  const commission=()=>['admin','internal','manager'].includes(current()?.role);
   const scope=partner=>!!current()&&(internal()||current().partner===partner);
   const staff=partner=>users().filter(u=>u.partner===partner&&['seller','manager'].includes(u.role));
   // Only the two known, explicitly fictional fixture packs have inferred demo owners.
