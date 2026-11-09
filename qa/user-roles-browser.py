@@ -18,7 +18,7 @@ async def main():
             page.on('pageerror', lambda error: errors.append(str(error)))
             try:
                 await page.goto(BASE)
-                await expect(page.locator('[data-pu-login]')).to_have_count(10)
+                await expect(page.locator('[data-pu-login]')).to_have_count(13)
                 await page.locator('[data-pu-login="demo-vast-seller-1"]').click()
                 await expect(page.locator('#profile-role')).to_have_text('Partner · säljare')
                 await expect(page.locator('#role')).to_be_hidden()
