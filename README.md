@@ -228,3 +228,11 @@ Resends kvittens sätter **Skickad**, aldrig Registrerad. Filtrera på **Skickad
 Välj Alex Kund, Sam Förvaltning eller Robin Kundadmin i demoinloggningen. Exempelköpings kommun, dess förvaltningar, personer, avtal och sensorer är fiktiva. Kundportalen visar avtal och utrustning, dialogförfrågningar, sensorbeställningar och support. Kraftringens handläggare öppnar Kundärenden för status och återkoppling.
 
 Kundanvändaren ser egna ärenden inom sin förvaltning. Förvaltningsansvarig ser förvaltningens ärenden. Kundadministratören ser alla förvaltningar och kan hantera kundroller. Delningen är en lokal demosimulering i samma webbläsare. Kommunens Dynamics-registrering, vidarebefordran och mötesbokning simuleras. Kalender, priser, teknisk kundportal och verklig integration behöver konfigureras inför pilot. Beställningar över 20 sensorer och möjliga dubletter flaggas med illustrativa regler.
+
+### Excelbaserat fakturaunderlag för Face2face
+
+Under Provision kan partnerns säljledare och Kraftringen välja månad och ladda ned fakturaunderlag som Excel. Vyn och exporten använder Godkända avtal, Bindande avtal som täcks av förskott och Bindande avtal utöver förskotten. Varje godkännandemånad avräknas separat; ett delvis täckt avtal räknas i tredje gruppen med endast återstående ersättning.
+
+Exporten omfattar partnerns underlag oberoende av säljarfilter och innehåller formler, månadsöversikt, avräkning och order-ID utan kunduppgifter. Ofullständiga händelsedatum stoppar export; fristående räkneexempel kan inte exporteras som försäljningsunderlag. Ett uttryckligen valt exempelpaket märks som urval. Säljare och kundroller saknar funktionen. Rollsepareringen är fortfarande lokal prototyplogik. Andra partners saknar bekräftad provisionsmodell och får inte Face2faces fakturaunderlag.
+
+Filen visar beräknad ersättning, inte faktisk betalning eller tidigare fakturering. Den skickar ingen faktura. Kraftringens export innehåller separat konfigurerbar merkostnad (39 kr); partnerexporten innehåller ingen intern kostnad.
