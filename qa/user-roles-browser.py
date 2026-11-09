@@ -43,6 +43,17 @@ async def main():
                 await expect(page.locator('[data-pu-seller="demo-vast-seller-2"]')).to_be_focused()
                 await page.locator('.ow-tabs [data-go="order-commission"]').click()
                 await expect(page.locator('.oc-total')).to_be_visible()
+                await page.locator('#oc-dataset').select_option('new')
+                await page.locator('#oc-month').fill('2026-10')
+                await page.locator('#oc-month').dispatch_event('change')
+                await expect(page.locator('.oc-invoice')).to_contain_text('Bindande avtal utöver förskotten')
+                assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (width, 'invoice')
+                async with page.expect_download() as pending:
+                    await page.locator('#oc-export').click()
+                download = await pending.value
+                assert download.suggested_filename == 'Fakturaunderlag_vast_2026-10_urval.xlsx'
+                assert await download.failure() is None
+                await expect(page.locator('#oc-export-status')).to_contain_text('Excel-filen har skapats')
                 await page.locator('#pu-account').click()
                 await page.locator('[data-pu-login="demo-admin"]').click()
                 await page.evaluate("Portal.go('user-admin')")
