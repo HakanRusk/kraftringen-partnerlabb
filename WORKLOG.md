@@ -916,3 +916,9 @@ Utgångspunkt för ändringen var publicerad version 15 (9f20085). Nya testutski
 ## 9 november 2026 · Anonym kundportal
 
 Användaren beställde kundportalen enligt förslaget med anonym kommun. Implementerat Exempelköpings kommun med tre kundroller, förvaltningar, avtalsöversikt, sensorkatalog och tre ärendeformulär. Lokala ärenden delas mellan kund- och handläggardemot med historik, återkoppling och status. Fiktiva Dynamics-/supportreferenser markerar simulerad hantering. Ingen kommunintegration eller kalenderanslutning aktiverad. Rolltestet omfattar kundinloggning, avgränsade avtal, beställning och intern handläggarlista.
+
+## 9 november 2026 · Fakturaunderlag och Excel-export
+
+Beställt av Håkan i sidochatten: knapp för Excel baserad på partnerns försäljning och fakturaunderlag för säljledare. Utgångspunkt GitHub-main f70ead2. Befintliga andra PR:er lämnas orörda. Face2faces bekräftade modell återanvänds med tre efterfrågade avtalsbegrepp och avräkning per godkännandemånad. Ingen ny modell för andra partners införs.
+
+Nya tester verifierar faktiskt XLSX-skrivning/återläsning, formler och sparade resultat, roller, partneravgränsning, saknade datum, uttryckliga exempelurval, delvis täckta avtal och oförändrad orderdata. Ingen fakturering/betalning registreras eller skickas; lokal demobehörighet kvarstår. Publiceringskvittens lämnas efter verifiering.
