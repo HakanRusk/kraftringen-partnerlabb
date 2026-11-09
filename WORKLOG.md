@@ -911,3 +911,8 @@ dist/ var oförändrad. Full historik/testbelägg i arkivets sista poster.
 ## 6 november 2026 · Dokument och återsändning på ordern
 
 Utgångspunkt för ändringen var publicerad version 15 (9f20085). Nya testutskick sparar bilagornas exakta text lokalt på ordern. Återsändning återanvänder bilagorna och loggar Resends nya meddelande-ID. Befintliga kvittenser med enbart filnamn bevaras. Testet jämför återsända bilagor byte för byte med det ursprungliga utskicket.
+
+
+## 9 november 2026 · Anonym kundportal
+
+Användaren beställde kundportalen enligt förslaget med anonym kommun. Implementerat Exempelköpings kommun med tre kundroller, förvaltningar, avtalsöversikt, sensorkatalog och tre ärendeformulär. Lokala ärenden delas mellan kund- och handläggardemot med historik, återkoppling och status. Fiktiva Dynamics-/supportreferenser markerar simulerad hantering. Ingen kommunintegration eller kalenderanslutning aktiverad. Rolltestet omfattar kundinloggning, avgränsade avtal, beställning och intern handläggarlista.

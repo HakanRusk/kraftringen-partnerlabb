@@ -7,13 +7,25 @@ async function boot(saved,identity,url='https://portal.example/?workspace=vast')
  w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.matchMedia=()=>({matches:false,addEventListener(){}});w.confirm=()=>true;
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;};
  if(saved)w.localStorage.setItem('partnerlabb.portal.v2',saved);if(identity)w.sessionStorage.setItem('partnerlabb.demo-user.v1',identity);
- for(const name of ['partner-setup','app','partner-crm','commercial','product-facts','partner','partner-commission','product-catalog','partner-orders','prototype-users'])w.eval(fs.readFileSync(`dist/${name}.js`,'utf8'));
+ for(const name of ['partner-setup','app','partner-crm','commercial','product-facts','partner','partner-commission','product-catalog','partner-orders','prototype-users','customer-services'])w.eval(fs.readFileSync(`dist/${name}.js`,'utf8'));
  w.document.dispatchEvent(new w.Event('DOMContentLoaded'));return {dom,w,P:w.Portal,doc:w.document};
 }
 const {dom,w,P,doc}=await boot(),A=P.prototypeUsers,O=P.orderWorkspace;
 let checks=0;const test=(name,fn)=>{fn();checks++;console.log('PASS '+name);};
 const sign=id=>assert.equal(A.signIn(id).ok,true);
-test('first entry requires a demo identity; direct routes do not render business data',()=>{assert.equal(P.page,'demo-login');P.go('order-commission');assert.equal(P.page,'demo-login');assert.equal(O.orders().length,0);assert.equal(doc.querySelectorAll('[data-pu-login]').length,10);});
+test('first entry requires a demo identity; direct routes do not render business data',()=>{assert.equal(P.page,'demo-login');P.go('order-commission');assert.equal(P.page,'demo-login');assert.equal(O.orders().length,0);assert.equal(doc.querySelectorAll('[data-pu-login]').length,13);});
+test('customer accounts open their portal and keep partner orders inaccessible',()=>{
+ sign('demo-customer');assert.equal(P.page,'customer-home');
+ assert.match(doc.querySelector('#view').textContent,/Exempel|EXEMPEL/);
+ P.go('order-list');assert.equal(P.page,'customer-home');assert.equal(O.orders().length,0);
+ P.go('customer-contracts');assert.match(doc.querySelector('#view').textContent,/DEMO-IOT-201/);assert.doesNotMatch(doc.querySelector('#view').textContent,/DEMO-IOT-202/);
+ P.go('customer-catalog');doc.querySelector('[data-cs-new="order"]').click();
+ const form=doc.querySelector('#cs-form');for(const input of form.querySelectorAll('input,textarea'))if(!input.value)input.value='Fiktivt test';
+ form.elements.quantity.value='2';form.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+ assert.equal(P.state.customerServices.cases.length,1);
+ sign('demo-internal');P.go('customer-cases');assert.match(doc.querySelector('#view').textContent,/Beställning av sensor/);
+ sign('demo-customer-admin');P.go('customer-contracts');assert.match(doc.querySelector('#view').textContent,/DEMO-IOT-202/);
+});
 test('seller sees own orders, shared customers and no commission/other partner/direct report routes',()=>{
  sign('demo-vast-seller-1');assert.equal(P.partner,'vast');assert.equal(O.orders().length,37);assert.equal(O.customers().length,110);assert.ok(O.orders().every(r=>A.owner(r)===A.current().id));
  for(const page of ['order-commission','user-admin','settings','partner-sales','partner-insights','crm','kickback']){P.go(page);assert.equal(P.page,'overview');}

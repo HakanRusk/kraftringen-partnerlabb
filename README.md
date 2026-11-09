@@ -221,3 +221,10 @@ Nya testutskick sparar bilagornas exakta text i orderns avsnitt **Skickade dokum
 Resends kvittens sätter **Skickad**, aldrig Registrerad. Filtrera på **Skickade ordrar (utskicksdatum)** för även senare registrerade utskick. Intern handläggare kan efter kontroll av kompletta handlingar uttryckligen simulera mottagning. Inga kundsigneringar eller mejlreturer är anslutna. Orderdata och utskickskvittenser sparas fortfarande i webbläsaren. Ett osäkert utskick återupptas med samma låsta underlag inom 22 timmar; därefter krävs manuell avstämning i Resend. Ingen automatisk omsändning.
 
 `dist/` är fortsatt frontendkällan för QA. `runtime/` använder Sites Vinext-starter och `POST /api/order-mail`. `npm run build` kopierar frontend till runtime och genererar ignorerade `dist/server`, `dist/client` och `dist/.openai` för publicering. Kör Sites installation i runtime vid ny checkout. Huvudportalen måste behålla ägarprivat Sites-åtkomst: API:et förlitar sig på den plattformsgränsen, inte demokontot. Ingen publik kundlänk införs i detta steg.
+
+
+## Kundportal · anonym tjänstedemo
+
+Välj Alex Kund, Sam Förvaltning eller Robin Kundadmin i demoinloggningen. Exempelköpings kommun, dess förvaltningar, personer, avtal och sensorer är fiktiva. Kundportalen visar avtal och utrustning, dialogförfrågningar, sensorbeställningar och support. Kraftringens handläggare öppnar Kundärenden för status och återkoppling.
+
+Kundanvändaren ser egna ärenden inom sin förvaltning. Förvaltningsansvarig ser förvaltningens ärenden. Kundadministratören ser alla förvaltningar och kan hantera kundroller. Delningen är en lokal demosimulering i samma webbläsare. Kommunens Dynamics-registrering, vidarebefordran och mötesbokning simuleras. Kalender, priser, teknisk kundportal och verklig integration behöver konfigureras inför pilot. Beställningar över 20 sensorer och möjliga dubletter flaggas med illustrativa regler.
