@@ -1,0 +1,24 @@
+.cs-home{gap:24px}
+.cs-welcome{display:flex;align-items:flex-start;justify-content:space-between;gap:32px;background:var(--kf-navy,#013c57);color:white;border-radius:20px;padding:36px}
+.cs-welcome h1{color:white;font-size:clamp(1.65rem,3vw,2.5rem);margin:16px 0 12px;line-height:1.2}
+.cs-welcome p{max-width:540px;margin:0 0 20px;color:#fff}
+.cs-welcome img{width:200px;height:auto;flex-shrink:0}
+.cs-kicker{font-size:.72rem;letter-spacing:.12em;font-weight:600}
+.cs-department{display:inline-block;border:1px solid #ffffff66;border-radius:100px;padding:6px 14px;font-size:.85rem}
+.cs-overview{display:flex;align-items:center;gap:36px;padding:8px 4px;flex-wrap:wrap}
+.cs-overview>div{display:flex;align-items:center;gap:14px}
+.cs-overview strong{font-size:2.2rem;color:var(--kf-navy,#013c57)}
+.cs-overview span{max-width:150px;font-size:.88rem}
+.cs-overview>button{margin-left:auto}
+.cs-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.cs-action{display:flex;flex-direction:column;align-items:flex-start;padding:24px}
+.cs-action h2{font-size:1.15rem;margin:16px 0 8px}
+.cs-action p{margin:0 0 24px;flex:1}
+.cs-icon{display:inline-flex;padding:12px;background:#edf4f5;border-radius:12px;color:var(--kf-navy,#013c57)}
+.cs-action button{margin-top:auto}
+.cs-section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.cs-section-head h2{margin:6px 0}
+.cs-agreements,.cs-technical{padding:24px}
+.cs-active{display:inline-block;padding:5px 12px;border-radius:20px;background:#e8f3e8;color:#24592c;font-weight:600;font-size:.8rem}
+.cs-demo-note{font-size:.8rem;color:#59666c}
+@media(max-width:800px){.cs-actions{grid-template-columns:1fr}.cs-welcome{padding:24px;flex-direction:column-reverse;gap:22px}.cs-welcome img{width:160px}.cs-overview{gap:20px}.cs-overview>button{margin-left:0;width:100%}.cs-section-head{align-items:flex-start}}
