@@ -22,6 +22,24 @@ assert.equal(book.getWorksheet('Månadsöversikt').columnCount,7);
 const buffer=await book.xlsx.writeBuffer(),copy=new w.ExcelJS.Workbook();await copy.xlsx.load(buffer);
 assert.equal(copy.getWorksheet('Fakturaunderlag').getCell('D9').value.result,4500);assert.match(copy.getWorksheet('Fakturaunderlag').getCell('D9').value.formula,/D5\+D7/);
 assert.ok(copy.getWorksheet('Avräkning').getCell('K5').value.formula.includes('MAX('));
+const matrix=copy.getWorksheet('Indata');
+assert.ok(matrix);assert.equal(matrix.getCell('A5').value,'2026-07');
+assert.deepEqual(['E4','F4','G4','H4'].map(a=>matrix.getCell(a).value),['2026-07','2026-08','2026-09','2026-10']);
+assert.deepEqual(['E5','F5','G5','H5'].map(a=>matrix.getCell(a).value.result||0),[15,9,3,0]);
+assert.equal(matrix.getCell('B8').value.result,90);assert.equal(matrix.getCell('C8').value.result,78);assert.equal(matrix.getCell('D8').value.result,12);
+assert.match(matrix.getCell('E5').value.formula,/COUNTIFS/);assert.equal(copy.getWorksheet('Orderunderlag').getCell('F4').value,'Bindandemånad');
+assert.equal(matrix.views[0].xSplit,1);assert.equal(matrix.views[0].ySplit,4);
+const originalSelection=C.selection;
+C.selection=()=>({month:'2026-02',example:false,subset:false,rows:[
+ {id:'cross-year',partner:'vast',status:'confirmed',approvedAt:'2025-12-10',confirmedAt:'2026-02-01'},
+ {id:'future',partner:'vast',status:'confirmed',approvedAt:'2025-12-20',confirmedAt:'2026-03-01'},
+ {id:'waiting',partner:'vast',status:'approved',approvedAt:'2026-01-01',confirmedAt:''}
+]});
+const boundary=I.buildWorkbook().book,grid=boundary.getWorksheet('Indata');
+assert.deepEqual(['E4','F4','G4'].map(a=>grid.getCell(a).value),['2025-12','2026-01','2026-02']);
+assert.equal(grid.getCell('G5').value.result,1);assert.equal(grid.getCell('C7').value.result,1);assert.equal(grid.getCell('D7').value.result,2);
+assert.equal(boundary.getWorksheet('Orderunderlag').getCell('F6').value,null,'future binding month is not exported');
+C.selection=originalSelection;
 const state=JSON.stringify(P.state);I.buildWorkbook();assert.equal(JSON.stringify(P.state),state,'export never mutates orders or statuses');
 w.document.querySelector('#oc-example').click();assert.equal(w.document.querySelector('#oc-export').disabled,true);assert.throws(()=>I.buildWorkbook(),/Välj partnerns/);
 w.document.querySelector('#oc-example').click();
