@@ -103,9 +103,9 @@
   function render() {
     if (!eligible()) return '';
     const value = context();
-    return `<section class="b2c-call-library" id="b2c-call-library" data-b2c-scope="${value.scope}" data-b2c-partner="${e(value.partner)}" aria-labelledby="b2c-call-heading"><div class="b2c-call-heading"><span class="b2c-call-symbol">${icon('headphones')}</span><div><span class="ac-eyebrow">Lyssna. Lär. Prova själv.</span><h2 id="b2c-call-heading">Lyckade B2C-samtal</h2><p>Samla bra telefonsamtal och lyft det som gör kunddialogen lyckad.</p></div><button type="button" class="ac-button primary" id="b2c-call-upload">${icon('plus')} Lägg till ett samtal</button></div><p class="b2c-call-scope">Sparas i den här webbläsaren för ${e(P.getPartner()?.name || 'vald partner')}. Använd fiktiva eller anonymiserade samtal som får delas i utbildningen.</p><div class="b2c-call-toolbar"><label class="b2c-call-search">${icon('search')}<span class="sr-only">Sök bland samtalsexempel</span><input type="search" id="b2c-call-search" placeholder="Sök efter ett samtal eller ett tips" maxlength="120"></label><label class="b2c-call-category"><span class="sr-only">Filtrera samtalsexempel efter fokus</span><select id="b2c-call-category"><option value="all">Alla fokusområden</option>${Object.entries(categories).map(([key, label]) => `<option value="${key}">${e(label)}</option>`).join('')}</select></label></div><p class="b2c-call-status" id="b2c-call-status" role="status" aria-live="polite">Hämtar dina lokala samtalsexempel…</p><div id="b2c-call-results" class="b2c-call-results" aria-busy="true"></div></section>`;
+    return `<section class="b2c-call-library" id="b2c-call-library" data-b2c-scope="${value.scope}" data-b2c-partner="${e(value.partner)}" aria-labelledby="b2c-call-heading"><div class="b2c-call-heading"><span class="b2c-call-symbol">${icon('headphones')}</span><div><span class="ac-eyebrow">Lyssna. Lär. Prova själv.</span><h2 id="b2c-call-heading">Inspelade B2C-samtal</h2><p>Samla både bra samtal och samtal att förbättra. Beskriv styrkor, fallgropar och ett bättre nästa steg.</p></div><button type="button" class="ac-button primary" id="b2c-call-upload">${icon('plus')} Lägg till ett samtal</button></div><p class="b2c-call-scope">Sparas i den här webbläsaren för ${e(P.getPartner()?.name || 'vald partner')}. Använd fiktiva eller anonymiserade samtal som får delas i utbildningen.</p><div class="b2c-call-toolbar"><label class="b2c-call-search">${icon('search')}<span class="sr-only">Sök bland samtalsexempel</span><input type="search" id="b2c-call-search" placeholder="Sök efter ett samtal eller ett tips" maxlength="120"></label><label class="b2c-call-category"><span class="sr-only">Filtrera samtalsexempel efter fokus</span><select id="b2c-call-category"><option value="all">Alla fokusområden</option>${Object.entries(categories).map(([key, label]) => `<option value="${key}">${e(label)}</option>`).join('')}</select></label></div><p class="b2c-call-status" id="b2c-call-status" role="status" aria-live="polite">Hämtar dina lokala samtalsexempel…</p><div id="b2c-call-results" class="b2c-call-results" aria-busy="true"></div></section>`;
   }
-  function listAlive(model) { return currentList === model && model.root.isConnected && sameContext(model.context) && eligible() && P.page === 'academy'; }
+  function listAlive(model) { return currentList === model && model.root.isConnected && sameContext(model.context) && eligible() && ['academy','academy-library'].includes(P.page); }
   function drawList(model) {
     if (!listAlive(model)) return;
     const query = model.search.value.trim().toLocaleLowerCase('sv-SE');
@@ -113,7 +113,7 @@
     const visible = model.records.filter(row => (category === 'all' || row.category === category) && (!query || `${row.title} ${row.note} ${categories[row.category] || ''}`.toLocaleLowerCase('sv-SE').includes(query)));
     model.results.setAttribute('aria-busy', 'false');
     model.status.textContent = model.records.length ? `${visible.length} av ${model.records.length} samtalsexempel` : 'Inga samtalsexempel ännu';
-    model.results.innerHTML = visible.length ? visible.map(row => `<article class="b2c-call-card" data-b2c-call="${e(row.id)}"><div class="b2c-call-card-meta"><span>${e(categories[row.category] || 'Kunddialog')}</span><small>${formatDuration(row.duration)} · ${formatSize(row.size)}</small></div><h3>${e(row.title)}</h3><p class="b2c-call-coaching">${e(row.note)}</p><div class="b2c-call-card-bottom"><button class="ac-button b2c-call-listen" type="button" data-b2c-listen="${e(row.id)}" aria-label="Lyssna på ${e(row.title)}">${icon('headphones')} Lyssna & lär</button><div class="b2c-call-card-actions"><button type="button" data-b2c-edit="${e(row.id)}" aria-label="Redigera ${e(row.title)}">Redigera</button><button type="button" data-b2c-delete="${e(row.id)}" aria-label="Ta bort ${e(row.title)}">Ta bort</button></div></div></article>`).join('') : `<div class="b2c-call-empty"><span>${icon(model.records.length ? 'search' : 'headphones')}</span><h3>${model.records.length ? 'Inga samtal matchar ditt urval' : 'Det bästa sättet att lära är att lyssna'}</h3><p>${model.records.length ? 'Prova ett annat sökord eller välj alla fokusområden.' : 'Lägg till ett lyckat samtal och skriv vad kollegorna kan lära av det. Dina egna exempel visas här.'}</p>${model.records.length ? '<button class="ac-button" type="button" data-b2c-reset-filters>Återställ sökning och filter</button>' : '<button class="ac-button" type="button" data-b2c-empty-upload>Lägg till det första samtalet</button>'}</div>`;
+    model.results.innerHTML = visible.length ? visible.map(row => `<article class="b2c-call-card" data-b2c-call="${e(row.id)}"><div class="b2c-call-card-meta"><span>${e(categories[row.category] || 'Kunddialog')}</span><small>${formatDuration(row.duration)} · ${formatSize(row.size)}</small></div><h3>${e(row.title)}</h3><p class="b2c-call-coaching">${e(row.note)}</p><div class="b2c-call-card-bottom"><button class="ac-button b2c-call-listen" type="button" data-b2c-listen="${e(row.id)}" aria-label="Lyssna på ${e(row.title)}">${icon('headphones')} Lyssna & lär</button><div class="b2c-call-card-actions"><button type="button" data-b2c-edit="${e(row.id)}" aria-label="Redigera ${e(row.title)}">Redigera</button><button type="button" data-b2c-delete="${e(row.id)}" aria-label="Ta bort ${e(row.title)}">Ta bort</button></div></div></article>`).join('') : `<div class="b2c-call-empty"><span>${icon(model.records.length ? 'search' : 'headphones')}</span><h3>${model.records.length ? 'Inga samtal matchar ditt urval' : 'Det bästa sättet att lära är att lyssna'}</h3><p>${model.records.length ? 'Prova ett annat sökord eller välj alla fokusområden.' : 'Lägg till ett samtal och skriv vad kollegorna kan lära av det. Dina egna exempel visas här.'}</p>${model.records.length ? '<button class="ac-button" type="button" data-b2c-reset-filters>Återställ sökning och filter</button>' : '<button class="ac-button" type="button" data-b2c-empty-upload>Lägg till det första samtalet</button>'}</div>`;
   }
   async function refreshList(model = currentList) {
     if (!model || !listAlive(model)) return;
@@ -158,9 +158,9 @@
     const session = dialogSession;
     if (!session) return;
     dialogSession = undefined; session.disposed = true; releaseMedia(session);
-    if (restoreFocus && sameContext(session.context) && P.page === 'academy') document.querySelector(session.returnSelector || '#b2c-call-upload')?.focus();
+    if (restoreFocus && sameContext(session.context) && ['academy','academy-library'].includes(P.page)) document.querySelector(session.returnSelector || '#b2c-call-upload')?.focus();
   }
-  function sessionAlive(session) { return dialogSession === session && !session.disposed && session.root.isConnected && document.querySelector('#portal-dialog').open && sameContext(session.context) && eligible() && P.page === 'academy'; }
+  function sessionAlive(session) { return dialogSession === session && !session.disposed && session.root.isConnected && document.querySelector('#portal-dialog').open && sameContext(session.context) && eligible() && ['academy','academy-library'].includes(P.page); }
   function managedDialog(title, content, value, returnSelector) {
     dialogIntent++;
     disposeSession();
@@ -274,7 +274,7 @@
     const dialogContents = document.querySelector('#dialog-body').firstElementChild;
     try {
       const row = await getRecord(id, value);
-      if (intent !== dialogIntent || dialogContents !== document.querySelector('#dialog-body').firstElementChild || !sameContext(value) || !eligible() || P.page !== 'academy') return;
+      if (intent !== dialogIntent || dialogContents !== document.querySelector('#dialog-body').firstElementChild || !sameContext(value) || !eligible() || !['academy','academy-library'].includes(P.page)) return;
       if (!row) { P.toast('Samtalet finns inte längre. Listan uppdateras.'); await refreshList(); return; }
       return row;
     } catch (error) { if (sameContext(value)) P.toast(storageMessage(error)); }
@@ -336,7 +336,7 @@
   }
   document.querySelector('#portal-dialog')?.addEventListener('close', () => { if (!document.querySelector('#portal-dialog').open) disposeSession(true); });
   const observer = new MutationObserver(() => {
-    if (dialogSession && (!sessionAlive(dialogSession) || P.page !== 'academy')) {
+    if (dialogSession && (!sessionAlive(dialogSession) || !['academy','academy-library'].includes(P.page))) {
       const ownDialog = dialogSession.root.isConnected;
       disposeSession(); if (ownDialog) P.closeDialog();
     }
