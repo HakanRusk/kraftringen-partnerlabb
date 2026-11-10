@@ -40,6 +40,8 @@ async def main():
             await page.locator('[data-ow-cancel]').click()
             await page.goto(BASE + '#test-users')
             await page.locator('[data-pu-login="demo-admin"]').click()
+            if width <= 800:
+                await page.locator('#menu-toggle').click()
             await page.locator('#nav [data-go="academy"]').click()
             await page.locator('summary').filter(has_text='Kraftringen · utbildningsuppföljning').click()
             await expect(page.locator('#lp-policy')).to_be_visible()
