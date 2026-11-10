@@ -319,3 +319,7 @@ Provision visas per månad utan dubbelräkning av kumulativa saldon. Dag-/veckou
 i fakturaunderlag visar uttryckligen hela berörda månadsunderlag. Detaljgranskning
 och Excel av ett fakturaunderlag gäller fortsatt en vald fakturamånad.
 Enskilda händelsedatum, exempelvis leveransstart, är fortsatt ett datum.
+
+Provisionsflikens månadsöversikt har ett kompakt flerval ovanför jämförelsetabellen.
+Granska månadsunderlag samlar detaljmånad, orderunderlag och räkneexempel i en
+separat, responsiv panel. Datumurvalet i Ordrar & resultat påverkas inte.

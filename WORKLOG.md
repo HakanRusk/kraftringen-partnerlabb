@@ -1055,3 +1055,16 @@ Periodväljaren behöver egen flexrad och säljarresultatets grid en minmax(0,1f
 kolumn. Vid 390 px passerar nu hela orderflödet i CI. Vid 320 px verifieras
 periodvyn visuellt utan sidöverflöde efter gridrättningen (305 px synlig
 bredd inklusive webbläsarens rullningslist). Ny fullständig CI inväntas.
+
+## 10 november 2026 · Provisionssidans datumlayout
+
+Håkan rapporterade spretig layout efter flerval. Avgränsad rättning från
+bbf4647: provisionsöversikten får egen blocklayout, kompakt datumfält och
+fullbred tabell med lokal rullning. Separat panel för detaljmånad, underlag
+och räkneexempel. CSS är avgränsad till provision; Ordrar & resultat och
+beräkningar/export är oförändrade. Övriga öppna PR:er lämnas orörda.
+
+Verifierat: 24 Node/DOM-sviter, produktionsbygge och diffkontroll.
+Desktopbrowser visar september + november och Granska väljer september
+för detaljunderlaget. Mobil inte separat visuellt kontrollerad.
+Publicering sker efter egen PR-integration.
