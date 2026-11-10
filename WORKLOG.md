@@ -968,3 +968,9 @@ Verifierat med commission-invoice och partner-commission: XLSX skrivs/läses til
 matrisceller och totalsummor, årsskifte, framtida bindandedatum, roller och
 oförändrat tillstånd. Ingen native Excel-omräkning eller visuell Excel-kontroll
 utförd; formeltext och cachade värden kontrollerade i den genererade filen.
+
+## 10 november 2026 · Personligt utbildningsprogram med orderkrav
+
+Beställt uttryckligen i sidochatten. Isolerad checkout från GitHub/Sites-main bdd1f6d; övriga pågående arbetskataloger och PR:er orörda. Tio moment, tre tillämpningsfrågor vardera, interaktiva övningar, förkunskaper, fullständigt rätt prov före sparat godkännande. Separata person-/versionsbundna resultat, adminstyrda produktkrav och order-/utskicksspärr för partnerroller; intern handläggning undantagen. Äldre material och klarmarkeringar bevaras utan att räknas som godkända prov. Ingen skarp identitet, servercertifiering eller nya affärsvillkor införs.
+
+Nya regressionstester verifierar 30 frågors facit, felaktiga och dubbla svar, kravkedjor, personisolering, versionsbyte, sparfel, order-/mejlspärr och administratörsrättigheter. Publicering kvitteras separat efter grön verifiering.
