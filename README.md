@@ -319,4 +319,3 @@ Provision visas per månad utan dubbelräkning av kumulativa saldon. Dag-/veckou
 i fakturaunderlag visar uttryckligen hela berörda månadsunderlag. Detaljgranskning
 och Excel av ett fakturaunderlag gäller fortsatt en vald fakturamånad.
 Enskilda händelsedatum, exempelvis leveransstart, är fortsatt ett datum.
-
