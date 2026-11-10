@@ -271,3 +271,9 @@ underlag. Modellversioner är daterade förslag, inte aktiverade nya beräknings
 Face2faces befintliga motor och Excel-export återanvänds; saknade datum blockerar
 summor. Granskningsstatus och anteckningar är lokal demo, inte fakturering eller
 betalning. Äldre ekonomiskt underlag finns kvar via en separat ingång i ekonomivyn.
+
+Excel-exportens flik **Indata** visar godkännandemånad på rader och
+bindandemånad i kolumner, med antal godkända, bindande och ännu inte bindande
+vid exportmånadens slut. Matrisen fylls automatiskt från samma orderurval som
+fakturaunderlaget. Orderunderlag visar båda månaderna per order. Årsskiften stöds;
+framtida bindandedatum räknas inte före exportens brytdatum.
