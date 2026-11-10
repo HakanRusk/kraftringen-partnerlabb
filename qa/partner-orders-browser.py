@@ -29,7 +29,11 @@ async def main():
                 await expect(page.locator('#partner')).to_have_value('vast')
                 await expect(page.locator('.ow-head h1')).to_have_text('Ordrar & resultat')
                 await page.locator('[data-ow-filter=year]').select_option('2026')
-                await page.locator('[data-ow-filter=month]').select_option('10')
+                await page.locator('[data-month-picker="ow"] summary').click()
+                await page.locator('[data-ow-month="10"]').check()
+                for month in await page.locator('[data-ow-month]:checked').evaluate_all('(els) => els.map(el => el.dataset.owMonth)'):
+                    if month != '10': await page.locator(f'[data-ow-month="{month}"]').uncheck()
+                await page.locator('[data-month-picker="ow"] summary').click()
                 assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
                 await page.screenshot(path=str(OUT/f'report-orders-home-{width}.png'),full_page=True)
                 await expect(page.locator('[data-ow-status]')).to_have_count(18)

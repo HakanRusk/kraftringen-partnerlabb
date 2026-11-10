@@ -291,3 +291,8 @@ Utbildning öppnar nu ett program med tio moment och tre tillämpningsfrågor pe
 Resultat sparas per demokonto och innehållsversion. Äldre filmer, Elakademin och klarmarkeringar finns via Filmer & tidigare material, men ger inga automatiska provgodkännanden. Förvald orderregel för partnersäljare och säljledare kräver de fem grundmomenten; de fyra portföljprodukterna kräver även relevant produktmoment. Intern handläggning är undantagen. Spärren kontrolleras när utkast sparas, order registreras via orderfunktionen och dokument skickas; befintliga ordrar bevaras. Administratören kan ändra kraven per produkt under Utbildning → Kraftringen · utbildningsuppföljning och krav. Reglerna gäller alla partners som har produkten.
 
 Resultat, krav och ändringslogg är lokala prototypdata med återställning vid sparfel. Detta är inte en säker certifieringslösning: identitet, provrättning, resultat och orderkontroll måste flyttas till server vid skarp drift.
+
+Partnerns Ordrar & resultat har samma flerval av månader i både Tecknade avtal
+(bindandedatum) och orderflödet (registreringsperiod). Urvalen är fortsatt separata
+med tydlig periodtext. Flera månader ger en kurvpunkt per vald månad; månader
+mellan valen ingår inte. Säljar- och partneravgränsningarna gäller som tidigare.
