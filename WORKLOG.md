@@ -989,3 +989,16 @@ Beställt uttryckligen i sidochatten. Isolerad checkout från GitHub/Sites-main 
 Nya regressionstester verifierar 30 frågors facit, felaktiga och dubbla svar, kravkedjor, personisolering, versionsbyte, sparfel, order-/mejlspärr och administratörsrättigheter. Publicering kvitteras separat efter grön verifiering.
 
 Verifiering: lokalt npm test 22/22 och produktionsbygge godkända. Förhandsvisning bekräftar 2/3 underkänt och 3/3 sparat godkännande. Första CI-körningen passerade nya utbildningsflödet vid 320/390/1440 px men hittade äldre inloggningsantagande i rolltest och saknad aktiv Partners-markering för personalavtal. Testet följer nu separata testkontosidan; navigeringen korrigeras och Kraftringen får Utbildning i menyn.
+
+## 10 november 2026 · Partnerns månadsurval
+
+Beställt samma urvalsmekanism på Ordrar & resultat. Egen gren från acbf7ec;
+öppna PR 64/90/92/93/95/107 lämnas orörda. Gemensam kryssruteväljare för
+partnerns försäljningskurva och orderflöde, tydliga månadsnamn och år, minst
+en vald månad. Datumgrunder och två separata urval bevaras. Månadsprovisionens
+beräkning ändras inte. Flera resultatmånader visas med en kurvpunkt per månad.
+22 Node/DOM-sviter godkända, inklusive icke sammanhängande val, egna ordrar,
+periodtext, sista månad och bevarade orderdata. Produktionsbygge godkänt.
+Desktopbrowser verifierade juli + september i båda urvalen. Mobil ej separat
+visuellt kontrollerad. Befintliga browsertester anpassade till kryssrutorna;
+hela browsersviten är inte körd lokalt. Publiceras efter verifierad PR-integration.
