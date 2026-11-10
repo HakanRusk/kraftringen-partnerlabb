@@ -17,7 +17,7 @@ async def main():
             errors = []
             page.on('pageerror', lambda error: errors.append(str(error)))
             try:
-                await page.goto(BASE)
+                await page.goto(BASE + '#test-users')
                 await expect(page.locator('[data-pu-login]')).to_have_count(13)
                 await page.locator('[data-pu-login="demo-vast-seller-1"]').click()
                 await expect(page.locator('#profile-role')).to_have_text('Partner · säljare')
@@ -36,6 +36,7 @@ async def main():
                 await expect(page.locator('.ow-head')).to_contain_text('Face2face')
                 await expect(page.locator('.oc-total')).to_have_count(0)
                 await page.locator('#pu-account').click()
+                await page.locator('[data-go="test-users"]').click()
                 await page.locator('[data-pu-login="demo-vast-manager"]').click()
                 await page.locator('[data-pu-period="mode"]').select_option('month')
                 await page.locator('[data-pu-period="day"]').fill('2026-10')
@@ -57,6 +58,7 @@ async def main():
                 assert await download.failure() is None
                 await expect(page.locator('#oc-export-status')).to_contain_text('Excel-filen har skapats')
                 await page.locator('#pu-account').click()
+                await page.locator('[data-go="test-users"]').click()
                 await page.locator('[data-pu-login="demo-admin"]').click()
                 await page.evaluate("Portal.go('user-admin')")
                 await page.locator('[data-pu-new]').click()

@@ -68,7 +68,7 @@
     P.closeDialog();P.orderWorkspace?.enable(true);P.role=internal()?'internal':'partner';P.partner=next.partner||P.partner;delete P.selectedPartnerId;P.go(isCustomer()?'customer-home':'overview');return {ok:true};
   }
   function signOut(){userId='';selections.clear();try{sessionStorage.removeItem(sessionKey);}catch{}P.closeDialog();P.go('demo-login');}
-  const partnerPages=new Set(['overview','sales-partner-overview','order-list','order-customers','products','product-facts','academy','support']);
+  const partnerPages=new Set(['overview','sales-partner-overview','order-list','order-customers','products','product-facts','academy','academy-library','support']);
   function allowed(page){
     if(['demo-login','test-users','portal-contact'].includes(page))return true;
     if(!current())return false;
