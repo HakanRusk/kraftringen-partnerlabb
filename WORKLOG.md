@@ -990,15 +990,22 @@ Nya regressionstester verifierar 30 frågors facit, felaktiga och dubbla svar, k
 
 Verifiering: lokalt npm test 22/22 och produktionsbygge godkända. Förhandsvisning bekräftar 2/3 underkänt och 3/3 sparat godkännande. Första CI-körningen passerade nya utbildningsflödet vid 320/390/1440 px men hittade äldre inloggningsantagande i rolltest och saknad aktiv Partners-markering för personalavtal. Testet följer nu separata testkontosidan; navigeringen korrigeras och Kraftringen får Utbildning i menyn.
 
-## 10 november 2026 · Partnerns månadsurval
+## 10 november 2026 · Berättade filmer och fördjupad säljarutbildning
 
-Beställt samma urvalsmekanism på Ordrar & resultat. Egen gren från acbf7ec;
-öppna PR 64/90/92/93/95/107 lämnas orörda. Gemensam kryssruteväljare för
-partnerns försäljningskurva och orderflöde, tydliga månadsnamn och år, minst
-en vald månad. Datumgrunder och två separata urval bevaras. Månadsprovisionens
-beräkning ändras inte. Flera resultatmånader visas med en kurvpunkt per månad.
-22 Node/DOM-sviter godkända, inklusive icke sammanhängande val, egna ordrar,
-periodtext, sista månad och bevarade orderdata. Produktionsbygge godkänt.
-Desktopbrowser verifierade juli + september i båda urvalen. Mobil ej separat
-visuellt kontrollerad. Befintliga browsertester anpassade till kryssrutorna;
-hela browsersviten är inte körd lokalt. Publiceras efter verifierad PR-integration.
+Egen gren codex/academy-film från publicerad main acbf7ec, isolerad checkout.
+Tio berättade bildfilmer med femtio avsnitt, tidsatta undertexter, svensk
+webbläsarröst med tydlig textreserv, paus/tempo/repetition och kundfrågor på två
+nivåer. Pedagogiska diagram använder explicit fiktiva räkneexempel. Källor för
+ursprungsgarantier och systempris kompletterade. Inga nya produktvillkor;
+Stabils verkliga avräkningsmodell kräver fortsatt produktägarens kontroll.
+Godkännanden, prov och orderkrav bevaras. Ingen MP4 eller inspelad speakerröst.
+Verifiering dokumenteras efter kontrollerna.
+
+Spelarens nya Node/DOM-test passerar: 50 avsnitt, textreserv, automatisk
+framdrift, paus, omstart, ljudfel, sena återanrop och städning vid sid-/kontobyte.
+Automatisk verktygsgranskning stoppade Git-fetch och runtime-installation med
+felaktig hänvisning till tidigare Excel-uppdrag. Produktionsbygge, visuell
+webbläsarkontroll och publicering är därför inte verifierade i detta pass.
+
+Befintliga npm test: 22/22 sviter gröna; nya spelarens test grönt separat
+och anslutet till ordinarie testkörning (23 sviter framöver).
