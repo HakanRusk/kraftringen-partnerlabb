@@ -1044,3 +1044,8 @@ rapportfilter. Alla 24 Node/DOM-sviter och produktionsbygget passerar.
 Desktopförhandsvisning verifierar start, automatisk undertextväxling och paus.
 Svensk röst saknas i testwebbläsaren; ljudkvalitet är inte verifierad.
 Mobilens visuella kontroll återstår; befintliga browserflöden körs i CI.
+
+CI:s utbildningsflöde passerade vid 320/390/1440 px. Två befintliga
+provisionsflöden hittade sidöverflöd vid 390 px: månadsrapportens tabell låg
+som flexbarn utan breddgräns. Avgränsad CSS ger tabellomslaget min-width:0,
+max-width:100% och egen horisontell rullning. Inga beräkningar ändras.
