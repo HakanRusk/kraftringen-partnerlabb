@@ -278,6 +278,12 @@ vid exportmånadens slut. Matrisen fylls automatiskt från samma orderurval som
 fakturaunderlaget. Orderunderlag visar båda månaderna per order. Årsskiften stöds;
 framtida bindandedatum räknas inte före exportens brytdatum.
 
+Kraftringens gemensamma periodfilter stödjer flera valfria månader inom valt år.
+Välj Period → Månad och kryssa i månaderna. Minst en månad behålls; ett årsbyte
+flyttar valda månader till det nya året. Diagrammet Från order till aktivt avtal
+visar perioden uttryckligen och dess orderurval följer samma månader. Årstrenden
+visar fortsatt hela året som uttryckligt märkt jämförelse.
+
 ### Utbildningsprogram med personliga kunskapsprov
 
 Utbildning öppnar nu ett program med tio moment och tre tillämpningsfrågor per moment. Alla svar ska vara rätt i samma försök; förkunskaper måste vara godkända. Interaktiva övningar visar nätroller, balans, områdespriser, förbrukningsvägt pris, säkringsgrad och fördelning av säkringsvärde. Produktinnehållet bygger på beställarens bilder och länkade källor; exakta affärsvillkor och Stabils avräkningsenhet måste produktgranskas.

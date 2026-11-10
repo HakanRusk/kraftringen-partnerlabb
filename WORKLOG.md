@@ -969,6 +969,19 @@ matrisceller och totalsummor, årsskifte, framtida bindandedatum, roller och
 oförändrat tillstånd. Ingen native Excel-omräkning eller visuell Excel-kontroll
 utförd; formeltext och cachade värden kontrollerade i den genererade filen.
 
+## 10 november 2026 · Flerval av månader i Kraftringens översikt
+
+Egen gren codex/multiple-months från verifierad main bdd1f6d. Öppna PR 64,
+90, 92, 93 och 95 lämnas orörda. Gemensamt månadsfilter får kryssrutor för
+valfria månader inom ett år. Perioden visas under orderflödets rubrik. Samma
+urval styr KPI:er, klickbara ordergrupper och månadslistor i fakturaunderlagen.
+Minst en månad krävs; årsbyte bevarar månadsvalen i det nya året.
+Verifierat: 21 Node/DOM-sviter gröna inklusive icke sammanhängande månader,
+exakt drilldown, sista månaden, årsbyte och oförändrade orderdata/roller.
+Produktionsbygge godkänt; desktopbrowser visar juli + september och korrekt
+periodtext. Mobil inte separat visuellt verifierad. Ingen ändring av lagring,
+affärsvillkor eller partner-/kundgränssnitt. Publicering sker efter PR-integration.
+
 ## 10 november 2026 · Personligt utbildningsprogram med orderkrav
 
 Beställt uttryckligen i sidochatten. Isolerad checkout från GitHub/Sites-main bdd1f6d; övriga pågående arbetskataloger och PR:er orörda. Tio moment, tre tillämpningsfrågor vardera, interaktiva övningar, förkunskaper, fullständigt rätt prov före sparat godkännande. Separata person-/versionsbundna resultat, adminstyrda produktkrav och order-/utskicksspärr för partnerroller; intern handläggning undantagen. Äldre material och klarmarkeringar bevaras utan att räknas som godkända prov. Ingen skarp identitet, servercertifiering eller nya affärsvillkor införs.
