@@ -1049,3 +1049,9 @@ CI:s utbildningsflöde passerade vid 320/390/1440 px. Två befintliga
 provisionsflöden hittade sidöverflöd vid 390 px: månadsrapportens tabell låg
 som flexbarn utan breddgräns. Avgränsad CSS ger tabellomslaget min-width:0,
 max-width:100% och egen horisontell rullning. Inga beräkningar ändras.
+
+Fördjupad mobilkontroll visade att tabellbegränsningen inte ensam räckte.
+Periodväljaren behöver egen flexrad och säljarresultatets grid en minmax(0,1fr)-
+kolumn. Vid 390 px passerar nu hela orderflödet i CI. Vid 320 px verifieras
+periodvyn visuellt utan sidöverflöde efter gridrättningen (305 px synlig
+bredd inklusive webbläsarens rullningslist). Ny fullständig CI inväntas.
