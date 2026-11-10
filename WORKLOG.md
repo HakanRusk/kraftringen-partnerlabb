@@ -1055,3 +1055,19 @@ Periodväljaren behöver egen flexrad och säljarresultatets grid en minmax(0,1f
 kolumn. Vid 390 px passerar nu hela orderflödet i CI. Vid 320 px verifieras
 periodvyn visuellt utan sidöverflöde efter gridrättningen (305 px synlig
 bredd inklusive webbläsarens rullningslist). Ny fullständig CI inväntas.
+
+## 10 november 2026 · Utbildningsfilmer publicerade som version 30
+
+PR #112 integrerad efter grön CI 42829215535 på b30082f8559fc7c6621e7fa8f488b39d17eb883d.
+Publicerad main: bbf4647dee7370ebc4c93d9a971a5b01381e8f0e; identiskt träd med testad PR.
+24 Node/DOM-sviter, hela Chromium-körningen inklusive utbildning/order/provision
+vid 320/390/1440 px och produktionsbygget passerade. Visuell kontroll av start,
+undertextväxling, paus och smala periodvyer. Svensk röst saknades i testwebbläsaren;
+ljudkvalitet är därför inte verifierad. Inga inspelade MP4-filer.
+
+Sites: appgprj_6adb2c876a0c8191b1fa3c755a73f61a.
+Version-ID: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_0ec33660d65c8191897050823661f8a9.
+Deployment-ID: appgdep_6af323d954748191839553d4fef4aec7.
+Native publiceringskvittens: succeeded, 2026-11-10T14:02:21Z.
+URL: https://kraftringen-partnerlabb-hakan.hakan-rusk.chatgpt.site
+Privat ägaråtkomst bevarad. Denna separata kvittens ändrar inga dist-filer.
