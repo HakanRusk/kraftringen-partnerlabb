@@ -955,3 +955,16 @@ partnerarbetsrum samt uttrycklig inläsning av kostnader/bortfallsorsaker.
 Browserkontrollen hittade ett fel i demokostnadernas nyckeldelning, rättat och
 regressionstestat före publicering. Mobilens layout har responsiva regler men
 är inte separat visuellt verifierad i detta pass. Inga verkliga kunddata införda.
+
+## 10 november 2026 · Godkännande-/bindandematris i provisions-export
+
+Håkan efterfrågade sammanställningen från referensfilens Indata-flik i portalens
+nedladdning. Lagt till automatiskt formelberäknad Indata-matris: godkännandemånad
+per rad, bindandemånad per kolumn, rad-/kolumntotaler och ännu inte bindande vid
+brytdatum. Orderunderlag får explicit Bindandemånad. Referensfilens testvärden
+kopieras inte; portalens aktuella orderurval är källan. Befintliga ersättnings-
+beräkningar och datumsäkerhet bevaras.
+Verifierat med commission-invoice och partner-commission: XLSX skrivs/läses tillbaka,
+matrisceller och totalsummor, årsskifte, framtida bindandedatum, roller och
+oförändrat tillstånd. Ingen native Excel-omräkning eller visuell Excel-kontroll
+utförd; formeltext och cachade värden kontrollerade i den genererade filen.
