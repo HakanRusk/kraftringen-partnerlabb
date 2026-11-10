@@ -7,7 +7,7 @@ const suites = [
   'order-mail', 'order-mail-client', 'partner-registry', 'results-only', 'partner-self-service', 'savera-data',
   'property-intake-dedup', 'movein-next-action', 'movein-receipt',
   'property-results-period', 'install-app', 'partner-crm', 'crm-identifiers', 'crm-workflow', 'crm-polish', 'commercial-periods', 'partner-orders', 'partner-commission', 'commission-invoice', 'user-roles', 'internal-sales', 'academy-program', 'period-selections',
-  'academy-film'
+  'academy-film', 'academy-resources'
 ];
 let failures = 0;
 function run(args) {
