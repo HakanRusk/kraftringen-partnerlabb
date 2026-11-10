@@ -936,3 +936,22 @@ kontaktkvittens och återställning vid sparfel. Ursprunglig full körning: 19
 sviter godkända; integrerad körning dokumenteras i leveranskvittensen.
 Browserkontroll ej verifierad: Sites preview saknar dev/static-konfiguration
 för den befintliga Worker-applikationen. Ingen driftkonfiguration ändrad för QA.
+
+## 10 november 2026 · Kraftringens försäljningsarbetsyta
+
+Håkan godkände förslaget om fem separata arbetsområden. Byggt på main bbfd687,
+fristående från övriga öppna PR:er. Gemensamt period-/partner-/kanal-/segmenturval,
+kollektivt flöde med exakta klickurval, produkt- och avtalstypsdiagram,
+kanalkonvertering, bortfallsanalys, ledtid och allokerad CAC. Intern handläggare
+kan läsa samtliga partnerordrar; partner- och kundavgränsning bevaras.
+Partnerarbetsrum samlar profil, ansvar, användare, daterade modellförslag och
+fakturaunderlag. Befintlig Face2face-motor och export återanvänds. Äldre ekonomi
+behåller separat ingång. Inga nya modeller aktiveras eller externa utskick görs.
+
+Verifiering: 21 Node/DOM-sviter passerade; därefter utökad internal-sales-svit
+för idempotenta demokostnader och bevarat manuellt underlag passerade.
+Webbläsargranskning vid desktop via befintliga runtime/dev: översikt, analys,
+partnerarbetsrum samt uttrycklig inläsning av kostnader/bortfallsorsaker.
+Browserkontrollen hittade ett fel i demokostnadernas nyckeldelning, rättat och
+regressionstestat före publicering. Mobilens layout har responsiva regler men
+är inte separat visuellt verifierad i detta pass. Inga verkliga kunddata införda.
