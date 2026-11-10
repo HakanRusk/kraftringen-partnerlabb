@@ -323,3 +323,14 @@ Enskilda händelsedatum, exempelvis leveransstart, är fortsatt ett datum.
 Provisionsflikens månadsöversikt har ett kompakt flerval ovanför jämförelsetabellen.
 Granska månadsunderlag samlar detaljmånad, orderunderlag och räkneexempel i en
 separat, responsiv panel. Datumurvalet i Ordrar & resultat påverkas inte.
+
+### Utbildning och säljstöd
+
+Gemensam navigation skiljer Kurser & prov från Samtalsexempel, Säljmanus,
+Förstå elfakturan, Viktiga länkar och Filmer & handböcker. De 18 befintliga
+Elakademin-filmerna, PowerPoint och PDF:er har direkta ingångar. Äldre
+demokurser, bokmärken och klarmarkeringar finns kvar via tidigare översikt.
+B2C-ljudbiblioteket fungerar även på academy-library; dess partner-/demoavgränsning
+och lokala IndexedDB bevaras. Skrivna bra/dåliga dialogexempel är fiktiva.
+Nya kursillustrationer är animerade SVG-diagram, inte nyproducerade MP4-filmer.
+Paus och reducerad rörelse respekteras. Godkännanden och orderkrav ändras inte.
