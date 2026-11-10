@@ -18,3 +18,4 @@
 .period-set{min-width:0;max-width:100%;flex:2;font-size:13px}.period-set>span{display:block;font-weight:600;margin-bottom:6px}.period-set-values{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.period-set-values button{border:1px solid var(--kf-navy-20);border-radius:16px;padding:6px 10px;background:var(--kf-cyan-20);color:var(--kf-navy);font:inherit;cursor:pointer}.period-set-add{display:flex;gap:8px;flex-wrap:wrap}.period-set-add input,.period-set-add select{min-height:44px;min-width:140px;max-width:100%;flex:1;width:auto}.period-set small{display:block;margin-top:8px;font-size:11px}.period-set :focus-visible{outline:3px solid var(--kf-orange);outline-offset:2px}
 /* Keep the monthly commission table inside its flex card on narrow screens. */
 .ow-period>.table-wrap{flex:1 1 100%;min-width:0;max-width:100%;overflow-x:auto}
+.ow-period>.period-set{flex:1 1 100%;width:100%;min-width:0;max-width:100%}
