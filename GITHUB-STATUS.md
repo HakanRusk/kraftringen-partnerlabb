@@ -37,3 +37,8 @@ Sites bekräftar Håkan Rusk som ägare och endast ägaren i åtkomstlistan
   Gamla ID:n i historiken är belägg, inte mål eller aktiva uppdrag här.
 - Prototypens data ligger lokalt i respektive webbläsare/ursprung. Gamla lokala
   ärenden, bilagor, ljud och framsteg följer inte nya adressen automatiskt.
+
+## Senaste publiceringskvittens · 10 november 2026
+
+Utbildningsfilmer publicerade som version 30 från main bbf4647dee7370ebc4c93d9a971a5b01381e8f0e (PR #112).
+Grön CI 42829215535. Se [WORKLOG](WORKLOG.md) avsnittet ”Utbildningsfilmer publicerade som version 30” för deployment-ID och verifieringsgränser.
