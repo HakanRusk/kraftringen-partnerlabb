@@ -119,3 +119,8 @@ färger, Poppins och Håkans godkända logotyper ersätter tidigare uppskattning
 paletten. Inga nya externa bild-/fontanrop eller spårning har tillkommit.
 Vattenfallet ritas med CSS från samma avstämda orderdata som filter och tabell.
 Befintliga foton och utbildningsmedia är bevarade enligt avgränsningen ovan.
+
+## Utbildningsillustrationer · 10 november 2026
+`academy-film-visuals.js`: egna kodritade SVG-scheman för nät, balans,
+elområden, pris, säkring och kunddialog. Antagna tal märks i bildtexten.
+Inga nya externa bilder eller inspelningar; tidigare Elakademin-medier bevaras.
