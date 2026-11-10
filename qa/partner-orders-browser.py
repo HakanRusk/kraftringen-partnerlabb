@@ -155,7 +155,10 @@ async def main():
                 await expect(page.locator('.ow-status-history')).to_contain_text('Nätavtal saknas')
                 await page.locator('#close-dialog').click()
                 await page.locator('[data-ow-filter=mode]').select_option('week')
-                await page.locator('[data-ow-filter=week]').select_option('41')
+                await page.locator('[data-period-input="orders"]').fill('2026-W41')
+                await page.locator('[data-period-add="orders"]').click()
+                for value in await page.locator('[data-period-remove="orders"]').evaluate_all('(els) => els.map(el => el.dataset.periodValue)'):
+                    if value != '2026-W41': await page.locator(f'[data-period-remove="orders"][data-period-value="{value}"]').click()
                 await expect(page.locator('#ow-order-list tbody')).to_contain_text('Exempelperson 3')
                 await page.locator('[data-ow-filter=mode]').select_option('month')
                 await page.locator('[data-ow-filter=status]').select_option('all')
@@ -188,7 +191,10 @@ async def main():
                 await form.get_by_role('button',name='Spara utkast').click()
                 await expect(page.locator('#portal-dialog')).not_to_be_visible()
                 await page.locator('[data-ow-filter=mode]').select_option('year')
-                await page.locator('[data-ow-filter=year]').select_option('2026')
+                await page.locator('[data-period-input="orders"]').fill('2026')
+                await page.locator('[data-period-add="orders"]').click()
+                for value in await page.locator('[data-period-remove="orders"]').evaluate_all('(els) => els.map(el => el.dataset.periodValue)'):
+                    if value != '2026': await page.locator(f'[data-period-remove="orders"][data-period-value="{value}"]').click()
                 await page.locator('[data-ow-search]').fill('Fiktiv Testkund')
                 await page.locator('[data-ow-open]').click()
                 await page.route('**/api/order-mail', lambda route: route.fulfill(status=200, content_type='application/json', body=json.dumps({'accepted':True,'providerMessageId':'browser-test','acceptedAt':'2026-11-06T12:00:00Z','recipient':'hakan.rusk@kraftringen.se','documents':['order.txt']})))

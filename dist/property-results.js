@@ -22,7 +22,8 @@
     const input = value && typeof value === 'object' ? value : {};
     return {
       mode: ['year','month'].includes(input.mode) ? input.mode : 'year',
-      month: months().includes(input.month) ? input.month : '2026-09'
+      month: months().includes(input.month) ? input.month : '2026-09',
+      values:Array.isArray(input.values)?input.values.filter(m=>months().includes(m)):[]
     };
   }
   function selection(id) {
@@ -38,8 +39,9 @@
   }
   function periodFor(id) {
     const selected = selection(id);
-    const current = selected.mode === 'month' ? [selected.month] : [...months()];
+    const current = selected.mode === 'month' ? (selected.values.length?selected.values:[selected.month]) : [...months()];
     const monthIndex = months().indexOf(selected.month);
+    if(selected.mode==='month'&&current.length>1)return {current,label:current.map(m=>P.periodSet.label('month',m)).join(', '),range:'Endast valda månader · underlag till 7 oktober 2026'};
     const label = selected.mode === 'month' ? `${monthNames[monthIndex]} 2026` : '2026 hittills';
     const range = selected.mode === 'year' ? '1 januari–7 oktober 2026' : selected.month === '2026-10' ? '1–7 oktober 2026' : `1–${new Date(Date.UTC(2026, monthIndex + 1, 0)).getUTCDate()} ${monthNames[monthIndex].toLocaleLowerCase('sv-SE')} 2026`;
     return {current, label, range};
@@ -68,7 +70,7 @@
   }
   function controls(id, period) {
     const selected = selection(id);
-    return `<section class="property-results-filters" aria-label="Filtrera uppföljningen"><div class="property-results-period"><span class="property-results-filter-title">Visa period</span><div class="property-results-segments" role="group" aria-label="Periodtyp"><button type="button" data-property-results-mode="year" aria-pressed="${selected.mode === 'year'}">År</button><button type="button" data-property-results-mode="month" aria-pressed="${selected.mode === 'month'}">Månad</button></div></div><label class="property-results-filter"><span>År</span><select id="property-results-year"><option value="2026">2026</option></select></label>${selected.mode === 'month' ? `<label class="property-results-filter property-results-month-filter"><span>Månad</span><select id="property-results-month">${months().map((month, index) => `<option value="${month}"${selected.month === month ? ' selected' : ''}>${monthNames[index]}${month === '2026-10' ? ' · 1–7 okt' : ''}</option>`).join('')}</select></label>` : ''}<div class="property-results-range"><strong>${e(period.label)}</strong><span>${e(period.range)}</span></div></section>`;
+    return `<section class="property-results-filters" aria-label="Filtrera uppföljningen"><div class="property-results-period"><span class="property-results-filter-title">Visa period</span><div class="property-results-segments" role="group" aria-label="Periodtyp"><button type="button" data-property-results-mode="year" aria-pressed="${selected.mode === 'year'}">År</button><button type="button" data-property-results-mode="month" aria-pressed="${selected.mode === 'month'}">Månad</button></div></div>${P.periodSet.render('property',selected.mode,selected.mode==='month'?(selected.values.length?selected.values:[selected.month]):['2026'],v=>{if(selected.mode==='month'){selected.values=v;selected.month=v[0];}saveSelection(id);},selected.mode==='month'?months().map(m=>({value:m,label:P.periodSet.label('month',m)})):[{value:'2026',label:'2026 · till 7 oktober'}])}<div class="property-results-range"><strong>${e(period.label)}</strong><span>${e(period.range)}</span></div></section>`;
   }
   function primaryMetrics(result, kickback) {
     const hasBasis = kickback.rows.length > 0;

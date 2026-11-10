@@ -166,12 +166,14 @@
     filters=filters && typeof filters==='object' ? filters : {};
     const mode=['year','month','week'].includes(filters.mode) ? filters.mode : 'year';
     const defaultValue=mode==='year' ? '2026' : mode==='month' ? cutoff.slice(0,7) : isoWeek(cutoff);
-    return {mode,value:filters.value==null || filters.value==='' ? defaultValue : String(filters.value),
+    return {mode,values:Array.isArray(filters.values)?[...new Set(filters.values)]:[],value:filters.value==null || filters.value==='' ? defaultValue : String(filters.value),
       segment:['business','consumer'].includes(filters.segment) ? filters.segment : 'all',
       product:filters.product||'all',seller:filters.seller||'all',region:filters.region||'all',
       query:String(filters.query||'').trim(),status:filters.status||'all'};
   }
   function period(filters={}) {
+    if(filters.values?.length>1){const parts=filters.values.map(value=>period({...filters,values:[],value})).filter(p=>p.valid).sort((a,b)=>a.start.localeCompare(b.start));if(parts.length){const observed=parts.filter(p=>p.observedEnd),contains=d=>parts.some(p=>p.observedEnd&&d>=p.observedStart&&d<=p.observedEnd);return {...parts[0],start:parts[0].start,end:parts.at(-1).end,observedStart:observed[0]?.observedStart,observedEnd:observed.at(-1)?.observedEnd,asOf:observed.at(-1)?.observedEnd,label:parts.map(p=>p.label).join(', '),months:[...new Set(parts.flatMap(p=>p.months))].sort(),daysObserved:parts.reduce((n,p)=>n+p.daysObserved,0),daysTotal:parts.reduce((n,p)=>n+p.daysTotal,0),partial:parts.some(p=>p.partial),multi:true,contains};}}
+
     const {mode,value}=normalizeFilters(filters);
     let start=null,end=null,label='Ogiltig period';
     if(mode==='year' && value==='2026') {start=`${value}-01-01`;end=`${value}-12-31`;label=value;}
@@ -239,7 +241,7 @@
       const selected=normalizeFilters(filters),p=period(selected);
       if(!available||!p.observedEnd) return [];
       const stock=options.stock===true||options.active===true;
-      return ledger.filter(row=>matches(row,selected) && (stock ? statusAt(row,p.observedEnd)==='active' : row.soldDate>=p.observedStart&&row.soldDate<=p.observedEnd))
+      return ledger.filter(row=>matches(row,selected) && (stock ? statusAt(row,p.observedEnd)==='active' : (p.contains?p.contains(row.soldDate):row.soldDate>=p.observedStart&&row.soldDate<=p.observedEnd)))
         .map(row=>atDate(row,p.observedEnd)).filter(row=>all(selected.status)||row.status===selected.status)
         .sort((a,b)=>b.soldDate.localeCompare(a.soldDate)||a.id.localeCompare(b.id));
     }
@@ -259,7 +261,7 @@
       // excludes new starts inside the period and compares unique customer IDs.
       const base=p.observedEnd ? ledger.filter(row=>matches(row,selected)&&statusAt(row,addDays(p.observedStart,-1))==='active') : [];
       const openingIds=new Set(base.map(row=>row.customerId));
-      const exitedIds=new Set(base.filter(row=>row.endDate&&row.endDate>=p.observedStart&&row.endDate<=p.observedEnd).map(row=>row.customerId));
+      const exitedIds=new Set(base.filter(row=>row.endDate&&(p.contains?p.contains(row.endDate):row.endDate>=p.observedStart&&row.endDate<=p.observedEnd)).map(row=>row.customerId));
       // A customer remains active if another of their agreements is active at
       // the same period end; an agreement ending alone is not customer churn.
       for(const id of [...exitedIds]) if(ledger.some(row=>row.customerId===id&&statusAt(row,p.observedEnd)==='active')) exitedIds.delete(id);
@@ -273,12 +275,12 @@
         sold:covered ? sold.length : null,preStartCancelled:covered ? cancelled : null,
         rate:covered&&sold.length ? cancelled/sold.length : null,observedThrough:p.observedEnd,
         definition:'Avtal sålda under vald period som har avbrutits före avtalsstart senast periodslut, delat med samma sålda avtal. Kvarvarande avtal är inte slutligt utvärderade.'};
-      return {churn,dropout};
+      if(p.multi){churn.rate=null;churn.openingCustomers=null;churn.openingActive=null;churn.exits=null;churn.openingCohortExited=null;churn.definition='Churn visas för en sammanhängande period. Välj en period för att följa dess ingående kundbas; flera perioders kundbaser summeras inte.';}return {churn,dropout};
     }
     function insights(filters={}) {
       const selected=normalizeFilters(filters),p=period(selected),sold=query(selected);
       const covered=availableForSegment(selected.segment);
-      const completedRows=available&&p.observedEnd ? ledger.filter(row=>matches(row,selected)&&row.endDate&&row.endDate>=p.observedStart&&row.endDate<=p.observedEnd
+      const completedRows=available&&p.observedEnd ? ledger.filter(row=>matches(row,selected)&&row.endDate&&(p.contains?p.contains(row.endDate):row.endDate>=p.observedStart&&row.endDate<=p.observedEnd)
         && (all(selected.status)||selected.status==='ended')).map(row=>atDate(row,p.observedEnd)) : [];
       const activeRows=query(selected,{stock:true});
       const popularity=(covered ? productsFor(selected.segment) : []).map(product=>{
@@ -292,7 +294,7 @@
           trend.push({date:`${month}-01`,label:new Intl.DateTimeFormat('sv-SE',{month:'short',timeZone:'UTC'}).format(date(`${month}-01`)),agreements:rows.length,annualMWh:rows.reduce((sum,row)=>sum+row.annualMWh,0)});
         });
         else for(let day=p.observedStart;day<=p.observedEnd;day=addDays(day,1)) {
-          const rows=sold.filter(row=>row.soldDate===day);trend.push({date:day,label:day.slice(8),agreements:rows.length,annualMWh:rows.reduce((sum,row)=>sum+row.annualMWh,0)});
+          if(p.contains&&!p.contains(day))continue;const rows=sold.filter(row=>row.soldDate===day);trend.push({date:day,label:day.slice(8),agreements:rows.length,annualMWh:rows.reduce((sum,row)=>sum+row.annualMWh,0)});
         }
       }
       return {available:covered,period:p,completed:duration(completedRows,p.observedEnd,true),active:duration(activeRows,p.observedEnd),products:popularity,trend,...attrition(selected),
@@ -301,7 +303,7 @@
     function projection(filters={}) {
       const selected=normalizeFilters(filters),p=period(selected),basis=summary(selected);
       const horizon='2026-12-31',remainingDays=daysBetween(cutoff,horizon);
-      const ytd=summary({...selected,mode:'year',value:'2026'});
+      const ytd=summary({...selected,mode:'year',value:'2026',values:[]});
       const covered=availableForSegment(selected.segment);
       const valid=covered&&p.valid&&p.daysObserved>0&&basis.agreements>0&&all(selected.status);
       const dailyAgreements=valid ? basis.agreements/p.daysObserved : null;
