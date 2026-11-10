@@ -247,3 +247,27 @@ En verklig mottagare och leverans behöver anslutas inför pilot.
 Kundstartsidan visar högst tre öppna ärenden; **Mina ärenden** innehåller hela listan.
 Periodfilter ligger före berörda siffror; bindandedatum och registreringsdatum
 är separata urval eftersom de svarar på olika frågor.
+
+### Kraftringens arbetsyta (november 2026)
+Kraftringens demokonton har fem arbetsområden: Översikt, Försäljningsanalys,
+Partners, Ordrar och Provision & fakturaunderlag. Partner- och kundroller behåller
+sina befintliga vyer. Flödesstaplar öppnar exakt motsvarande orderurval.
+Analysen använder lokala ordrar, inte fristående äldre rapportfixturer. Inkomna
+ordrar är skapade i perioden (registreringsdatum används om skapandedatum saknas),
+exklusive utkast. Händelse-KPI använder första sparade händelsedatum; önskat
+startdatum ersätter aldrig en saknad aktiv-händelse. Vattenfallet visar däremot
+ordergruppens hittills uppnådda steg, även efter vald period.
+
+Kostnader allokeras explicit per partner och inkomstmånad. CAC för delurval visas
+bara när hela kostnadsgruppen täcks; okända kostnader blir inte noll. Administratören
+kan välja **Ladda fiktivt analysunderlag** för illustrativa kostnader och
+bortfallsorsaker för befintliga exempelordrar. Befintliga värden ersätts inte.
+Kompletteringarna ändrar inte orderhistorik eller faktisk provisionsberäkning.
+Nya ordrar utan kanal visas som Ej angiven. Fält/telefon för ursprungliga
+exempelpaket är uttryckliga demoantaganden.
+
+Partnerarbetsrummen samlar profil, ansvar, användare, modellbeskrivningar och
+underlag. Modellversioner är daterade förslag, inte aktiverade nya beräkningsregler.
+Face2faces befintliga motor och Excel-export återanvänds; saknade datum blockerar
+summor. Granskningsstatus och anteckningar är lokal demo, inte fakturering eller
+betalning. Äldre ekonomiskt underlag finns kvar via en separat ingång i ekonomivyn.
