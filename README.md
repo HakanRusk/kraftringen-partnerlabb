@@ -292,7 +292,14 @@ Resultat sparas per demokonto och innehållsversion. Äldre filmer, Elakademin o
 
 Resultat, krav och ändringslogg är lokala prototypdata med återställning vid sparfel. Detta är inte en säker certifieringslösning: identitet, provrättning, resultat och orderkontroll måste flyttas till server vid skarp drift.
 
-Partnerns Ordrar & resultat har samma flerval av månader i både Tecknade avtal
-(bindandedatum) och orderflödet (registreringsperiod). Urvalen är fortsatt separata
-med tydlig periodtext. Flera månader ger en kurvpunkt per vald månad; månader
-mellan valen ingår inte. Säljar- och partneravgränsningarna gäller som tidigare.
+### Berättade utbildningsfilmer
+
+Varje moment inleds med en automatiskt spelad bildfilm med fem avsnitt, undertexter,
+svensk webbläsartalsyntes när tillgänglig, tempo, paus och repetition. Utan svensk
+röst eller vid ljudfel fortsätter tidsatta undertexter med tydligt besked. Det är
+webbfilmer, inte inspelade MP4-filer. Filmvisning ger aldrig provgodkännande.
+Flikbyte pausar, sid-/kontobyte avslutar ljudet. Manus och kundfrågor finns i
+expanderbar fördjupning; grundsammanfattning och interaktiva övningar bevaras.
+Tio manus med sammanlagt femtio avsnitt fördjupar kunddialog, prisreferenser,
+profil-/volymrisk och produktjämförelser. Diagrammens räknevärden är illustrativa.
+Provversionen och befintliga godkännanden ändras inte av denna innehållsutökning.
