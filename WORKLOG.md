@@ -922,3 +922,17 @@ Användaren beställde kundportalen enligt förslaget med anonym kommun. Impleme
 Beställt av Håkan i sidochatten: knapp för Excel baserad på partnerns försäljning och fakturaunderlag för säljledare. Utgångspunkt GitHub-main f70ead2. Befintliga andra PR:er lämnas orörda. Face2faces bekräftade modell återanvänds med tre efterfrågade avtalsbegrepp och avräkning per godkännandemånad. Ingen ny modell för andra partners införs.
 
 Nya tester verifierar faktiskt XLSX-skrivning/återläsning, formler och sparade resultat, roller, partneravgränsning, saknade datum, uttryckliga exempelurval, delvis täckta avtal och oförändrad orderdata. Ingen fakturering/betalning registreras eller skickas; lokal demobehörighet kvarstår. Publiceringskvittens lämnas efter verifiering.
+
+## 10 november 2026 · Inloggning och konsekventa översikter
+
+På Håkans uppdrag: ny startsida med märkt demoinloggning, Testanvändare,
+partnerprogram och lokalt kontaktformulär för konto/partnerskap. Förfrågningar
+visas för administratören; inga externa meddelanden eller nya behörigheter.
+Kundöversikten visar tre öppna ärenden med väg till full lista. Periodfilter
+har gemensam placering före utfall och enhetliga kontrollmått. Befintliga
+separata datumdefinitioner bevaras. Integrerad med main 5a1430b (#102), inklusive
+nyare provisionsbehörigheter. Rolltest utökat med felaktig/rätt inloggning,
+kontaktkvittens och återställning vid sparfel. Ursprunglig full körning: 19
+sviter godkända; integrerad körning dokumenteras i leveranskvittensen.
+Browserkontroll ej verifierad: Sites preview saknar dev/static-konfiguration
+för den befintliga Worker-applikationen. Ingen driftkonfiguration ändrad för QA.
