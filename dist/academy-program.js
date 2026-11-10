@@ -55,3 +55,4 @@ P.learningProgram={modules,passed,ready,check,gate,start,submit,configure,requir
 document.addEventListener('click',ev=>{if(ev.target.closest('[data-lp-go]')){P.closeDialog();P.go('academy');}});
 window.addEventListener('storage',ev=>{if(ev.key==='partnerlabb.portal.v2'){attempt=null;feedback=null;}});
 })();
+
