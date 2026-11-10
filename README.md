@@ -281,8 +281,8 @@ framtida bindandedatum räknas inte före exportens brytdatum.
 Kraftringens gemensamma periodfilter stödjer flera valfria månader inom valt år.
 Välj Period → Månad och kryssa i månaderna. Minst en månad behålls; ett årsbyte
 flyttar valda månader till det nya året. Diagrammet Från order till aktivt avtal
-visar perioden uttryckligen och dess orderurval följer samma månader. Årstrenden
-visar fortsatt hela året som uttryckligt märkt jämförelse.
+visar perioden uttryckligen och dess orderurval följer samma månader. Trenddiagrammet
+visar en punkt per vald period.
 
 ### Utbildningsprogram med personliga kunskapsprov
 
@@ -296,3 +296,15 @@ Partnerns Ordrar & resultat har samma flerval av månader i både Tecknade avtal
 (bindandedatum) och orderflödet (registreringsperiod). Urvalen är fortsatt separata
 med tydlig periodtext. Flera månader ger en kurvpunkt per vald månad; månader
 mellan valen ingår inte. Säljar- och partneravgränsningarna gäller som tidigare.
+
+Samtliga rapporters befintliga periodval stödjer nu flerval. I Översikt och
+Ordrar & resultat gäller det dag, vecka, månad och år. För dag/vecka/år väljer
+man en period och trycker Lägg till; × tar bort ett val. Minst ett val behålls.
+Urval med luckor omfattar endast de valda perioderna, med ISO-veckor över årsskiften.
+Äldre rapporter erbjuder de perioder som deras exempelunderlag innehåller.
+Aktiva kundbestånd avser senaste valda brytdatum och summeras inte mellan perioder;
+churn visas inte som ett missvisande sammanlagt procenttal för separata perioder.
+Provision visas per månad utan dubbelräkning av kumulativa saldon. Dag-/veckourval
+i fakturaunderlag visar uttryckligen hela berörda månadsunderlag. Detaljgranskning
+och Excel av ett fakturaunderlag gäller fortsatt en vald fakturamånad.
+Enskilda händelsedatum, exempelvis leveransstart, är fortsatt ett datum.

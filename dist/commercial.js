@@ -90,6 +90,7 @@
   Object.values(periods).forEach(items => items.sort((a, b) => b.id.localeCompare(a.id)));
   let periodKind = 'month';
   let periodId = '2026-09';
+  const periodSelections={};
   let typeFilter = 'all';
   let partnerQuery = '';
   let sortBy = 'net-desc';
@@ -97,7 +98,7 @@
   const num = (value, decimals = 0) => new Intl.NumberFormat('sv-SE', { maximumFractionDigits:decimals, minimumFractionDigits:decimals }).format(value);
   const money = value => `${num(value / 1000, value % 1000 ? 1 : 0)} <small>tkr</small>`;
   const moneyText = value => `${num(value / 1000, value % 1000 ? 1 : 0)} tkr`;
-  const currentPeriod = () => ({ ...(periods[periodKind].find(p => p.id === periodId) || periods[periodKind][0]), kind:periodKind });
+  const currentPeriod = () => {const chosen=periodSelections[periodKind]||[periodId],parts=periods[periodKind].filter(p=>chosen.includes(p.id));if(parts.length<2)return {...(parts[0]||periods[periodKind][0]),kind:periodKind};return {kind:periodKind,current:[...new Set(parts.flatMap(p=>p.current))].sort(),previous:[],comparison:'ingen gemensam jämförelsebas för flerval',label:parts.map(p=>p.label).join(', '),range:parts.map(p=>p.range).join('; '),multi:true};};
   const empty = () => ({ contribution:0, cost:0, net:0, agreements:0, volume:0, registrations:0 });
   const fromArray = values => ({ contribution:values[0], cost:values[1], net:values[0]-values[1], agreements:values[2], volume:values[3], registrations:values[4] });
   const sum = items => items.reduce((total, item) => { Object.keys(total).forEach(key => total[key] += item[key] || 0); return total; }, empty());
@@ -176,7 +177,7 @@
   const note = () => `<p class="commercial-demo-note">${icon('shield')}<span>Alla belopp och resultat är manuella exempel. Resultatbidrag före partnerkostnad minus exempelkostnad visas som nettobidrag. Kraftringens ekonomiska definition är inte beslutad. Årsvolym avser periodens nya avtal, inte levererad el.</span></p>`;
   function periodControls(includeType = true) {
     const p = currentPeriod();
-    return `<div class="commercial-filter-bar"><div class="commercial-period-controls"><label class="commercial-filter-label">Periodtyp<select id="commercial-period-kind"><option value="month"${periodKind==='month'?' selected':''}>Månad</option><option value="quarter"${periodKind==='quarter'?' selected':''}>Kvartal</option><option value="year"${periodKind==='year'?' selected':''}>År</option></select></label><label class="commercial-filter-label">Period<select id="commercial-period">${periods[periodKind].map(item => `<option value="${item.id}"${item.id===p.id?' selected':''}>${e(item.label)}</option>`).join('')}</select></label>${includeType ? `<label class="commercial-filter-label">Partnertyp<select id="commercial-type"><option value="all"${typeFilter==='all'?' selected':''}>Alla partnertyper</option><option value="business"${typeFilter==='business'?' selected':''}>Företag · B2B</option><option value="consumer"${typeFilter==='consumer'?' selected':''}>Konsument · B2C</option><option value="property"${typeFilter==='property'?' selected':''}>Fastighetsbolag</option><option value="employee"${typeFilter==='employee'?' selected':''}>Personalavtal</option></select></label>` : ''}</div><span class="commercial-example-badge">${icon('file')} Exempeldata</span></div>`;
+    return `<div class="commercial-filter-bar"><div class="commercial-period-controls"><label class="commercial-filter-label">Periodtyp<select id="commercial-period-kind"><option value="month"${periodKind==='month'?' selected':''}>Månad</option><option value="quarter"${periodKind==='quarter'?' selected':''}>Kvartal</option><option value="year"${periodKind==='year'?' selected':''}>År</option></select></label>${P.periodSet.render('commercial',periodKind,periodSelections[periodKind]||[periodId],v=>{periodSelections[periodKind]=v;periodId=v[0];},periods[periodKind].map(p=>({value:p.id,label:p.label})))}${includeType ? `<label class="commercial-filter-label">Partnertyp<select id="commercial-type"><option value="all"${typeFilter==='all'?' selected':''}>Alla partnertyper</option><option value="business"${typeFilter==='business'?' selected':''}>Företag · B2B</option><option value="consumer"${typeFilter==='consumer'?' selected':''}>Konsument · B2C</option><option value="property"${typeFilter==='property'?' selected':''}>Fastighetsbolag</option><option value="employee"${typeFilter==='employee'?' selected':''}>Personalavtal</option></select></label>` : ''}</div><span class="commercial-example-badge">${icon('file')} Exempeldata</span></div>`;
   }
   function kpis(selectedIds) {
     const available=selectedIds.filter(hasFinancialData);
@@ -200,7 +201,7 @@
     const period=currentPeriod();
     let rows;
     const monthNames=['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt'];
-    if(periodKind==='year') {
+    if(periodKind==='year'||period.multi) {
       rows=period.current.map(month=>({label:monthNames[Number(month.slice(5))-1]+(month==='2026-10'?' 1–7':''),value:sum(selectedIds.map(id=>fromArray(fixtures[month][id])))}));
     } else if(periodKind==='quarter'||period.partial) {
       const quarter=Number(period.id.slice(-1));

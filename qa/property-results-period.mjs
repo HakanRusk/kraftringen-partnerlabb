@@ -48,7 +48,7 @@ normal.routes['property-results'].bind();
 normal.listeners['mode:month:click']();
 normal.monthSelect.value = '2026-08';
 normal.listeners['month:change']({target: normal.monthSelect});
-assert.deepEqual(JSON.parse(values.get('partnerlabb.propertyResults.v1.estate1')), {mode:'month',month:'2026-08'});
+assert.deepEqual(JSON.parse(values.get('partnerlabb.propertyResults.v1.estate1')), {mode:'month',month:'2026-08',values:[]});
 
 normal = load();
 assert.equal(normal.Portal.propertyResults.periodFor('estate1').label, 'Augusti 2026');

@@ -13,16 +13,17 @@ w.document.dispatchEvent(new w.Event('DOMContentLoaded'));
 const P = w.Portal;
 P.go('internal-overview');
 const choose = (id, value) => {
+  if(id==='commercial-period'){const el=w.document.querySelector('[data-period-input="commercial"]');el.value=value;w.document.querySelector('[data-period-add="commercial"]').click();for(const b of [...w.document.querySelectorAll('[data-period-remove="commercial"]')])if(b.dataset.periodValue!==value)b.click();return;}
   const el = w.document.getElementById(id);
   el.value = value;
   el.dispatchEvent(new w.Event('change', { bubbles: true }));
 };
-const options = () => Array.from(w.document.querySelectorAll('#commercial-period option'), o => o.value);
+const options = () => Array.from(w.document.querySelectorAll('[data-period-input="commercial"] option'), o => o.value);
 const baseline = JSON.stringify(P.state);
 assert.deepEqual(options(), ['2026-10','2026-09','2026-08','2026-07','2026-06','2026-05','2026-04','2026-03','2026-02','2026-01']);
 assert.equal(P.commercial.currentPeriod().id, '2026-09');
 choose('commercial-period','2026-10');
-assert.match(w.document.querySelector('#commercial-period option:checked').textContent,/7 okt.*delperiod/);
+assert.match(w.document.querySelector('[data-period-input="commercial"] option:checked').textContent,/7 okt.*delperiod/);
 assert.equal(P.commercial.currentPeriod().comparison,'1–7 september 2026');
 assert.equal(P.commercial.valuesFor('syd').agreements,6);
 choose('commercial-period-kind','quarter');
@@ -34,7 +35,7 @@ choose('commercial-period-kind','month');
 assert.equal(P.commercial.currentPeriod().id,'2026-10');
 choose('commercial-period','2026-09');
 P.render();
-assert.equal(w.document.getElementById('commercial-period').value,'2026-09');
+assert.equal(P.commercial.currentPeriod().id,'2026-09');
 assert.equal(P.commercial.valuesFor('syd').agreements,31);
 assert.equal(JSON.stringify(P.state),baseline,'period filters must not mutate stored records');
 for (const name of ['partner-results-data', 'savera-data', 'savera-reports']) w.eval(fs.readFileSync(`dist/${name}.js`, 'utf8'));
