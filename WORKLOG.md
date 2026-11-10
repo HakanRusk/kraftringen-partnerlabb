@@ -1079,3 +1079,19 @@ av befintliga ljud eller anteckningar. Ingen verklig inspelning laddas upp.
 Tio animerade sakillustrationer i filmspelaren; tal/text och prov behålls.
 Verifierat hittills: 24 befintliga Node/DOM-sviter samt ny resursnav-svit
 och filmspelarsvit med illustrationer. Browserkontroll och bygge följer.
+
+## 10 november 2026 · Utbildningsbibliotek publicerat, version 32
+
+PR #115 integrerad efter grön CI 42842936313 på 28bf6ff5cf3a16811b7963413c90e15b65b9450c.
+Publicerad main 9f2ce019bbd971c049210752e76f3041eff87ff8 har identiskt träd.
+25 Node/DOM-sviter samt hela Chromium-körningen godkända. Nya resurssidor,
+18 filmlänkar, fakturarader och bevarade provresultat testade vid 320/390/1440 px.
+Produktionsbygget godkänt. Separat visuell QA uteblev: gemensam preview användes
+av annan arbetsyta och lämnades orörd. Externa äldre mediefilers uppspelning och
+svensk röstkvalitet har inte verifierats i denna leverans.
+
+Sites-version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_7663278f9d088191aa9fba4b3d867a99
+Deployment: appgdep_6af337a2b5dc819199d3519340d2d0f5
+Status: succeeded, 2026-11-10T15:26:43.719405+00:00
+URL: https://kraftringen-partnerlabb-hakan.hakan-rusk.chatgpt.site
+Privat ägaråtkomst bevarad. Denna kvittens ändrar inte dist eller publicerad kod.
