@@ -976,3 +976,9 @@ Beställt uttryckligen i sidochatten. Isolerad checkout från GitHub/Sites-main 
 Nya regressionstester verifierar 30 frågors facit, felaktiga och dubbla svar, kravkedjor, personisolering, versionsbyte, sparfel, order-/mejlspärr och administratörsrättigheter. Publicering kvitteras separat efter grön verifiering.
 
 Verifiering: lokalt npm test 22/22 och produktionsbygge godkända. Förhandsvisning bekräftar 2/3 underkänt och 3/3 sparat godkännande. Första CI-körningen passerade nya utbildningsflödet vid 320/390/1440 px men hittade äldre inloggningsantagande i rolltest och saknad aktiv Partners-markering för personalavtal. Testet följer nu separata testkontosidan; navigeringen korrigeras och Kraftringen får Utbildning i menyn.
+
+## 10 november 2026 · Utbildningsprogram publicerat som version 26
+
+PR #106 integrerad efter grön CI 42804139360 (Node/DOM, Chromium och QA gate). Chromium verifierade utbildning, underkänt/godkänt prov, omladdning, bevarat tidigare material, orderspärr och administratörens produktkrav vid 1440/390/320 px samt samtliga befintliga flöden. Testernas äldre inloggnings-/partnerfilterantaganden uppdaterades; mobilmenyn öppnas före navigation.
+
+Publicerad GitHub-main/Sites-källa: 726407b03c3aac1d79356360e1e587a4f070e91a. Produktionsbygget lyckades. Sites version 26, version-ID appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_22c60fee5b248191973faf823e88355e, deployment-ID appgdep_6af2fb0e69bc8191bcdf11bedb49245f, succeeded 2026-11-10T11:08:14.407883+00:00. URL: https://kraftringen-partnerlabb-hakan.hakan-rusk.chatgpt.site. Privat ägaråtkomst oförändrad. Interaktiv kontroll gjordes i lokal förhandsvisning och CI; produktionspubliceringen verifierades av Sites. Resultat och kurskrav är fortsatt lokala prototypdata. Produktägaren behöver granska exakta produktvillkor/prisformler före skarp användning. Denna kvittens ändrar ingen appkod.
