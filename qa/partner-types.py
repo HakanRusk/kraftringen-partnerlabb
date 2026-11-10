@@ -245,11 +245,12 @@ async def layout_checks(test):
     employee = await create(test, 'QA Mobil personal', 'employee')
     property_partner = await create(test, 'QA Mobil fastighet', 'property')
     await route(test, 'partners')
-    for kind, expected_ids in [('property', {'estate1', 'estate2', property_partner}), ('employee', {employee})]:
-        await page.locator('#commercial-type').select_option(kind)
-        filtered_ids = await page.locator('.commercial-partner-name').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.commercialPartner)')
-        test.good(f'partnerregistrets filter {kind} visar bara rätt typ och dess nya partner', set(filtered_ids) == expected_ids)
-    await page.locator('#commercial-type').select_option('all')
+    # Current internal partner view selects a partner rather than the retired type filter.
+    for kind, partner in [('property', property_partner), ('employee', employee)]:
+        await page.locator('[data-is-filter="partner"]').select_option(partner)
+        filtered_ids = await page.locator('[data-is-partner]').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.isPartner)')
+        test.good(f'partnerregistrets urval visar endast vald ny {kind}', filtered_ids == [partner])
+    await page.locator('[data-is-filter="partner"]').select_option('all')
     for width in [1440, 390, 320]:
         await page.set_viewport_size({'width': width, 'height': 1000 if width == 1440 else 844})
         await open_create(test)

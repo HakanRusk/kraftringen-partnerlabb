@@ -277,3 +277,11 @@ bindandemånad i kolumner, med antal godkända, bindande och ännu inte bindande
 vid exportmånadens slut. Matrisen fylls automatiskt från samma orderurval som
 fakturaunderlaget. Orderunderlag visar båda månaderna per order. Årsskiften stöds;
 framtida bindandedatum räknas inte före exportens brytdatum.
+
+### Utbildningsprogram med personliga kunskapsprov
+
+Utbildning öppnar nu ett program med tio moment och tre tillämpningsfrågor per moment. Alla svar ska vara rätt i samma försök; förkunskaper måste vara godkända. Interaktiva övningar visar nätroller, balans, områdespriser, förbrukningsvägt pris, säkringsgrad och fördelning av säkringsvärde. Produktinnehållet bygger på beställarens bilder och länkade källor; exakta affärsvillkor och Stabils avräkningsenhet måste produktgranskas.
+
+Resultat sparas per demokonto och innehållsversion. Äldre filmer, Elakademin och klarmarkeringar finns via Filmer & tidigare material, men ger inga automatiska provgodkännanden. Förvald orderregel för partnersäljare och säljledare kräver de fem grundmomenten; de fyra portföljprodukterna kräver även relevant produktmoment. Intern handläggning är undantagen. Spärren kontrolleras när utkast sparas, order registreras via orderfunktionen och dokument skickas; befintliga ordrar bevaras. Administratören kan ändra kraven per produkt under Utbildning → Kraftringen · utbildningsuppföljning och krav. Reglerna gäller alla partners som har produkten.
+
+Resultat, krav och ändringslogg är lokala prototypdata med återställning vid sparfel. Detta är inte en säker certifieringslösning: identitet, provrättning, resultat och orderkontroll måste flyttas till server vid skarp drift.
