@@ -968,3 +968,16 @@ Verifierat med commission-invoice och partner-commission: XLSX skrivs/läses til
 matrisceller och totalsummor, årsskifte, framtida bindandedatum, roller och
 oförändrat tillstånd. Ingen native Excel-omräkning eller visuell Excel-kontroll
 utförd; formeltext och cachade värden kontrollerade i den genererade filen.
+
+## 10 november 2026 · Flerval av månader i Kraftringens översikt
+
+Egen gren codex/multiple-months från verifierad main bdd1f6d. Öppna PR 64,
+90, 92, 93 och 95 lämnas orörda. Gemensamt månadsfilter får kryssrutor för
+valfria månader inom ett år. Perioden visas under orderflödets rubrik. Samma
+urval styr KPI:er, klickbara ordergrupper och månadslistor i fakturaunderlagen.
+Minst en månad krävs; årsbyte bevarar månadsvalen i det nya året.
+Verifierat: 21 Node/DOM-sviter gröna inklusive icke sammanhängande månader,
+exakt drilldown, sista månaden, årsbyte och oförändrade orderdata/roller.
+Produktionsbygge godkänt; desktopbrowser visar juli + september och korrekt
+periodtext. Mobil inte separat visuellt verifierad. Ingen ändring av lagring,
+affärsvillkor eller partner-/kundgränssnitt. Publicering sker efter PR-integration.
