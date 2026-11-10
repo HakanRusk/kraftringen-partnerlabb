@@ -13,7 +13,15 @@ async function boot(saved,identity,url='https://portal.example/?workspace=vast')
 const {dom,w,P,doc}=await boot(),A=P.prototypeUsers,O=P.orderWorkspace;
 let checks=0;const test=(name,fn)=>{fn();checks++;console.log('PASS '+name);};
 const sign=id=>assert.equal(A.signIn(id).ok,true);
-test('first entry requires a demo identity; direct routes do not render business data',()=>{assert.equal(P.page,'demo-login');P.go('order-commission');assert.equal(P.page,'demo-login');assert.equal(O.orders().length,0);assert.equal(doc.querySelectorAll('[data-pu-login]').length,13);});
+test('first entry requires a demo identity; direct routes do not render business data',()=>{assert.equal(P.page,'demo-login');P.go('order-commission');assert.equal(P.page,'demo-login');assert.equal(O.orders().length,0);assert.ok(doc.querySelector('#pu-login-form'));P.go('test-users');assert.equal(doc.querySelectorAll('[data-pu-login]').length,13);P.go('demo-login');});
+test('login validates demo credentials and contact requests remain local with rollback',()=>{
+ const submit=form=>form.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+ let form=doc.querySelector('#pu-login-form');form.elements.email.value='alex@exempelkommun.example';form.elements.password.value='wrong';submit(form);assert.equal(P.page,'demo-login');assert.match(form.textContent,/Kontrollera/);
+ form.elements.password.value='demo';submit(form);assert.equal(P.page,'customer-home');A.signOut();
+ P.go('portal-contact');form=doc.querySelector('#pu-contact-form');Object.entries({name:'Test Person',organisation:'Testkommun',email:'person@test.example',message:'Vill prova konto'}).forEach(([k,v])=>form.elements[k].value=v);
+ const save=P.save;P.save=()=>false;submit(form);assert.equal(P.state.portalEnquiries,undefined);assert.match(form.textContent,/kunde inte sparas/);P.save=save;submit(form);assert.equal(P.state.portalEnquiries.length,1);assert.match(form.textContent,/Inget har skickats/);
+ sign('demo-admin');P.go('user-admin');assert.match(doc.querySelector('#view').textContent,/Testkommun/);A.signOut();
+});
 test('customer accounts open their portal and keep partner orders inaccessible',()=>{
  sign('demo-customer');assert.equal(P.page,'customer-home');
  assert.match(doc.querySelector('#view').textContent,/Exempel|EXEMPEL/);
