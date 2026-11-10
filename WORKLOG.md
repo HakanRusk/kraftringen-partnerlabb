@@ -1009,3 +1009,30 @@ webbläsarkontroll och publicering är därför inte verifierade i detta pass.
 
 Befintliga npm test: 22/22 sviter gröna; nya spelarens test grönt separat
 och anslutet till ordinarie testkörning (23 sviter framöver).
+## 10 november 2026 · Partnerns månadsurval
+
+Beställt samma urvalsmekanism på Ordrar & resultat. Egen gren från acbf7ec;
+öppna PR 64/90/92/93/95/107 lämnas orörda. Gemensam kryssruteväljare för
+partnerns försäljningskurva och orderflöde, tydliga månadsnamn och år, minst
+en vald månad. Datumgrunder och två separata urval bevaras. Månadsprovisionens
+beräkning ändras inte. Flera resultatmånader visas med en kurvpunkt per månad.
+22 Node/DOM-sviter godkända, inklusive icke sammanhängande val, egna ordrar,
+periodtext, sista månad och bevarade orderdata. Produktionsbygge godkänt.
+Desktopbrowser verifierade juli + september i båda urvalen. Mobil ej separat
+visuellt kontrollerad. Befintliga browsertester anpassade till kryssrutorna;
+hela browsersviten är inte körd lokalt. Publiceras efter verifierad PR-integration.
+
+## 10 november 2026 · Flerval av alla rapportperioder
+
+Utökat enligt Håkans förtydligande på egen gren från d2cfae1. Gemensam
+validering av dag/ISO-vecka/månad/år, lägg till/ta bort och periodtext.
+Intern analys, partnerns order- och resultatfilter samt äldre rapporters
+befintliga periodtyper använder union av valen. Ekonomivyer behåller månatlig
+avräkning; bestånd avser senaste brytdatum. Faktiska händelsedatum ändras inte.
+
+Verifierat: npm test 23/23, produktionsbygge, diffkontroll och Python-kompilering
+av uppdaterat browsertest. Ny svit omfattar luckor, dubletter, skottdagar,
+ISO-årsskifte, rollavgränsning, drilldown och oförändrade orderdata.
+Desktopbrowser verifierade flera separata år, veckor och dagar i Översikt.
+Hela browsersviten/mobil ej körd lokalt. Publicering sker efter PR-integration.
+
