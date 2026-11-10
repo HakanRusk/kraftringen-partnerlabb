@@ -236,3 +236,14 @@ Under Provision kan partnerns säljledare och Kraftringen välja månad och ladd
 Exporten omfattar partnerns underlag oberoende av säljarfilter och innehåller formler, månadsöversikt, avräkning och order-ID utan kunduppgifter. Ofullständiga händelsedatum stoppar export; fristående räkneexempel kan inte exporteras som försäljningsunderlag. Ett uttryckligen valt exempelpaket märks som urval. Säljare och kundroller saknar funktionen. Rollsepareringen är fortfarande lokal prototyplogik. Andra partners saknar bekräftad provisionsmodell och får inte Face2faces fakturaunderlag.
 
 Filen visar beräknad ersättning, inte faktisk betalning eller tidigare fakturering. Den skickar ingen faktura. Kraftringens export innehåller separat konfigurerbar merkostnad (39 kr); partnerexporten innehåller ingen intern kostnad.
+
+### Inloggning och kontakt i prototypen
+Startsidan visar demoinloggning och partnerinformation. Använd en adress från
+**Testanvändare** och lösenordet `demo`, eller välj profilen direkt på testsidan.
+**Logga ut** återgår till startsidan. Detta är inte säker autentisering.
+Konto- och partnerförfrågningar sparas endast i aktuell webbläsare och kan läsas
+av administratörens demokonto under **Användare & roller**. Ingen e-post skickas.
+En verklig mottagare och leverans behöver anslutas inför pilot.
+Kundstartsidan visar högst tre öppna ärenden; **Mina ärenden** innehåller hela listan.
+Periodfilter ligger före berörda siffror; bindandedatum och registreringsdatum
+är separata urval eftersom de svarar på olika frågor.
