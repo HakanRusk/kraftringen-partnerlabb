@@ -277,3 +277,9 @@ bindandemånad i kolumner, med antal godkända, bindande och ännu inte bindande
 vid exportmånadens slut. Matrisen fylls automatiskt från samma orderurval som
 fakturaunderlaget. Orderunderlag visar båda månaderna per order. Årsskiften stöds;
 framtida bindandedatum räknas inte före exportens brytdatum.
+
+Kraftringens gemensamma periodfilter stödjer flera valfria månader inom valt år.
+Välj Period → Månad och kryssa i månaderna. Minst en månad behålls; ett årsbyte
+flyttar valda månader till det nya året. Diagrammet Från order till aktivt avtal
+visar perioden uttryckligen och dess orderurval följer samma månader. Årstrenden
+visar fortsatt hela året som uttryckligt märkt jämförelse.
