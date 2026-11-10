@@ -6,7 +6,7 @@
   function panel(c,example,subset){
     if(!allowed())return '';
     const blocked=example||c.missing.length||!c.cohorts.length;
-    return `<section class="card oc-invoice" aria-labelledby="oc-invoice-title"><h2 id="oc-invoice-title">Fakturaunderlag · ${P.e(C.monthLabel(c.month))}</h2><p>${subset?'Avgränsat underlag: endast de 90 nya exempelordrarna.':'Hela partnerns lokala försäljningsunderlag, oavsett säljarurval.'} Förskott avräknas mot samma godkännandemånad.</p><div class="table-wrap"><table><thead><tr><th>Underlag</th><th>Antal</th><th>Ersättning exkl. moms</th></tr></thead><tbody><tr><td>${names[0]}</td><td>${c.approved}</td><td>${c.missing.length?'—':C.money(c.advance)} (80 % × 1 500 kr)</td></tr><tr><td>${names[1]}</td><td>${c.missing.length?'—':c.covered}</td><td>Ingår i förskotten</td></tr><tr><td>${names[2]}</td><td>${c.missing.length?'—':c.outside}</td><td>${c.missing.length?'—':C.money(c.extra)}</td></tr><tr><th>Total ersättning för månaden</th><td></td><th>${c.missing.length?'—':C.money(c.amount)}</th></tr></tbody></table></div><p>Om ett avtal bara delvis täcks av förskott räknas det i tredje raden, med ersättning för den återstående delen.</p><button type="button" class="btn btn-primary" id="oc-export"${blocked?' disabled':''}>Ladda ned fakturaunderlag (Excel)</button><p class="oc-export-status" id="oc-export-status" role="status">${example?'Byt till partnerns exempelordrar för att exportera.':c.missing.length?'Export kräver tillförlitliga godkännande- och bindandedatum. Komplettera underlaget eller välj uttryckligen det avgränsade exempelpaketet.':!c.cohorts.length?'Inga daterade godkännanden till och med vald månad.':'Excel innehåller fakturaunderlag, månadsöversikt, avräkning och order-ID:n. Det är ett preliminärt beräkningsunderlag; fakturering och betalningar registreras inte här.'}</p></section>`;
+    return `<section class="card oc-invoice" aria-labelledby="oc-invoice-title"><h2 id="oc-invoice-title">Fakturaunderlag · ${P.e(C.monthLabel(c.month))}</h2><p>${subset?'Avgränsat underlag: endast de 90 nya exempelordrarna.':'Hela partnerns lokala försäljningsunderlag, oavsett säljarurval.'} Förskott avräknas mot samma godkännandemånad.</p><div class="table-wrap"><table><thead><tr><th>Underlag</th><th>Antal</th><th>Ersättning exkl. moms</th></tr></thead><tbody><tr><td>${names[0]}</td><td>${c.approved}</td><td>${c.missing.length?'—':C.money(c.advance)} (80 % × 1 500 kr)</td></tr><tr><td>${names[1]}</td><td>${c.missing.length?'—':c.covered}</td><td>Ingår i förskotten</td></tr><tr><td>${names[2]}</td><td>${c.missing.length?'—':c.outside}</td><td>${c.missing.length?'—':C.money(c.extra)}</td></tr><tr><th>Total ersättning för månaden</th><td></td><th>${c.missing.length?'—':C.money(c.amount)}</th></tr></tbody></table></div><p>Om ett avtal bara delvis täcks av förskott räknas det i tredje raden, med ersättning för den återstående delen.</p><button type="button" class="btn btn-primary" id="oc-export"${blocked?' disabled':''}>Ladda ned fakturaunderlag (Excel)</button><p class="oc-export-status" id="oc-export-status" role="status">${example?'Byt till partnerns exempelordrar för att exportera.':c.missing.length?'Export kräver tillförlitliga godkännande- och bindandedatum. Komplettera underlaget eller välj uttryckligen det avgränsade exempelpaketet.':!c.cohorts.length?'Inga daterade godkännanden till och med vald månad.':'Excel innehåller fakturaunderlag, månadsöversikt, Indata med godkännande-/bindandematris, avräkning och order-ID:n. Det är ett preliminärt beräkningsunderlag; fakturering och betalningar registreras inte här.'}</p></section>`;
   }
   function currentReport(){
     if(!allowed())throw new Error('Fakturaunderlag visas endast för partnerns säljledare och Kraftringen.');
@@ -24,7 +24,7 @@
     const report=currentReport(),{c,month,partnerName,internal,subset}=report;
     if(!window.ExcelJS?.Workbook)throw new Error('Excel-exporten kunde inte laddas. Ladda om sidan och försök igen.');
     const book=new window.ExcelJS.Workbook();book.creator='Kraftringen Partnerlabb';book.created=new Date();book.calcProperties.fullCalcOnLoad=true;
-    const invoice=book.addWorksheet('Fakturaunderlag'),summary=book.addWorksheet('Månadsöversikt'),detail=book.addWorksheet('Avräkning'),orders=book.addWorksheet('Orderunderlag'),settings=book.addWorksheet('Inställningar');
+    const invoice=book.addWorksheet('Fakturaunderlag'),summary=book.addWorksheet('Månadsöversikt'),matrix=book.addWorksheet('Indata'),detail=book.addWorksheet('Avräkning'),orders=book.addWorksheet('Orderunderlag'),settings=book.addWorksheet('Inställningar');
     const navy='073E56',blue='EAF3F6',yellow='FFF2CC',currency='#,##0.00;(#,##0.00);"–"';
     const cell=(s,a,value)=>{s.getCell(a).value=value;};
     const formula=(s,a,f,result)=>cell(s,a,{formula:f,result});
@@ -40,12 +40,42 @@
     settings.getCell('B2').dataValidation={type:'decimal',operator:'greaterThan',formulae:[0],allowBlank:false,showErrorMessage:true,error:'Ange ett belopp större än noll.'};
     settings.getCell('B3').dataValidation={type:'decimal',operator:'between',formulae:[0,1],allowBlank:false,showErrorMessage:true,error:'Ange en andel mellan 0 och 100 %.'};
     note(settings,6,'Exporten är en ögonblicksbild. Ändringar i Excel ändrar inte portalen. Belopp exkl. moms. Fulla beräknade förskott används, inte faktiska betalningar.',3);
-    title(orders,partnerName+' · Orderunderlag',5);note(orders,2,label+'. Endast händelser kända till och med '+C.endOfMonth(month)+'. Order-ID är text.',5);
-    header(orders,4,['Order-ID','Partner-ID','Godkänd datum','Bindande datum','Godkännandemånad']);
+    title(orders,partnerName+' · Orderunderlag',6);note(orders,2,label+'. Endast händelser kända till och med '+C.endOfMonth(month)+'. Order-ID är text.',6);
+    header(orders,4,['Order-ID','Partner-ID','Godkänd datum','Bindande datum','Godkännandemånad','Bindandemånad']);
     const data=c.cohorts.flatMap(g=>g.orders).sort((a,b)=>a.approvedAt.localeCompare(b.approvedAt)||a.id.localeCompare(b.id));
-    data.forEach((o,i)=>{const r=i+5;orders.getRow(r).values=[String(o.id),String(o.partner),serial(o.approvedAt),C.validDate(o.confirmedAt)&&o.confirmedAt<=C.endOfMonth(month)?serial(o.confirmedAt):null,o.approvedAt.slice(0,7)];stripe(orders,r,5);orders.getCell(`C${r}`).numFmt=orders.getCell(`D${r}`).numFmt='yyyy-mm-dd';});
-    orders.columns.forEach((col,i)=>col.width=i===0?36:24);orders.autoFilter={from:'A4',to:`E${data.length+4}`};
+    data.forEach((o,i)=>{const r=i+5;orders.getRow(r).values=[String(o.id),String(o.partner),serial(o.approvedAt),C.validDate(o.confirmedAt)&&o.confirmedAt<=C.endOfMonth(month)?serial(o.confirmedAt):null,o.approvedAt.slice(0,7),C.validDate(o.confirmedAt)&&o.confirmedAt<=C.endOfMonth(month)?o.confirmedAt.slice(0,7):null];stripe(orders,r,6);orders.getCell(`C${r}`).numFmt=orders.getCell(`D${r}`).numFmt='yyyy-mm-dd';});
+    orders.columns.forEach((col,i)=>col.width=i===0?36:24);orders.autoFilter={from:'A4',to:`F${data.length+4}`};
     const end=data.length+4,groupRange=`Orderunderlag!$E$5:$E$${end}`,dateRange=`Orderunderlag!$D$5:$D$${end}`;
+    // Cohort matrix: each order belongs to one approval row and at most one binding column.
+    // The cutoff is the selected export month, matching the existing order and invoice snapshots.
+    const bindingMonths=months(c.cohorts[0].key,month),matrixLast=4+bindingMonths.length;
+    const letter=n=>matrix.getColumn(n).letter;
+    title(matrix,partnerName+' · Godkännandemånad × bindandemånad',matrixLast);
+    note(matrix,2,label+'. Automatisk sammanställning till och med '+C.endOfMonth(month)+'. Rader = godkännandemånad; månadskolumner = nya bindande avtal, inte ackumulerat.',matrixLast);
+    header(matrix,4,['Godkännandemånad','Godkända avtal','Bindande totalt','Inte bindande t.o.m. vald månad',...bindingMonths]);
+    c.cohorts.forEach((g,i)=>{
+      const r=i+5;cell(matrix,`A${r}`,g.key);
+      formula(matrix,`B${r}`,`COUNTIF(${groupRange},A${r})`,g.count);
+      bindingMonths.forEach((m,j)=>{
+        const n=g.orders.filter(o=>C.validDate(o.confirmedAt)&&o.confirmedAt.startsWith(m)).length;
+        formula(matrix,`${letter(j+5)}${r}`,`COUNTIFS(${groupRange},$A${r},${dateRange},">="&${serial(m+'-01')},${dateRange},"<="&${serial(C.endOfMonth(m))})`,n);
+      });
+      formula(matrix,`C${r}`,`SUM(E${r}:${letter(matrixLast)}${r})`,g.confirmed);
+      formula(matrix,`D${r}`,`B${r}-C${r}`,g.count-g.confirmed);
+      stripe(matrix,r,matrixLast);
+    });
+    const matrixTotal=c.cohorts.length+5;cell(matrix,`A${matrixTotal}`,'Totalt');
+    for(let col=2;col<=matrixLast;col++){
+      const l=letter(col),total=c.cohorts.reduce((sum,g)=>sum+(col===2?g.count:col===3?g.confirmed:col===4?g.count-g.confirmed:g.orders.filter(o=>C.validDate(o.confirmedAt)&&o.confirmedAt.startsWith(bindingMonths[col-5])).length),0);
+      formula(matrix,`${l}${matrixTotal}`,`SUM(${l}5:${l}${matrixTotal-1})`,total);
+    }
+    matrix.getRow(matrixTotal).font={name:'Arial',bold:true,color:{argb:navy}};
+    matrix.columns.forEach((col,i)=>{col.width=i===0?24:i===3?29:18;if(i>0)col.numFmt='0';});
+    matrix.views=[{state:'frozen',xSplit:1,ySplit:4}];
+    matrix.autoFilter={from:'A4',to:`${letter(matrixLast)}${matrixTotal-1}`};
+    note(matrix,matrixTotal+2,'Inte bindande omfattar alla avtal utan bindandedatum inom exportperioden, även bortfall. Det är inte en prognos. Framtida bindandedatum visas först när den månaden ingår i exporten. Detaljer och order-ID finns på Orderunderlag.',matrixLast);
+    matrix.getRow(2).height=48;matrix.getRow(matrixTotal+2).height=48;
+    matrix.pageSetup={paperSize:9,orientation:'landscape',fitToPage:true,fitToWidth:1,fitToHeight:0,printTitlesRow:'1:4',printTitlesColumn:'A:A',printArea:`A1:${letter(matrixLast)}${matrixTotal+2}`};
     title(detail,'Avräkning per godkännandemånad',12);
     header(detail,4,['Utfallsmånad','Godkännandemånad','Godkända avtal','Förskott, kr','Bindande före månaden','Bindande t.o.m. månaden','Bindande under månaden','Täcks av förskott, antal','Utöver förskott, antal¹','Tidigare ersättning utöver förskott, kr','Ersättning utöver förskott denna månad, kr','Ej avräknat förskott, kr']);
     const timeline=months(c.cohorts[0].key<month.slice(0,4)+'-01'?c.cohorts[0].key:month.slice(0,4)+'-01',month),groups=new Map();let dr=5;
