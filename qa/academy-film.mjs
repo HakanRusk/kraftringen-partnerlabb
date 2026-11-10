@@ -5,7 +5,7 @@ const dom=new JSDOM('<body></body>',{runScripts:'outside-only'}),w=dom.window;
 let actor='seller',spoke=[],cancelled=0,timers=[],next=1;
 w.Portal={e:s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;'),prototypeUsers:{current:()=>({id:actor})}};
 w.setTimeout=fn=>{timers.push({fn,id:next});return next++;};w.clearTimeout=id=>timers=timers.filter(t=>t.id!==id);
-for(const f of ['academy-program-data.js','academy-film-data.js','academy-film.js'])w.eval(readFileSync('dist/'+f,'utf8'));
+for(const f of ['academy-program-data.js','academy-film-data.js','academy-film-visuals.js','academy-film.js'])w.eval(readFileSync('dist/'+f,'utf8'));
 const api=w.Portal.learningFilms,modules=w.PartnerLearningContent.modules;
 assert.equal(Object.keys(api.data).length,10);for(const m of modules){assert.equal(api.data[m.id].length,5);assert(api.data[m.id].every(s=>s.length===3&&s[2].length>200));}
 function mount(id='grid'){const m=modules.find(m=>m.id===id);w.document.body.innerHTML=api.render(m)+'<section class="lp-assessment"></section>';api.bind(m);return s=>w.document.querySelector(s);}
