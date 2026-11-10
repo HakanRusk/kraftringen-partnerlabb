@@ -1035,4 +1035,3 @@ av uppdaterat browsertest. Ny svit omfattar luckor, dubletter, skottdagar,
 ISO-årsskifte, rollavgränsning, drilldown och oförändrade orderdata.
 Desktopbrowser verifierade flera separata år, veckor och dagar i Översikt.
 Hela browsersviten/mobil ej körd lokalt. Publicering sker efter PR-integration.
-
