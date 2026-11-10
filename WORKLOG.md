@@ -1068,3 +1068,14 @@ Verifierat: 24 Node/DOM-sviter, produktionsbygge och diffkontroll.
 Desktopbrowser visar september + november och Granska väljer september
 för detaljunderlaget. Mobil inte separat visuellt kontrollerad.
 Publicering sker efter egen PR-integration.
+
+## 10 november 2026 · Utbildning och säljstöd på separata sidor
+
+Beställt i sidochatten. Isolerad gren från f16f61d. Återexponerar äldre
+18 filmer, presentation och handböcker. Navigation till prov, samtalsexempel,
+övningsmanus, interaktiv fakturaförklaring, källänkar och filmbibliotek.
+Rättar samtalsbibliotekets routelivscykel för academy-library utan migrering
+av befintliga ljud eller anteckningar. Ingen verklig inspelning laddas upp.
+Tio animerade sakillustrationer i filmspelaren; tal/text och prov behålls.
+Verifierat hittills: 24 befintliga Node/DOM-sviter samt ny resursnav-svit
+och filmspelarsvit med illustrationer. Browserkontroll och bygge följer.
