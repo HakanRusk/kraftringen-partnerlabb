@@ -410,3 +410,17 @@ att AD inte kan anslutas i prototypen. Lokal simulering är uttryckligen godkän
 
 ## P-14 · Förenklade verkliga testutskick · 6 november 2026
 Håkan har beställt TXT med orderns nyckelinformation i stället för PDF i första teststeget. Låst testmottagare hakan.rusk@kraftringen.se. Resend-kvittens ger Skickad, komplett underlag och uttrycklig intern demomottagning ger Registrerad. Fullmakten är en separat testtext när vald; den är inte godkänd avtalsmall. Kundsignering och mejlreturer återstår enligt underlaget i PR #93. Portalens privata åtkomst och lokala datalagring bevaras.
+
+## P-11 · Kraftringens försäljningsarbetsyta, 10 november 2026
+
+Håkan godkände uppdelningen Översikt / Försäljningsanalys / Partners / Ordrar /
+Provision & fakturaunderlag. Översikten visar partnerkollektivets orderflöde;
+analysen förklarar produkt-, kanal- och bortfallsutfall samt CAC. Partners samlar
+samarbetets administration. Partner- och kundperspektiv behandlas senare.
+
+Periodens händelser skiljs från inkomna ordergruppers senare utfall. Okända datum,
+orsaker och kostnader redovisas som saknade underlag. Inga nya affärsvillkor eller
+integrationer aktiveras. Provisionsmodellversioner är tills vidare beskrivna
+förslag; befintlig Face2face-beräkning bevaras. Illustrativa analyskostnader hålls
+åtskilda från fakturaunderlag. Detta ersätter tidigare intern navigationsstruktur
+i P-03, men inte partnerrollernas arbetsytor eller de separata datakällorna.
