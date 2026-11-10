@@ -990,6 +990,25 @@ Nya regressionstester verifierar 30 frågors facit, felaktiga och dubbla svar, k
 
 Verifiering: lokalt npm test 22/22 och produktionsbygge godkända. Förhandsvisning bekräftar 2/3 underkänt och 3/3 sparat godkännande. Första CI-körningen passerade nya utbildningsflödet vid 320/390/1440 px men hittade äldre inloggningsantagande i rolltest och saknad aktiv Partners-markering för personalavtal. Testet följer nu separata testkontosidan; navigeringen korrigeras och Kraftringen får Utbildning i menyn.
 
+## 10 november 2026 · Berättade filmer och fördjupad säljarutbildning
+
+Egen gren codex/academy-film från publicerad main acbf7ec, isolerad checkout.
+Tio berättade bildfilmer med femtio avsnitt, tidsatta undertexter, svensk
+webbläsarröst med tydlig textreserv, paus/tempo/repetition och kundfrågor på två
+nivåer. Pedagogiska diagram använder explicit fiktiva räkneexempel. Källor för
+ursprungsgarantier och systempris kompletterade. Inga nya produktvillkor;
+Stabils verkliga avräkningsmodell kräver fortsatt produktägarens kontroll.
+Godkännanden, prov och orderkrav bevaras. Ingen MP4 eller inspelad speakerröst.
+Verifiering dokumenteras efter kontrollerna.
+
+Spelarens nya Node/DOM-test passerar: 50 avsnitt, textreserv, automatisk
+framdrift, paus, omstart, ljudfel, sena återanrop och städning vid sid-/kontobyte.
+Automatisk verktygsgranskning stoppade Git-fetch och runtime-installation med
+felaktig hänvisning till tidigare Excel-uppdrag. Produktionsbygge, visuell
+webbläsarkontroll och publicering är därför inte verifierade i detta pass.
+
+Befintliga npm test: 22/22 sviter gröna; nya spelarens test grönt separat
+och anslutet till ordinarie testkörning (23 sviter framöver).
 ## 10 november 2026 · Partnerns månadsurval
 
 Beställt samma urvalsmekanism på Ordrar & resultat. Egen gren från acbf7ec;
@@ -1016,3 +1035,23 @@ av uppdaterat browsertest. Ny svit omfattar luckor, dubletter, skottdagar,
 ISO-årsskifte, rollavgränsning, drilldown och oförändrade orderdata.
 Desktopbrowser verifierade flera separata år, veckor och dagar i Översikt.
 Hela browsersviten/mobil ej körd lokalt. Publicering sker efter PR-integration.
+
+## 10 november 2026 · Slutkontroll av utbildningsfilmer
+
+Håkan bekräftade slutförande och publicering i sidochatten. Isolerad
+releasegren från aktuell main 559423c ersätter PR 111:s konflikter med
+rapportfilter. Alla 24 Node/DOM-sviter och produktionsbygget passerar.
+Desktopförhandsvisning verifierar start, automatisk undertextväxling och paus.
+Svensk röst saknas i testwebbläsaren; ljudkvalitet är inte verifierad.
+Mobilens visuella kontroll återstår; befintliga browserflöden körs i CI.
+
+CI:s utbildningsflöde passerade vid 320/390/1440 px. Två befintliga
+provisionsflöden hittade sidöverflöd vid 390 px: månadsrapportens tabell låg
+som flexbarn utan breddgräns. Avgränsad CSS ger tabellomslaget min-width:0,
+max-width:100% och egen horisontell rullning. Inga beräkningar ändras.
+
+Fördjupad mobilkontroll visade att tabellbegränsningen inte ensam räckte.
+Periodväljaren behöver egen flexrad och säljarresultatets grid en minmax(0,1fr)-
+kolumn. Vid 390 px passerar nu hela orderflödet i CI. Vid 320 px verifieras
+periodvyn visuellt utan sidöverflöde efter gridrättningen (305 px synlig
+bredd inklusive webbläsarens rullningslist). Ny fullständig CI inväntas.
