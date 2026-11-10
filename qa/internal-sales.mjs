@@ -27,6 +27,20 @@ I.commit(m=>m.costs.push({partner:'vast',month:'2026-07',commission:40000,leads:
 P.go('partner-results');assert.match(d.querySelector('#view').textContent,/43\s?500/);
 I.filters.mode='year';I.filters.value='2026';I.filters.partner='all';P.go('partner-results');d.querySelector('[data-is-examples]').click();assert.equal(I.costs(I.cohort()).complete,true);assert.equal(P.state.internalSales.costs.find(c=>c.partner==='vast'&&c.month==='2026-07').commission,40000);assert.equal(P.state.internalSales.costs.length,6);d.querySelector('[data-is-examples]').click();assert.equal(P.state.internalSales.costs.length,6);assert.ok(I.cohort().some(r=>I.lossReason(r)==='Ånger'));
 P.go('kickback');assert.match(d.querySelector('#view').textContent,/Fakturaunderlag/);assert.equal(d.querySelectorAll('[data-is-stage]').length,0);
+// Nonconsecutive month selection updates cohort, drilldown and visible period.
+I.filters.mode='month';I.filters.value='2026-07';I.filters.selectedMonths=[];P.go('overview');
+const change=(selector,value)=>{const el=d.querySelector(selector);el.value=value;el.dispatchEvent(new w.Event('change',{bubbles:true}));};
+d.querySelector('[data-is-month="2026-09"]').click();
+const expected=I.all().filter(r=>r.status!=='draft'&&['2026-07','2026-09'].includes(I.entryDate(r).slice(0,7)));
+assert.deepEqual(Array.from(I.cohort(),r=>r.id).sort(),Array.from(expected,r=>r.id).sort());
+assert.match(d.querySelector('.is-period-label').textContent,/juli 2026, september 2026/);
+assert.doesNotMatch(d.querySelector('.is-period-label').textContent,/augusti/);
+assert.equal(d.querySelector('.is-month-picker').open,true);
+d.querySelector('[data-is-slice="cohort"]').click();assert.equal(d.querySelectorAll('[data-is-order]').length,expected.length);
+P.go('overview');d.querySelector('[data-is-month="2026-07"]').click();d.querySelector('[data-is-month="2026-09"]').click();assert.equal(d.querySelector('[data-is-month="2026-09"]').checked,true);
+change('[data-is-filter="value"]','2027');assert.equal(I.cohort().length,0);assert.match(d.querySelector('.is-period-label').textContent,/september 2027/);
+change('[data-is-filter="mode"]','year');assert.equal(d.querySelectorAll('[data-is-month]').length,0);assert.match(d.querySelector('.is-period-label').textContent,/2027/);
+change('[data-is-filter="mode"]','month');assert.equal(d.querySelector('[data-is-month="2027-09"]').checked,true);
 assert.equal(JSON.stringify(P.state.orderWorkspace),stateBefore);
 A.signIn('demo-vast-seller-1');assert.equal(I.all().length,0);P.go('internal-orders');assert.equal(P.page,'overview');assert.equal(d.querySelectorAll('[data-is-stage]').length,0);assert.equal(I.commit(()=>{}),false);
 A.signIn('demo-customer');assert.equal(P.page,'customer-home');assert.equal(I.all().length,0);
