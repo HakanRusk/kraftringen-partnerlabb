@@ -304,8 +304,8 @@ Tio manus med sammanlagt femtio avsnitt fördjupar kunddialog, prisreferenser,
 profil-/volymrisk och produktjämförelser. Diagrammens räknevärden är illustrativa.
 Provversionen och befintliga godkännanden ändras inte av denna innehållsutökning.
 Partnerns Ordrar & resultat har samma flerval av månader i både Tecknade avtal
-(bindandedatum) och orderflödet (registreringsperiod). Urvalen är fortsatt separata
-med tydlig periodtext. Flera månader ger en kurvpunkt per vald månad; månader
+(bindandedatum) och orderflödet (registreringsperiod). Ett gemensamt periodurval styr hela sidan,
+med tydlig periodtext och respektive datumgrund. Flera månader ger en kurvpunkt per vald månad; månader
 mellan valen ingår inte. Säljar- och partneravgränsningarna gäller som tidigare.
 
 Samtliga rapporters befintliga periodval stödjer nu flerval. I Översikt och
@@ -317,12 +317,15 @@ Aktiva kundbestånd avser senaste valda brytdatum och summeras inte mellan perio
 churn visas inte som ett missvisande sammanlagt procenttal för separata perioder.
 Provision visas per månad utan dubbelräkning av kumulativa saldon. Dag-/veckourval
 i fakturaunderlag visar uttryckligen hela berörda månadsunderlag. Detaljgranskning
-och Excel av ett fakturaunderlag gäller fortsatt en vald fakturamånad.
+och Excel öppnas från respektive månadsrad och gäller den månaden.
 Enskilda händelsedatum, exempelvis leveransstart, är fortsatt ett datum.
 
-Provisionsflikens månadsöversikt har ett kompakt flerval ovanför jämförelsetabellen.
-Granska månadsunderlag samlar detaljmånad, orderunderlag och räkneexempel i en
-separat, responsiv panel. Datumurvalet i Ordrar & resultat påverkas inte.
+Provisionsfliken har en enda tabell med godkända avtal, nya bindande avtal,
+förskott, tillägg och total provision per vald månad. Visa beräkning öppnar
+månadens avräkning i en dialog. Fakturaunderlag (Excel) exporterar just den
+radens månad, oavsett vilken beräkning som senast öppnades. Saknat underlag
+eller fristående räkneexempel spärrar export med förklaring vid raden.
+Ordrar & resultat har ett gemensamt periodval ovanför resultat och orderflöde.
 
 ### Utbildning och säljstöd
 

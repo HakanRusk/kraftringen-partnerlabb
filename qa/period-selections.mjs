@@ -26,8 +26,10 @@ for(const [mode,values] of [['year',['2025','2026']],['week',['2026-W28','2026-W
 }
 A.signIn('demo-vast-seller-1');P.go('overview');
 for(const [mode,values] of [['year',['2025','2026']],['week',['2026-W28','2026-W37']],['day',['2026-07-10','2026-09-10']]]){
- change('[data-pu-period="mode"]',mode);values.forEach(v=>add('sales',v));keep('sales',values);const rows=O.orders();assert.equal(Number(d.querySelector('.pu-total').textContent),rows.filter(r=>S.matches(A.bindingDate(r),mode,values)).length);
- change('[data-ow-filter="mode"]',mode);values.forEach(v=>add('orders',v));keep('orders',values);assert.equal(d.querySelectorAll('[data-ow-row]').length,rows.filter(r=>S.matches(r.registeredAt||r.createdAt,mode,values)).length);
+ change('[data-ow-filter="mode"]',mode);values.forEach(v=>add('orders',v));keep('orders',values);const rows=O.orders();
+ assert.equal(d.querySelectorAll('[data-ow-filter="mode"]').length,1);assert.equal(d.querySelectorAll('[data-pu-period]').length,0);
+ assert.equal(Number(d.querySelector('.pu-total').textContent),rows.filter(r=>S.matches(A.bindingDate(r),mode,values)).length);
+ assert.equal(d.querySelectorAll('[data-ow-row]').length,rows.filter(r=>S.matches(r.registeredAt||r.createdAt,mode,values)).length);
 }
 assert.equal(JSON.stringify(P.state.orderWorkspace),before);
 // Historical reports: union of rows, stock at latest date, no summed churn bases.

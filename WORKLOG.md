@@ -1079,3 +1079,17 @@ av befintliga ljud eller anteckningar. Ingen verklig inspelning laddas upp.
 Tio animerade sakillustrationer i filmspelaren; tal/text och prov behålls.
 Verifierat hittills: 24 befintliga Node/DOM-sviter samt ny resursnav-svit
 och filmspelarsvit med illustrationer. Browserkontroll och bygge följer.
+
+## 10 november 2026 · Ett sidurval och en provisionssammanställning
+
+Håkan godkände förenklingen. Egen gren från f16f61d: Ordrar & resultat använder
+orderfiltrets period även i säljarresultatet. Provision har en månadstabell
+med beräkningsdialog och radbunden Excel-export. Dubbla nyckeltal, separat
+fakturatabell och extra månadsfält tas bort. Beräkningsregler/rollgränser bevaras.
+
+Verifierat: 24 Node/DOM-sviter, produktionsbygge, Python-kompilering och
+diffkontroll. Regressioner kontrollerar gemensamt urval, luckor, säljargränser,
+radens exportmånad trots annan detaljmånad samt Excel-formler och belopp.
+Desktopbrowser verifierar gemensam septemberperiod, beräkningsdialog och lyckad
+Excel-export från septemberraden. Mobil/full browsersvit ej körd lokalt.
+Publiceras efter egen PR-integration.
