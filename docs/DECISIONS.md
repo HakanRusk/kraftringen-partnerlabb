@@ -430,3 +430,13 @@ i P-03, men inte partnerrollernas arbetsytor eller de separata datakällorna.
 Uttryckligen beställt: interaktiva utbildningsmoment, alla frågor rätt före godkänt och utbildningskrav före orderläggning. Infört som personliga, versionsbundna demoprov, separat från tidigare egen klarmarkering. Alla äldre utbildningsresurser och framsteg bevaras i materialbiblioteket. Grundmoment följs i ordning; produktmoment kräver grunden. Förvalda produktkrav omfattar fem grundmoment samt relevant portföljproduktmoment. Administratör kan konfigurera varje produkts krav med automatiska förkunskaper; handläggare följer resultat men ändrar inte krav. Partnersäljare och säljledare omfattas, intern handläggning undantas. Befintliga registrerade orderrättningar bevaras.
 
 Detta är lokal prototypkontroll, inte serververifierad behörighet eller personcertifiering. Kunskapsprov ger inte nya produktvillkor. Produktägarens verifiering behövs av exakta beräkningsmodeller, särskilt Stabils utjämningsenhet. Historiska självtest ger ingen behörighet i det nya programmet.
+
+### Gemensamt sidurval och samlad provision · 10 november 2026
+
+Håkan godkänner ett periodurval högst upp på Ordrar & resultat som styr
+försäljningsdiagram, orderflöde och orderlista. Datumgrunder behålls: bindandedatum
+för tecknade avtal och registreringsdatum för orderkohorten (skapandedatum för
+utkast/Skickad, utskicksdatum i utskickslistan). Flerval gäller alla periodtyper.
+Provision visar en rad per månad med förskott, tillägg och total. Beräkning
+och fakturaunderlag öppnas från raden. Ingen parallell fakturaunderlagstabell
+eller extra månadsstyrning. Beräkningsmodell, exportinnehåll och åtkomst bevaras.

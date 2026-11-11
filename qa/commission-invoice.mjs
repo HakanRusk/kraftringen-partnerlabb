@@ -10,10 +10,16 @@ w.document.dispatchEvent(new w.Event('DOMContentLoaded'));
 const P=w.Portal,A=P.prototypeUsers,I=P.commissionInvoice,C=P.face2faceCommission;
 const sign=id=>assert.equal(A.signIn(id).ok,true);
 for(const user of ['demo-vast-seller-1','demo-customer','demo-syd-manager']){sign(user);assert.equal(I.allowed(),false);assert.throws(()=>I.buildWorkbook(),/endast/);}
-sign('demo-vast-manager');P.go('order-commission');assert.ok(w.document.querySelector('#oc-export'));assert.ok(I.allowed());assert.match(I.panel(C.calculate([{status:'approved'}],'2026-10'),false,false),/disabled/,'missing dates block export');
+sign('demo-vast-manager');P.go('order-commission');assert.ok(w.document.querySelector('[data-oc-export]'));assert.ok(I.allowed());assert.equal(w.document.querySelectorAll('.oc-invoice, #oc-month, .ow-metrics').length,0,'one summary and no second month selector');
 const dataset=w.document.querySelector('#oc-dataset');dataset.value='new';dataset.dispatchEvent(new w.Event('change'));
-const month=w.document.querySelector('#oc-month');month.value='2026-10';month.dispatchEvent(new w.Event('change'));
-assert.equal(w.document.querySelector('#oc-export').disabled,false);
+C.selectMonth('2026-10');P.render();
+assert.equal(w.document.querySelector('[data-oc-export]').disabled,false);
+assert.equal(w.document.querySelectorAll('.oc-monthly-table').length,1);
+w.document.querySelector('[data-oc-detail="2026-10"]').click();assert.match(w.document.querySelector('.oc-calculation').textContent,/Avräkning per godkännandemånad/);P.closeDialog();
+const snapshot=JSON.stringify(P.state);C.selectMonth('2026-07');
+w.document.querySelector('[data-oc-export="2026-10"]').click();
+assert.equal(C.selection().month,'2026-10','row export uses its own month, not last inspected month');
+assert.equal(JSON.stringify(P.state),snapshot);
 const {book,report,filename}=I.buildWorkbook();assert.ok(report.rows.every(r=>r.partner==='vast'&&r.examplePack==='flow2026'));assert.match(filename,/2026-10_urval.xlsx/);
 assert.equal(book.getWorksheet('Fakturaunderlag').getCell('D9').value.result,4500);
 assert.deepEqual(['A5','A6','A7'].map(a=>book.getWorksheet('Fakturaunderlag').getCell(a).value),['Godkända avtal','Bindande avtal som täcks av förskott','Bindande avtal utöver förskotten']);
@@ -41,7 +47,7 @@ assert.equal(grid.getCell('G5').value.result,1);assert.equal(grid.getCell('C7').
 assert.equal(boundary.getWorksheet('Orderunderlag').getCell('F6').value,null,'future binding month is not exported');
 C.selection=originalSelection;
 const state=JSON.stringify(P.state);I.buildWorkbook();assert.equal(JSON.stringify(P.state),state,'export never mutates orders or statuses');
-w.document.querySelector('#oc-example').click();assert.equal(w.document.querySelector('#oc-export').disabled,true);assert.throws(()=>I.buildWorkbook(),/Välj partnerns/);
+w.document.querySelector('#oc-example').click();assert.equal(w.document.querySelector('[data-oc-export]').disabled,true);assert.throws(()=>I.buildWorkbook(),/Välj partnerns/);
 w.document.querySelector('#oc-example').click();
 sign('demo-internal');P.previewPartner('vast');P.go('order-commission');const ds=w.document.querySelector('#oc-dataset');ds.value='new';ds.dispatchEvent(new w.Event('change'));
 assert.equal(I.buildWorkbook().book.getWorksheet('Inställningar').getCell('B4').value,39);

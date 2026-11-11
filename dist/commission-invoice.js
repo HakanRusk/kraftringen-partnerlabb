@@ -3,11 +3,6 @@
   const P=window.Portal,C=P?.face2faceCommission;if(!C)return;
   const allowed=()=>P.partner==='vast'&&P.prototypeUsers?.commission()&&P.prototypeUsers.scope(P.partner);
   const names=['Godkända avtal','Bindande avtal som täcks av förskott','Bindande avtal utöver förskotten'];
-  function panel(c,example,subset){
-    if(!allowed())return '';
-    const blocked=example||c.missing.length||!c.cohorts.length;
-    return `<section class="card oc-invoice" aria-labelledby="oc-invoice-title"><h2 id="oc-invoice-title">Fakturaunderlag · ${P.e(C.monthLabel(c.month))}</h2><p>${subset?'Avgränsat underlag: endast de 90 nya exempelordrarna.':'Hela partnerns lokala försäljningsunderlag, oavsett säljarurval.'} Förskott avräknas mot samma godkännandemånad.</p><div class="table-wrap"><table><thead><tr><th>Underlag</th><th>Antal</th><th>Ersättning exkl. moms</th></tr></thead><tbody><tr><td>${names[0]}</td><td>${c.approved}</td><td>${c.missing.length?'—':C.money(c.advance)} (80 % × 1 500 kr)</td></tr><tr><td>${names[1]}</td><td>${c.missing.length?'—':c.covered}</td><td>Ingår i förskotten</td></tr><tr><td>${names[2]}</td><td>${c.missing.length?'—':c.outside}</td><td>${c.missing.length?'—':C.money(c.extra)}</td></tr><tr><th>Total ersättning för månaden</th><td></td><th>${c.missing.length?'—':C.money(c.amount)}</th></tr></tbody></table></div><p>Om ett avtal bara delvis täcks av förskott räknas det i tredje raden, med ersättning för den återstående delen.</p><button type="button" class="btn btn-primary" id="oc-export"${blocked?' disabled':''}>Ladda ned fakturaunderlag (Excel)</button><p class="oc-export-status" id="oc-export-status" role="status">${example?'Byt till partnerns exempelordrar för att exportera.':c.missing.length?'Export kräver tillförlitliga godkännande- och bindandedatum. Komplettera underlaget eller välj uttryckligen det avgränsade exempelpaketet.':!c.cohorts.length?'Inga daterade godkännanden till och med vald månad.':'Excel innehåller fakturaunderlag, månadsöversikt, Indata med godkännande-/bindandematris, avräkning och order-ID:n. Det är ett preliminärt beräkningsunderlag; fakturering och betalningar registreras inte här.'}</p></section>`;
-  }
   function currentReport(){
     if(!allowed())throw new Error('Fakturaunderlag visas endast för partnerns säljledare och Kraftringen.');
     if(!P.orderWorkspace?.healthy())throw new Error('Orderunderlaget kan inte läsas.');
@@ -116,14 +111,14 @@
     for(const sheet of book.worksheets){sheet.properties.defaultRowHeight=24;sheet.views=[{...sheet.views?.[0],showGridLines:false}];}
     return {book,report,filename:`Fakturaunderlag_${report.partner}_${month}${subset?'_urval':''}.xlsx`};
   }
-  async function download(){
-    const button=document.querySelector('#oc-export'),status=document.querySelector('#oc-export-status');if(button)button.disabled=true;
+  async function download(button){
+    const month=button?.dataset.ocExport;if(month)C.selectMonth(month);const status=button?.closest('td')?.querySelector('[role=status]');if(button)button.disabled=true;
     try{const {book,report,filename}=buildWorkbook();if(status)status.textContent='Skapar Excel-filen…';const buffer=await book.xlsx.writeBuffer();
       // Re-check identity and partner after asynchronous serialization.
       if(!allowed()||P.prototypeUsers.current().id!==report.actor||P.partner!==report.partner)throw new Error('Demokonto eller partner ändrades. Öppna fakturaunderlaget på nytt.');
       const url=URL.createObjectURL(new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));const link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);if(status)status.textContent='Excel-filen har skapats. Kontrollera tidigare fakturering separat.';
     }catch(error){if(status)status.textContent=error.message||'Exporten kunde inte skapas. Försök igen.';else P.toast(error.message||'Exporten kunde inte skapas.');}finally{if(button)button.disabled=!allowed();}
   }
-  const previousBind=C.bind;C.bind=()=>{previousBind();const button=document.querySelector('#oc-export');if(button)button.onclick=download;};
-  P.commissionInvoice={panel,allowed,buildWorkbook,download};
+  const previousBind=C.bind;C.bind=()=>{previousBind();document.querySelectorAll('[data-oc-export]').forEach(button=>button.onclick=()=>download(button));};
+  P.commissionInvoice={allowed,buildWorkbook,download};
 })();
