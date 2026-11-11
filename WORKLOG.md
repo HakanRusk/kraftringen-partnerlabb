@@ -1,3 +1,16 @@
+# Publicerad version 15 och levererat testmejl · 6 november 2026
+
+PR #94 integrerad som 9f200851afe67c675b55b7bc784ef4ab54976ed8 efter grön CI 42223891446 (Node/DOM, Chromium och QA gate). 19 lokala sviter och produktionsbygge godkända. Sites publicering succeeded 2026-11-06T13:20:04Z med oförändrad ägarprivat åtkomst och env revision 3.
+
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_dfcfce39fc7081919c27337f1572f002
+Deployment: appgdep_6aedd3f4ea588191a4135cfbf14a8ac4
+URL: https://kraftringen-partnerlabb-hakan.hakan-rusk.chatgpt.site
+Återgångspunkt: version 14.
+
+Riktigt test mot publicerad POST /api/order-mail: HTTP 200, Resend accepterade 2026-11-06T13:20:24.464Z. Meddelande-ID 01a1b104-7fd0-7185-863b-4711fe4a6a0e, låst mottagare hakan.rusk@kraftringen.se. Bilagor order-TXT-FLODESTEST-20261106.txt och fullmakt-TXT-FLODESTEST-20261106.txt. Håkan bekräftade därefter i chatten: ”Det kom fram !”. Leverans till inkorgen är därmed användarbekräftad. Testanropet använde ett fristående fiktivt underlag; det skapar inte en order i Håkans lokala webbläsardata. Klientens statusflöde, sparfel och omförsök verifierades i automatiska tester och CI.
+
+Denna efterhandskvittens ändrar endast dokumentation, inte publicerad kod.
+
 # Textutskick – lokal kandidat 6 november 2026
 
 Håkan har förenklat det beställda mejlflödet till TXT med orderns nyckeluppgifter. RESEND_API_KEY är verifierad som hemlig Site-inställning. Befintlig GitHub-main 3199fc5 och öppna PR 64/90/92/93 kontrollerade; dessa lämnas orörda.
