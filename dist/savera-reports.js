@@ -23,6 +23,7 @@
     const periods = options(result.mode);
     result.value = periods.some(item => item.value === input?.value) ? input.value : (periods[periods.length - 1]?.value || '2026');
     result.values=Array.isArray(input?.values)?input.values.filter(v=>periods.some(p=>p.value===v)):[];
+    if(result.values.length){const v=P.periodSet.unique(result.values);result.values=P.periodSet.span(result.mode,v[0],v.at(-1),periods);if(!result.values.length)result.values=[v[0]];result.value=result.values[0];}
     result.segment = ['business', 'consumer'].includes(input?.segment) && audiences().includes(input.segment) ? input.segment : 'all';
     for (const key of ['product', 'seller', 'region']) {
       const allowed = key === 'product' ? (D()?.productsFor?.(result.segment) || D()?.products || []) : D()?.[`${key}s`] || [];

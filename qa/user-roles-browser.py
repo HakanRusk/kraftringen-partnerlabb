@@ -7,6 +7,23 @@ from playwright.async_api import async_playwright, expect
 BASE = os.environ.get('PARTNERLABB_QA_URL', 'http://127.0.0.1:8000/')
 OUT = Path(os.environ.get('PARTNERLABB_QA_SHOTS', '/tmp/partnerlabb-shots'))
 
+async def choose_period(page, key, value, end=None):
+    picker=page.locator(f'[data-period-picker="{key}"]')
+    if await picker.get_attribute('open') is None:
+        await picker.locator('summary').click()
+    async def show(v):
+        year=page.locator(f'[data-period-year="{key}"]')
+        if await year.count(): await year.select_option(v[:4])
+        month=page.locator(f'[data-period-month="{key}"]')
+        if await month.count(): await month.select_option(v[5:7])
+    await show(value)
+    if end: await page.locator(f'[data-period-interval="{key}"]').click()
+    await page.locator(f'[data-period-cell="{key}"][data-value="{value}"]').click()
+    if end:
+        await show(end)
+        await page.locator(f'[data-period-cell="{key}"][data-value="{end}"]').click()
+    assert await picker.get_attribute('open') is None
+
 async def main():
     OUT.mkdir(parents=True, exist_ok=True)
     async with async_playwright() as pw:
@@ -26,24 +43,23 @@ async def main():
                 await expect(page.locator('#nav [data-go="order-commission"]')).to_be_hidden()
                 await page.locator('#view [data-go="order-list"]').click()
                 await page.locator('[data-ow-filter="mode"]').select_option('month')
-                await page.locator('[data-month-picker="orders"] summary').click()
-                assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (width, 'open month picker')
-                await expect(page.locator('[data-month-check="orders"]')).to_have_count(12)
-                await page.locator('[data-month-year="orders"]').select_option('2027')
-                await page.locator('[data-month-check="orders"][value="2027-01"]').check()
-                await expect(page.locator('.month-other')).to_contain_text('2026')
-                await page.locator('[data-month-check="orders"][value="2027-01"]').uncheck()
-                await page.locator('[data-month-year="orders"]').select_option('2026')
-                await page.locator('[data-month-check="orders"][value="2026-10"]').check()
-                for month in await page.locator('[data-month-check="orders"]:checked').evaluate_all('(els) => els.map(el => el.value)'):
-                    if month != '2026-10': await page.locator(f'[data-month-check="orders"][value="{month}"]').uncheck()
-                await page.locator('[data-month-picker="orders"] summary').click()
+                await choose_period(page, 'orders', '2026-12', '2027-02')
+                await expect(page.locator('#orders-period-value')).to_have_text('December 2026 – februari 2027')
+                await page.locator('[data-period-picker="orders"] summary').click()
+                assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (width, 'open period picker')
+                await expect(page.locator('[data-period-cell="orders"]')).to_have_count(12)
+                if width == 1440:
+                    await page.locator('[data-period-year="orders"]').select_option('2026')
+                    first=await page.locator('[data-period-cell="orders"][data-value="2026-01"]').bounding_box()
+                    last=await page.locator('[data-period-cell="orders"][data-value="2026-03"]').bounding_box()
+                    await page.mouse.move(first['x']+first['width']/2, first['y']+first['height']/2)
+                    await page.mouse.down()
+                    await page.mouse.move(last['x']+last['width']/2, last['y']+last['height']/2, steps=8)
+                    await page.mouse.up()
+                    await expect(page.locator('#orders-period-value')).to_have_text('Januari–mars 2026')
+                await choose_period(page, 'orders', '2026-10')
                 await expect(page.locator('.pu-total')).to_have_text('6')
-                await page.locator('[data-month-picker="orders"] summary').click()
-                await page.locator('[data-month-check="orders"][value="2026-10"]').check()
-                for month in await page.locator('[data-month-check="orders"]:checked').evaluate_all('(els) => els.map(el => el.value)'):
-                    if month != '2026-10': await page.locator(f'[data-month-check="orders"][value="{month}"]').uncheck()
-                await page.locator('[data-month-picker="orders"] summary').click()
+                await choose_period(page, 'orders', '2026-10')
                 await expect(page.locator('.pu-order-owner')).to_have_count(4)
                 assert all('Charlie Exempel' in text for text in await page.locator('.pu-order-owner').all_text_contents())
                 for mode in ('day', 'week', 'month', 'year'):
@@ -57,11 +73,7 @@ async def main():
                 await page.locator('[data-pu-login="demo-vast-manager"]').click()
                 await page.locator('#view [data-go="order-list"]').click()
                 await page.locator('[data-ow-filter="mode"]').select_option('month')
-                await page.locator('[data-month-picker="orders"] summary').click()
-                await page.locator('[data-month-check="orders"][value="2026-10"]').check()
-                for month in await page.locator('[data-month-check="orders"]:checked').evaluate_all('(els) => els.map(el => el.value)'):
-                    if month != '2026-10': await page.locator(f'[data-month-check="orders"][value="{month}"]').uncheck()
-                await page.locator('[data-month-picker="orders"] summary').click()
+                await choose_period(page, 'orders', '2026-10')
                 await page.locator('[data-pu-seller="demo-vast-seller-1"]').check()
                 await page.locator('[data-pu-seller="demo-vast-seller-2"]').check()
                 await expect(page.locator('.pu-total')).to_have_text('11')
@@ -71,10 +83,7 @@ async def main():
                 await page.locator('#view [data-go="order-commission"]').click()
                 await expect(page.locator('.oc-monthly-table')).to_be_visible()
                 await page.locator('#oc-dataset').select_option('new')
-                await page.locator('[data-month-picker="commission"] summary').click()
-                await page.locator('[data-month-year="commission"]').select_option('2026')
-                await page.locator('[data-month-check="commission"][value="2026-10"]').check()
-                await page.locator('[data-month-done="commission"]').click()
+                await choose_period(page, 'commission', '2026-10')
                 await expect(page.locator('.oc-monthly-table')).to_contain_text('Tillägg utöver förskott')
                 assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (width, 'invoice')
                 async with page.expect_download() as pending:

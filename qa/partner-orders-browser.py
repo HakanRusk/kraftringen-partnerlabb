@@ -7,6 +7,23 @@ from playwright.async_api import async_playwright, expect
 BASE = os.environ.get('PARTNERLABB_QA_URL', 'http://127.0.0.1:8000/')
 OUT = Path(os.environ.get('PARTNERLABB_QA_SHOTS', '/tmp/partnerlabb-shots'))
 
+async def choose_period(page, key, value, end=None):
+    picker=page.locator(f'[data-period-picker="{key}"]')
+    if await picker.get_attribute('open') is None:
+        await picker.locator('summary').click()
+    async def show(v):
+        year=page.locator(f'[data-period-year="{key}"]')
+        if await year.count(): await year.select_option(v[:4])
+        month=page.locator(f'[data-period-month="{key}"]')
+        if await month.count(): await month.select_option(v[5:7])
+    await show(value)
+    if end: await page.locator(f'[data-period-interval="{key}"]').click()
+    await page.locator(f'[data-period-cell="{key}"][data-value="{value}"]').click()
+    if end:
+        await show(end)
+        await page.locator(f'[data-period-cell="{key}"][data-value="{end}"]').click()
+    assert await picker.get_attribute('open') is None
+
 async def main():
     OUT.mkdir(parents=True, exist_ok=True)
     async with async_playwright() as pw:
@@ -28,12 +45,7 @@ async def main():
                 await expect(page.locator('#role')).to_have_value('partner')
                 await expect(page.locator('#partner')).to_have_value('vast')
                 await expect(page.locator('.ow-head h1')).to_have_text('Ordrar & resultat')
-                await page.locator('[data-month-picker="orders"] summary').click()
-                await page.locator('[data-month-year="orders"]').select_option('2026')
-                await page.locator('[data-month-check="orders"][value="2026-10"]').check()
-                for month in await page.locator('[data-month-check="orders"]:checked').evaluate_all('(els) => els.map(el => el.value)'):
-                    if month != '2026-10': await page.locator(f'[data-month-check="orders"][value="{month}"]').uncheck()
-                await page.locator('[data-month-picker="orders"] summary').click()
+                await choose_period(page, 'orders', '2026-10')
                 assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
                 await page.screenshot(path=str(OUT/f'report-orders-home-{width}.png'),full_page=True)
                 await expect(page.locator('[data-ow-status]')).to_have_count(18)
@@ -155,10 +167,7 @@ async def main():
                 await expect(page.locator('.ow-status-history')).to_contain_text('Nätavtal saknas')
                 await page.locator('#close-dialog').click()
                 await page.locator('[data-ow-filter=mode]').select_option('week')
-                await page.locator('[data-period-input="orders"]').fill('2026-W41')
-                await page.locator('[data-period-add="orders"]').click()
-                for value in await page.locator('[data-period-remove="orders"]').evaluate_all('(els) => els.map(el => el.dataset.periodValue)'):
-                    if value != '2026-W41': await page.locator(f'[data-period-remove="orders"][data-period-value="{value}"]').click()
+                await choose_period(page, 'orders', '2026-W41')
                 await expect(page.locator('#ow-order-list tbody')).to_contain_text('Exempelperson 3')
                 await page.locator('[data-ow-filter=mode]').select_option('month')
                 await page.locator('[data-ow-filter=status]').select_option('all')
@@ -191,10 +200,7 @@ async def main():
                 await form.get_by_role('button',name='Spara utkast').click()
                 await expect(page.locator('#portal-dialog')).not_to_be_visible()
                 await page.locator('[data-ow-filter=mode]').select_option('year')
-                await page.locator('[data-period-input="orders"]').fill('2026')
-                await page.locator('[data-period-add="orders"]').click()
-                for value in await page.locator('[data-period-remove="orders"]').evaluate_all('(els) => els.map(el => el.dataset.periodValue)'):
-                    if value != '2026': await page.locator(f'[data-period-remove="orders"][data-period-value="{value}"]').click()
+                await choose_period(page, 'orders', '2026')
                 await page.locator('[data-ow-search]').fill('Fiktiv Testkund')
                 await page.locator('[data-ow-open]').click()
                 await page.route('**/api/order-mail', lambda route: route.fulfill(status=200, content_type='application/json', body=json.dumps({'accepted':True,'providerMessageId':'browser-test','acceptedAt':'2026-11-06T12:00:00Z','recipient':'hakan.rusk@kraftringen.se','documents':['order.txt']})))
@@ -227,10 +233,7 @@ async def main():
                 await expect(page.locator('.oc-monthly-table')).to_contain_text('Bindande avtal')
                 await expect(page.locator('.oc-calculation')).to_have_count(0)
                 await page.locator('#oc-dataset').select_option('new')
-                await page.locator('[data-month-picker="commission"] summary').click()
-                await page.locator('[data-month-year="commission"]').select_option('2026')
-                await page.locator('[data-month-check="commission"][value="2026-10"]').check()
-                await page.locator('[data-month-done="commission"]').click()
+                await choose_period(page, 'commission', '2026-10')
                 await expect(page.locator('.oc-monthly-table')).to_contain_text('4 500'.replace(' ','\u00a0'))
                 await page.locator('#oc-example').click()
                 await expect(page.locator('[data-oc-month-row="2026-04"]')).to_be_visible()

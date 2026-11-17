@@ -98,7 +98,7 @@
   const num = (value, decimals = 0) => new Intl.NumberFormat('sv-SE', { maximumFractionDigits:decimals, minimumFractionDigits:decimals }).format(value);
   const money = value => `${num(value / 1000, value % 1000 ? 1 : 0)} <small>tkr</small>`;
   const moneyText = value => `${num(value / 1000, value % 1000 ? 1 : 0)} tkr`;
-  const currentPeriod = () => {const chosen=periodSelections[periodKind]||[periodId],parts=periods[periodKind].filter(p=>chosen.includes(p.id));if(parts.length<2)return {...(parts[0]||periods[periodKind][0]),kind:periodKind};return {kind:periodKind,current:[...new Set(parts.flatMap(p=>p.current))].sort(),previous:[],comparison:'ingen gemensam jämförelsebas för flerval',label:parts.map(p=>p.label).join(', '),range:parts.map(p=>p.range).join('; '),multi:true};};
+  const currentPeriod = () => {const chosen=periodSelections[periodKind]||[periodId],parts=periods[periodKind].filter(p=>chosen.includes(p.id));if(parts.length<2)return {...(parts[0]||periods[periodKind][0]),kind:periodKind};return {kind:periodKind,current:[...new Set(parts.flatMap(p=>p.current))].sort(),previous:[],comparison:'jämförelseunderlag saknas för intervallet',label:P.periodSet.summary(periodKind,chosen),range:P.periodSet.summary(periodKind,chosen),multi:true};};
   const empty = () => ({ contribution:0, cost:0, net:0, agreements:0, volume:0, registrations:0 });
   const fromArray = values => ({ contribution:values[0], cost:values[1], net:values[0]-values[1], agreements:values[2], volume:values[3], registrations:values[4] });
   const sum = items => items.reduce((total, item) => { Object.keys(total).forEach(key => total[key] += item[key] || 0); return total; }, empty());

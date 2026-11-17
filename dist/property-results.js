@@ -23,7 +23,7 @@
     return {
       mode: ['year','month'].includes(input.mode) ? input.mode : 'year',
       month: months().includes(input.month) ? input.month : '2026-09',
-      values:Array.isArray(input.values)?input.values.filter(m=>months().includes(m)):[]
+      values:(()=>{const v=[...new Set(Array.isArray(input.values)?input.values.filter(m=>months().includes(m)):[])].sort();return v.length?months().filter(m=>m>=v[0]&&m<=v.at(-1)):[];})()
     };
   }
   function selection(id) {
@@ -41,7 +41,7 @@
     const selected = selection(id);
     const current = selected.mode === 'month' ? (selected.values.length?selected.values:[selected.month]) : [...months()];
     const monthIndex = months().indexOf(selected.month);
-    if(selected.mode==='month'&&current.length>1)return {current,label:current.map(m=>P.periodSet.label('month',m)).join(', '),range:'Endast valda månader · underlag till 7 oktober 2026'};
+    if(selected.mode==='month'&&current.length>1)return {current,label:P.periodSet.summary('month',current),range:'Sammanhängande period · underlag till 7 oktober 2026'};
     const label = selected.mode === 'month' ? `${monthNames[monthIndex]} 2026` : '2026 hittills';
     const range = selected.mode === 'year' ? '1 januari–7 oktober 2026' : selected.month === '2026-10' ? '1–7 oktober 2026' : `1–${new Date(Date.UTC(2026, monthIndex + 1, 0)).getUTCDate()} ${monthNames[monthIndex].toLocaleLowerCase('sv-SE')} 2026`;
     return {current, label, range};

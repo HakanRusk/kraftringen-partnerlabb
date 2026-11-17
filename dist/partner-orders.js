@@ -32,7 +32,7 @@
   const monthSelection=f=>f.months?.length?[...new Set(f.months)].sort():[f.month];
   const monthLabel=(year,selected)=>selected.map(m=>months[Number(m)-1]+' '+year).join(', ');
 
-  const orderPeriodLabel=f=>f.multi?.[f.mode]?.length?f.multi[f.mode].map(v=>P.periodSet.label(f.mode,v)).join(', '):f.mode==='day'?(f.day||today()):f.mode==='month'?monthLabel(f.year,monthSelection(f)):f.mode==='week'?f.year+' · vecka '+f.week:f.year;
+  const orderPeriodLabel=f=>f.multi?.[f.mode]?.length?P.periodSet.summary(f.mode,f.multi[f.mode]):f.mode==='day'?(f.day||today()):f.mode==='month'?monthLabel(f.year,monthSelection(f)):f.mode==='week'?f.year+' · vecka '+f.week:f.year;
   function matchPeriod(row, f) { const d=(f.status==='sent-history'?row.sentAt?.slice(0,10):null)||row.registeredAt || row.createdAt; if(!dateOK(d))return false; if(f.multi?.[f.mode]?.length)return P.periodSet.matches(d,f.mode,f.multi[f.mode]); if(f.mode==='day')return d===(f.day||today()); if(f.mode==='week')return isoWeek(d)===`${f.year}-W${f.week}`; return d.startsWith(f.year)&&(f.mode!=='month'||monthSelection(f).includes(d.slice(5,7))); }
   function extraExamples() {
     const customers=[],orders=[];
@@ -243,7 +243,7 @@
   function periodControls() {
     const f=filter(),value=f.mode==='year'?f.year:f.mode==='week'?f.year+'-W'+f.week:f.mode==='month'?f.year+'-'+f.month:(f.day||today());
     const values=f.multi?.[f.mode]||(f.mode==='month'?monthSelection(f).map(m=>f.year+'-'+m):[value]);
-    return `<section class="ow-period card" aria-label="Periodfilter"><label>Period<select data-ow-filter="mode">${options([['day','Dag'],['week','Vecka'],['month','Månad'],['year','År']],f.mode)}</select></label>${P.periodSet.render('orders',f.mode,values,v=>{(f.multi||={})[f.mode]=v;f.year=v[0].slice(0,4);if(f.mode==='month'){f.month=v[0].slice(5);f.months=v.map(m=>m.slice(5));}if(f.mode==='week')f.week=v[0].slice(6);if(f.mode==='day')f.day=v[0];})}<p>Gemensam period för hela sidan. Tecknade avtal följer bindandedatum; orderflöde och lista följer <strong>registreringsdatum</strong>. Utkast och Skickad följer skapandedatum; Skickade ordrar följer utskicksdatum.</p></section>`;
+    return `<section class="ow-period card" aria-label="Periodfilter"><label>Period<select data-ow-filter="mode">${options([['day','Datum'],['week','Vecka'],['month','Månad'],['year','År']],f.mode)}</select></label>${P.periodSet.render('orders',f.mode,values,v=>{(f.multi||={})[f.mode]=v;f.year=v[0].slice(0,4);if(f.mode==='month'){f.month=v[0].slice(5);f.months=v.map(m=>m.slice(5));}if(f.mode==='week')f.week=v[0].slice(6);if(f.mode==='day')f.day=v[0];})}<p>Gemensam period för hela sidan. Tecknade avtal följer bindandedatum; orderflöde och lista följer <strong>registreringsdatum</strong>. Utkast och Skickad följer skapandedatum; Skickade ordrar följer utskicksdatum.</p></section>`;
   }
 
   let flowView = 'waterfall';

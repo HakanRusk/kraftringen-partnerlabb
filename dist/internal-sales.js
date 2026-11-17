@@ -22,9 +22,9 @@
   const monthName=m=>new Intl.DateTimeFormat('sv-SE',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(m+'-01T12:00:00Z'));
   const selectedMonths=()=>f.selectedMonths.length?[...new Set(f.selectedMonths)].sort():[f.value];
   const periodValues=()=>f.mode==='month'?selectedMonths():(f.multi?.[f.mode]?.length?f.multi[f.mode]:[f.value]);
-  const periodLabel=()=>periodValues().map(v=>P.periodSet.label(f.mode,v)).join(', ');
+  const periodLabel=()=>P.periodSet.summary(f.mode,periodValues());
   const inPeriod=d=>valid(d)&&P.periodSet.matches(d,f.mode,periodValues());
-  function periodControls(){return `<label>Period<select data-is-filter="mode">${options([['day','Dag'],['week','Vecka'],['month','Månad'],['year','År']],f.mode)}</select></label>`+P.periodSet.render('internal',f.mode,periodValues(),v=>{if(f.mode==='month')f.selectedMonths=v;else (f.multi||={})[f.mode]=v;f.value=v[0];orderSlice=null;});}
+  function periodControls(){return `<label>Period<select data-is-filter="mode">${options([['day','Datum'],['week','Vecka'],['month','Månad'],['year','År']],f.mode)}</select></label>`+P.periodSet.render('internal',f.mode,periodValues(),v=>{if(f.mode==='month')f.selectedMonths=v;else (f.multi||={})[f.mode]=v;f.value=v[0];orderSlice=null;});}
 
   const matches=r=>(f.partner==='all'||r.partner===f.partner)&&(f.channel==='all'||channel(r)===f.channel)&&(f.category==='all'||r.category===f.category);
   const filtered=()=>all().filter(matches);
