@@ -112,19 +112,18 @@ test('date series uses first binding event, not approval/registration, and count
 test('partner month selections preserve scope and exclude gaps in both result and order periods',()=>{
  sign('demo-vast-seller-1');P.go('overview');const before=JSON.stringify(P.state.orderWorkspace);
  const change=(q,value)=>{const el=doc.querySelector(q);el.value=value;el.dispatchEvent(new w.Event('change',{bubbles:true}));};
- for(const kind of ['ow']){
-  if(kind==='ow')change('[data-ow-filter="year"]','2026');else change('[data-pu-year]','2026');
-  for(const m of ['07','09'])if(!doc.querySelector(`[data-${kind}-month="${m}"]`).checked)doc.querySelector(`[data-${kind}-month="${m}"]`).click();
-  for(const el of [...doc.querySelectorAll(`[data-${kind}-month]:checked`)])if(!['07','09'].includes(el.getAttribute(`data-${kind}-month`)))doc.querySelector(`[data-${kind}-month="${el.getAttribute(`data-${kind}-month`)}"]`).click();
- }
+ change('[data-month-year="orders"]','2026');
+ for(const m of ['2026-07','2026-09'])if(!doc.querySelector(`[data-month-check="orders"][value="${m}"]`).checked)doc.querySelector(`[data-month-check="orders"][value="${m}"]`).click();
+ for(const el of [...doc.querySelectorAll('[data-month-check="orders"]:checked')])if(!['2026-07','2026-09'].includes(el.value))doc.querySelector(`[data-month-check="orders"][value="${el.value}"]`).click();
+
  const own=O.orders(),expected=own.filter(r=>['2026-07','2026-09'].includes((r.registeredAt||r.createdAt).slice(0,7)));
  assert.equal(doc.querySelectorAll('[data-ow-row]').length,expected.length);
  const bound=own.filter(r=>['2026-07','2026-09'].includes(A.bindingDate(r).slice(0,7))).length;
  assert.equal(Number(doc.querySelector('.pu-total').textContent),bound);
- assert.match(doc.querySelector('.pm-period').textContent,/Juli 2026, September 2026/);
- assert.match(doc.querySelector('.pu-results').textContent,/Juli 2026, September 2026/);
+ assert.match(doc.querySelector('.pm-period').textContent,/juli 2026, september 2026/);
+ assert.match(doc.querySelector('.pu-results').textContent,/juli 2026, september 2026/);
  assert.equal(A.salesStats([{confirmedAt:'2026-08-10',status:'confirmed'}],{mode:'month',day:'2026-07-01',months:['07','09']}).count,0);
- for(const kind of ['ow']){doc.querySelector(`[data-${kind}-month="07"]`).click();doc.querySelector(`[data-${kind}-month="09"]`).click();assert.equal(doc.querySelector(`[data-${kind}-month="09"]`).checked,true);}
+ doc.querySelector('[data-month-check="orders"][value="2026-07"]').click();doc.querySelector('[data-month-check="orders"][value="2026-09"]').click();assert.equal(doc.querySelector('[data-month-check="orders"][value="2026-09"]').checked,true);
  assert.equal(JSON.stringify(P.state.orderWorkspace),before);
 });
 test('ordinary Kraftringen account handles orders but cannot administer partners/users',()=>{

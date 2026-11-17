@@ -1107,3 +1107,17 @@ Ny rollstyrd navigation, samlade fastighetstjänster och partnerspecifik
 tjänsteförhandsvisning. Samma lägenhetshändelse öppnas från bestånd och
 ärendelista, med egen avtals- och utskickshistorik. Äldre serviceunderlag
 öppnas i sin befintliga handläggning. Inga ändringar av lagrade ordervärden.
+
+
+## 17 november 2026 · Gemensam månadsväljare
+Håkans godkända ändring: kryssrutor, kompakt sammanfattning, snabbval och val
+över årsskiften i provision, orderresultat och interna rapporter. Visa år
+ändrar enbart synliga kryssrutor; snabbval ersätter urvalet. Begränsade
+rapportunderlag behåller sina tillåtna månader och delperiodmarkeringar.
+
+Utgångspunkt GitHub-main 3ec375af674c8b7715510741c6ad75776f24355b. Öppna
+PR:er kontrollerade och lämnade orörda, inklusive Daniels #64. Lokal kontroll:
+26 Node/DOM-sviter gröna, produktionsbygge godkänt, desktopbrowser verifierar
+december 2026 + januari 2027. Regressioner omfattar luckor, årsskifte,
+minimiurval, fokus, snabbval, rapportvärden och oförändrad lagrad data.
+Mobilkontroll körs i PR:s befintliga browsersvit före integration/publicering.
