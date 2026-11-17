@@ -56,7 +56,7 @@ async def main():
                     await page.locator('#partner').select_option('vast')
                     await page.locator('.ow-tabs').get_by_role('button',name='Provision',exact=True).click()
                     # Small explanatory metric text needs normal-text contrast on white.
-                    ratios = await page.locator('.ow-metrics > .card:not(.oc-total) small').evaluate_all('''els=>els.map(el=>{
+                    ratios = await page.locator('.oc-period-note, .oc-monthly-table td small').evaluate_all('''els=>els.map(el=>{
                       const values=getComputedStyle(el).color.match(/[\\d.]+/g).slice(0,3).map(Number).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
                       return 1.05/(values.reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0)+.05);
                     })''')
