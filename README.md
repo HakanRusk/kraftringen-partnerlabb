@@ -337,3 +337,11 @@ B2C-ljudbiblioteket fungerar även på academy-library; dess partner-/demoavgrä
 och lokala IndexedDB bevaras. Skrivna bra/dåliga dialogexempel är fiktiva.
 Nya kursillustrationer är animerade SVG-diagram, inte nyproducerade MP4-filmer.
 Paus och reducerad rörelse respekteras. Godkännanden och orderkrav ändras inte.
+
+### Fastighetsbestånd
+Välj testkontot Lo Förvaltare och öppna Fastighetsbestånd. På lägenheten kan
+förvaltaren föranmäla inflyttning, utflyttning och visningsel. Inflyttning med
+bekräftad testfullmakt skapar två lokala avtalsreferenser och ett oföränderligt
+bekräftelseunderlag. Ett testmejl adresseras till labbets fasta testmottagare.
+Leverantörens kvittens visas i historiken. Ingen nätägare eller Gazelle ansluts.
+Kraftringens administratör styr funktionen per partner under Samarbete & produkter.

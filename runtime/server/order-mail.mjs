@@ -22,6 +22,21 @@ export async function sendOrderMail(request, env, transport=fetch, now=Date.now(
   try {const text=await request.text();if(text.length>24000)return json({error:'För stort underlag.'},413);input=JSON.parse(text);}catch{return json({error:'Ogiltigt underlag.'},400);}
   const created=Date.parse(input.createdAt), age=now-created;
   if(!/^[a-zA-Z0-9-]{10,100}$/.test(input.attemptId||'')||!Number.isFinite(created)||age< -60000||age>22*3600000)return json({error:'Utskicksförsöket är för gammalt eller ogiltigt. Kontrollera Resend innan något nytt utskick görs.'},409);
+  if(input.kind === 'estate-confirmation') {
+    const lines = input.lines;
+    if (!Array.isArray(lines) || lines.length !== 5 || lines.some(line => typeof line !== 'string' || !line || line.length > 1400)) return json({error:'Orderbekräftelsen är ofullständig.'},400);
+    if (!env.RESEND_API_KEY) return json({error:'Mejltjänsten saknar servernyckel.'},503);
+    const content = ['TEST · Fiktiv inflyttning', ...lines].join('\r\n\r\n');
+    try {
+      const response = await transport('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+env.RESEND_API_KEY,'Content-Type':'application/json','Idempotency-Key':'estate/'+input.attemptId},body:JSON.stringify({
+        from:'Partnerlabb test <onboarding@resend.dev>',to:[RECIPIENT],subject:'[Partnerlabb TEST] Orderbekräftelse för inflyttning',
+        text:content,attachments:[{filename:'orderbekraftelse.txt',content:base64(content)}]
+      }),signal:AbortSignal.timeout(20000)});
+      const result = await response.json();
+      if(response.ok && typeof result.id==='string') return json({accepted:true,providerMessageId:result.id,recipient:RECIPIENT});
+    } catch {}
+    return json({error:'Mejltjänsten kunde inte bekräfta utskicket. Försök igen med samma order.'},502);
+  }
   const raw=input.order;
   if(!raw || !/^[a-zA-Z0-9_-]{1,100}$/.test(raw.id||'')||!Array.isArray(raw.facilities)||raw.facilities.length<1||raw.facilities.length>50)return json({error:'Order-ID och 1–50 anläggningar krävs.'},400);
   const order={id:raw.id,customer:field(raw.customer),partner:field(raw.partner),seller:field(raw.seller),product:field(raw.product),price:field(raw.price,1500),startDate:field(raw.startDate),term:field(raw.term),poa:raw.poa===true,
