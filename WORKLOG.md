@@ -1101,3 +1101,9 @@ Inflyttning sparas före testutskick med fast mottagare och stabil utskicksnycke
 Rolltest omfattar sparfel, avtalsparet, testutskick, kvittens och återläsning.
 Serverprovet använder simulerad mejltjänst. Ingen extern kundkommunikation
 eller nät-/elhandelsintegration testas.
+
+## 17 november 2026 · Gemensam partnermeny
+Ny rollstyrd navigation, samlade fastighetstjänster och partnerspecifik
+tjänsteförhandsvisning. Samma lägenhetshändelse öppnas från bestånd och
+ärendelista, med egen avtals- och utskickshistorik. Äldre serviceunderlag
+öppnas i sin befintliga handläggning. Inga ändringar av lagrade ordervärden.

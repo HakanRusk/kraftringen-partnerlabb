@@ -74,10 +74,12 @@
     if(['demo-login','test-users','portal-contact'].includes(page))return true;
     if(!current())return false;
     if(manageCustomerUsers()&&page==='user-admin')return true;
-    if(page==='estate-portfolio')return current().role==='manager'&&P.estatePortfolio?.enabled(current().partner);
+    if(['estate-portfolio','estate-home','estate-cases','estate-register'].includes(page))return (current().role==='manager' || internal() && P.partnerHub?.active()) && P.estatePortfolio?.enabled(P.partner);
+    if(page.startsWith('partner-hub-'))return !isCustomer() && (!internal() || P.partnerHub?.active());
     if(isCustomer())return ['customer-home','customer-contracts','customer-cases','customer-catalog'].includes(page);
     if(['user-admin','product-access','settings'].includes(page))return admin();
     if(internal())return true;
+    if(page==='employee-overview')return P.getPartner(current().partner)?.type==='employee';
     if(partnerPages.has(page))return true;
     if(current().role==='manager'&&['order-commission','crm','crm-customers','crm-pipeline','crm-activities'].includes(page))return true;
     // Non-sales partners retain their own existing workflows, never other partners' views.
