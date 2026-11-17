@@ -8,6 +8,7 @@
     {id:`demo-${partner}-manager`,name:partner==='vast'?'Alex Säljledare':'Sam Säljledare',email:`ledare@${partner}.example`,role:'manager',partner,active:true},
     ...['1','2','3'].map((n,i)=>({id:`demo-${partner}-seller-${n}`,name:['Charlie Exempel','Dani Exempel','Elli Exempel'][i],email:`saljare${n}@${partner}.example`,role:'seller',partner,active:true}))])];
   const customerSeeds=[
+    {id:"demo-estate-manager",name:"Lo Förvaltare",email:"lo@fastighet.example",role:"manager",partner:"estate1",active:true},
     {id:'demo-customer',name:'Alex Kund',email:'alex@exempelkommun.example',role:'customer',partner:'',department:'Utbildning',active:true},
     {id:'demo-customer-manager',name:'Sam Förvaltning',email:'sam@exempelkommun.example',role:'customer_manager',partner:'',department:'Utbildning',active:true},
     {id:'demo-customer-admin',name:'Robin Kundadmin',email:'robin@exempelkommun.example',role:'customer_admin',partner:'',department:'Alla förvaltningar',active:true}
@@ -73,6 +74,7 @@
     if(['demo-login','test-users','portal-contact'].includes(page))return true;
     if(!current())return false;
     if(manageCustomerUsers()&&page==='user-admin')return true;
+    if(page==='estate-portfolio')return current().role==='manager'&&P.estatePortfolio?.enabled(current().partner);
     if(isCustomer())return ['customer-home','customer-contracts','customer-cases','customer-catalog'].includes(page);
     if(['user-admin','product-access','settings'].includes(page))return admin();
     if(internal())return true;
@@ -103,6 +105,7 @@
     let button=document.querySelector('#pu-account');if(!button){button=document.createElement('button');button.id='pu-account';button.className='btn btn-secondary';document.querySelector('.top-actions').prepend(button);}
     button.textContent=u?'Logga ut':'Logga in';button.onclick=signOut;
     const banner=document.querySelector('.demo-badge');if(banner)banner.textContent='PROTOTYP · LOKAL DEMOINLOGGNING';
+    if(allowed('estate-portfolio') && !internal()){const n=document.createElement('button');n.className='nav-button';n.dataset.go='estate-portfolio';n.setAttribute('aria-current',P.page==='estate-portfolio'?'page':'false');n.innerHTML=P.icon('home')+'<span>Fastighetsbestånd</span>';document.querySelector('#nav').prepend(n);if(P.page==='estate-portfolio')document.querySelector('#current-page').textContent='Fastighetsbestånd';}
     if(admin()||manageCustomerUsers()){const n=document.createElement('button');n.className='nav-button'+(P.page==='user-admin'?' active':'');n.dataset.go='user-admin';n.setAttribute('aria-current',P.page==='user-admin'?'page':'false');n.innerHTML=P.icon('users')+'<span>Användare & roller</span>';document.querySelector('#nav').append(n);}
     if(isCustomer()){
       document.querySelector('#nav').innerHTML=[['customer-home','Min kundportal'],['customer-contracts','Avtal & tjänster'],['customer-catalog','Beställ'],['customer-cases','Mina ärenden'],...(manageCustomerUsers()?[['user-admin','Användare']]:[])].map(([id,label])=>`<button class="nav-button" data-go="${id}">${e(label)}</button>`).join('');

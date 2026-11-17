@@ -1093,3 +1093,11 @@ radens exportmånad trots annan detaljmånad samt Excel-formler och belopp.
 Desktopbrowser verifierar gemensam septemberperiod, beräkningsdialog och lyckad
 Excel-export från septemberraden. Mobil/full browsersvit ej körd lokalt.
 Publiceras efter egen PR-integration.
+
+## 17 november 2026 · Fastighetsbestånd och orderbekräftelse
+Återupptaget lokalt arbete från version 33. Ny demoförvaltare, partnerstyrd
+modul, datumstyrda händelser, fullmaktsreferens och två lokala avtals-ID:n.
+Inflyttning sparas före testutskick med fast mottagare och stabil utskicksnyckel.
+Rolltest omfattar sparfel, avtalsparet, testutskick, kvittens och återläsning.
+Serverprovet använder simulerad mejltjänst. Ingen extern kundkommunikation
+eller nät-/elhandelsintegration testas.

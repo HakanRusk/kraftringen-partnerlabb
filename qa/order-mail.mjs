@@ -23,3 +23,12 @@ await sendOrderMail(request({...body,order:{...body.order,poa:false}}),{RESEND_A
 response=await sendOrderMail(request(),{RESEND_API_KEY:'fake'},async()=>{throw new Error('secret');},now);assert.equal(response.status,504);assert.doesNotMatch(await response.text(),/secret/);
 response=await sendOrderMail(request(),{RESEND_API_KEY:'fake'},async()=>Response.json({message:'secret'},{status:403}),now);assert.equal(response.status,502);assert.doesNotMatch(await response.text(),/secret/);
 console.log('PASS mail recipient lock, UTF-8 attachments, optional fullmakt, origin, expiry, missing key, provider error and uncertain response');
+const confirmation = {kind:'estate-confirmation',attemptId:body.attemptId,createdAt:body.createdAt,lines:['Hyresgäst','Fullmakt','Avtal och start','Pris','Ångerrätt']};
+const delivered = await sendOrderMail(request(confirmation),{RESEND_API_KEY:'test'},async (url,init)=>{
+  const mail = JSON.parse(init.body);
+  assert.deepEqual(mail.to,[RECIPIENT]);
+  assert.equal(init.headers['Idempotency-Key'],'estate/'+body.attemptId);
+  assert.match(mail.text,/Ångerrätt/);
+  return Response.json({id:'estate-mail'});
+},now);
+assert.equal((await delivered.json()).accepted,true);
