@@ -43,6 +43,7 @@ assert.match(d.querySelector('#orders-month-value').textContent,/dec 2026–jan 
 assert.equal(d.querySelector('[data-period-add="orders"]'),null);assert.equal(d.querySelector('.period-set-values'),null);
 const synthetic=[{status:'confirmed',confirmedAt:'2026-12-31'},{status:'confirmed',confirmedAt:'2027-01-01'},{status:'confirmed',confirmedAt:'2027-02-01'}];
 assert.equal(A.salesStats(synthetic,O.reportPeriod()).count,2);
+assert.equal(A.salesStats(synthetic,{mode:'month',multi:{month:['2027-01']}}).points.length,31);
 assert.equal(S.matches('2027-01-31','month',O.reportPeriod().multi.month),true);
 assert.equal(S.matches('2026-11-30','month',O.reportPeriod().multi.month),false);
 d.activeElement.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
