@@ -345,3 +345,10 @@ bekräftad testfullmakt skapar två lokala avtalsreferenser och ett oföränderl
 bekräftelseunderlag. Ett testmejl adresseras till labbets fasta testmottagare.
 Leverantörens kvittens visas i historiken. Ingen nätägare eller Gazelle ansluts.
 Kraftringens administratör styr funktionen per partner under Samarbete & produkter.
+
+Partnerkonton delar fem menyingångar. Tjänster visar partnerns tilldelade
+säljinriktningar och aktiverade fastighetsfunktion. Under Fastigheter finns
+Översikt, Fastighetsbestånd och Ärenden. Inflyttning från startsidan och
+lägenheten använder samma registrering. Excelimportens serviceunderlag har
+kvar sin tidigare handläggning. Under Partners → Tjänster kan Kraftringen
+förhandsvisa den valda partnerns arbetsyta.

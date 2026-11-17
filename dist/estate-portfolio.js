@@ -100,21 +100,79 @@
     return '<p>Utskicket saknar kvittens. <button type="button" class="text-button" data-estate-retry="'+e(row.id)+'">Försök skicka testmejlet igen</button></p>';
   }
   let selection = null;
+  const pending = () => units.flatMap(unit => events(unit).map(row => ({unit,row})));
+  const rentalCases = () => P.getPartner()?.type==='property' ? P.moveinService?.rows(P.partner) || [] : [];
+  const sectionTabs = () => '<nav class="hub-tabs" aria-label="Fastighetstjänsten">'+[['estate-home','Översikt'],['estate-portfolio','Fastighetsbestånd'],['estate-cases','Ärenden']].map(([id,label]) =>
+    '<button type="button" data-go="'+id+'" aria-current="'+(P.page===id?'page':'false')+'">'+label+'</button>').join('')+'</nav>';
+  function shortcuts() {
+    return '<div class="hub-actions"><button class="btn btn-primary" data-go="estate-register">Registrera inflyttning</button>'+
+      (P.getPartner()?.type==='property'?'<button class="btn btn-secondary" data-go="property-import">Importera inflyttningar</button>':'')+'</div>';
+  }
+  function estateHome() {
+    const upcoming=pending().filter(({row})=>row.date>today()).sort((a,b)=>a.row.date.localeCompare(b.row.date));
+    const follow=pending().filter(({row})=>row.confirmation && row.confirmation.delivery!=='accepted').length;
+    const supplement=rentalCases().filter(row=>row.handoverStatus==='needs_info').length;
+    return '<div class="commercial-page"><h1>Fastigheter</h1>'+sectionTabs()+shortcuts()+
+      '<section class="card hub-panel"><h2>Att följa upp</h2><p>'+follow+' orderbekräftelser utan kvittens · '+supplement+' underlag att komplettera</p><button class="text-button" data-go="estate-cases">Visa ärenden</button></section>'+
+      '<section class="card hub-panel"><h2>Kommande förändringar</h2>'+ (upcoming.map(({unit,row})=>'<p><button class="text-button" data-estate-jump="'+unit.id+'">'+address(unit)+'</button> · '+labels[row.type]+' · '+e(row.date)+'</p>').join('')||'<p>Inga planerade förändringar.</p>')+
+      '<p>Visningsel idag: '+units.filter(u=>status(u,today()).state==='viewing').map(address).join(', ')+'</p></section>'+
+      (P.getPartner()?.type==='property'?'<details class="card hub-panel"><summary>Inställningar för fastighetstjänsten</summary><p>Grundval för nya inflyttningar: '+e(P.propertyDefaults.get())+'</p><button class="text-button" data-go="property-default">Ändra avtalsval</button></details>':'')+'</div>';
+  }
+  function cases() {
+    const changes=pending().sort((a,b)=>b.row.created.localeCompare(a.row.created)).map(({unit,row})=>{
+      const waiting=row.confirmation && row.confirmation.delivery!=='accepted';
+      return '<li data-case-status="'+(waiting?'waiting':'registered')+'"><button class="text-button" data-estate-jump="'+unit.id+'" data-event="'+e(row.id)+'">'+address(unit)+' · '+labels[row.type]+'</button><span>'+e(row.date)+' · '+(waiting?'Väntar på bekräftelse':'Registrerad')+'</span></li>';
+    });
+    const old=rentalCases().map(row=>'<li data-case-status="'+(row.handoverStatus==='needs_info'?'missing':'service')+'"><button class="text-button" data-service-case="'+e(row.id)+'">'+e(row.address)+' · '+e(row.name)+'</button><span>Serviceunderlag · '+e(P.moveinService.statusLabel(row))+'</span></li>');
+    return '<div class="commercial-page"><h1>Ärenden</h1>'+sectionTabs()+'<section class="card hub-panel"><label class="field">Visa ärenden<select data-case-filter><option value="">Alla</option><option value="waiting">Väntar på bekräftelse</option><option value="missing">Behöver kompletteras</option><option value="service">Övriga serviceunderlag</option><option value="registered">Registrerade förändringar</option></select></label><ul class="hub-list">'+[...changes,...old].join('')+'</ul><p data-case-empty '+(changes.length+old.length?'hidden':'')+'>Inga ärenden i urvalet.</p></section></div>';
+  }
+  function chooseUnit() {
+    const available=units.filter(u=>!['tenant','contract'].includes(status(u).state));
+    return '<div class="commercial-page"><h1>Registrera inflyttning</h1>'+sectionTabs()+'<section class="card hub-panel"><h2>Välj lägenhet</h2>'+ (available.map(u=>'<p><button class="text-button" data-estate-jump="'+u.id+'">'+address(u)+'</button></p>').join('')||'<p>Ingen ledig lägenhet i beståndet.</p>')+'</section></div>';
+  }
+  function bindLinks() {
+    document.querySelectorAll('[data-estate-jump]').forEach(b=>b.onclick=()=>{
+      selection={partner:P.partner,unit:b.dataset.estateJump};
+      P.go('estate-portfolio');
+      if(b.dataset.event) {
+        const entry=document.getElementById('estate-event-'+b.dataset.event);
+        entry?.querySelector('details')?.setAttribute('open','');
+        entry?.focus();
+      }
+    });
+    document.querySelectorAll('[data-service-case]').forEach(b=>b.onclick=()=>P.moveinService.open(b.dataset.serviceCase));
+    const select=document.querySelector('[data-case-filter]');
+    if(select)select.onchange=()=>{
+      const rows=[...document.querySelectorAll('[data-case-status]')];
+      rows.forEach(row=>row.hidden=!!select.value && row.dataset.caseStatus!==select.value);
+      document.querySelector('[data-case-empty]').hidden=rows.some(row=>!row.hidden);
+    };
+  }
+  for (const [page,render] of [['estate-home',estateHome],['estate-cases',cases],['estate-register',chooseUnit]]) {
+    P.register(page,{render:()=>canUse()?render():'',bind:bindLinks});
+  }
   function overview() {
-    return '<div class="commercial-page"><h1>Fastighetsbestånd</h1><p>'+e(P.getPartner().name)+' · Fiktiva hyresobjekt</p>'+buildings.map((b,i)=>'<section class="card"><h2>'+b+'</h2><div class="table-wrap"><table><thead><tr><th>Lägenhet</th><th>Elnät idag</th><th>Elhandel idag</th><th>Nästa planerade ändring</th></tr></thead><tbody>'+units.filter(u=>u.building===i).map(u=>{
+    return '<div class="commercial-page"><h1>Fastighetsbestånd</h1>'+sectionTabs()+'<label class="field">Sök adress eller lägenhetsnummer<input type="search" data-unit-search></label><p data-unit-empty hidden>Ingen lägenhet matchar sökningen.</p><p>'+e(P.getPartner().name)+' · Fiktiva hyresobjekt</p>'+buildings.map((b,i)=>'<section class="card"><h2>'+b+'</h2><div class="table-wrap"><table><thead><tr><th>Lägenhet</th><th>Elnät idag</th><th>Elhandel idag</th><th>Nästa planerade ändring</th></tr></thead><tbody>'+units.filter(u=>u.building===i).map(u=>{
       const [network,trade]=descriptions(status(u,today())), next=events(u).find(v=>v.date>today());
-      return '<tr><td><button class="text-button" data-estate-unit="'+u.id+'">'+u.number+'</button></td><td>'+e(network)+'</td><td>'+e(trade)+'</td><td>'+(next?({movein:'Inkoppling · inflyttning',moveout:'Urkoppling · utflyttning',viewing:'Inkoppling · visningsel'}[next.type])+' · '+e(next.date):'—')+'</td></tr>';
+      return '<tr data-unit-address="'+address(u)+'"><td><button class="text-button" data-estate-unit="'+u.id+'">'+u.number+'</button></td><td>'+e(network)+'</td><td>'+e(trade)+'</td><td>'+(next?({movein:'Inkoppling · inflyttning',moveout:'Urkoppling · utflyttning',viewing:'Inkoppling · visningsel'}[next.type])+' · '+e(next.date):'—')+'</td></tr>';
     }).join('')+'</tbody></table></div></section>').join('')+'</div>';
   }
   function detail(u) {
     const [network,trade]=descriptions(status(u,today()));
     const history=events(u);
-    return '<div class="commercial-page"><button class="text-button" data-estate-back>← Fastighetsbestånd</button><h1>'+address(u)+'</h1><section class="card"><h2>Avtal idag</h2><p>Elnät: '+e(network)+'</p><p>Elhandel: '+e(trade)+'</p></section><section class="card"><h2>Registrera ändring</h2><form id="estate-change"><label class="field">Åtgärd<select name="type">'+Object.entries(labels).map(([key,label])=>'<option value="'+key+'">'+label+'</option>').join('')+'</select></label><label class="field">Anmält start- eller slutdatum<input required type="date" name="date" min="'+today()+'"></label><fieldset data-in><legend>Hyresgäst och fullmakt</legend><label class="field">Hyresgästens namn<input required name="name" maxlength="100"></label><label class="field">Hyresgästens testadress<input required type="email" name="email" placeholder="hyresgast@kund.example"></label><label class="field">Elhandelsavtal<select name="product">'+P.propertyDefaults.choices.map(v=>'<option '+(v===P.propertyDefaults.get()?'selected':'')+'>'+e(v)+'</option>').join('')+'</select></label><label class="field">Pris och avtalsvillkor enligt underlaget<input name="terms" maxlength="400" placeholder="Ange prisreferens eller exempelvillkor"></label><p>Nätägare: '+grid+'</p><label class="field">Fullmaktsreferens<input required name="authority" maxlength="120" placeholder="Exempelvis hyresavtalets referens"></label><label><input required type="checkbox" name="valid"> Jag har kontrollerat att testfullmakten omfattar både elhandel och elnät.</label></fieldset><fieldset data-out><legend>Efter utflyttning</legend><label><input type="checkbox" name="viewing"> Aktivera visningsel på fastighetsägarens bekostnad</label></fieldset><p class="ow-notice">Två lokala demoavtal skapas vid inflyttning. Orderbekräftelsen mejlas till labbets fasta testmottagare.</p><button class="btn btn-primary" type="submit">Registrera ändring</button><p role="alert"></p></form></section><section class="card"><h2>Planerade ändringar och historik</h2>'+([...history].reverse().map(v=>'<article><h3>'+labels[v.type]+' · '+e(v.date)+'</h3><p>'+(v.date>today()?'Planerad':'Gäller från angivet datum')+' · registrerad av '+e(v.actor)+(v.viewing?' · med visningsel':'')+'</p>'+(v.confirmation?'<p>Elhandel: '+e(v.trade.product)+' · '+e(v.trade.id)+'<br>Elnät: '+e(v.network.provider)+' · '+e(v.network.id)+'</p><details><summary>Visa hyresgästens orderbekräftelse</summary><p>Till '+e(v.confirmation.to)+' · '+e(new Date(v.confirmation.at).toLocaleString("sv-SE"))+'</p>'+v.confirmation.lines.map(s=>'<p>'+e(s)+'</p>').join('')+'</details>'+delivery(v):'')+'</article>').join('')||'<p>Inga ändringar registrerade.</p>')+'</section></div>';
+    return '<div class="commercial-page"><button class="text-button" data-estate-back>← Fastighetsbestånd</button><h1>'+address(u)+'</h1>'+sectionTabs()+'<section class="card"><h2>Avtal idag</h2><p>Elnät: '+e(network)+'</p><p>Elhandel: '+e(trade)+'</p></section><section class="card"><h2>Registrera ändring</h2><form id="estate-change"><label class="field">Åtgärd<select name="type">'+Object.entries(labels).map(([key,label])=>'<option value="'+key+'">'+label+'</option>').join('')+'</select></label><label class="field">Anmält start- eller slutdatum<input required type="date" name="date" min="'+today()+'"></label><fieldset data-in><legend>Hyresgäst och fullmakt</legend><label class="field">Hyresgästens namn<input required name="name" maxlength="100"></label><label class="field">Hyresgästens testadress<input required type="email" name="email" placeholder="hyresgast@kund.example"></label><label class="field">Elhandelsavtal<select name="product">'+P.propertyDefaults.choices.map(v=>'<option '+(v===P.propertyDefaults.get()?'selected':'')+'>'+e(v)+'</option>').join('')+'</select></label><label class="field">Pris och avtalsvillkor enligt underlaget<input name="terms" maxlength="400" placeholder="Ange prisreferens eller exempelvillkor"></label><p>Nätägare: '+grid+'</p><label class="field">Fullmaktsreferens<input required name="authority" maxlength="120" placeholder="Exempelvis hyresavtalets referens"></label><label><input required type="checkbox" name="valid"> Jag har kontrollerat att testfullmakten omfattar både elhandel och elnät.</label></fieldset><fieldset data-out><legend>Efter utflyttning</legend><label><input type="checkbox" name="viewing"> Aktivera visningsel på fastighetsägarens bekostnad</label></fieldset><p class="ow-notice">Två lokala demoavtal skapas vid inflyttning. Orderbekräftelsen mejlas till labbets fasta testmottagare.</p><button class="btn btn-primary" type="submit">Registrera ändring</button><p role="alert"></p></form></section><section class="card"><h2>Planerade ändringar och historik</h2>'+([...history].reverse().map(v=>'<article tabindex="-1" id="estate-event-'+e(v.id)+'"><h3>'+labels[v.type]+' · '+e(v.date)+'</h3><p>'+(v.date>today()?'Planerad':'Gäller från angivet datum')+' · registrerad av '+e(v.actor)+(v.viewing?' · med visningsel':'')+'</p>'+(v.confirmation?'<p>Elhandel: '+e(v.trade.product)+' · '+e(v.trade.id)+'<br>Elnät: '+e(v.network.provider)+' · '+e(v.network.id)+'</p><details><summary>Visa hyresgästens orderbekräftelse</summary><p>Till '+e(v.confirmation.to)+' · '+e(new Date(v.confirmation.at).toLocaleString("sv-SE"))+'</p>'+v.confirmation.lines.map(s=>'<p>'+e(s)+'</p>').join('')+'</details>'+delivery(v):'')+'</article>').join('')||'<p>Inga ändringar registrerade.</p>')+'</section></div>';
   }
-  P.estatePortfolio = {enabled,toggle,setting};
+  P.estatePortfolio = {enabled,toggle,setting,shortcuts,attention:()=>pending().filter(({row})=>row.confirmation && row.confirmation.delivery!=='accepted').length+rentalCases().filter(row=>row.handoverStatus==='needs_info').length};
   P.register('estate-portfolio',{
     render:()=>{if(!canUse())return '';const u=selection?.partner===P.partner && units.find(u=>u.id===selection.unit);return u?detail(u):overview();},
     bind:()=>{
+      const search=document.querySelector('[data-unit-search]');
+      if(search)search.oninput=()=>{
+        const rows=[...document.querySelectorAll('[data-unit-address]')];
+        rows.forEach(row=>row.hidden=!row.dataset.unitAddress.toLowerCase().includes(search.value.trim().toLowerCase()));
+        document.querySelector('[data-unit-empty]').hidden=rows.some(row=>!row.hidden);
+      };
+      document.querySelectorAll('[data-go="estate-portfolio"]').forEach(b=>b.addEventListener('click',()=>{selection=null;}));
       document.querySelectorAll('[data-estate-unit]').forEach(b=>b.onclick=()=>{selection={partner:P.partner,unit:b.dataset.estateUnit};P.render();});
       const back=document.querySelector('[data-estate-back]');
       if(back)back.onclick=()=>{selection=null;P.render();};
