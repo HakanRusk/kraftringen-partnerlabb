@@ -28,8 +28,8 @@ async def main():
                 await expect(page.locator('#role')).to_have_value('partner')
                 await expect(page.locator('#partner')).to_have_value('vast')
                 await expect(page.locator('.ow-head h1')).to_have_text('Ordrar & resultat')
-                await page.locator('[data-ow-filter=year]').select_option('2026')
                 await page.locator('[data-month-picker="orders"] summary').click()
+                await page.locator('[data-month-year="orders"]').select_option('2026')
                 await page.locator('[data-month-check="orders"][value="2026-10"]').check()
                 for month in await page.locator('[data-month-check="orders"]:checked').evaluate_all('(els) => els.map(el => el.value)'):
                     if month != '2026-10': await page.locator(f'[data-month-check="orders"][value="{month}"]').uncheck()
