@@ -11,6 +11,15 @@ Privat Sites-inloggning gäller; källkoden är publik.
 Verifierad publiceringsstatus och kvarstående kontroller finns i WORKLOG.md
 och GITHUB-STATUS.md. Utvecklingsagent och schemaläggning aktiveras separat.
 
+## Gemensamt månadsurval
+
+Rapporternas månadsfilter använder samma utfällbara kryssruteväljare i två
+kolumner. Visa år byter visade månader utan att ta bort tidigare val.
+Snabbval ersätter urvalet; minst en månad krävs. Sammanhängande månader visas
+kompakt, exempelvis dec 2026–jan 2027. Månader med luckor och olika år stöds.
+Rapporter med begränsat exempelunderlag tillåter endast tillgängliga månader.
+Operativa datum och bokföringsfält använder fortfarande sina datumfält.
+
 ## Nytt orderförslag att prova
 
 Välj ett fiktivt demokonto på startsidan. Fyra roller finns: Kraftringens

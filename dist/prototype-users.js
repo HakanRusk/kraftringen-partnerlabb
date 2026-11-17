@@ -160,13 +160,6 @@
     const year=date.getUTCFullYear(),first=new Date(Date.UTC(year,0,4,12));
     return year+'-W'+String(1+Math.round((date-first)/604800000)).padStart(2,'0');
   }
-  function periodPicker(f){
-    if(f.mode!=='month'){const v=f.mode==='year'?f.day.slice(0,4):f.mode==='week'?weekValue(f.day):f.day;return P.periodSet.render('sales',f.mode,f.multi?.[f.mode]||[v],values=>{(f.multi||={})[f.mode]=values;f.day=P.periodSet.range(f.mode,values[0])[0];});}
-    if(f.mode==='month')return `<label>År<input type="number" data-pu-year value="${e(f.day.slice(0,4))}" min="2000" max="2100" required></label>`+P.orderWorkspace.monthPicker(f.day.slice(0,4),f.months?.length?f.months:[f.day.slice(5,7)],'pu');
-    const settings={day:['Datum','date',f.day],week:['Vecka','week',weekValue(f.day)],month:['Månad','month',f.day.slice(0,7)],year:['År','number',f.day.slice(0,4)]};
-    const [label,type,value]=settings[f.mode];
-    return `<label>${label}<input type="${type}" data-pu-period="day" value="${e(value)}" ${f.mode==='year'?'min="1000" max="9999" step="1"':''} required></label>`;
-  }
   function periodDay(value,mode){
     if(mode==='month')return /^\d{4}-\d{2}$/.test(value)?value+'-01':'';
     if(mode==='year')return /^[1-9]\d{3}$/.test(value)?value+'-01-01':'';
