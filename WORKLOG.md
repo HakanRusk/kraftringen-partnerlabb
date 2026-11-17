@@ -1121,3 +1121,19 @@ PR:er kontrollerade och lämnade orörda, inklusive Daniels #64. Lokal kontroll:
 december 2026 + januari 2027. Regressioner omfattar luckor, årsskifte,
 minimiurval, fokus, snabbval, rapportvärden och oförändrad lagrad data.
 Mobilkontroll körs i PR:s befintliga browsersvit före integration/publicering.
+
+
+## 17 november 2026 · Ett periodfält och sammanhängande intervall
+Håkan godkänner ersättning av fria månads-/dagstillägg med ett kompakt fält.
+En period väljs med ett klick; intervall med två klick eller musdragning.
+Veckor, år, datum och äldre ekonomivyns kvartal följer samma mekanism.
+Periodens hela innehåll används i orderlistor, antal och diagram. Påbörjat
+intervall kan avbrytas; äldre sparade filter med luckor normaliseras.
+Churn för sammanhängande månader använder periodens ingående kundbas.
+
+Utgångspunkt main 73e71cda9f5b92829c1fa9a0ea9c91b1b06cdead (publicerad v36).
+Öppna PR:er kontrollerade och lämnade orörda. Node/DOM-prov täcker singelval,
+årsskifte/ISO-vecka, skottdag, mellanliggande perioder, scope, avbrott, dragning
+samt oförändrade orderdata. Browserprov omfattar 320/390/1440 px.
+Verifierat lokalt: samtliga 26 Node/DOM-sviter gröna, produktionsbygge godkänt.
+Desktopbrowser visar ett enda fält och bekräftar januari–mars med två klick.

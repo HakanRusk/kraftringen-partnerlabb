@@ -172,7 +172,7 @@
       query:String(filters.query||'').trim(),status:filters.status||'all'};
   }
   function period(filters={}) {
-    if(filters.values?.length>1){const parts=filters.values.map(value=>period({...filters,values:[],value})).filter(p=>p.valid).sort((a,b)=>a.start.localeCompare(b.start));if(parts.length){const observed=parts.filter(p=>p.observedEnd),contains=d=>parts.some(p=>p.observedEnd&&d>=p.observedStart&&d<=p.observedEnd);return {...parts[0],start:parts[0].start,end:parts.at(-1).end,observedStart:observed[0]?.observedStart,observedEnd:observed.at(-1)?.observedEnd,asOf:observed.at(-1)?.observedEnd,label:parts.map(p=>p.label).join(', '),months:[...new Set(parts.flatMap(p=>p.months))].sort(),daysObserved:parts.reduce((n,p)=>n+p.daysObserved,0),daysTotal:parts.reduce((n,p)=>n+p.daysTotal,0),partial:parts.some(p=>p.partial),multi:true,contains};}}
+    if(filters.values?.length>1){const parts=filters.values.map(value=>period({...filters,values:[],value})).filter(p=>p.valid).sort((a,b)=>a.start.localeCompare(b.start));if(parts.length){const observed=parts.filter(p=>p.observedEnd),contains=d=>parts.some(p=>p.observedEnd&&d>=p.observedStart&&d<=p.observedEnd);return {...parts[0],start:parts[0].start,end:parts.at(-1).end,observedStart:observed[0]?.observedStart,observedEnd:observed.at(-1)?.observedEnd,asOf:observed.at(-1)?.observedEnd,label:parts[0].label+' – '+parts.at(-1).label,months:[...new Set(parts.flatMap(p=>p.months))].sort(),daysObserved:parts.reduce((n,p)=>n+p.daysObserved,0),daysTotal:parts.reduce((n,p)=>n+p.daysTotal,0),partial:parts.some(p=>p.partial),multi:parts.some((p,i)=>i>0&&addDays(parts[i-1].end,1)!==p.start),contains};}}
 
     const {mode,value}=normalizeFilters(filters);
     let start=null,end=null,label='Ogiltig period';

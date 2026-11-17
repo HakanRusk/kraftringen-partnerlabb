@@ -436,7 +436,16 @@ Detta är lokal prototypkontroll, inte serververifierad behörighet eller person
 Håkan godkänner ett periodurval högst upp på Ordrar & resultat som styr
 försäljningsdiagram, orderflöde och orderlista. Datumgrunder behålls: bindandedatum
 för tecknade avtal och registreringsdatum för orderkohorten (skapandedatum för
-utkast/Skickad, utskicksdatum i utskickslistan). Flerval gäller alla periodtyper.
+utkast/Skickad, utskicksdatum i utskickslistan). Periodurvalet är sammanhängande för alla periodtyper (förtydligat 17 november 2026).
 Provision visar en rad per månad med förskott, tillägg och total. Beräkning
 och fakturaunderlag öppnas från raden. Ingen parallell fakturaunderlagstabell
 eller extra månadsstyrning. Beräkningsmodell, exportinnehåll och åtkomst bevaras.
+
+
+### Ett kompakt periodfält · 17 november 2026
+Håkan ersätter det fria flervalet med en period eller ett sammanhängande
+intervall. Ett klick väljer en period direkt. Välj intervall aktiverar start-
+och slutmarkering; dragning med mus är en valfri genväg. Månader, veckor, år
+samt datum följer samma princip och visar ett enda sammanfattande fält.
+Inga tillägg av fristående dagar, periodbrickor eller obligatoriska dubbla
+fält. Avancerad analys hör till Excel; appens urval styr listor och summeringar.

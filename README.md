@@ -11,13 +11,15 @@ Privat Sites-inloggning gäller; källkoden är publik.
 Verifierad publiceringsstatus och kvarstående kontroller finns i WORKLOG.md
 och GITHUB-STATUS.md. Utvecklingsagent och schemaläggning aktiveras separat.
 
-## Gemensamt månadsurval
+## Gemensamt periodurval
 
-Rapporternas månadsfilter använder samma utfällbara kryssruteväljare i två
-kolumner. Visa år byter visade månader utan att ta bort tidigare val.
-Snabbval ersätter urvalet; minst en månad krävs. Sammanhängande månader visas
-kompakt, exempelvis dec 2026–jan 2027. Månader med luckor och olika år stöds.
-Rapporter med begränsat exempelunderlag tillåter endast tillgängliga månader.
+Ett enda periodfält visar vald månad, vecka, år eller datumperiod. Ett klick
+väljer en period och stänger väljaren. Välj intervall låter användaren klicka
+på början och slutet; musdragning är en genväg. Alla mellanliggande perioder
+ingår, även över årsskiften. Escape avbryter ett påbörjat intervall. Samma
+princip gäller kvartal i den äldre ekonomivyn. Begränsade exempelunderlag
+behåller sina tillåtna perioder och delperiodmarkeringar. Tidigare sparade
+rapportfilter med luckor läses som ett sammanhängande intervall.
 Operativa datum och bokföringsfält använder fortfarande sina datumfält.
 
 ## Nytt orderförslag att prova
