@@ -5,7 +5,8 @@
   "scripts": {
     "test": "node qa/run.mjs",
     "test:browser": "python qa/run-browser.py",
-    "build": "node scripts/build-runtime.mjs"
+    "build": "node scripts/build-runtime.mjs",
+    "dev": "node scripts/preview.mjs"
   },
   "engines": {
     "node": ">=24"

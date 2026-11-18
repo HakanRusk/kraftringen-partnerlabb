@@ -32,15 +32,15 @@ I.filters.mode='month';I.filters.value='2026-07';I.filters.selectedMonths=[];P.g
 const change=(selector,value)=>{const el=d.querySelector(selector);el.value=value;el.dispatchEvent(new w.Event('change',{bubbles:true}));};
 d.querySelector('[data-period-interval="internal"]').click();
 d.querySelector('[data-period-cell="internal"][data-value="2026-07"]').click();
-d.querySelector('[data-period-cell="internal"][data-value="2026-09"]').click();
+d.querySelector('[data-period-cell="internal"][data-value="2026-09"]').click();d.querySelector('[data-period-apply="internal"]').click();
 const expected=I.all().filter(r=>r.status!=='draft'&&['2026-07','2026-08','2026-09'].includes(I.entryDate(r).slice(0,7)));
 assert.deepEqual(Array.from(I.cohort(),r=>r.id).sort(),Array.from(expected,r=>r.id).sort());
 assert.match(d.querySelector('.is-period-label').textContent,/Juli–september 2026/);
 assert.equal(d.querySelector('[data-period-picker="internal"]').open,false);
 d.querySelector('[data-is-slice="cohort"]').click();assert.equal(d.querySelectorAll('[data-is-order]').length,expected.length);
-P.go('overview');change('[data-period-year="internal"]','2027');d.querySelector('[data-period-cell="internal"][data-value="2027-09"]').click();
+P.go('overview');change('[data-period-year="internal"]','2027');d.querySelector('[data-period-cell="internal"][data-value="2027-09"]').click();d.querySelector('[data-period-apply="internal"]').click();
 assert.deepEqual(Array.from(I.filters.selectedMonths),['2027-09']);assert.equal(I.cohort().length,0);
-change('[data-is-filter="mode"]','year');change('[data-is-filter="mode"]','month');assert.equal(d.querySelector('[data-period-cell="internal"][data-value="2027-09"]').getAttribute('aria-pressed'),'true');
+d.querySelector('[data-period-mode="internal"][data-mode="year"]').click();d.querySelector('[data-period-cancel="internal"]').click();assert.equal(d.querySelector('[data-period-cell="internal"][data-value="2027-09"]').getAttribute('aria-pressed'),'true');
 assert.equal(JSON.stringify(P.state.orderWorkspace),stateBefore);
 A.signIn('demo-vast-seller-1');assert.equal(I.all().length,0);P.go('internal-orders');assert.equal(P.page,'overview');assert.equal(d.querySelectorAll('[data-is-stage]').length,0);assert.equal(I.commit(()=>{}),false);
 A.signIn('demo-customer');assert.equal(P.page,'customer-home');assert.equal(I.all().length,0);

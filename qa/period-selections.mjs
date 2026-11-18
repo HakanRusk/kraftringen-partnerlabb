@@ -14,10 +14,10 @@ assert.deepEqual(Array.from(S.range('week','2026-W53')),['2026-12-28','2027-01-0
 assert.equal(S.range('week','2026-W54'),null);assert.equal(S.range('day','2026-02-30'),null);
 assert.deepEqual(Array.from(S.range('month','2028-02')),['2028-02-01','2028-02-29']);
 for(const [mode,values,yes,no] of [['year',['2024','2026'],'2026-08-01','2025-08-01'],['week',['2026-W01','2026-W53'],'2027-01-01','2026-07-01'],['day',['2026-07-01','2026-07-03'],'2026-07-03','2026-07-02']]){assert.equal(S.matches(yes,mode,values),true);assert.equal(S.matches(no,mode,values),false);}
-const change=(q,value)=>{const el=d.querySelector(q);assert.ok(el,q);el.value=value;el.dispatchEvent(new w.Event('change',{bubbles:true}));};
+const change=(q,value)=>{if(q.includes('filter="mode"')){const key=q.includes('data-is')?'internal':'orders';d.querySelector(`[data-period-mode="${key}"][data-mode="${value}"]`).click();return;}const el=d.querySelector(q);assert.ok(el,q);el.value=value;el.dispatchEvent(new w.Event('change',{bubbles:true}));};
 const click=(q)=>{const el=d.querySelector(q);assert.ok(el,q);assert.equal(el.disabled,false,q);el.click();};
 const show=(key,v)=>{if(d.querySelector(`[data-period-year="${key}"]`))change(`[data-period-year="${key}"]`,v.slice(0,4));if(d.querySelector(`[data-period-month="${key}"]`))change(`[data-period-month="${key}"]`,v.slice(5,7));};
-const choose=(key,a,b)=>{show(key,a);if(b)click(`[data-period-interval="${key}"]`);click(`[data-period-cell="${key}"][data-value="${a}"]`);if(b){show(key,b);click(`[data-period-cell="${key}"][data-value="${b}"]`);}assert.equal(d.querySelector(`[data-period-picker="${key}"]`).open,false);};
+const choose=(key,a,b)=>{show(key,a);if(b)click(`[data-period-interval="${key}"]`);click(`[data-period-cell="${key}"][data-value="${a}"]`);if(b){show(key,b);click(`[data-period-cell="${key}"][data-value="${b}"]`);}click(`[data-period-apply="${key}"]`);assert.equal(d.querySelector(`[data-period-picker="${key}"]`).open,false);};
 assert.deepEqual(Array.from(S.span('month','2026-03','2026-01')),['2026-01','2026-02','2026-03']);
 assert.deepEqual(Array.from(S.span('week','2026-W53','2027-W01')),['2026-W53','2027-W01']);
 assert.deepEqual(Array.from(S.span('day','2028-02-28','2028-03-01')),['2028-02-28','2028-02-29','2028-03-01']);
@@ -46,11 +46,13 @@ assert.equal(A.salesStats(synthetic,O.reportPeriod()).points.length,31);
 click('[data-period-interval="orders"]');click('[data-period-cell="orders"][data-value="2027-03"]');
 d.activeElement.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
 assert.deepEqual(Array.from(O.reportPeriod().multi.month),['2027-01']);assert.equal(d.activeElement.tagName,'SUMMARY');
-// Mouse drag selects the entire span; canceled drag leaves the selection intact.
-P.render();const point=(type,v)=>{const ev=new w.Event(type,{bubbles:true});Object.defineProperties(ev,{button:{value:0},pointerType:{value:'mouse'}});d.querySelector(`[data-period-cell="orders"][data-value="${v}"]`).dispatchEvent(ev);};
-point('pointerdown','2027-02');point('pointerover','2027-04');point('pointerup','2027-04');
-assert.deepEqual(Array.from(O.reportPeriod().multi.month),['2027-02','2027-03','2027-04']);
-await new Promise(r=>setTimeout(r,1));point('pointerdown','2027-06');point('pointerover','2027-08');point('pointercancel','2027-08');
+// Draft selection and mode change must not affect totals until Visa; cancel restores both.
+const saved=JSON.stringify(O.reportPeriod());
+click('[data-period-mode="orders"][data-mode="year"]');
+click('[data-period-cell="orders"][data-value="2027"]');
+assert.equal(JSON.stringify(O.reportPeriod()),saved);
+click('[data-period-cancel="orders"]');assert.equal(JSON.stringify(O.reportPeriod()),saved);
+choose('orders','2027-02','2027-04');
 assert.deepEqual(Array.from(O.reportPeriod().multi.month),['2027-02','2027-03','2027-04']);
 assert.equal(JSON.stringify(P.state.orderWorkspace),before);
 // Contiguous reporting uses one opening cohort, rather than adding monthly churn bases.
@@ -61,4 +63,4 @@ assert.deepEqual(Array.from(R.query(f),r=>r.id).sort(),[...ids].sort());
 assert.equal(R.summary(f).activeCount,R.summary({mode:'month',value:'2026-09'}).activeCount);
 assert.equal((R.period?R.period(f):P.partnerSalesData.period(f)).multi,false);
 assert.equal((R.period?R.period(f):P.partnerSalesData.period(f)).daysObserved,92);
-console.log('PASS single periods, contiguous intervals, year boundary, leap day, cancel, drag, focus, scoped totals and read-only state');dom.window.close();
+console.log('PASS single periods, contiguous intervals, year boundary, leap day, cancel, draft mode, focus, scoped totals and read-only state');dom.window.close();

@@ -22,7 +22,14 @@ async def choose_period(page, key, value, end=None):
     if end:
         await show(end)
         await page.locator(f'[data-period-cell="{key}"][data-value="{end}"]').click()
+    await page.locator(f'[data-period-apply="{key}"]').click()
     assert await picker.get_attribute('open') is None
+
+async def choose_mode(page, mode):
+    picker=page.locator('[data-period-picker="orders"]')
+    if await picker.get_attribute('open') is None: await picker.locator('summary').click()
+    await page.locator(f'[data-period-mode="orders"][data-mode="{mode}"]').click()
+    await page.locator('[data-period-apply="orders"]').click()
 
 async def main():
     OUT.mkdir(parents=True, exist_ok=True)
@@ -42,28 +49,24 @@ async def main():
                 await expect(page.locator('#nav button')).to_have_count(5)
                 await expect(page.locator('#nav [data-go="order-commission"]')).to_be_hidden()
                 await page.locator('#view [data-go="order-list"]').click()
-                await page.locator('[data-ow-filter="mode"]').select_option('month')
+                await choose_mode(page, 'month')
                 await choose_period(page, 'orders', '2026-12', '2027-02')
                 await expect(page.locator('#orders-period-value')).to_have_text('December 2026 – februari 2027')
                 await page.locator('[data-period-picker="orders"] summary').click()
                 assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (width, 'open period picker')
                 await expect(page.locator('[data-period-cell="orders"]')).to_have_count(12)
-                if width == 1440:
-                    await page.locator('[data-period-year="orders"]').select_option('2026')
-                    first=await page.locator('[data-period-cell="orders"][data-value="2026-01"]').bounding_box()
-                    last=await page.locator('[data-period-cell="orders"][data-value="2026-03"]').bounding_box()
-                    await page.mouse.move(first['x']+first['width']/2, first['y']+first['height']/2)
-                    await page.mouse.down()
-                    await page.mouse.move(last['x']+last['width']/2, last['y']+last['height']/2, steps=8)
-                    await page.mouse.up()
-                    await expect(page.locator('#orders-period-value')).to_have_text('Januari–mars 2026')
+                box=await page.locator('[data-period-dialog="orders"]').bounding_box()
+                assert box['width'] >= min(width, 320)-2, (width,box)
+                assert box['x'] >= 0 and box['x']+box['width'] <= width+1
+                assert await page.locator('[data-period-cell="orders"]').evaluate_all("nodes=>nodes.every(n=>n.scrollWidth<=n.clientWidth && n.getBoundingClientRect().height<80)")
+                await page.locator('[data-period-cancel="orders"]').first.click()
                 await choose_period(page, 'orders', '2026-10')
                 await expect(page.locator('.pu-total')).to_have_text('6')
                 await choose_period(page, 'orders', '2026-10')
                 await expect(page.locator('.pu-order-owner')).to_have_count(4)
                 assert all('Charlie Exempel' in text for text in await page.locator('.pu-order-owner').all_text_contents())
                 for mode in ('day', 'week', 'month', 'year'):
-                    await page.locator('[data-ow-filter="mode"]').select_option(mode)
+                    await choose_mode(page, mode)
                     assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (width, mode)
                 await page.goto(BASE + '?workspace=syd#order-commission')
                 await expect(page.locator('.hub-page header')).to_contain_text('Face2face')
@@ -72,7 +75,7 @@ async def main():
                 await page.locator('[data-go="test-users"]').click()
                 await page.locator('[data-pu-login="demo-vast-manager"]').click()
                 await page.locator('#view [data-go="order-list"]').click()
-                await page.locator('[data-ow-filter="mode"]').select_option('month')
+                await choose_mode(page, 'month')
                 await choose_period(page, 'orders', '2026-10')
                 await page.locator('[data-pu-seller="demo-vast-seller-1"]').check()
                 await page.locator('[data-pu-seller="demo-vast-seller-2"]').check()

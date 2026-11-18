@@ -7,13 +7,15 @@ const dom = new JSDOM(fs.readFileSync('dist/index.html', 'utf8'), {
 await new Promise(resolve => dom.window.addEventListener('load', resolve, { once: true }));
 const w = dom.window;
 w.scrollTo = () => {};
+w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;};
 w.matchMedia = () => ({ matches: false, addEventListener() {} });
 for (const name of ['partner-setup', 'app', 'commercial']) w.eval(fs.readFileSync(`dist/${name}.js`, 'utf8'));
 w.document.dispatchEvent(new w.Event('DOMContentLoaded'));
 const P = w.Portal;
 P.go('internal-overview');
 const choose = (id, value) => {
-  if(id==='commercial-period'){w.document.querySelector(`[data-period-cell="commercial"][data-value="${value}"]`).click();return;}
+  if(id==='commercial-period'){w.document.querySelector(`[data-period-cell="commercial"][data-value="${value}"]`).click();w.document.querySelector('[data-period-apply="commercial"]').click();return;}
+  if(id==='commercial-period-kind'){w.document.querySelector(`[data-period-mode="commercial"][data-mode="${value}"]`).click();const target=value==='month'?'2026-10':value==='quarter'?'2026-q4':'2026';choose('commercial-period',target);return;}
   const el = w.document.getElementById(id);
   el.value = value;
   el.dispatchEvent(new w.Event('change', { bubbles: true }));

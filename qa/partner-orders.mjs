@@ -284,7 +284,7 @@ test('waterfall view switch preserves filters, cohort and stored data; empty per
  audit.doc.querySelector('[data-ow-view=steps]').click();assert.equal(audit.doc.querySelector('.ow-flow').dataset.flowView,'steps');
  assert.equal(audit.doc.querySelector('[data-ow-filter=status]').value,selected);
  audit.doc.querySelector('[data-ow-view=waterfall]').click();assert.equal(audit.doc.querySelector('.ow-flow').dataset.flowView,'waterfall');
- audit.doc.querySelector('[data-period-cell="orders"][data-value="2026-01"]').click();
+ audit.doc.querySelector('[data-period-cell="orders"][data-value="2026-01"]').click();audit.doc.querySelector('[data-period-apply="orders"]').click();
  assert.ok([...audit.doc.querySelectorAll('.ow-w-plot')].every(p=>p.style.getPropertyValue('--entered')==='0.0000%'&&!/NaN|Infinity/.test(p.getAttribute('style'))));
  assert.equal(JSON.stringify(audit.P.state),before);
 });

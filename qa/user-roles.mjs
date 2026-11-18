@@ -115,7 +115,7 @@ test('partner month selections preserve scope and include every month in the int
  change('[data-period-year="orders"]','2026');
  doc.querySelector('[data-period-interval="orders"]').click();
  doc.querySelector('[data-period-cell="orders"][data-value="2026-07"]').click();
- doc.querySelector('[data-period-cell="orders"][data-value="2026-09"]').click();
+ doc.querySelector('[data-period-cell="orders"][data-value="2026-09"]').click();doc.querySelector('[data-period-apply="orders"]').click();
 
  const own=O.orders(),expected=own.filter(r=>['2026-07','2026-08','2026-09'].includes((r.registeredAt||r.createdAt).slice(0,7)));
  assert.equal(doc.querySelectorAll('[data-ow-row]').length,expected.length);
@@ -124,7 +124,7 @@ test('partner month selections preserve scope and include every month in the int
  assert.match(doc.querySelector('.pm-period').textContent,/Juli–september 2026/);
  assert.match(doc.querySelector('.pu-results').textContent,/Juli–september 2026/);
  assert.equal(A.salesStats([{confirmedAt:'2026-08-10',status:'confirmed'}],{mode:'month',day:'2026-07-01',months:['07','09']}).count,0);
- doc.querySelector('[data-period-cell="orders"][data-value="2026-09"]').click();assert.deepEqual(Array.from(O.reportPeriod().multi.month),['2026-09']);
+ doc.querySelector('[data-period-cell="orders"][data-value="2026-09"]').click();doc.querySelector('[data-period-apply="orders"]').click();assert.deepEqual(Array.from(O.reportPeriod().multi.month),['2026-09']);
  assert.equal(JSON.stringify(P.state.orderWorkspace),before);
 });
 test('ordinary Kraftringen account handles orders but cannot administer partners/users',()=>{

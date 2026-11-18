@@ -442,10 +442,10 @@ och fakturaunderlag öppnas från raden. Ingen parallell fakturaunderlagstabell
 eller extra månadsstyrning. Beräkningsmodell, exportinnehåll och åtkomst bevaras.
 
 
-### Ett kompakt periodfält · 17 november 2026
-Håkan ersätter det fria flervalet med en period eller ett sammanhängande
-intervall. Ett klick väljer en period direkt. Välj intervall aktiverar start-
-och slutmarkering; dragning med mus är en valfri genväg. Månader, veckor, år
-samt datum följer samma princip och visar ett enda sammanfattande fält.
-Inga tillägg av fristående dagar, periodbrickor eller obligatoriska dubbla
-fält. Avancerad analys hör till Excel; appens urval styr listor och summeringar.
+### Ett gemensamt periodfält · förtydligat 18 november 2026
+Håkan godkänner en knapp och en separat mobilpanel. Periodtyp väljs inne i
+panelen. En period eller ett sammanhängande intervall markeras med tryck,
+och Visa bekräftar urvalet. Avbryt/Escape återställer utan ändrade rapportfilter.
+Ingen dragning eller fristående periodtillägg. Veckor visar veckonummer och datum.
+Månader, veckor, år och datum följer samma princip; befintliga begränsade
+exempelrapporter och provisionsmånader behåller sina tillgängliga perioder.

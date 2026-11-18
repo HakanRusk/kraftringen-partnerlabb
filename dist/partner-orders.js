@@ -243,7 +243,7 @@
   function periodControls() {
     const f=filter(),value=f.mode==='year'?f.year:f.mode==='week'?f.year+'-W'+f.week:f.mode==='month'?f.year+'-'+f.month:(f.day||today());
     const values=f.multi?.[f.mode]||(f.mode==='month'?monthSelection(f).map(m=>f.year+'-'+m):[value]);
-    return `<section class="ow-period card" aria-label="Periodfilter"><label>Period<select data-ow-filter="mode">${options([['day','Datum'],['week','Vecka'],['month','Månad'],['year','År']],f.mode)}</select></label>${P.periodSet.render('orders',f.mode,values,v=>{(f.multi||={})[f.mode]=v;f.year=v[0].slice(0,4);if(f.mode==='month'){f.month=v[0].slice(5);f.months=v.map(m=>m.slice(5));}if(f.mode==='week')f.week=v[0].slice(6);if(f.mode==='day')f.day=v[0];})}<p>Gemensam period för hela sidan. Tecknade avtal följer bindandedatum; orderflöde och lista följer <strong>registreringsdatum</strong>. Utkast och Skickad följer skapandedatum; Skickade ordrar följer utskicksdatum.</p></section>`;
+    return `<section class="ow-period card" aria-label="Periodfilter">${P.periodSet.render('orders',f.mode,values,(v,mode)=>{f.mode=mode;(f.multi||={})[f.mode]=v;f.year=v[0].slice(0,4);if(f.mode==='month'){f.month=v[0].slice(5);f.months=v.map(m=>m.slice(5));}if(f.mode==='week')f.week=v[0].slice(6);if(f.mode==='day')f.day=v[0];},undefined,{modes:['month','week','year','day']})}<p>Gemensam period för hela sidan. Tecknade avtal följer bindandedatum; orderflöde och lista följer <strong>registreringsdatum</strong>. Utkast och Skickad följer skapandedatum; Skickade ordrar följer utskicksdatum.</p></section>`;
   }
 
   let flowView = 'waterfall';
