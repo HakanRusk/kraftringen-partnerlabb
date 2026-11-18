@@ -46,6 +46,13 @@ assert.equal(A.salesStats(synthetic,O.reportPeriod()).points.length,31);
 click('[data-period-interval="orders"]');click('[data-period-cell="orders"][data-value="2027-03"]');
 d.activeElement.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
 assert.deepEqual(Array.from(O.reportPeriod().multi.month),['2027-01']);assert.equal(d.activeElement.tagName,'SUMMARY');
+// Switching type, starting an interval and returning to single selection keeps a valid draft.
+click('[data-period-mode="orders"][data-mode="year"]');
+click('[data-period-interval="orders"]');
+click('[data-period-cell="orders"][data-value="2027"]');
+click('[data-period-interval="orders"]');
+assert.equal(d.querySelector('[data-period-apply="orders"]').disabled,false);
+click('[data-period-cancel="orders"]');
 // Draft selection and mode change must not affect totals until Visa; cancel restores both.
 const saved=JSON.stringify(O.reportPeriod());
 click('[data-period-mode="orders"][data-mode="year"]');

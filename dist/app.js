@@ -286,7 +286,7 @@
  function viewFor(key,h){let s=views.get(key);if(!s||!s.open){s={mode:h.mode,year:h.values[0].slice(0,4),month:h.values[0].slice(0,7),draft:[...h.values],interval:false,anchor:null,open:false};views.set(key,s);}return s;}
  const weekDates=v=>range('week',v).map(d=>new Intl.DateTimeFormat('sv-SE',{day:'numeric',month:'short',timeZone:'UTC'}).format(date(d))).join('–');
  function render(key,mode,values,change,choices,config={}){
-  values=unique(values);const h={mode,values,change,choices,config};handlers.set(key,h);const s=viewFor(key,h),e=P.e,year=s.year;mode=s.mode;values=s.draft;choices=config.choicesFor?config.choicesFor(mode):choices;
+  values=unique(values);const h={mode,values,change,choices,config};handlers.set(key,h);const s=viewFor(key,h),e=P.e,year=s.year;mode=s.mode;values=s.anchor?[]:s.draft;choices=config.choicesFor?config.choicesFor(mode):choices;
   const allowed=v=>!!range(mode,v)&&(!choices||choices.some(c=>c.value===v));let cells=[],columns=3;
   if(mode==='month')cells=Array.from({length:12},(_,i)=>({value:year+'-'+String(i+1).padStart(2,'0'),text:new Intl.DateTimeFormat('sv-SE',{month:'long',timeZone:'UTC'}).format(new Date(Date.UTC(2026,i,1)))}));
   if(mode==='quarter')cells=Array.from({length:4},(_,i)=>({value:year+'-q'+(i+1),text:'Kvartal '+(i+1)}));
@@ -300,7 +300,7 @@
  function refresh(key,selector){P.render();open(key,selector);}
  function close(key){const s=views.get(key);if(s){s.open=false;s.anchor=null;}document.querySelector(`[data-period-dialog="${key}"]`)?.close();P.render();document.querySelector(`[data-period-picker="${key}"] summary`)?.focus({preventScroll:true});}
  function choose(key,v){const h=handlers.get(key),s=viewFor(key,h);s.open=true;const choices=h.config.choicesFor?h.config.choicesFor(s.mode):h.choices;
-  if(s.interval&&!s.anchor){s.anchor=v;s.draft=[];}else{const values=span(s.mode,s.anchor||v,v,choices);if(!values.length){P.toast('Välj en sammanhängande period med tillgängligt underlag.');return;}s.draft=values;s.anchor=null;}
+  if(s.interval&&!s.anchor){s.anchor=v;}else{const values=span(s.mode,s.anchor||v,v,choices);if(!values.length){P.toast('Välj en sammanhängande period med tillgängligt underlag.');return;}s.draft=values;s.anchor=null;}
   refresh(key,`[data-period-cell="${key}"][data-value="${v}"]`);
  }
  document.addEventListener('click',ev=>{
