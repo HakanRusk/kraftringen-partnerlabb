@@ -2,7 +2,7 @@
 
 GitHub är huvudkälla: https://github.com/HakanRusk/kraftringen-partnerlabb.
 Sites-mål: appgprj_6adb2c876a0c8191b1fa3c755a73f61a,
-https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site.
+https://kraftringen-partnerlabb-hakan.hakan-rusk.chatgpt.site.
 Regler/mandat och särskilt godkännande för Daniels arbete finns i AGENTS.md.
 RUNBOOK-SITES.md hänvisar till denna aktuella rutin.
 Övertagandet och verifieringsgränser dokumenteras i docs/HANDOVER-2026-10-23.md.
