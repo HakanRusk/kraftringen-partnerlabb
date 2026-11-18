@@ -22,7 +22,14 @@ async def choose_period(page, key, value, end=None):
     if end:
         await show(end)
         await page.locator(f'[data-period-cell="{key}"][data-value="{end}"]').click()
+    await page.locator(f'[data-period-apply="{key}"]').click()
     assert await picker.get_attribute('open') is None
+
+async def choose_mode(page, mode):
+    picker=page.locator('[data-period-picker="orders"]')
+    if await picker.get_attribute('open') is None: await picker.locator('summary').click()
+    await page.locator(f'[data-period-mode="orders"][data-mode="{mode}"]').click()
+    await page.locator('[data-period-apply="orders"]').click()
 
 async def main():
     OUT.mkdir(parents=True, exist_ok=True)
@@ -166,10 +173,10 @@ async def main():
                 await page.locator('[data-ow-open]').click()
                 await expect(page.locator('.ow-status-history')).to_contain_text('Nätavtal saknas')
                 await page.locator('#close-dialog').click()
-                await page.locator('[data-ow-filter=mode]').select_option('week')
+                await choose_mode(page, 'week')
                 await choose_period(page, 'orders', '2026-W41')
                 await expect(page.locator('#ow-order-list tbody')).to_contain_text('Exempelperson 3')
-                await page.locator('[data-ow-filter=mode]').select_option('month')
+                await choose_mode(page, 'month')
                 await page.locator('[data-ow-filter=status]').select_option('all')
                 await page.locator('[data-ow-customer]').first.click()
                 form=page.locator('#ow-customer-form')
@@ -199,7 +206,7 @@ async def main():
                     assert box and box['x']>=0 and box['x']+box['width']<=width+1,(width,box)
                 await form.get_by_role('button',name='Spara utkast').click()
                 await expect(page.locator('#portal-dialog')).not_to_be_visible()
-                await page.locator('[data-ow-filter=mode]').select_option('year')
+                await choose_mode(page, 'year')
                 await choose_period(page, 'orders', '2026')
                 await page.locator('[data-ow-search]').fill('Fiktiv Testkund')
                 await page.locator('[data-ow-open]').click()

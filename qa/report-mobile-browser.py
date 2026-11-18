@@ -117,11 +117,13 @@ async def main():
                         await expect(page.locator('#sr-product')).to_be_focused()
                         await expect(page.locator('#sr-reset')).to_be_disabled()
                         assert await page.evaluate('Portal.partnerSalesReports.filters().seller') == 'all'
+                        await page.locator('[data-period-picker="reports"] summary').click()
                         for mode in ('month', 'week', 'year'):
-                            await page.locator(f'[data-sr-mode={mode}]').focus()
+                            await page.locator(f'[data-period-mode="reports"][data-mode={mode}]').focus()
                             await page.keyboard.press('Enter')
-                            await expect(page.locator(f'[data-sr-mode={mode}]')).to_be_focused()
-                            await expect(page.locator(f'[data-sr-mode={mode}]')).to_have_attribute('aria-pressed', 'true')
+                            await expect(page.locator(f'[data-period-mode="reports"][data-mode={mode}]')).to_be_focused()
+                            await expect(page.locator(f'[data-period-mode="reports"][data-mode={mode}]')).to_have_attribute('aria-pressed', 'true')
+                        await page.locator('[data-period-apply="reports"]').click()
                         print(f'PASS report filters {partner} {route} {width}px', flush=True)
                 after = await page.evaluate('JSON.parse(JSON.stringify(Portal.state))')
                 changed = [key for key in before.keys() | after.keys() if before.get(key) != after.get(key)]

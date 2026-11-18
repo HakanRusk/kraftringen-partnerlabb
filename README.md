@@ -314,18 +314,15 @@ expanderbar fördjupning; grundsammanfattning och interaktiva övningar bevaras.
 Tio manus med sammanlagt femtio avsnitt fördjupar kunddialog, prisreferenser,
 profil-/volymrisk och produktjämförelser. Diagrammens räknevärden är illustrativa.
 Provversionen och befintliga godkännanden ändras inte av denna innehållsutökning.
-Partnerns Ordrar & resultat har samma flerval av månader i både Tecknade avtal
-(bindandedatum) och orderflödet (registreringsperiod). Ett gemensamt periodurval styr hela sidan,
-med tydlig periodtext och respektive datumgrund. Flera månader ger en kurvpunkt per vald månad; månader
-mellan valen ingår inte. Säljar- och partneravgränsningarna gäller som tidigare.
-
-Samtliga rapporters befintliga periodval stödjer nu flerval. I Översikt och
-Ordrar & resultat gäller det dag, vecka, månad och år. För dag/vecka/år väljer
-man en period och trycker Lägg till; × tar bort ett val. Minst ett val behålls.
-Urval med luckor omfattar endast de valda perioderna, med ISO-veckor över årsskiften.
-Äldre rapporter erbjuder de perioder som deras exempelunderlag innehåller.
-Aktiva kundbestånd avser senaste valda brytdatum och summeras inte mellan perioder;
-churn visas inte som ett missvisande sammanlagt procenttal för separata perioder.
+Rapporterna använder ett enda periodfält. Öppna det för att välja månad, vecka,
+år eller datum (äldre ekonomirapport har även kvartal). På mobilen öppnas en
+bred dialog nederst på skärmen. En period markeras med ett tryck och bekräftas
+med Visa. Sammanhängande period aktiverar start- och slutmarkering; alla perioder
+däremellan ingår. Avbryt/Escape lämnar både periodtyp och rapporturval oförändrade.
+Veckor visar även datum. Ingen dragning, periodbrickor eller fristående tillägg.
+Samma urval styr resultat på bindandedatum och orderflöde på registreringsdatum.
+Äldre rapporter begränsas av tillgängligt exempelunderlag. Aktiva kundbestånd
+avser senaste brytdatum; sammanhängande churn använder periodens ingående bas.
 Provision visas per månad utan dubbelräkning av kumulativa saldon. Dag-/veckourval
 i fakturaunderlag visar uttryckligen hela berörda månadsunderlag. Detaljgranskning
 och Excel öppnas från respektive månadsrad och gäller den månaden.

@@ -1137,3 +1137,13 @@ Utgångspunkt main 73e71cda9f5b92829c1fa9a0ea9c91b1b06cdead (publicerad v36).
 samt oförändrade orderdata. Browserprov omfattar 320/390/1440 px.
 Verifierat lokalt: samtliga 26 Node/DOM-sviter gröna, produktionsbygge godkänt.
 Desktopbrowser visar ett enda fält och bekräftar januari–mars med två klick.
+
+## 18 november 2026 · Mobilanpassad perioddialog
+Håkans mobilbilder visar en periodpanel som krymper till en smal filterkolumn.
+Egen gren från main 3923c6b. En periodknapp ersätter separata typ-/värdesfält;
+native dialog ger mobilpanel, fokusinneslutning och oberoende bredd. Typ och
+urval ändras först vid Visa. Avbryt/Escape slänger utkast, intervall väljs med
+två tryck. Alla rapportmoduler använder samma komponent; underlagsgränser bevaras.
+Öppna PR:er kontrollerade och lämnade orörda. Lokalt 26 sviter gröna samt bygge.
+Desktopbrowser verifierar januari–mars. Ny browserregression kontrollerar
+320/390/414/768/1440 px, cellernas läsbarhet, fokus och avbryt. CI följer före merge.
