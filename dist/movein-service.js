@@ -97,9 +97,14 @@
     });
     if (result.errors.length) { result.created = []; return result; }
     if (!result.created.length) { result.ok = true; return result; }
+    const previousRegistry=P.state.estateRegistry;
+    try {
+      if(P.estatePortfolio?.enabled(P.partner)) P.state.estateRegistry=P.estatePortfolio.prepareIntake(result.created);
+    } catch(error) {result.created=[];result.errors.push({index:-1,message:error.message});return result;}
     P.state.moveins = [...result.created, ...previous];
     if (!P.save()) {
       P.state.moveins = previous; result.created = [];
+      if(previousRegistry===undefined)delete P.state.estateRegistry;else P.state.estateRegistry=previousRegistry;
       result.errors.push({ index: -1, message: 'Underlagen kunde inte sparas. Inga nya ärenden skapades; behåll importen och prova igen.' });
       return result;
     }

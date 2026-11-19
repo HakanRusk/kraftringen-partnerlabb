@@ -1147,3 +1147,16 @@ två tryck. Alla rapportmoduler använder samma komponent; underlagsgränser bev
 Öppna PR:er kontrollerade och lämnade orörda. Lokalt 26 sviter gröna samt bygge.
 Desktopbrowser verifierar januari–mars. Ny browserregression kontrollerar
 320/390/414/768/1440 px, cellernas läsbarhet, fokus och avbryt. CI följer före merge.
+
+## 19 november 2026 · Fastigheten som utgångspunkt
+Egen gren från c3c252c (v38), öppna PR:er lästa och lämnade orörda.
+Håkan beställer bestånd som default, gemensam meny, inflyttning med fullmakt,
+import till befintliga/nya objekt och visningsel med fastighetsägaren som betalare
+för nät och handel. Förtydligande: uppsägning/status hämtas framöver från CRM,
+inte beroende av en manuell utflyttningsanmälan. Separat läsmodell för avtalsfakta;
+ingen verklig CRM-anslutning eller automatiskt ägarövertagande aktiverat.
+Bestånd och nya ärenden sparas atomärt. Befintliga utkast, bilagor, kontrakt,
+mejlkvittenser och historik bevaras. Ny Node-svit täcker matchning, sparfel,
+dubbletter, beständig lagring, partnerisolering, visningsel och separata slutdatum.
+Desktopflödet kontrollerat i lokal browser. Mobil/desktopbrowserregression i CI
+krävs före integration; publicering kvitteras efter lyckad deploy.

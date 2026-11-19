@@ -208,3 +208,24 @@
   .pi-demo-note { font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) { .pi-choice-card { transition: none; } .pi-choice-card:hover { transform: none; } }
+
+/* Property-first workspace: readable cards and actions at narrow widths. */
+.estate-toolbar { display:flex; align-items:end; gap:16px; margin:24px 0; }
+.estate-toolbar .field { flex:1; margin:0; }
+.estate-building { padding:0; margin-bottom:16px; }
+.estate-building > summary { cursor:pointer; padding:20px; font-size:1rem; }
+.estate-building > summary span { display:block; margin:4px 0 0 20px; font-size:.9rem; }
+.estate-units { padding:0 20px; }
+.estate-unit { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:20px 0; border-top:1px solid var(--kf-blue-20); }
+.estate-unit p { margin:8px 0; font-size:.9rem; overflow-wrap:anywhere; }
+.estate-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.estate-actions .btn { min-height:44px; }
+.estate-reserve { display:flex; flex-wrap:wrap; align-items:center; gap:16px; padding:20px 0; }
+.pi-row-match { color:var(--kf-navy); }
+@media(max-width:640px) {
+  .estate-toolbar,.estate-unit { flex-direction:column; align-items:stretch; }
+  .estate-actions { display:grid; grid-template-columns:1fr; }
+  .estate-unit > div { min-width:0; }
+  .estate-building > summary { padding:16px; }
+  .estate-units { padding:0 16px; }
+}

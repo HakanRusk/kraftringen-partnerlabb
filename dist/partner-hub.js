@@ -33,6 +33,7 @@
     return page(label[category],'<button class="btn btn-primary" data-hub-order="'+category+'">'+(category==='consumer'?'Skapa order':'Skapa offert')+'</button>'+panel('Kundarbete',links+crm)+panel('Tilldelade produkter','<ul>'+products.map(v=>'<li>'+P.e(v)+'</li>').join('')+'</ul>'));
   }
   function home() {
+    if(property() && estate())return P.estatePortfolio.overview();
     const actions=sales().map(cat=>'<button class="btn btn-primary" data-hub-order="'+cat+'">'+(cat==='consumer'?'＋ Ny order':'Skapa offert')+'</button>').join('');
     const orders=sales().length?P.orderWorkspace.orders():[];
     let attention='';
@@ -52,6 +53,7 @@
     agreement
   };
   for(const [key,render] of Object.entries(routes))P.register('partner-hub-'+key,{render:()=>active()?render():'',bind:()=>{
+    if(key==='home' && property() && estate())P.estatePortfolio.bind();
     document.querySelectorAll('[data-hub-order]').forEach(b=>b.onclick=()=>{
       const category=b.dataset.hubOrder,product=P.productCatalog.availableProducts(category,P.partner)[0];
       if(!product)return P.toast('Inga produkter är tilldelade.');

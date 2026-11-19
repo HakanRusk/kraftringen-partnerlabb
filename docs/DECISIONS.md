@@ -449,3 +449,27 @@ och Visa bekräftar urvalet. Avbryt/Escape återställer utan ändrade rapportfi
 Ingen dragning eller fristående periodtillägg. Veckor visar veckonummer och datum.
 Månader, veckor, år och datum följer samma princip; befintliga begränsade
 exempelrapporter och provisionsmånader behåller sina tillgängliga perioder.
+
+## P-18 · Fastighetsbestånd som huvudflöde (19 november)
+Fastighetspartner med aktiverad fastighetsfunktion får beståndet direkt på
+översikten och tjänstens huvudsida. Gemensam vänstermeny behålls. Sök/öppna
+fastighet, välj Anmäl inflyttning eller Starta visningsel på lägenheten.
+Inflyttning använder samma underlag och fullmaktsbilagor som manuell registrering
+och Excel. Äldre lokala demoavtal/historik finns kvar på lägenhetsdetaljen.
+Manuell registrering och Excel är reservvägar. Import granskas radvis och matchar
+adress, ort, postnummer och lägenhetsnummer; saknat lägenhetsnummer och avvikande
+postnummer måste rättas. Nya fastigheter/lägenheter och serviceunderlag sparas
+atomärt. Registrerat serviceunderlag är inte ett bekräftat avtal.
+
+Visningsel kan beställas även när hyresgästens avtal fortfarande gäller. Lokal
+beställning anger fastighetsägaren som betalare för både nät och elhandel från
+valt datum, med fortsatt inkoppling som önskemål. Inga nätåtgärder görs i demot.
+
+Håkans förtydligande: utflyttningsinformation kommer ofta från CRM. Elhandel och
+elnät ska ha oberoende avtalsstatus/slutdatum. Uppsägning visar planerat slut;
+avslutat visas först efter avtalets sista giltighetsdag. Bostadens fysiska
+uthyrningsstatus får inte härledas från elhandelsuppsägning. CRM-fakta får inte
+skrivas över av en servicebeställning och får inte starta visningsel automatiskt.
+Frontend har en läsmodell estateContractFacts[partner][unit][trade|network]
+med contractId, status, endsOn och updatedAt. Verklig CRM-anslutning, identifierar-
+mappning och verifiering av nätstatus återstår; ingen anslutning är aktiverad.
