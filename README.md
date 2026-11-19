@@ -360,3 +360,15 @@ säljinriktningar och aktiverade fastighetsfunktion. Under Fastigheter finns
 lägenheten använder samma registrering. Excelimportens serviceunderlag har
 kvar sin tidigare handläggning. Under Partners → Tjänster kan Kraftringen
 förhandsvisa den valda partnerns arbetsyta.
+
+### Fastighetspartnerns huvudflöde
+Översikten visar Mina fastigheter för fastighetspartner med aktiverad funktion.
+Sök bostad eller öppna en fastighet. Anmäl inflyttning förifyller bostaden och
+använder det befintliga flödet för fullmaktsbilagor. Excel matchar befintliga
+bostäder och skapar nya fastigheter/lägenheter tillsammans med underlagen efter
+granskningssteget. Manuellt underlag utan lägenhetsnummer kan fortfarande sparas,
+men kopplas inte till beståndet. Äldre ärenden och demoavtal bevaras.
+Visningsel registrerar en lokal beställning med fastighetsägaren som betalare för
+både nät och handel; inga verkliga avtal eller nätåtgärder utförs. CRM-läsmodellen
+håller nät/handel och deras slutdatum separata. Den verkliga integrationen är
+inte ansluten. Se P-18 i docs/DECISIONS.md.

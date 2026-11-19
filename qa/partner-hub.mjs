@@ -22,7 +22,7 @@ for(const [user,service] of [['demo-vast-seller-1','partner-hub-consumer'],['dem
   click('#view [data-go="'+service+'"]');
   assert.equal(P.page,service);
 }
-P.go('overview');click('[data-go="estate-register"]');click('[data-estate-jump="a1"]');
+P.go('overview');assert.ok(d.querySelector('[data-unit-search]'));click('[data-estate-unit="a1"]');
 assert.equal(P.page,'estate-portfolio');
 const form=d.querySelector('#estate-change');
 assert.ok(form);
@@ -42,6 +42,6 @@ assert.equal(d.querySelectorAll('[data-unit-address]:not([hidden])').length,1);
 P.prototypeUsers.signIn('demo-admin');P.go('partners');
 click('[data-is-partner="estate1"]');click('[data-is-tab="services"]');click('[data-is-preview-services="estate1"]');
 assert.equal(P.page,'partner-hub-services');click('[data-go="estate-home"]');
-assert.ok(d.querySelector('.hub-tabs'));
+assert.ok(d.querySelector('[data-unit-search]'));
 dom.window.close();
 console.log('PASS gemensam meny, tre tjänster, samma inflyttning och ärende, beståndssökning och intern förhandsvisning');
