@@ -17,7 +17,8 @@ async def choose_period(page, key, value, end=None):
         month=page.locator(f'[data-period-month="{key}"]')
         if await month.count(): await month.select_option(v[5:7])
     await show(value)
-    if end: await page.locator(f'[data-period-interval="{key}"]').click()
+    kind='interval' if end else 'single'
+    await page.locator(f'[data-period-{kind}="{key}"]').click()
     await page.locator(f'[data-period-cell="{key}"][data-value="{value}"]').click()
     if end:
         await show(end)

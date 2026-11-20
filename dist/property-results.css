@@ -173,3 +173,19 @@
   .property-results-summary-note { font-size: 9px; }
 }
 @media (prefers-reduced-motion:reduce) { .property-results-page *, .property-results-summary * { scroll-behavior: auto; } }
+.pc-commission .card{margin-bottom:24px}.pc-rate{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:20px 0}.pc-rate .field{max-width:330px;margin:0}.pc-bars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin:24px 0}.pc-bar{text-align:center;min-width:0}.pc-track{position:relative;height:140px;border-bottom:1px solid var(--kf-blue-20);margin:12px 0}.pc-track i{position:absolute;left:20%;right:20%;background:var(--kf-navy);min-height:2px;border-radius:3px}.pc-track .pc-bar-1{background:var(--kf-cyan)}.pc-track .pc-bar-2{background:var(--kf-pink-60)}.pc-bar span{font-size:14px}.pc-commission .table-wrap{max-width:100%;overflow:auto}.pc-commission th small{display:block;font-weight:400}.pc-commission [role=status]{font-size:14px}.pc-commission .property-results-payment{margin:20px 0}.pc-commission .property-results-payment strong{display:block}
+@media(max-width:600px){.pc-bars{gap:6px}.pc-track{height:100px}.pc-bar span{font-size:14px}.pc-commission .oc-monthly-table{min-width:650px}.pc-rate{align-items:stretch;flex-direction:column}.pc-rate .field{max-width:none}}
+
+.pc-rate [role=alert]:empty{display:none}.pc-rate .field{font-size:14px;letter-spacing:normal}
+@media(max-width:600px){
+ .pc-commission .oc-monthly-table{min-width:0!important;width:100%;border:0;background:transparent}
+ .pc-commission .oc-monthly-table thead{display:none}
+ .pc-commission .oc-monthly-table tbody,.pc-commission .oc-monthly-table tr{display:block}
+ .pc-commission .oc-monthly-table tr{border:1px solid var(--kf-blue-20);border-radius:12px;overflow:hidden;margin-bottom:16px}
+ .pc-commission .oc-monthly-table th{display:block;background:var(--kf-pink-20);padding:14px;text-align:left}
+ .pc-commission .oc-monthly-table td{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;white-space:normal;min-width:0;font-size:14px}
+ .pc-commission .oc-monthly-table td[data-label]::before{content:attr(data-label);font-weight:500}
+ .pc-commission .oc-monthly-table td.pc-actions{display:block}
+ .pc-commission .oc-row-actions{display:flex;flex-direction:column;align-items:stretch}
+ .pc-commission .oc-row-actions button{white-space:normal;width:100%}
+}

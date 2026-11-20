@@ -22,8 +22,9 @@
     const input = value && typeof value === 'object' ? value : {};
     return {
       mode: ['year','month'].includes(input.mode) ? input.mode : 'year',
-      month: months().includes(input.month) ? input.month : '2026-09',
-      values:(()=>{const v=[...new Set(Array.isArray(input.values)?input.values.filter(m=>months().includes(m)):[])].sort();return v.length?months().filter(m=>m>=v[0]&&m<=v.at(-1)):[];})()
+      month: /^(20\d{2}|2100)-(0[1-9]|1[0-2])$/.test(input.month) ? input.month : '2026-09',
+      ...(Array.isArray(input.years)?{years:input.years.filter(y=>/^(20\d{2}|2100)$/.test(y))}:{}),
+      values:(()=>{const v=[...new Set(Array.isArray(input.values)?input.values.filter(m=>/^(20\d{2}|2100)-(0[1-9]|1[0-2])$/.test(m)):[])].sort();return v.length?P.periodSet.span('month',v[0],v.at(-1)):[];})()
     };
   }
   function selection(id) {
@@ -39,11 +40,12 @@
   }
   function periodFor(id) {
     const selected = selection(id);
-    const current = selected.mode === 'month' ? (selected.values.length?selected.values:[selected.month]) : [...months()];
-    const monthIndex = months().indexOf(selected.month);
+    const current = selected.mode === 'month' ? (selected.values.length?selected.values:[selected.month]) : selected.years?.length ? selected.years.flatMap(y=>Array.from({length:12},(_,i)=>y+'-'+String(i+1).padStart(2,'0'))) : [...months()];
+    if(selected.years?.length && selected.mode==='year')return {current,label:P.periodSet.summary('year',selected.years),range:'Hela kalenderår · tillgängligt exempelunderlag till 7 oktober 2026'};
+    const monthIndex = +selected.month.slice(5)-1;
     if(selected.mode==='month'&&current.length>1)return {current,label:P.periodSet.summary('month',current),range:'Sammanhängande period · underlag till 7 oktober 2026'};
-    const label = selected.mode === 'month' ? `${monthNames[monthIndex]} 2026` : '2026 hittills';
-    const range = selected.mode === 'year' ? '1 januari–7 oktober 2026' : selected.month === '2026-10' ? '1–7 oktober 2026' : `1–${new Date(Date.UTC(2026, monthIndex + 1, 0)).getUTCDate()} ${monthNames[monthIndex].toLocaleLowerCase('sv-SE')} 2026`;
+    const label = selected.mode === 'month' ? `${['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'][monthIndex]} ${selected.month.slice(0,4)}` : '2026 hittills';
+    const range = selected.mode === 'year' ? '1 januari–7 oktober 2026' : selected.month === '2026-10' ? '1–7 oktober 2026' : `1–${new Date(Date.UTC(+selected.month.slice(0,4), monthIndex + 1, 0)).getUTCDate()} ${label.toLocaleLowerCase('sv-SE')}`;
     return {current, label, range};
   }
   function outcomeFor(id, periodMonths) {
@@ -60,7 +62,7 @@
   }
   function availabilityNote(kickback) {
     if (!kickback.missing.length) return '';
-    const missing = kickback.missing.map(item => `${monthNames[months().indexOf(item.month)]} 2026`).join(', ');
+    const missing = kickback.missing.map(item => P.periodSet.summary('month',[item.month])).join(', ');
     return `<p class="property-results-missing">${icon('file')}<span><strong>Underlag saknas: ${e(missing)}.</strong> ${kickback.rows.length ? 'Beloppen omfattar endast månader med registrerade exempelposter.' : 'Ingen kickback kan visas för den valda perioden.'}</span></p>`;
   }
   function status(row) {
@@ -70,7 +72,7 @@
   }
   function controls(id, period) {
     const selected = selection(id);
-    return `<section class="property-results-filters" aria-label="Filtrera uppföljningen">${P.periodSet.render('property',selected.mode,selected.mode==='month'?(selected.values.length?selected.values:[selected.month]):['2026'],(v,mode)=>{selected.mode=mode;if(selected.mode==='month'){selected.values=v;selected.month=v[0];}saveSelection(id);},selected.mode==='month'?months().map(m=>({value:m,label:P.periodSet.label('month',m)})):[{value:'2026',label:'2026 · till 7 oktober'}],{modes:['month','year'],choicesFor:mode=>mode==='month'?months().map(value=>({value})):[{value:'2026'}]})}<div class="property-results-range"><strong>${e(period.label)}</strong><span>${e(period.range)}</span></div></section>`;
+    return `<section class="property-results-filters" aria-label="Filtrera uppföljningen">${P.periodSet.render('property',selected.mode,selected.mode==='month'?(selected.values.length?selected.values:[selected.month]):selected.years?.length?selected.years:['2026'],(v,mode)=>{selected.mode=mode;if(mode==='month'){selected.values=v;selected.month=v[0];}else selected.years=v;saveSelection(id);},undefined,{modes:['month','year']})}<div class="property-results-range"><strong>${e(period.label)}</strong><span>${e(period.range)}</span></div></section>`;
   }
   function primaryMetrics(result, kickback) {
     const hasBasis = kickback.rows.length > 0;
@@ -113,15 +115,17 @@
   function render() {
     const id = selectedPartner();
     if (!id) return '<div class="empty">Kunder och kickback visas i fastighetspartnerns egen arbetsyta.</div>';
-    if (!hasBasis(id)) return renderWithoutBasis(id);
+    if (!hasBasis(id)) return renderWithoutBasis(id)+(P.propertyCommission?.render(id,periodFor(id).current)||'');
     if (!P.partnerResultsData || !P.partnerKickback) return '<div class="empty">Resultatunderlaget är inte tillgängligt.</div>';
     const period = periodFor(id);
     const {result, kickback} = outcomeFor(id, period.current);
-    return `<div class="property-results-page"><div class="page-head"><div><span class="eyebrow">FASTIGHETSPARTNER / ${e(partnerName(id))}</span><h1>Kunder & kickback</h1><p>Följ kunderna ni har gett oss och ert kickbackunderlag.</p></div><span class="property-results-demo-label">Exempeldata · 7 okt 2026</span></div>${controls(id, period)}${primaryMetrics(result, kickback)}${paymentMetrics(kickback)}${availabilityNote(kickback)}<div class="property-results-middle">${trend(id, period)}${serviceCard(result, period)}</div>${monthTable(id, period, kickback)}${definitions()}</div>`;
+    const historical={...period,current:period.current.filter(m=>months().includes(m))};
+    return `<div class="property-results-page"><div class="page-head"><div><span class="eyebrow">FASTIGHETSPARTNER / ${e(partnerName(id))}</span><h1>Kunder & kickback</h1><p>Följ aktiverade avtal, beräkningen och ert fakturaunderlag.</p></div><span class="property-results-demo-label">Exempeldata · 7 okt 2026</span></div>${controls(id, period)}${P.propertyCommission?.render(id,period.current)||''}<details class="card"><summary>Äldre manuella resultat och utbetalningsposter</summary><p>Historiskt exempelunderlag. Dessa belopp är inte beräknade med modellen ovan och ska inte summeras med den.</p>${historical.current.length?primaryMetrics(result,kickback)+paymentMetrics(kickback)+monthTable(id,historical,kickback):'<p>Underlag saknas för perioden.</p>'}${definitions()}</details></div>`;
   }
   function bind() {
     const id = selectedPartner();
     if (!id) return;
+    P.propertyCommission?.bind(id);
     document.querySelectorAll('[data-property-results-workspace]').forEach(button => button.addEventListener('click', () => {
       if (selectedPartner() !== id) return;
       if (P.role === 'internal') P.previewPartner(id);
@@ -147,7 +151,8 @@
     if (!allowed(id)) return '';
     if (!hasBasis(id)) return `<section class="property-results-summary" data-property-results-availability="missing" aria-label="Samarbetets resultat"><div><span class="property-results-eyebrow">ERT SAMARBETE</span><h2>Kunderna ni har gett oss.</h2><p>Resultatunderlag saknas ännu</p></div><div class="property-results-summary-value"><strong>—</strong><span>nya elhandelskunder</span></div><div class="property-results-summary-value"><strong>—</strong><span>avstämd kickback</span></div><button type="button" class="btn btn-secondary" data-go="property-results">Kunder & kickback ${icon('arrow')}</button><small class="property-results-summary-note">Registrering av inflyttningsunderlag skapar inte ett elavtal eller kickback.</small></section>`;
     const {result, kickback} = outcomeFor(id, months());
-    return `<section class="property-results-summary" aria-label="Samarbetets resultat hittills"><div><span class="property-results-eyebrow">ERT SAMARBETE / 2026 HITTILLS</span><h2>Kunderna ni har gett oss.</h2><p>1 januari–7 oktober · manuella exempel</p></div><div class="property-results-summary-value"><strong>${count(result.agreements)}</strong><span>nya kunder · exempel</span></div><div class="property-results-summary-value"><strong>${kickback.rows.length ? money(kickback.settled) : '—'}</strong><span>${kickback.rows.length ? 'avstämd kickback' : 'underlag saknas'}</span></div><button type="button" class="btn btn-secondary" data-go="property-results">Kunder & kickback ${icon('arrow')}</button><small class="property-results-summary-note">I exemplet motsvarar ett nytt avtal en ny kund. ${kickback.missing.length ? 'Kickbackunderlag saknas för delar av perioden. ' : ''}Era testregistreringar ändrar inte resultatunderlaget.</small></section>`;
+    const earned=P.propertyCommission?.total(id,months());
+    return `<section class="property-results-summary" aria-label="Samarbetets resultat hittills"><div><span class="property-results-eyebrow">ERT SAMARBETE / 2026 HITTILLS</span><h2>Kunderna ni har gett oss.</h2><p>1 januari–7 oktober · manuella exempel</p></div><div class="property-results-summary-value"><strong>${count(result.agreements)}</strong><span>nya kunder · exempel</span></div><div class="property-results-summary-value"><strong>${earned?.amount!=null ? money(earned.amount) : '—'}</strong><span>beräknad kickback för aktiveringar</span></div><button type="button" class="btn btn-secondary" data-go="property-results">Kunder & kickback ${icon('arrow')}</button><small class="property-results-summary-note">I exemplet motsvarar ett nytt avtal en ny kund. ${kickback.missing.length ? 'Kickbackunderlag saknas för delar av perioden. ' : ''}Era testregistreringar ändrar inte resultatunderlaget.</small></section>`;
   }
   P.propertyResults = {renderSummary, periodFor, outcomeFor, hasBasis};
   P.register('property-results', {render, bind});

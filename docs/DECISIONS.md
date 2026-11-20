@@ -473,3 +473,18 @@ skrivas över av en servicebeställning och får inte starta visningsel automati
 Frontend har en läsmodell estateContractFacts[partner][unit][trade|network]
 med contractId, status, endsOn och updatedAt. Verklig CRM-anslutning, identifierar-
 mappning och verifiering av nätstatus återstår; ingen anslutning är aktiverad.
+
+## 20 november 2026 · Periodintervall och aktiveringsbaserad fastighetsprovision
+Perioddialogen visar tydligt En/Flera för vald typ. Intervall omfattar alla
+mellanliggande dagar, ISO-veckor, månader eller år, även över årsskiften.
+Provisionsvyer erbjuder månad och år; år visas som månadsrader.
+Fastighetspartnerns Kunder & kickback visar beståndsvattenfall, aktiveringar,
+fast ersättning × aktiverade elhandelsavtal, beräkningsdetaljer och Excel per månad.
+Ingen ersättning betalas i förskott. Lokala inflyttningar/visningsel skapar inte
+aktiveringar eller pengar. Demots aktiveringar är separata månadsaggregat;
+enskilda avtals-ID:n saknas. Saknat underlag visas som saknat, inte noll.
+Belopp per aktivering har inte angetts av Håkan: det anges som ett lokalt
+beräkningsvärde per partner och session, med samma belopp för valda månader.
+Det är inte verifierade affärsvillkor. Historiska manuella betalningsposter
+bevaras separat och får inte summeras med den nya beräkningen. Excel är ett
+preliminärt exempelunderlag; export varken fakturerar eller bokför en betalning.
