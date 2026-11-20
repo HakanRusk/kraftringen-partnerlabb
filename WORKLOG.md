@@ -1176,3 +1176,5 @@ Lokal verifiering: 28 Node/DOM-sviter gröna; produktionsbygge godkänt.
 CI 44747062712: nya fastighetsprov gröna vid 320/390/1440 px inklusive Excel,
 perioddialog grön vid 320/390/414/768/1440 px. Äldre user-roles-browser
 behövde explicit välja En månad efter intervall; testhjälparen uppdaterad.
+CI-skärmbilder granskade: kortare vattenfallsetikett, delperiodtext bara för
+oktober och mobilkort per månad gör belopp/Excel synliga utan horisontell scroll.
