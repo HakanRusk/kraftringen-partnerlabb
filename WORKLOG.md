@@ -1173,3 +1173,6 @@ för 320/390/1440 px; befintlig perioddialogkontroll utökad med dag.
 Lokal browserkontroll saknar tillgängligt CUA-verktyg i detta pass; CI:s
 Chromium-flöden används före integration/publicering.
 Lokal verifiering: 28 Node/DOM-sviter gröna; produktionsbygge godkänt.
+CI 44747062712: nya fastighetsprov gröna vid 320/390/1440 px inklusive Excel,
+perioddialog grön vid 320/390/414/768/1440 px. Äldre user-roles-browser
+behövde explicit välja En månad efter intervall; testhjälparen uppdaterad.
