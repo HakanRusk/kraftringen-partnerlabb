@@ -29,6 +29,9 @@ async def main():
             await expect(page.locator('[data-pc-month]')).to_have_count(2)
             assert '19' in await page.locator('[data-pc-total]').inner_text()
             assert await page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,'page overflow')
+            if width<600:
+                assert await page.locator('.pc-commission .table-wrap').evaluate('(e)=>e.scrollWidth<=e.clientWidth'),(width,'commission content clipped')
+                assert await page.locator('[data-pc-export]').evaluate_all('ns=>ns.every(n=>n.getBoundingClientRect().right<=innerWidth)'),(width,'Excel outside viewport')
             await page.screenshot(path=str(OUT/f'report-property-commission-{width}.png'),full_page=True)
             await page.locator('[data-pc-detail="2026-09"]').click()
             await expect(page.locator('.oc-calculation')).to_contain_text('21 aktiverade avtal')

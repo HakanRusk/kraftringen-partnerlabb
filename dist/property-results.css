@@ -178,7 +178,7 @@
 
 .pc-rate [role=alert]:empty{display:none}.pc-rate .field{font-size:14px;letter-spacing:normal}
 @media(max-width:600px){
- .pc-commission .oc-monthly-table{min-width:0;width:100%;border:0;background:transparent}
+ .pc-commission .oc-monthly-table{min-width:0!important;width:100%;border:0;background:transparent}
  .pc-commission .oc-monthly-table thead{display:none}
  .pc-commission .oc-monthly-table tbody,.pc-commission .oc-monthly-table tr{display:block}
  .pc-commission .oc-monthly-table tr{border:1px solid var(--kf-blue-20);border-radius:12px;overflow:hidden;margin-bottom:16px}

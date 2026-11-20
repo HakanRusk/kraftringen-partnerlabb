@@ -1178,3 +1178,6 @@ perioddialog grön vid 320/390/414/768/1440 px. Äldre user-roles-browser
 behövde explicit välja En månad efter intervall; testhjälparen uppdaterad.
 CI-skärmbilder granskade: kortare vattenfallsetikett, delperiodtext bara för
 oktober och mobilkort per månad gör belopp/Excel synliga utan horisontell scroll.
+CI 44748009133 grön, men bildgranskning fann en äldre !important-minimibredd
+på tabellen som klippte mobilkortens högra del. Lokal CSS-override rättad och
+browserprovet utökat till att kontrollera även tabellens interna överflöde.
