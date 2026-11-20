@@ -372,3 +372,18 @@ Visningsel registrerar en lokal beställning med fastighetsägaren som betalare 
 både nät och handel; inga verkliga avtal eller nätåtgärder utförs. CRM-läsmodellen
 håller nät/handel och deras slutdatum separata. Den verkliga integrationen är
 inte ansluten. Se P-18 i docs/DECISIONS.md.
+
+### Sammanhängande perioder och fastighetsprovision
+Perioddialogen visar tydligt En/Flera för vald typ. Intervall omfattar alla
+mellanliggande dagar, ISO-veckor, månader eller år, även över årsskiften.
+Provisionsvyer erbjuder månad och år; år visas som månadsrader.
+Fastighetspartnerns Kunder & kickback visar beståndsvattenfall, aktiveringar,
+fast ersättning × aktiverade elhandelsavtal, beräkningsdetaljer och Excel per månad.
+Ingen ersättning betalas i förskott. Lokala inflyttningar/visningsel skapar inte
+aktiveringar eller pengar. Demots aktiveringar är separata månadsaggregat;
+enskilda avtals-ID:n saknas. Saknat underlag visas som saknat, inte noll.
+Belopp per aktivering har inte angetts av Håkan: det anges som ett lokalt
+beräkningsvärde per partner och session, med samma belopp för valda månader.
+Det är inte verifierade affärsvillkor. Historiska manuella betalningsposter
+bevaras separat och får inte summeras med den nya beräkningen. Excel är ett
+preliminärt exempelunderlag; export varken fakturerar eller bokför en betalning.

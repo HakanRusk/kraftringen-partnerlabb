@@ -16,7 +16,7 @@ async def main():
             await page.goto(BASE+'#test-users')
             await page.locator('[data-pu-login="demo-internal"]').click()
             original=await page.locator('#internal-period-value').inner_text()
-            for mode in ('year','month','week'):
+            for mode in ('year','month','week','day'):
                 await page.locator('[data-period-picker="internal"] summary').click()
                 await page.locator(f'[data-period-mode="internal"][data-mode="{mode}"]').click()
                 dialog=page.locator('[data-period-dialog="internal"]')

@@ -38,7 +38,7 @@ assert.deepEqual(Array.from(I.cohort(),r=>r.id).sort(),Array.from(expected,r=>r.
 assert.match(d.querySelector('.is-period-label').textContent,/Juli–september 2026/);
 assert.equal(d.querySelector('[data-period-picker="internal"]').open,false);
 d.querySelector('[data-is-slice="cohort"]').click();assert.equal(d.querySelectorAll('[data-is-order]').length,expected.length);
-P.go('overview');change('[data-period-year="internal"]','2027');d.querySelector('[data-period-cell="internal"][data-value="2027-09"]').click();d.querySelector('[data-period-apply="internal"]').click();
+P.go('overview');d.querySelector('[data-period-single="internal"]').click();change('[data-period-year="internal"]','2027');d.querySelector('[data-period-cell="internal"][data-value="2027-09"]').click();d.querySelector('[data-period-apply="internal"]').click();
 assert.deepEqual(Array.from(I.filters.selectedMonths),['2027-09']);assert.equal(I.cohort().length,0);
 d.querySelector('[data-period-mode="internal"][data-mode="year"]').click();d.querySelector('[data-period-cancel="internal"]').click();assert.equal(d.querySelector('[data-period-cell="internal"][data-value="2027-09"]').getAttribute('aria-pressed'),'true');
 assert.equal(JSON.stringify(P.state.orderWorkspace),stateBefore);

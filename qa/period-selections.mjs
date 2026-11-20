@@ -17,7 +17,7 @@ for(const [mode,values,yes,no] of [['year',['2024','2026'],'2026-08-01','2025-08
 const change=(q,value)=>{if(q.includes('filter="mode"')){const key=q.includes('data-is')?'internal':'orders';d.querySelector(`[data-period-mode="${key}"][data-mode="${value}"]`).click();return;}const el=d.querySelector(q);assert.ok(el,q);el.value=value;el.dispatchEvent(new w.Event('change',{bubbles:true}));};
 const click=(q)=>{const el=d.querySelector(q);assert.ok(el,q);assert.equal(el.disabled,false,q);el.click();};
 const show=(key,v)=>{if(d.querySelector(`[data-period-year="${key}"]`))change(`[data-period-year="${key}"]`,v.slice(0,4));if(d.querySelector(`[data-period-month="${key}"]`))change(`[data-period-month="${key}"]`,v.slice(5,7));};
-const choose=(key,a,b)=>{show(key,a);if(b)click(`[data-period-interval="${key}"]`);click(`[data-period-cell="${key}"][data-value="${a}"]`);if(b){show(key,b);click(`[data-period-cell="${key}"][data-value="${b}"]`);}click(`[data-period-apply="${key}"]`);assert.equal(d.querySelector(`[data-period-picker="${key}"]`).open,false);};
+const choose=(key,a,b)=>{show(key,a);click(`[data-period-${b?'interval':'single'}="${key}"]`);click(`[data-period-cell="${key}"][data-value="${a}"]`);if(b){show(key,b);click(`[data-period-cell="${key}"][data-value="${b}"]`);}click(`[data-period-apply="${key}"]`);assert.equal(d.querySelector(`[data-period-picker="${key}"]`).open,false);};
 assert.deepEqual(Array.from(S.span('month','2026-03','2026-01')),['2026-01','2026-02','2026-03']);
 assert.deepEqual(Array.from(S.span('week','2026-W53','2027-W01')),['2026-W53','2027-W01']);
 assert.deepEqual(Array.from(S.span('day','2028-02-28','2028-03-01')),['2028-02-28','2028-02-29','2028-03-01']);
@@ -50,7 +50,7 @@ assert.deepEqual(Array.from(O.reportPeriod().multi.month),['2027-01']);assert.eq
 click('[data-period-mode="orders"][data-mode="year"]');
 click('[data-period-interval="orders"]');
 click('[data-period-cell="orders"][data-value="2027"]');
-click('[data-period-interval="orders"]');
+click('[data-period-single="orders"]');
 assert.equal(d.querySelector('[data-period-apply="orders"]').disabled,false);
 click('[data-period-cancel="orders"]');
 // Draft selection and mode change must not affect totals until Visa; cancel restores both.

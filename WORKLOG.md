@@ -1160,3 +1160,16 @@ mejlkvittenser och historik bevaras. Ny Node-svit täcker matchning, sparfel,
 dubbletter, beständig lagring, partnerisolering, visningsel och separata slutdatum.
 Desktopflödet kontrollerat i lokal browser. Mobil/desktopbrowserregression i CI
 krävs före integration; publicering kvitteras efter lyckad deploy.
+
+## 20 november 2026 · Tydliga intervall och fastighetsprovision
+Håkans beställning genomförd på egen gren från main 80193bd. Öppna PR:er
+kontrollerade och lämnade orörda. Explicit En/Flera i gemensamma perioddialogen,
+månads-/årsintervall i provision och ny aktiveringsbaserad fastighetsberäkning,
+vattenfall, beräkningsdetaljer samt Excel. Ingen avtalad ersättningsnivå antas;
+lokalt inmatat beräkningsvärde. Äldre manuellt underlag bevaras separat.
+Nya regressioner täcker aritmetik, noll/saknat underlag, behörighet, lagringsfel,
+XLSX roundtrip, intervall och oförändrade affärsdata. Browserregression tillagd
+för 320/390/1440 px; befintlig perioddialogkontroll utökad med dag.
+Lokal browserkontroll saknar tillgängligt CUA-verktyg i detta pass; CI:s
+Chromium-flöden används före integration/publicering.
+Lokal verifiering: 28 Node/DOM-sviter gröna; produktionsbygge godkänt.
