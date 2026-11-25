@@ -1210,3 +1210,10 @@ Befintliga förberedda ändringar återupptagna; GitHub-main fortfarande aa23019
 Öppna PR:er kontrollerade och lämnade orörda. Alla 29 Node/DOM-sviter samt
 produktionsbygget godkända på nytt. Lokal browser bekräftar att Tjänster och
 Resultat & ersättning öppnar respektive arbetsvy direkt. Windows har inte testats.
+
+## 25 november 2026 · Leverans återupptagen
+PR #125 skapad. CI 45622992601 bekräftar direktnavigation, fem månadsrader
+och två verkliga XLSX-nedladdningar plus reservlänk vid 320/390/1440 px.
+29 Node/DOM-sviter gröna. Två äldre browserkontroller uppdaterade för den
+nya statusfrasen och entydigt val av materialbibliotekets befintliga knapp.
+Produktionsbygge godkänt. Windows har inte testats direkt.

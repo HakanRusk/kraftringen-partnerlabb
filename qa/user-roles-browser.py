@@ -95,7 +95,7 @@ async def main():
                 download = await pending.value
                 assert download.suggested_filename == 'Fakturaunderlag_vast_2026-10_urval.xlsx'
                 assert await download.failure() is None
-                await expect(page.locator('[data-oc-export-status="2026-10"]')).to_contain_text('Excel-filen har skapats')
+                await expect(page.locator('[data-oc-export-status="2026-10"]')).to_contain_text('Nedladdning begärd')
                 await page.locator('#pu-account').click()
                 await page.locator('[data-go="test-users"]').click()
                 await page.locator('[data-pu-login="demo-admin"]').click()
