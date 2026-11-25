@@ -1181,3 +1181,32 @@ oktober och mobilkort per månad gör belopp/Excel synliga utan horisontell scro
 CI 44748009133 grön, men bildgranskning fann en äldre !important-minimibredd
 på tabellen som klippte mobilkortens högra del. Lokal CSS-override rättad och
 browserprovet utökat till att kontrollera även tabellens interna överflöde.
+
+Kvittens föregående leverans: PR #124, main aa23019884c680ed81975c4534be454f8c011e76,
+CI 44748825869 grön. Publicerad 20 november som version 40,
+version appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_f8c53deb34b4819195485b196d36fdae,
+deployment appgdep_6b005303fad08191bfafe957a8fe7b4d succeeded.
+
+## 20 november 2026 · Direkta arbetsvyer och faktisk Excel-nedladdning
+Håkan rapporterar att Excel-knappen bara visar ett skapad-besked och att
+vänstermenyn tvingar användaren genom innehållsförteckningar. Egen gren från
+aa23019; öppna PR:er inklusive Daniels #64 lästa och lämnade orörda.
+Tjänster öppnar direkt Ordrar & resultat för säljpartners, bestånd för aktiverad
+fastighetspartner och personalerbjudanden för personalpartner. Resultat öppnar
+provision/kickback för behöriga roller; Kunskap öppnar utbildningen. Kompletterande
+funktioner ligger som genvägar på arbetsvyn. Gamla hubblänkar fungerar som alias.
+Excel använder den ursprungliga klickhändelsen för Spara-dialog när API:t stöds,
+och kvitterar Sparad först efter skrivning/stängning. Annars begärs vanlig
+nedladdning och en bestående länk visas, utan att påstå att filen sparats.
+Kontroll av konto/partner efter filgenerering kvarstår; avbrott/diskfel särskiljs.
+Lokal browser verifierar direkta vyer, fem rader maj–september och en faktisk
+Excel-nedladdning. Windowsmiljön kunde inte observeras direkt. Nya automatiska
+prov omfattar Spara/cancel/fel, aktörsbyte, filbytes, per-rad-filnamn och reservlänk.
+Lokal verifiering: 29 Node/DOM-sviter gröna, produktionsbygge godkänt.
+
+## 23 november 2026 · Återupptagen leverans
+Håkan återger och bekräftar hela beställningen efter avbruten godkännandedialog.
+Befintliga förberedda ändringar återupptagna; GitHub-main fortfarande aa23019.
+Öppna PR:er kontrollerade och lämnade orörda. Alla 29 Node/DOM-sviter samt
+produktionsbygget godkända på nytt. Lokal browser bekräftar att Tjänster och
+Resultat & ersättning öppnar respektive arbetsvy direkt. Windows har inte testats.

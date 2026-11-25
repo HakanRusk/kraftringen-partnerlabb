@@ -126,6 +126,41 @@
   if(demoMode)P.resetDemo=()=>P.resetScope(true);
   P.toast=message=>{if(storageConflict&&!message.includes('annan flik'))message+=' · En annan flik har ändrat data. Kopiera osparad inmatning och ladda om innan du sparar igen.';else if(storageFailed&&!message.includes('kunde inte'))message+=' · Kunde inte sparas i webbläsaren.';$('#toast').textContent=message;$('#toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').hidden=true,6000);};
   P.download=(filename,content,type='text/plain;charset=utf-8')=>{const url=URL.createObjectURL(new Blob([content],{type}));const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+  // Reserve a native save operation during the user's click, before XLSX serialization.
+  // A synthetic anchor click alone cannot confirm that the browser saved a file.
+  const downloadLinks=new Set();
+  P.saveExcel=async({filename,build,valid=()=>true,status})=>{
+    const say=text=>{if(status)status.textContent=text;};
+    let handle;
+    try{
+      if(!valid())throw Error('Kontot eller underlaget har ändrats. Öppna sidan igen.');
+      if(typeof window.showSaveFilePicker==='function'){
+        try{handle=await window.showSaveFilePicker({suggestedName:filename,types:[{description:'Excel-arbetsbok',accept:{'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':['.xlsx']}}]});}
+        catch(error){if(error.name==='AbortError'){say('Nedladdningen avbröts.');return false;}if(!['SecurityError','NotAllowedError'].includes(error.name))throw error;}
+      }
+      say('Skapar Excel-filen…');
+      const bytes=await build();
+      if(!valid())throw Error('Kontot eller underlaget har ändrats. Ingen fil har sparats.');
+      if(handle){
+        const writer=await handle.createWritable();
+        try{await writer.write(bytes);if(!valid())throw Error('Kontot ändrades. Ingen fil har sparats.');await writer.close();}
+        catch(error){try{await writer.abort();}catch{}throw error;}
+        say('Sparad: '+filename);return true;
+      }
+      const url=URL.createObjectURL(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+      const link=document.createElement('a');link.href=url;link.download=filename;link.textContent='Ladda ned '+filename;link.className='text-button';
+      link.onclick=ev=>{if(!valid()){ev.preventDefault();say('Kontot har ändrats. Öppna underlaget igen.');}};
+      say('Nedladdning begärd. Om filen inte visas bland hämtade filer, använd länken: ');
+      (status||document.body).append(link);downloadLinks.add({url,link});
+      link.click();
+      if(window.top!==window.self&&status){const own=document.createElement('a');own.href=location.href;own.target='_blank';own.rel='noopener';own.textContent='Öppna appen i egen flik om nedladdningen blockeras här';status.append(document.createElement('br'),own);}
+      return true;
+    }catch(error){say('Kunde inte spara Excel-filen: '+(error.message||'Försök igen.'));return false;}
+  };
+  // Keep fallback links valid while they are visible, rather than revoking after one second.
+  const clearDownloadLinks=()=>{for(const item of downloadLinks)if(!item.link.isConnected){URL.revokeObjectURL(item.url);downloadLinks.delete(item);}};
+  if(window.MutationObserver)new window.MutationObserver(clearDownloadLinks).observe(document.body,{childList:true,subtree:true});
+  window.addEventListener?.('pagehide',()=>{for(const item of downloadLinks)URL.revokeObjectURL(item.url);downloadLinks.clear();});
   P.openDialog=(title,html,mount)=>{$('#dialog-title').textContent=title;$('#dialog-body').innerHTML=html;if(!$('#portal-dialog').open)$('#portal-dialog').showModal();mount?.();};
   P.closeDialog=()=>$('#portal-dialog').close();
   P.date=value=>{

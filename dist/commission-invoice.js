@@ -113,10 +113,8 @@
   }
   async function download(button){
     const month=button?.dataset.ocExport;if(month)C.selectMonth(month);const status=button?.closest('td')?.querySelector('[role=status]');if(button)button.disabled=true;
-    try{const {book,report,filename}=buildWorkbook();if(status)status.textContent='Skapar Excel-filen…';const buffer=await book.xlsx.writeBuffer();
-      // Re-check identity and partner after asynchronous serialization.
-      if(!allowed()||P.prototypeUsers.current().id!==report.actor||P.partner!==report.partner)throw new Error('Demokonto eller partner ändrades. Öppna fakturaunderlaget på nytt.');
-      const url=URL.createObjectURL(new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));const link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);if(status)status.textContent='Excel-filen har skapats. Kontrollera tidigare fakturering separat.';
+    try{const {book,report,filename}=buildWorkbook();
+      await P.saveExcel({filename,status,build:()=>book.xlsx.writeBuffer(),valid:()=>allowed()&&P.prototypeUsers.current()?.id===report.actor&&P.partner===report.partner});
     }catch(error){if(status)status.textContent=error.message||'Exporten kunde inte skapas. Försök igen.';else P.toast(error.message||'Exporten kunde inte skapas.');}finally{if(button)button.disabled=!allowed();}
   }
   const previousBind=C.bind;C.bind=()=>{previousBind();document.querySelectorAll('[data-oc-export]').forEach(button=>button.onclick=()=>download(button));};

@@ -11,6 +11,7 @@ async def main():
         for width in (320,390,1440):
             context=await browser.new_context(viewport={'width':width,'height':800},accept_downloads=True)
             page=await context.new_page()
+            await page.add_init_script('window.showSaveFilePicker=undefined')
             errors=[]
             page.on('pageerror',lambda e:errors.append(str(e)))
             await page.goto(BASE+'#test-users')
