@@ -1,7 +1,7 @@
 # Partnerlabb – B2B-prototyp
 
 Kraftringens interna resultatöversikt och arbetsytor för säljpartners,
-fastighetsbolag och personalavtal. [Öppna portalen](https://kraftringen-partnerlabb-hakan.wry-mite-1036.chatgpt.site).
+fastighetsbolag och personalavtal. [Öppna portalen](https://kraftringen-partnerlabb-hakan.hakan-rusk.chatgpt.site).
 Privat Sites-inloggning gäller; källkoden är publik.
 
 Ägare och samordnare: **Håkan Rusk (HakanRusk)**. Huvudkälla:
