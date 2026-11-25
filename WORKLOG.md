@@ -1244,3 +1244,24 @@ Målarkitektur kontra faktiskt implementerad förberedelse dokumenteras i
 ESTATE-INTEGRATION.md. Verkliga adapters, serverbehörighet, beständig
 transaktionslagring, ködrift och leverantörernas kontraktstester återstår.
 Ingen CRM/Gazelle/nätägare ansluten, ingen kunddata eller ny runtimekonfiguration.
+
+
+## 25 november 2026 · PR #127 publicerad privat
+Håkan godkände uttryckligen: ”Publicera PR #127 och demoflödet”.
+Godkänd PR-HEAD: 1ac657d95e2e55179e38711cbb75259efb7a2d0d.
+CI 45693075370: Node and DOM, Chromium flows och QA gate gröna;
+30 Node/DOM-sviter inklusive 32 offlinefall samt 320/390/1440 px.
+PR #127 mergad till main 8a4bf2680cbf4d3c8be3ee7c153db787894ccf0d;
+samma källträd som testad HEAD. Sites-källan uppdaterad utan force-push,
+exakt denna merge-revision byggd och paketerad med lyckat resultat.
+
+Publicerad som version 42
+version-ID: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_16fc5d8155e481919c139e661439bb45
+deployment-ID: appgdep_6b07455a89588191a5db0aacdaac83e1
+status: succeeded, 2026-11-25T20:30:33.702428+00:00
+URL: https://kraftringen-partnerlabb-hakan.hakan-rusk.chatgpt.site
+
+Privat ägaråtkomst bekräftad och bevarad. Ingen CRM/Gazelle/nätägaranslutning
+eller åtkomständring aktiverad. Publiceringen är verifierad av Sites; ingen
+ny extern affärshändelse eller testmejl har skickats i publiceringspasset.
+Denna kvittens ändrar enbart WORKLOG; publicerad appkod är oförändrad.
