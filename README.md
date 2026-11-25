@@ -402,3 +402,15 @@ Excel sparas via webbläsarens Spara-dialog där tillgänglig. Annars startas en
 vanlig nedladdning med en kvarvarande, klickbar reservlänk. Sparad kvitteras
 bara efter verifierad filskrivning. Webbläsarens vanliga nedladdning kan inte
 kvitteras som sparad av webbappen. Inbäddad vy erbjuder öppning i egen flik.
+
+### Avtalsunderlag i fastighetsbeståndet
+
+Elhandel och elnät visas oberoende från läsmodellen. Saknade fakta ger
+Underlag saknas; en beställning är inte ett aktivt avtal eller faktisk utflyttning.
+Äldre testunderlag märks som ej verifierat, och historiska handlingar behålls.
+Lägenhetens ”Visa fiktivt avtalsflöde” visar olika slutdatum, partiell visningsel
+samt nästa hyresgäst utan att ändra sparad data eller skicka något.
+
+Transportfri projektor, tekniskt användningsexempel, tester och återstående
+systemverifiering finns i [docs/ESTATE-INTEGRATION.md](docs/ESTATE-INTEGRATION.md).
+Ingen anslutning till CRM, Gazelle eller nätägare är aktiverad.
