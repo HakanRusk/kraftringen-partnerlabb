@@ -503,3 +503,14 @@ Excel sparas via webbläsarens Spara-dialog där tillgänglig. Annars startas en
 vanlig nedladdning med en kvarvarande, klickbar reservlänk. Sparad kvitteras
 bara efter verifierad filskrivning. Webbläsarens vanliga nedladdning kan inte
 kvitteras som sparad av webbappen. Inbäddad vy erbjuder öppning i egen flik.
+
+### P-18 · Genomförandeförtydligande, 25 november 2026
+Håkan beställde ett integrationsunderlag och därefter ”Gör uppdateringarna!”.
+Genomförandet behåller beståndet och fyrfältsmodellen. Separat transportfri
+projektor/testscenario förbereds i PR; saknade fakta faller inte tillbaka på
+beställningar och fysisk uthyrning hålls separat. Mottagningskvitto innebär inte
+skapade avtal. Äldre lokala testhandlingar bevaras och märks.
+Ingen verklig anslutning, kunddata eller publicering ingår i detta pass.
+Systemspecifika fält/koder, säker serverlagring och behörighet återstår enligt
+[ESTATE-INTEGRATION.md](ESTATE-INTEGRATION.md); specifikationens målarkitektur
+är inte en redan driftsatt integration.

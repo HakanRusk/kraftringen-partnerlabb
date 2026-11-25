@@ -1217,3 +1217,30 @@ och två verkliga XLSX-nedladdningar plus reservlänk vid 320/390/1440 px.
 29 Node/DOM-sviter gröna. Två äldre browserkontroller uppdaterade för den
 nya statusfrasen och entydigt val av materialbibliotekets befintliga knapp.
 Produktionsbygge godkänt. Windows har inte testats direkt.
+
+## 25 november 2026 · Avtalsfakta och integrationsförberedelse enligt P-18
+Håkan beställde integrationsspecifikationen och därefter ”Gör uppdateringarna!”.
+Egen gren codex/estate-contract-integration-foundation från main
+02f4ad076880ff9804d309b2080962f1ab88d9ac. Öppna PR:er kontrollerade;
+övrigas kod och kvittens-PR:er lämnas orörda. Separat PR, ingen merge/publicering.
+
+Transportfri ingest/projektor med fyra-fältsprojektion, verifierade mappningar,
+historik, dubblett-/revisionsskydd, karantän, datumgränser och rättningar. Skiljer
+annullerat framtida avtal från återkallat faktaunderlag. Portalens befintliga
+bestånd visar separata fakta/uthyrningsuppgifter och beställningar utan att
+härleda aktivt avtal från beställning. Äldre testunderlag märks, handlingar
+bevaras. Nya mottagningskvitton lovar inte skapade avtal. Överlappande slutdatum
+anges på beställningen. Ett fristående 12-stegsfall visar visningsel och nästa
+hyresgäst utan lagring eller utskick.
+
+Lokal kontroll: npm test, 30 Node/DOM-sviter gröna. Avtalsmodulens 32 offlinefall,
+fastighets-, partnerhub- och rollsviter omkörda efter sista kvalitets-/textändringen
+med godkänt resultat. npm run build godkänt. Lokal desktopbrowser visuellt
+kontrollerad för bestånd, fiktivt delutfall 1 december och ny hyresgäst 15 december.
+Browserregression för 320/390/1440 px utökad; GitHub CI kvitteras i PR efter körning.
+Ingen verklig post skickad; testsviter stubbar mejltransporten.
+
+Målarkitektur kontra faktiskt implementerad förberedelse dokumenteras i
+ESTATE-INTEGRATION.md. Verkliga adapters, serverbehörighet, beständig
+transaktionslagring, ködrift och leverantörernas kontraktstester återstår.
+Ingen CRM/Gazelle/nätägare ansluten, ingen kunddata eller ny runtimekonfiguration.

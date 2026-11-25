@@ -7,7 +7,7 @@ async function boot(saved,identity,url='https://portal.example/?workspace=vast')
  w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.matchMedia=()=>({matches:false,addEventListener(){}});w.confirm=()=>true;
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;};
  if(saved)w.localStorage.setItem('partnerlabb.portal.v2',saved);if(identity)w.sessionStorage.setItem('partnerlabb.demo-user.v1',identity);
- for(const name of ['partner-setup','app','partner-crm','commercial','product-facts','partner','partner-commission','product-catalog','partner-orders','prototype-users','property-defaults','estate-portfolio','customer-services'])w.eval(fs.readFileSync(`dist/${name}.js`,'utf8'));
+ for(const name of ['partner-setup','app','partner-crm','commercial','product-facts','partner','partner-commission','product-catalog','partner-orders','prototype-users','property-defaults','estate-contracts','estate-contract-scenario','estate-portfolio','customer-services'])w.eval(fs.readFileSync(`dist/${name}.js`,'utf8'));
  w.document.dispatchEvent(new w.Event('DOMContentLoaded'));return {dom,w,P:w.Portal,doc:w.document};
 }
 const {dom,w,P,doc}=await boot(),A=P.prototypeUsers,O=P.orderWorkspace;
@@ -21,7 +21,8 @@ doc.querySelector('[data-estate-unit="a1"]').click();
 let transportCalls = 0;
 w.fetch = async (_url, options) => {
   const request = JSON.parse(options.body);
-  assert.match(request.lines.join(' '), /fullmakt.+EL-/);
+  assert.match(request.lines.join(' '), /fullmaktsreferens FULL-123/);
+  assert.match(request.lines.join(' '), /ännu inte bekräftade/);
   assert.equal(request.kind,'estate-confirmation');
   transportCalls++;
   return {ok:true,json:async()=>({accepted:true,recipient:'test@lab.example'})};
