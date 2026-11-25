@@ -1217,3 +1217,12 @@ och två verkliga XLSX-nedladdningar plus reservlänk vid 320/390/1440 px.
 29 Node/DOM-sviter gröna. Två äldre browserkontroller uppdaterade för den
 nya statusfrasen och entydigt val av materialbibliotekets befintliga knapp.
 Produktionsbygge godkänt. Windows har inte testats direkt.
+
+## 25 november 2026 · Publiceringskvittens version 41
+PR #125 integrerad efter grön CI 45623747764 (Node/DOM, Chromium och QA gate).
+Publicerad main: 02f4ad076880ff9804d309b2080962f1ab88d9ac.
+Sites version 41: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_c626cd1431dc8191baecf8f6003739cc.
+Deployment appgdep_6b06e38e077481918dcdca067e03ff86 succeeded.
+Privat ägaråtkomst bevarad. Direktnavigation, fem månadsrader maj–september,
+riktiga XLSX-filer och reservlänk verifierade i Chromium vid 320/390/1440 px.
+Windowsmiljön ej direkt observerad. Denna kvittens ändrar inte appkoden.
