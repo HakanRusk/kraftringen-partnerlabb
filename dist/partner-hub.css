@@ -11,3 +11,5 @@
 .hub-link small{font-size:.85rem}.hub-link>span{position:absolute;right:1rem;top:1rem}
 .hub-list{list-style:none;padding:0;margin:0}.hub-list li{border-bottom:1px solid var(--kf-blue-20);padding:.75rem 0}.hub-list li span{display:block}
 .hub-list [hidden],tr[data-unit-address][hidden]{display:none}
+
+.hub-tabs button{min-height:44px}.oc-row-actions a{overflow-wrap:anywhere}.oc-monthly-table [role=status] a{display:block;overflow-wrap:anywhere}

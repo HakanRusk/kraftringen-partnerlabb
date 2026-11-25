@@ -67,16 +67,50 @@
     if(id==='property-partnership')return 'partner-hub-agreement';
     return 'partner-hub-services';
   }
+  let section='partner-hub-services';
+  function destination(id){
+    if(!active())return id;
+    if(id==='partner-hub-home')return 'overview';
+    if(['partner-hub-services','partner-hub-consumer','partner-hub-business'].includes(id)){
+      section='partner-hub-services';
+      return property()?(estate()?'estate-home':'property-intake'):sales().length?'order-list':P.getPartner().type==='employee'?'employee-overview':'support';
+    }
+    if(id==='partner-hub-results'){
+      section=id;return property()?'property-results':sales().length?(A.allowed('order-commission')?'order-commission':'order-list'):'employee-overview';
+    }
+    if(id==='partner-hub-learning'){section=id;return sales().length?'academy':'product-facts';}
+    if(['order-customers','products','crm','estate-home','estate-cases','property-intake','property-registrations'].includes(id))section='partner-hub-services';
+    return id;
+  }
+  const go=P.go;
+  P.go=P.navigate=(id,options)=>go(destination(id),options);
+  function directLinks(current){
+    let links=[];
+    if(current==='partner-hub-services'){
+      if(property())links.push([estate()?'estate-home':'property-intake','Fastigheter & inflyttningar'],[estate()?'estate-cases':'property-registrations','Inflyttningsärenden']);
+      if(sales().length){links.push(['order-list','Ordrar & resultat'],['order-customers','Kunder'],['products','Produkter & prislistor']);if(P.getPartner().crmMode==='portal'&&A.allowed('crm'))links.push(['crm','Kunddialoger']);}
+      if(P.getPartner().type==='employee')links.push(['employee-overview','Personalerbjudanden']);
+    }else if(current==='partner-hub-results'){
+      if(property())links.push(['property-results','Kunder & kickback']);
+      if(sales().length){if(A.allowed('order-commission'))links.push(['order-commission','Provision & fakturaunderlag']);links.push(['order-list','Ordrar & resultat']);}
+    }else if(current==='partner-hub-learning'){
+      if(sales().length)links.push(['academy','Utbildning'],['academy-library','Materialbibliotek']);
+      links.push(['product-facts','Avtalsfakta'],['support','Hjälp & support']);
+    }
+    return links.length>1?'<nav class="hub-tabs" aria-label="Genvägar på arbetsytan">'+links.filter(([id])=>A.allowed(id)).map(([id,title])=>'<button type="button" data-go="'+id+'" aria-current="'+(P.page===id?'page':'false')+'">'+P.e(title)+'</button>').join('')+'</nav>':'';
+  }
   const previous=P.render;
   P.render=()=>{
+    P.page=destination(P.page);
     previous();
     if(P.role==='internal')previewPartner=undefined;
     if(!active())return;
-    const current=group(P.page);
+    const current=P.page==='order-list'?section==='partner-hub-results'?section:'partner-hub-services':group(P.page);
     document.querySelector('#nav').innerHTML=main.map(([id,title,icon])=>'<button class="nav-button '+(id===current?'active':'')+'" data-go="'+id+'" aria-current="'+(id===current?'page':'false')+'">'+P.icon(icon)+'<span>'+title+'</span></button>').join('');
     document.querySelector('#view .ow-tabs')?.remove();
-    const section=main.find(([id])=>id===current)[1], heading=document.querySelector('#view h1')?.textContent || section;
-    document.querySelector('#current-page').textContent=heading===section?section:section+' / '+heading;
+    document.querySelector('#view')?.insertAdjacentHTML('afterbegin',directLinks(current));
+    const sectionTitle=main.find(([id])=>id===current)[1], heading=document.querySelector('#view h1')?.textContent || sectionTitle;
+    document.querySelector('#current-page').textContent=heading===sectionTitle?sectionTitle:sectionTitle+' / '+heading;
   };
   P.partnerHub={active,openPreview(id){previewPartner=id;P.previewPartner(id);P.go('partner-hub-services');}};
 })();

@@ -488,3 +488,18 @@ beräkningsvärde per partner och session, med samma belopp för valda månader.
 Det är inte verifierade affärsvillkor. Historiska manuella betalningsposter
 bevaras separat och får inte summeras med den nya beräkningen. Excel är ett
 preliminärt exempelunderlag; export varken fakturerar eller bokför en betalning.
+
+### Direkta arbetsvyer och Excel · 20 november 2026
+Den gemensamma vänstermenyn leder till arbetsvyer med innehåll. Tjänster öppnar
+Ordrar & resultat för säljpartners, bestånd/inflyttningar för fastighetspartner
+eller personalerbjudanden. Kunder, produkter/prislistor och andra aktiverade
+funktioner nås via genvägar på sidan. Resultat & ersättning öppnar provision
+för säljledare, orderresultat för säljare och Kunder & kickback för fastigheter.
+Kunskap & support öppnar utbildningen för säljpartners, med material och hjälp
+på samma navigationsrad. Äldre hubblänkar är kompatibla direktlänkar.
+Provisionsintervall visas alltid som separata månadsrader. Varje rad har sin
+Excelknapp; saknade/ogiltiga underlag blockerar export med förklaring.
+Excel sparas via webbläsarens Spara-dialog där tillgänglig. Annars startas en
+vanlig nedladdning med en kvarvarande, klickbar reservlänk. Sparad kvitteras
+bara efter verifierad filskrivning. Webbläsarens vanliga nedladdning kan inte
+kvitteras som sparad av webbappen. Inbäddad vy erbjuder öppning i egen flik.

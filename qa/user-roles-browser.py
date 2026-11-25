@@ -39,6 +39,7 @@ async def main():
         for width in (1440, 390, 320):
             context = await browser.new_context(viewport={'width': width, 'height': 900})
             page = await context.new_page()
+            await page.add_init_script('window.showSaveFilePicker=undefined')
             errors = []
             page.on('pageerror', lambda error: errors.append(str(error)))
             try:
@@ -84,7 +85,6 @@ async def main():
                 await expect(page.locator('[data-pu-seller="demo-vast-seller-2"]')).to_be_focused()
                 if width < 1000: await page.locator('#menu-toggle').click()
                 await page.locator('#nav [data-go="partner-hub-results"]').click()
-                await page.locator('#view [data-go="order-commission"]').click()
                 await expect(page.locator('.oc-monthly-table')).to_be_visible()
                 await page.locator('#oc-dataset').select_option('new')
                 await choose_period(page, 'commission', '2026-10')
@@ -95,7 +95,7 @@ async def main():
                 download = await pending.value
                 assert download.suggested_filename == 'Fakturaunderlag_vast_2026-10_urval.xlsx'
                 assert await download.failure() is None
-                await expect(page.locator('[data-oc-export-status="2026-10"]')).to_contain_text('Excel-filen har skapats')
+                await expect(page.locator('[data-oc-export-status="2026-10"]')).to_contain_text('Nedladdning begärd')
                 await page.locator('#pu-account').click()
                 await page.locator('[data-go="test-users"]').click()
                 await page.locator('[data-pu-login="demo-admin"]').click()

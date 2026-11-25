@@ -31,7 +31,7 @@ async def main():
             assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
             await page.reload()
             await expect(page.locator('.lp-banner')).to_contain_text('1 av 10')
-            await page.locator('[data-go="academy-library"]').click()
+            await page.get_by_role('button', name='Filmer & tidigare material', exact=True).click()
             await expect(page.locator('.lp-page')).to_have_count(0)
             await expect(page.locator('a[href*="#lesson/"]')).to_have_count(18)
             for section in ('calls', 'scripts', 'invoice', 'links', 'films'):

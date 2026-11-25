@@ -15,13 +15,13 @@ for(const script of d.querySelectorAll('script[src]')) {
 d.dispatchEvent(new w.Event('DOMContentLoaded'));
 const P=w.Portal, click=selector=>{const button=d.querySelector(selector);assert.ok(button,selector);button.click()};
 const expected=['Översikt','Tjänster','Resultat & ersättning','Kunskap & support','Vårt samarbete'];
-for(const [user,service] of [['demo-vast-seller-1','partner-hub-consumer'],['demo-syd-manager','partner-hub-business'],['demo-estate-manager','estate-home']]){
+for(const [user,service] of [['demo-vast-seller-1','order-list'],['demo-syd-manager','order-list'],['demo-estate-manager','estate-home']]){
   assert.ok(P.prototypeUsers.signIn(user).ok);
   assert.deepEqual(Array.from(d.querySelectorAll('#nav button'),b=>b.textContent.trim()),expected);
   click('#nav [data-go="partner-hub-services"]');
-  click('#view [data-go="'+service+'"]');
   assert.equal(P.page,service);
 }
+P.prototypeUsers.signIn('demo-vast-manager');click('#nav [data-go="partner-hub-results"]');assert.equal(P.page,'order-commission');assert.ok(d.querySelector('.oc-monthly-table'));click('#nav [data-go="partner-hub-learning"]');assert.equal(P.page,'academy');assert.ok(d.querySelector('#view [data-go="academy-library"]'));P.prototypeUsers.signIn('demo-estate-manager');click('#nav [data-go="partner-hub-results"]');assert.equal(P.page,'property-results');
 P.go('overview');assert.ok(d.querySelector('[data-unit-search]'));click('[data-estate-unit="a1"]');
 assert.equal(P.page,'estate-portfolio');
 const form=d.querySelector('#estate-change');
@@ -41,7 +41,7 @@ const search=d.querySelector('[data-unit-search]');search.value='Parkvägen';sea
 assert.equal(d.querySelectorAll('[data-unit-address]:not([hidden])').length,1);
 P.prototypeUsers.signIn('demo-admin');P.go('partners');
 click('[data-is-partner="estate1"]');click('[data-is-tab="services"]');click('[data-is-preview-services="estate1"]');
-assert.equal(P.page,'partner-hub-services');click('[data-go="estate-home"]');
+assert.equal(P.page,'estate-home');
 assert.ok(d.querySelector('[data-unit-search]'));
 dom.window.close();
 console.log('PASS gemensam meny, tre tjänster, samma inflyttning och ärende, beståndssökning och intern förhandsvisning');
