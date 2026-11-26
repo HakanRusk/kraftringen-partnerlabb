@@ -1244,3 +1244,17 @@ Målarkitektur kontra faktiskt implementerad förberedelse dokumenteras i
 ESTATE-INTEGRATION.md. Verkliga adapters, serverbehörighet, beständig
 transaktionslagring, ködrift och leverantörernas kontraktstester återstår.
 Ingen CRM/Gazelle/nätägare ansluten, ingen kunddata eller ny runtimekonfiguration.
+
+## 2026-11-26 · Lokal kandidat: privat Provisionsstudio från adminsidan
+
+Håkan frågade om studion kan bli del av partnerportalens admindel med åtkomst endast för Kraftringen. Förberedd separat lokal gren codex/admin-provisionsstudio från publicerad Sites-revision 8a4bf2680cbf4d3c8be3ee7c153db787894ccf0d. Inget GitHub-anrop med mutation, ingen publicering och ingen utökad åtkomst. Tidigare förbud mot GitHub/produktionsändringar respekteras.
+
+Adminmeny och route commission-models, inbäddning av den redan privata studion samt direktlänkar till dess sex vyer. Studion behåller självständig serverkontrollerad Sites-inloggning; portalens lokala roller utgör inte säkerhetsgränsen. Handläggare/partners/kunder nekas i portalens flöde. Inga underlag eller modellförslag migreras.
+
+Ny DOM-kontroll passerar för admin, sex nekade roller, direkt render, partnervy, utloggning och bevarad orderdata. Full regression körs separat före eventuell leverans/publicering.
+
+Verifiering klar: befintliga 30 Node/DOM-sviter passerade utan fel samt den nya åtkomstsviten. Webbläsaren visar administratörens menyval, adminsidan och den separata privata inloggningsspärren i ramen. Inloggad inbäddning är inte verifierad i denna browsersession; direktlänk finns som reserv. Ingen publicering gjord.
+
+## 2026-11-26 · Godkänd integration och publicering av adminsidan
+
+Håkan svarade ”Ja” på det konkreta förslaget att lägga den förberedda adminintegrationen i GitHub och publicera i Partnerlabbet. Mandatet omfattar denna egenutvecklade ändring, med bevarad privat åtkomst och utan nya integrationer eller delning till kollegor. Aktuell main och publicerad Sites-källa är båda 8a4bf2680cbf4d3c8be3ee7c153db787894ccf0d; andra öppna PR:er lämnas orörda. Tidigare begränsning mot GitHub/publicering är därmed hävd för denna avgränsade leverans.
