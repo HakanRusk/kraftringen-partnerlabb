@@ -1264,3 +1264,9 @@ Håkan svarade ”Ja” på det konkreta förslaget att lägga den förberedda a
 Användaren kunde varken öppna inbäddningen eller den externa länken i v43. Beroendet av separat privat Sites-origin ersätts med lokal studio under portalens egen privata adress. Den exakta orsaken i användarens webbläsare är inte verifierad. Ingen åtkomst breddas eller verklig beräkning ändras. Direkt barn-URL laddar inga demoskript; administratörens portalroute krävs. Gamla lokala studiodata på den separata adressen lämnas kvar.
 
 Lokalt: 31 Node/DOM-sviter godkända; Chromium via browserpreview visar inbäddad studio och fastighetspartnerns månadsrapport. Ny CI-regression testar de sex vyerna, maj–september, faktisk XLSX-nedladdning, direkt-URL och utloggning. Publicering och CI återstår vid denna kandidatpost.
+
+## Publiceringskvittens v44 · 26 november 2026
+
+PR #131 integrerad efter grön CI 45850375303 på c961c66946e14b1932b1bf7bbaa2ead0dfb2b05d. Main/publicerad källa: 991c044c67ae7f3cb89577e3650b66691a68d804. 31 Node/DOM-sviter och samtliga Chromium-flöden godkända, inklusive sex studiovyer, fem månadsrader, faktisk XLSX, utloggning och direkt-URL-spärr. Separat kontroll: 12 modelltestfall, 24 Face2face-jämförelser, 72 Excel-månadsrader och bevarade låsta regler.
+
+Version: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_3727f076c3748191ad471288949db9cf. Deployment: appgdep_6b0852bdcc3081918d0d5e9b80526c3f, succeeded 2026-11-26T15:39:55.907728Z. URL: https://kraftringen-partnerlabb-hakan.hakan-rusk.chatgpt.site . Privat ägaråtkomst och runtime env revision 5 bevarade. Användarens egen enhet är inte direkt verifierad. Denna kvittens ändrar ingen appkod.
