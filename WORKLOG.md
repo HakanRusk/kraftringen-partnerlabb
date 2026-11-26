@@ -1258,3 +1258,17 @@ Verifiering klar: befintliga 30 Node/DOM-sviter passerade utan fel samt den nya 
 ## 2026-11-26 · Godkänd integration och publicering av adminsidan
 
 Håkan svarade ”Ja” på det konkreta förslaget att lägga den förberedda adminintegrationen i GitHub och publicera i Partnerlabbet. Mandatet omfattar denna egenutvecklade ändring, med bevarad privat åtkomst och utan nya integrationer eller delning till kollegor. Aktuell main och publicerad Sites-källa är båda 8a4bf2680cbf4d3c8be3ee7c153db787894ccf0d; andra öppna PR:er lämnas orörda. Tidigare begränsning mot GitHub/publicering är därmed hävd för denna avgränsade leverans.
+
+
+## 26 november 2026 · Privat publicering av Provisionsmodeller, version 43
+
+Håkan godkände integration och publicering. PR #129 mergad till main f4db07e6ad1ad3a62127e04327fa7a57bc9afe70 efter grön GitHub Actions-körning 45840342712 (Node/DOM, Chromium flows och QA gate). Ny åtkomstsvit ingår i totalt 31 Node/DOM-sviter. Produktionsbygge godkänt; merge-trädet är identiskt med det testade PR-trädet.
+
+Sites version 43: appgprj_6adb2c876a0c8191b1fa3c755a73f61a~appgver_d6016532fd648191960a12b2207725df
+Deployment: appgdep_6b0844a8a3e88191a88bddf2e8629757
+Status: succeeded, 2026-11-26T14:39:51.209549+00:00
+URL: https://kraftringen-partnerlabb-hakan.hakan-rusk.chatgpt.site
+
+Menyn Provisionsmodeller finns endast för Kraftringens administratör i intern vy. Studion behåller privat Sites-inloggning och separat lokal demodata. Ingen verklig åtkomst har delats med fler personer. Inloggad iframe är inte verifierad i molnwebbläsaren; separat öppningslänk finns som reserv. Befintliga beräkningar, ordrar och underlag är oförändrade.
+
+Denna kvittens ändrar endast WORKLOG och kräver ingen ny apppublicering.
