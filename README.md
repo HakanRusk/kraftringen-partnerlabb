@@ -414,3 +414,11 @@ samt nästa hyresgäst utan att ändra sparad data eller skicka något.
 Transportfri projektor, tekniskt användningsexempel, tester och återstående
 systemverifiering finns i [docs/ESTATE-INTEGRATION.md](docs/ESTATE-INTEGRATION.md).
 Ingen anslutning till CRM, Gazelle eller nätägare är aktiverad.
+
+## Provisionsmodeller i administrationen – 26 november 2026
+
+Ny intern adminsida `commission-models`. Endast `admin` i Kraftringens interna vy ser menyvalet och får rendera den privata Provisionsstudion. Kraftringens handläggare, partnerroller och kundroller nekas i den befintliga route-kontrollen. Utloggning tar bort inbäddningen. Studion öppnas från sin befintliga privata Sites-adress, som behåller egen riktig inloggning och ägaråtkomst; inga provisionsdata kopieras till partnerportalens publika statiska resurser.
+
+Inbäddad visning har en länk för separat flik eftersom privat inloggning/webbläsarpolicy kan kräva den. Detta är en koppling i adminsidan, inte en migrering av studions data till portalens datamodell. Övriga Kraftringen-administratörer behöver få verklig åtkomst separat. Demoroller är inte autentisering. Inga rättigheter har utökats.
+
+Håkan godkände den 26 november GitHub-ändring och publicering av denna adminintegration. `qa/commission-model-admin.mjs` provar adminmeny, sex nekade roller, direktlänk, partnervy, utloggning och oförändrade orderdata.

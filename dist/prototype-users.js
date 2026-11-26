@@ -77,7 +77,7 @@
     if(['estate-portfolio','estate-home','estate-cases','estate-register'].includes(page))return (current().role==='manager' || internal() && P.partnerHub?.active()) && P.estatePortfolio?.enabled(P.partner);
     if(page.startsWith('partner-hub-'))return !isCustomer() && (!internal() || P.partnerHub?.active());
     if(isCustomer())return ['customer-home','customer-contracts','customer-cases','customer-catalog'].includes(page);
-    if(['user-admin','product-access','settings'].includes(page))return admin();
+    if(['user-admin','product-access','settings','commission-models'].includes(page))return admin();
     if(internal())return true;
     if(page==='employee-overview')return P.getPartner(current().partner)?.type==='employee';
     if(partnerPages.has(page))return true;
