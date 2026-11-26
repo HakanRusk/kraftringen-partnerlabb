@@ -1258,3 +1258,9 @@ Verifiering klar: befintliga 30 Node/DOM-sviter passerade utan fel samt den nya 
 ## 2026-11-26 · Godkänd integration och publicering av adminsidan
 
 Håkan svarade ”Ja” på det konkreta förslaget att lägga den förberedda adminintegrationen i GitHub och publicera i Partnerlabbet. Mandatet omfattar denna egenutvecklade ändring, med bevarad privat åtkomst och utan nya integrationer eller delning till kollegor. Aktuell main och publicerad Sites-källa är båda 8a4bf2680cbf4d3c8be3ee7c153db787894ccf0d; andra öppna PR:er lämnas orörda. Tidigare begränsning mot GitHub/publicering är därmed hävd för denna avgränsade leverans.
+
+## Rättning av provisionsstudions öppning · 26 november 2026
+
+Användaren kunde varken öppna inbäddningen eller den externa länken i v43. Beroendet av separat privat Sites-origin ersätts med lokal studio under portalens egen privata adress. Den exakta orsaken i användarens webbläsare är inte verifierad. Ingen åtkomst breddas eller verklig beräkning ändras. Direkt barn-URL laddar inga demoskript; administratörens portalroute krävs. Gamla lokala studiodata på den separata adressen lämnas kvar.
+
+Lokalt: 31 Node/DOM-sviter godkända; Chromium via browserpreview visar inbäddad studio och fastighetspartnerns månadsrapport. Ny CI-regression testar de sex vyerna, maj–september, faktisk XLSX-nedladdning, direkt-URL och utloggning. Publicering och CI återstår vid denna kandidatpost.
